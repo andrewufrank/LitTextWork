@@ -1,0 +1,19 @@
+Version of session file format:
+               2
+Time of storage:
+               "Sat Apr 29 18:30:34 CEST 2017"
+Layout:        VerticalP (VerticalP (TerminalP {paneGroups = fromList [], paneTabs = Just TopP, currentPage = 0, detachedId = Nothing, detachedSize = Nothing}) (VerticalP (TerminalP {paneGroups = fromList [], paneTabs = Just TopP, currentPage = 0, detachedId = Nothing, detachedSize = Nothing}) (TerminalP {paneGroups = fromList [], paneTabs = Just TopP, currentPage = 0, detachedId = Nothing, detachedSize = Nothing}) 979) 949) (HorizontalP (TerminalP {paneGroups = fromList [], paneTabs = Just TopP, currentPage = 2, detachedId = Nothing, detachedSize = Nothing}) (TerminalP {paneGroups = fromList [], paneTabs = Just TopP, currentPage = 0, detachedId = Nothing, detachedSize = Nothing}) 726) 2859
+Population:    [(Just (BufferSt (BufferState "/home/frank/Workspace8/repo8/buchCode/BuchCode/BuchToken.hs" 0)),[SplitP LeftP,SplitP RightP,SplitP LeftP]),(Just (ErrorsSt (ErrorsState {showErrors = False, showWarnings = False, showSuggestions = False, showTestFails = True})),[SplitP RightP,SplitP BottomP]),(Just (GrepSt GrepState),[SplitP RightP,SplitP TopP]),(Just (BufferSt (BufferState "/home/frank/Workspace8/repo8/LinesToParagraphBA_C/Lines2para/Lines2paraTests.hs" 3180)),[SplitP LeftP,SplitP RightP,SplitP RightP]),(Just (LogSt LogState),[SplitP RightP,SplitP TopP]),(Just (BufferSt (BufferState "/home/frank/Workspace8/repo8/buchCode/BuchCode/MarkupText.hs" 3964)),[SplitP LeftP,SplitP RightP,SplitP RightP]),(Just (BufferSt (BufferState "/home/frank/Workspace8/repo8/buchCode/BuchCode/MarkupText.res" 12880)),[SplitP LeftP,SplitP LeftP]),(Just (InfoSt (InfoState Nothing)),[SplitP RightP,SplitP BottomP]),(Just (WorkspaceSt WorkspaceState),[SplitP RightP,SplitP TopP])]
+Window size:   (3838,1020)
+Full screen:   False
+Completion size:
+               (750,400)
+Workspace:     Just "/home/frank/Workspace8/repo8/LinesToParagraphBA_C/lines2paraLeksah.lkshw"
+Active pane:   Just "Lines2paraTests.hs"
+Toolbar visible:
+               True
+FindbarState:  (True,FindState {entryStr = "result4BA", entryHist = ["result4BA","result1C","result1BA_tz_markupResult1","_textstate","TextState2","Foundation","Zeilen","testEndpoint","markupFileType5","bomWarning","TextZeilen","makeNLPrequest5"], replaceStr = "", replaceHist = [], caseSensitive = True, entireWord = False, wrapAround = True, regex = False, lineNr = 1})
+Recently opened files:
+               ["/home/frank/Workspace8/repo8/uniform/uniform-strings/uniform-strings.cabal","/home/frank/Workspace8/repo8/LinesToParagraphBA_C/lines2para.cabal","/home/frank/Workspace8/repo8/uniform/uniform-strings/Uniform/StringUtilities.hs","/home/frank/Workspace8/repo8/LitText/Parser/ReadMarkupAB.hs","/home/frank/Workspace8/repo8/LitText/Parser/ProduceNLP.hs","/home/frank/Workspace8/repo8/LitText/Parser/ProduceLit.hs","/home/frank/Workspace8/repo8/LitText/Parser/Main2subTest.hs","/home/frank/Workspace8/repo8/LitText/src/Main2sub.hs","/home/frank/Workspace8/repo8/LitText/LitText.cabal","/home/frank/Workspace8/repo8/LinesToParagraphBA_C/Lines2para/Lines2paraTests.hs","/home/frank/Workspace8/repo8/LinesToParagraphBA_C/Lines2para/Lines2paraTestResults.res","/home/frank/Workspace8/repo8/LinesToParagraphBA_C/Lines2para/Lines2para.hs"]
+Recently opened workspaces:
+               ["/home/frank/Workspace8/repo8/buchCode/buchcodeLeksah.lkshw","/home/frank/Workspace8/repo8/LitText/LitTextLeksah.lkshw","/home/frank/Workspace8/repo8/treeTaggerClient/leksahTreetagger.lkshw","/home/frank/Workspace8/repo8/markPageNumbers/leksah.lkshw","/home/frank/Workspace8/repo8/uniform/uniform-strings/strings.lkshw","/home/frank/leksah.lkshw"]

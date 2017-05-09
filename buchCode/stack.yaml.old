@@ -1,0 +1,27 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- location: /home/frank/Workspace8/repo8/uniform/uniform-strings
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/uniform/uniform-convenience
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/uniform/uniform-algebras
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/uniform/uniform-error
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/uniform/uniform-fileio
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/uniform/uniform-time
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/uniform/uniform-http
+  extra-dep: true
+- location: /home/frank/Workspace8/repo8/rdf4hextension
+  extra-dep: true
+extra-deps:
+- data-easy-0.7.0
+- hgal-2.0.0.2
+- parsec-extra-0.2.0.0
+- rdf4h-3.0.1
+- test-invariant-0.4.5.0
+resolver: lts-8.12

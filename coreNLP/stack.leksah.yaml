@@ -1,0 +1,23 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- ../rdf4store
+- ../rdf4hextension
+- ../uniform/uniform-strings
+- ../uniform/uniform-error
+- ../uniform/uniform-algebras
+- ../uniform/uniform-convenience
+- ../uniform/uniform-fileio
+- ../uniform/uniform-time
+extra-deps:
+- chatter-0.8.0.1
+- data-easy-0.7.0
+- fullstop-0.1.4
+- hgal-2.0.0.2
+- non-negative-0.1.1
+- numeric-prelude-0.4.2
+- rdf4h-3.0.1
+- test-invariant-0.4.5.0
+- tokenize-0.3.0
+resolver: lts-8.2
