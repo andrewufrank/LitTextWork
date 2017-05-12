@@ -26,6 +26,7 @@ library
         , chatter
         , HTF
         , safe
+        , pipes
 
     exposed-modules:
         Parser.ReadMarkupAB
@@ -38,6 +39,7 @@ library
         Parser.Foundation
         Parser.CompleteSentence
         Parser.ConvertTaggerOutput
+        Processor.ProcessAll
 
 
     exposed: True
