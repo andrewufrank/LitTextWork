@@ -27,13 +27,13 @@ import           Test.Framework
 
 import           Parser.Foundation        hiding ((</>))
 import           Uniform.FileIO
-import           Uniform.Strings  hiding ((</>))
+import           Uniform.Strings  hiding ((</>), (<.>))
 -- import           BuchCode.MarkupText (parseMarkup, result1B, result2B, result3B, result4B)
 
 --  the inputs for the tests
 
 testEndpoint = "http://127.0.0.1:3030/testDB/update"
-testDir = LegalPathname ("/home/frank/additionalSpace/DataBig/LitTest"::Text)
+testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
 serverLocTest = "http://127.0.0.1"
 
 
@@ -44,15 +44,21 @@ markupFileType5 = mkTypedFile5 :: TypedFile5 Text Markup
 
 instance TypedFiles5 Text Markup  where
     -- files of a single text stream, with a markup extension
-    mkTypedFile5  = TypedFile5 { tpext5 = e
+    mkTypedFile5  = TypedFile5 { tpext5 = Extension "markup"
                     -- , parserF = tparser
                     -- , writerF = twriter
             }
-            where e = mkExtension lpX "markup"
-    write5 fp fn tp   = writeFileOrCreate (combineFilepath fp fn (tpext5 tp))
---                (fp </> (fn <.> (tpext tp) )) a
-    read5 fp fn tp   = readFile2 $ combineFilepath fp fn (tpext5 tp)
---                (fp </> (fn <.> (tpext tp) ))
+    write5 fp fn tp  ct = do
+        dirx <- ensureDir fp
+        let fn2 = fn <.> tpext5 tp -- :: Path ar File
+        writeFile2 (fp </> fn2 ) ct
+    read5 fp fn tp   = do
+        let fn2 = fn <.> (tpext5 tp)
+        readFile2 (fp </> fn2)
+--    write5 fp fn tp   = writeFileOrCreate (combineFilepath fp fn (tpext5 tp))
+----                (fp </> (fn <.> (tpext tp) )) a
+--    read5 fp fn tp   = readFile2 $ combineFilepath fp fn (tpext5 tp)
+----                (fp </> (fn <.> (tpext tp) ))
 
 --- the A_B code (could go to separate file)
 
@@ -70,8 +76,9 @@ textstate2Text textstate = do
 _readMarkupFile :: TextState2 -> ErrIO Text
 _readMarkupFile textstate = do
     text <-  read5 ((originalsDir textstate) </>
-            (mkFilename lpX . authorDir $ textstate))
-            (mkFilename lpX . buchname $ textstate) markupFileType5
+                (makeRelDir .  authorDir $ textstate) :: Path Abs Dir)
+
+            (makeRelFile .  buchname $ textstate) markupFileType5
     bomWarning text   -- the check for BOM is in MainParse only -
     let nonlats =  nubChar . findNonLatinCharsT $ text
     putIOwords ["this file contains characters not in the latin1 charset which are not yet mapped\n"

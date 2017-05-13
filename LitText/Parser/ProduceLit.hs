@@ -45,7 +45,7 @@ import          Lines2para.Lines2paraTests (result1C, result2C, result3C
             )
 import           Uniform.Error           (errorT)
 import           Uniform.Strings         hiding ((<|>))
-import Uniform.FileIO (LegalPathname (..))  -- for test
+--import Uniform.FileIO (LegalPathname (..))  -- for test
 
 litURItext =  gerastreeURI </> "lit_2014" :: PartURI
 
@@ -58,7 +58,7 @@ test_2_C_H = assertEqual result2H_tripleResult1 (produceLitTriples result2A resu
 test_3_C_H = assertEqual result3H_tripleResult1 (produceLitTriples result3A result3C)
 
 buchURIx textstate = RDFsubj $ gerastreeURI
-            <#> authorDir textstate <-> buchname textstate
+            <#> authorText textstate <-> buchnameText textstate
 -- id of buch, part and sentence or page is attached
 
 data LitProperty = IsBuch | HasTitle | InBuch | InPart

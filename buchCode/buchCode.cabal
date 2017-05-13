@@ -1,6 +1,6 @@
 name: buchCode
 version: 0.1.6
-cabal-version: >=1.20
+cabal-version: >=1.24
 build-type: Simple
 license: AllRightsReserved
 license-file: LICENSE

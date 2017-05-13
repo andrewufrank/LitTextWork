@@ -18,8 +18,8 @@ import           Main2sub                     (mainLitAndNLPproduction)
 import           Parser.Foundation
 -- import           Parser.LinesToParagrahs
 import           Uniform.Convenience.StartApp
-import           Uniform.FileIO
-import           Uniform.Strings              hiding ((<>))
+import           Uniform.FileIO         hiding ((<>))
+import           Uniform.Strings              hiding ((<>), (</>), (<.>))
 -- for the command line parser:
 import           Options.Applicative
 -- the http://hackage.haskell.org/package/optparse-applicative package
@@ -87,10 +87,10 @@ cmd2textstate args  = TextState2
           , serverLoc = "http://nlp.gerastree.at"
           -- endpoint = "http://127.0.0.1:3030/marchDB/update"
         -- , originalsDir = mkFilepath lpX "/home/frank/testLit/"
-        , originalsDir = mkFilepath lpX "/home/frank/additionalSpace/DataBig/LitOriginals/"
+        , originalsDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/"
         -- , originalsDir = mkFilepath lpX "/home/frank/additionalSpace/DataBig/LitTest/"
                     -- waterhouse/kuw.markup
-        , authorDir = s2t . argdir $ args
-        , buchname = s2t . argbuch $ args
+        , authorDir =   argdir $ args
+        , buchname =   argbuch $ args
         , graph = s2t . arggraph $ args
         }
