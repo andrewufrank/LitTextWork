@@ -262,7 +262,8 @@ getSpeaker = atTag "Speaker" >>>
         returnA -< nx
 
 
-readDocumentT args lfp = readDocument args (t2fp . filepath2text lpX $ lfp)
+readDocumentT args lfp = readDocument args (toFilePath lfp)
+            -- (t2fp . filepath2text lpX $ lfp)
 
 readDoc :: Path ar File   -> ErrIO  Doc0
 readDoc fp = do
