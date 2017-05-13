@@ -264,7 +264,7 @@ getSpeaker = atTag "Speaker" >>>
 
 readDocumentT args lfp = readDocument args (t2fp . filepath2text lpX $ lfp)
 
-readDoc :: LegalPathname   -> ErrIO  Doc0
+readDoc :: Path ar File   -> ErrIO  Doc0
 readDoc fp = do
 
   docs  :: [Doc0] <-callIO $ do

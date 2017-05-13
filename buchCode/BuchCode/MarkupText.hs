@@ -46,8 +46,8 @@ import           BuchCode.BuchToken
 import           Data.Char
 import           Text.Parsec
 import           Uniform.Error
-import           Uniform.FileIO
-import           Uniform.Strings    hiding ((<|>))
+import           Uniform.FileIO hiding ((<|>))
+--import           Uniform.Strings   hiding ((<|>))
 import           Test.Framework
 
 
@@ -220,7 +220,7 @@ instance Zeilen TextZeilen where
     isTextZeile _             = False
 
     isNeueSeite (NeueSeite) = True
-    isNeueSeite _ = False 
+    isNeueSeite _ = False
 
     isMarkupZeile (MarkupZeile mk t) = True
     isMarkupZeile _                  = False
