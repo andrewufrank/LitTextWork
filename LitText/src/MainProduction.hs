@@ -59,11 +59,11 @@ cmdArgs = LitArgs
         --   long "filename" <>
           metavar "STRING"
          <> help "buch - filename " )
-     <*> argument str
-          (
-        --   long "filename" <>
-          metavar "STRING"
-         <> help "graph " )
+ --    <*> argument str
+ --         (
+--        --   long "filename" <>
+ --         metavar "STRING"
+--         <> help "graph " )
 
 
 parseAndExecute  :: Text -> Text -> (TextState2  -> ErrIO () ) -> ErrIO ()
@@ -92,5 +92,7 @@ cmd2textstate args  = TextState2
                     -- waterhouse/kuw.markup
         , authorDir =   argdir $ args
         , buchname =   argbuch $ args
-        , graph = s2t . arggraph $ args
+        , textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitOriginals/"
+						</> (argdir args) </> argbuch $ args
+--        , graph = s2t . arggraph $ args
         }

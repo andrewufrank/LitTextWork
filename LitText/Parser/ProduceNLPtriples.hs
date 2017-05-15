@@ -34,7 +34,8 @@ module Parser.ProduceNLPtriples
     , htf_thisModulesTests
     , result1E_nlpResult
     , TZ (..)
-    , storeTriplesFuseki
+--    , storeTriplesFuseki
+    , writeTriples2file
     ) where
 
 import           Test.Framework
@@ -65,11 +66,11 @@ import Data.Either
 debugNLP = False
 
 -- main export
-produceNLPtriples :: TextState2 -> [TZ] -> ErrIO [Text]  -- test C -> D -> X
+produceNLPtriples :: TextState2 -> [TZ] -> ErrIO () -- test C -> D -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
-produceNLPtriples textstate = mapM (produceOneParaNLP debugNLP textstate) . prepareTZ4nlp
+produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP textstate) . prepareTZ4nlp
 
         -- prepareTZ4nlp is in ProduceNLP
 
@@ -78,9 +79,9 @@ test_1_D_XproduceNLPtriples =  do   -- test D -> H
     t1 <-   runErr $ produceNLPtriples  result1A result1C
 --    putIOwords ["produceNLPtriples: result (for next) ", s2t $ show t1]
 --    putIOwords ["produceNLPtriples:  result ", showT t1]
-    assertEqual  result1X_CD t1
+    assertEqual (Right ())  t1
 
-produceOneParaNLP :: Bool -> TextState2 -> TZ -> ErrIO Text
+produceOneParaNLP :: Bool -> TextState2 -> TZ -> ErrIO ()
 produceOneParaNLP showXML textstate tzp =
         do
             (tz, xml) <- convertTZ2nlp (serverLoc textstate) tzp  -- calls to coreNLP    D -> E
@@ -105,16 +106,17 @@ produceOneParaNLP showXML textstate tzp =
 
             when debugNLP $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples ", unlines' . map showT $ triples]
-            response <- writeTriples2file textstate triples
-            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
-                        , showT . textfilename $ textstate, " \n", showT response ]
-            let response2 = response <>
-                        (showT . tlpara . tzloc $ tzp) <> "on page" <>
-                        (showT . tlpage . tzloc $ tzp)
-            return response2
+            writeTriples2file textstate triples
+--            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
+--                        , showT . textfilename $ textstate, " \n", showT response ]
+--            let response2 = response <>
+--                        (showT . tlpara . tzloc $ tzp) <> "on page" <>
+--                        (showT . tlpage . tzloc $ tzp)
+            return ()
 
+writeTriples2file :: TextState2 -> [Triple] -> ErrIO ()
 writeTriples2file textstate tris = do
-    write5 (textfilename teststate) tris
+    write6 (textfilename textstate)  ntFileTriples tris
     -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
 --    insertTriplesIntoGraph fusekiServer (endpoint textstate)
 --            tris  (Just (gerastreeURI </> graph textstate ))

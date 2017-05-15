@@ -43,7 +43,8 @@ textstateX = TextState2 {
         , originalsDir = makeAbsDir origDirForTest
         , authorDir = ""
         , buchname = ""
-        , graph = "Test1"
+        , textfilename = makeAbsFile ("/home/frank/additionalSpace/DataBig/LitOriginals/notafile")
+ --       , graph = "Test1"
         }
 
 --main1 = processAll textstateX resfile

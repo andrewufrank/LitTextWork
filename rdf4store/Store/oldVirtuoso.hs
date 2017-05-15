@@ -69,7 +69,8 @@ insertGraphV ep tps mgr1 = do
 
     putIOwords ["insertGraphV virtuoso  ", "endpoint",  uri
                 , "\ntriples", showT tps , "\n"
-                , "graph",  showT uri]
+--                , "graph",  showT uri
+                ]
 
     let triplesText = unlines' . map triple2text $ tps
 --    let text = "SPARQL INSERT IN GRAPH "  <>  gr1 <>

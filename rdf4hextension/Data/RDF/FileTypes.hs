@@ -19,7 +19,9 @@
 {-# LANGUAGE TypeFamilies  #-}
 --{-# Option -w #-}
 
-module Data.RDF.FileTypes (RDFgraph (..), unRDFgraph, ntFile) where
+module Data.RDF.FileTypes (RDFgraph (..), unRDFgraph
+	, ntFile, ntFileTriples) 
+	where
 
 import qualified Data.RDF        as RDF
 import qualified          System.IO as S
@@ -27,6 +29,8 @@ import           Uniform.FileIO
 import           Uniform.Strings hiding ((<.>), (</>))
 --import Uniform.FilenamesAlgebra
 import Uniform.FileStrings
+import Data.Text.IO (hPutStr)
+-- todo fileio
 
 
 --data TurtleData = TurtleData (RDF.RDF RDF.TList)
@@ -42,31 +46,32 @@ rdfGraphDebug = False
 ntFile = mkTypedFile5 :: TypedFile5 RDFgraph ()
 -- result is nt, not turtle!
 
+ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] () 
+
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
-instance TypedFiles5 [Triple] () where
+instance TypedFiles5 [RDF.Triple] () where
 -- ^ files with full triles
     mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
 --      where e = mkExtension lpX "nt"
 
-    write5 fp fn tp triples = do
+    write6 fp  tp triples = do
 
-        when rdfGraphDebug $ putIOwords ["triples write5", showT fp, showT fn]
+        when rdfGraphDebug $ putIOwords ["triples write5", showT fp]
 --        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
+        let fn2 = fromJustNote "typedfile triples write6" . setExtension (tpext5 tp) $ fp
         when rdfGraphDebug $ putIOwords ["triples write5 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
-        write2handle hand nt
+        callIO $ hPutStr  hand (unlines' $ Prelude.map showT triples)
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
         closeFile2  hand
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
 
-    read5 fp fn tp = do
-        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        raw <- readFile2 fn2
-        return raw
+--    read6 fp  tp = do
+--        let fn2 = fromJustNote "typedfile triples read6" . setExtension (tpext5 tp) $ fp
+--        raw :: Text <- callIO $ readFile2 fn2
+--        return (lines' raw)
 
 instance TypedFiles5 RDFgraph () where
 -- ^ files with full triles

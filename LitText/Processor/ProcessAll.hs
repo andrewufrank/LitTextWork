@@ -78,6 +78,7 @@ fillTextState :: TextState2 -> Path Abs File -> TextState2
 fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
                               authorDir = getImmediateParentDir  $ fp
                               , buchname = getNakedFileName fp
+                              , textfilename = fp
 --                            , graph = filename2text fp a   -- the graph is the same as the author
                             }
 --    where
@@ -102,7 +103,8 @@ textstate0 = TextState2 {
         , originalsDir = makeAbsDir origDirForTest
         , authorDir = ""
         , buchname = ""
-        , graph = "automaticTest"
+--        , graph = "automaticTest"
+		, textfilename = makeAbsFile "/unusable"
         }
 
 test_0 = do

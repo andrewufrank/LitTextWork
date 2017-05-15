@@ -37,7 +37,7 @@ import           BuchCode.MarkupText (parseMarkup, result1B, result2B, result3B,
 
 debugNLP = False
 debugLit = False
-
+mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO () 
 mainLitAndNLPproduction debugLitonly textstate = do
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
@@ -52,10 +52,13 @@ mainLitAndNLPproduction debugLitonly textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ trips]
 
-    response <- storeTriplesFuseki  textstate trips  -- test H -> Z
+    writeTriples2file textstate trips
+--    response <- storeTriplesFuseki  textstate trips  -- test H -> Z
 
     when debugLit $ putIOwords ["lit: triples stored with fuseki in graph "
-                    , showT . graph $  textstate, " \n", showT response ]
+--                    , showT . graph $  textstate
+--                    , " \n", showT response 
+                    ]
 
     when debugLitonly $  errorT [ "MainLit stopped because debugLitOnly true - set to lit only!"
             , showT textstate]
@@ -67,7 +70,8 @@ mainLitAndNLPproduction debugLitonly textstate = do
     responses <- produceNLPtriples textstate tzpara -- test D ->
 
     putIOwords ["npl: triples stored with fuseki in graph (responses and para/seite) "
-            , showT . graph $ textstate, " \n"
-            , unlines' . map showT $ responses ]
+--           , showT . graph $ textstate, " \n"
+--            , unlines' . map showT $ responses 
+            ]
 
     return ()

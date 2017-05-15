@@ -60,7 +60,7 @@ data TextState2 = TextState2
                         -- the project
                                  -- and where the converted data go
     , buchname     :: FilePath -- filename in directory gives the buch sigl
-    , textfilename :: Path Abs Dir  -- the input path of the file with the triples
+    , textfilename :: Path Abs File -- the input path of the file with the triples
                 -- same as input, but with nt extension
                 -- where is exension removed? -- initially remove markup?
 

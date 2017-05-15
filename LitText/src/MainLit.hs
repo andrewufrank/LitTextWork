@@ -61,7 +61,9 @@ main1 = do
             -- , buchname =  "test1"
             -- , buchname =  "kuw"
             -- , buchname =  "test1"
-            , graph = "tbang"}
+        , textfilename = makeAbsFile ("/home/frank/additionalSpace/DataBig/LitTest/test/t1")
+--             , graph = "tbang"
+             }
 
     putIOwords ["ProduceLit for", showT textstate]
     let litDebugOnly = False
