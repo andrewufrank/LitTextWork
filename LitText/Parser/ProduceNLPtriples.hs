@@ -48,12 +48,14 @@ import           CoreNLP.Defs0
 import           CoreNLP.Snippets2nt          (readDocString)
 import           Data.RDF   -- should all be imported from extension
 import           Data.RDF.Extension
+import          Data.RDF.FileTypes
 import Lines2para.Lines2para
 --import           Parser.LinesToParagraphs (result1A)  -- for test
 --import Lines2para.Lines2paraTests (result1A)
 import           Parser.NLPvocabulary
 --import Parser.ProduceLit (result1C)   -- for test
 import           Uniform.Strings              hiding ((<|>))
+import Uniform.FileIO
 import Parser.CompleteSentence (completeSentence)
 -- for tests
 import Parser.ReadMarkupAB (result1A)
@@ -103,18 +105,24 @@ produceOneParaNLP showXML textstate tzp =
 
             when debugNLP $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples ", unlines' . map showT $ triples]
-            response <- storeTriplesFuseki textstate triples
-            when debugNLP $ putIOwords ["produceOneParaNLP triples stored with fuseki in graph "
-                        , showT . graph $ textstate, " \n", showT response ]
+            response <- writeTriples2file textstate triples
+            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
+                        , showT . textfilename $ textstate, " \n", showT response ]
             let response2 = response <>
                         (showT . tlpara . tzloc $ tzp) <> "on page" <>
                         (showT . tlpage . tzloc $ tzp)
             return response2
 
-storeTriplesFuseki textstate tris = do
+writeTriples2file textstate tris = do
+    write5 (textfilename teststate) tris
     -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
-    insertTriplesIntoGraph fusekiServer (endpoint textstate)
-            tris  (Just (gerastreeURI </> graph textstate ))
+--    insertTriplesIntoGraph fusekiServer (endpoint textstate)
+--            tris  (Just (gerastreeURI </> graph textstate ))
+
+--storeTriplesFuseki textstate tris = do
+--    -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
+--    insertTriplesIntoGraph fusekiServer (endpoint textstate)
+--            tris  (Just (gerastreeURI </> graph textstate ))
 
 test_completeSentence = do  -- F -> G
     putIOwordsT ["completeSentence F -> G ", showT resutl1F_readDocStringResult]

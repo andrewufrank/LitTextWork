@@ -134,19 +134,19 @@ test_4_A_B_textstate_text_1 = do
 
 result1A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
     , originalsDir =  testDir
-    , authorDir = "test", buchname = "t1", graph = "t1"}
+    , authorDir = "test", buchname = "t1"}
 
 result2A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
     , originalsDir =  testDir
-    , authorDir = "test", buchname = "t2", graph = "t1"}
+    , authorDir = "test", buchname = "t2"}
 
 result3A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
     , originalsDir = testDir
-    , authorDir = "test", buchname = "t3", graph = "t1"}
+    , authorDir = "test", buchname = "t3"}
 
 result4A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
     , originalsDir = testDir
-    , authorDir = "test", buchname = "t4", graph = "t1"}
+    , authorDir = "test", buchname = "t4"}
 
 result1B  =
         "\n.sprache German\n\n.author PETER WATERHOUSE\n\n.titel (Krieg f\252r Welt)\n11\n\n.hl1 Unsere Br\228uche werden lebendig\n12\nWas w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?\n\nEr fragte sich als zweiter Paragraph.\n13\n\n.ende\n"

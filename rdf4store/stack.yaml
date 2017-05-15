@@ -16,9 +16,12 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
-- location: ../rdf4store
+- location: ../rdf4hextension
   extra-dep: true
 extra-deps:
 - data-easy-0.7.0
+- hgal-2.0.0.2
+- pipes-4.3.2
 - rdf4h-3.0.1
-resolver: lts-8.13
+- test-invariant-0.4.5.0
+resolver: lts-8.12

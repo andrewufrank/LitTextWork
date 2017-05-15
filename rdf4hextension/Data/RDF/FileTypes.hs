@@ -44,6 +44,30 @@ ntFile = mkTypedFile5 :: TypedFile5 RDFgraph ()
 
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
+instance TypedFiles5 [Triple] () where
+-- ^ files with full triles
+    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
+--      where e = mkExtension lpX "nt"
+
+    write5 fp fn tp triples = do
+
+        when rdfGraphDebug $ putIOwords ["triples write5", showT fp, showT fn]
+--        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
+        when rdfGraphDebug $ putIOwords ["triples write5 fn", showT fn2]
+        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
+        write2handle hand nt
+--        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
+        closeFile2  hand
+--        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
+
+    read5 fp fn tp = do
+        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
+--        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+        raw <- readFile2 fn2
+        return raw
+
 instance TypedFiles5 RDFgraph () where
 -- ^ files with full triles
     mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}

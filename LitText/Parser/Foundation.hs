@@ -60,7 +60,11 @@ data TextState2 = TextState2
                         -- the project
                                  -- and where the converted data go
     , buchname     :: FilePath -- filename in directory gives the buch sigl
-    , graph        :: PartURI -- the graoh in which the triples go
+    , textfilename :: Path Abs Dir  -- the input path of the file with the triples
+                -- same as input, but with nt extension
+                -- where is exension removed? -- initially remove markup?
+
+--    , graph        :: PartURI -- the graoh in which the triples go
     -- , buchcode  :: PartURI  -- a unique identifier for the book within the lit project
             -- where to put the "markup.txt" files for NLP processing
 --    , texts :: [Text]  -- the accumulator for the texts
