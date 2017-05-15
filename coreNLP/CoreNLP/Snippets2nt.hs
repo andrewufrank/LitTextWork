@@ -30,6 +30,7 @@ module CoreNLP.Snippets2nt (
 --        , makeNLPrequest5
 --        ,makeNLPrequest6
         , readDocString
+        , nlp_serverLoc
         )  where
 
 import           Test.Framework
@@ -43,7 +44,7 @@ import Uniform.HttpGet
 import           CoreNLP.CoreNLPxml
 
 import           Data.RDF                (Triple, mkRdf, triplesOf)
-import           Data.RDF.Extension      (gerastreeURI)
+import           Data.RDF.Extension      (gerastreeURI, PartURI)
 import           Data.RDF.FileTypes      (RDFgraph (..), ntFile, unRDFgraph)
 import           Data.RDF.Prefs          (prefixs2pm, startPrefix)
 
@@ -67,6 +68,7 @@ loadGraphDebug = False
 showXML = True
 produceFiles = False
 
+nlp_serverLoc = "http://nlp.gerastree.at" :: PartURI
 serverLoc = "nlp.gerastree.at"
 localHost = "127.0.0.1"
 

@@ -38,8 +38,9 @@ origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 resfile  = makeRelFile "resultCollectAll"
 
 textstateX = TextState2 {
-        endpoint = "http://127.0.0.1:3030/testDB/update"
-        , serverLoc = "http://127.0.0.1"
+--        endpoint = "http://127.0.0.1:3030/testDB/update"
+--        , serverLoc = "http://127.0.0.1"
+        serverLoc = "http://nlp.gerastree.at/"
         , originalsDir = makeAbsDir origDirForTest
         , authorDir = ""
         , buchname = ""

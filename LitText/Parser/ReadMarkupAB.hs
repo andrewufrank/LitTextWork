@@ -132,19 +132,23 @@ test_4_A_B_textstate_text_1 = do
     t1 <- runErr $  textstate2Text result4A
     assertEqual (Right result4B)  t1
 
-result1A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
+result1A = TextState2 { --endpoint = testEndpoint,
+    serverLoc = serverLocTest
     , originalsDir =  testDir
     , authorDir = "test", buchname = "t1"}
 
-result2A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
+result2A = TextState2 { -- endpoint = testEndpoint,
+    serverLoc = serverLocTest
     , originalsDir =  testDir
     , authorDir = "test", buchname = "t2"}
 
-result3A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
+result3A = TextState2 { --endpoint = testEndpoint,
+    serverLoc = serverLocTest
     , originalsDir = testDir
     , authorDir = "test", buchname = "t3"}
 
-result4A = TextState2 {endpoint = testEndpoint, serverLoc = serverLocTest
+result4A = TextState2 { --endpoint = testEndpoint,
+    serverLoc = serverLocTest
     , originalsDir = testDir
     , authorDir = "test", buchname = "t4"}
 

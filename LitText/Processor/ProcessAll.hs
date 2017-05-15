@@ -28,6 +28,7 @@ import Uniform.FileIO
 -- todo hasExtension
 import Parser.Foundation
 import Main2sub
+import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc)
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
@@ -98,8 +99,9 @@ origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 
 
 textstate0 = TextState2 {
-        endpoint = "http://127.0.0.1:3030/testDB/update"
-        , serverLoc = "http://127.0.0.1"
+--      endpoint = "http://127.0.0.1:3030/testDB/update"
+
+        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
         , originalsDir = makeAbsDir origDirForTest
         , authorDir = ""
         , buchname = ""

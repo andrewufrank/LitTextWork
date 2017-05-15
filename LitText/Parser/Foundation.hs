@@ -52,8 +52,8 @@ authorText = s2t . authorDir
 data TextState2 = TextState2
     {                -- the projp buchcode gives the code for the book,
                 -- add the element number
-    endpoint       :: PartURI
-    , serverLoc       :: PartURI
+--    endpoint       :: PartURI
+     serverLoc       :: PartURI  -- where the nlp servers are
     , originalsDir :: Path Abs Dir -- the directory in which the files are
                     -- either LitOrig or a test dir
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
