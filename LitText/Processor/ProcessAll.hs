@@ -76,21 +76,21 @@ processOneMarkup textstate0 lfp = do
 
 fillTextState :: TextState2 -> Path Abs File -> TextState2
 fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
-                              authorDir = toFilePath . dirname . parent $ fp
+                              authorDir = getImmediateParentDir  $ fp
                               , buchname = getNakedFileName fp
 --                            , graph = filename2text fp a   -- the graph is the same as the author
                             }
 --    where
 --        (p,f,e) = splitFilepath fp
 --        a = last . splitDirectories $ p
-getParenDirName :: Path ar File -> FilePath
-getParentDirName = toFilePath . dirname . parent $ fp
-
-getNakedFileName :: Path ar File -> FilePath
-getNakedFileName f = toFilePath . removeExtension $ fp
-    where
-        fp :: Path Rel File
-        fp = getFileName f
+--getParentDirName :: Path ar File -> FilePath
+--getParentDirName = toFilePath . dirname . parent $ fp
+--
+--getNakedFileName :: Path ar File -> FilePath
+--getNakedFileName f = toFilePath . removeExtension $ fp
+--    where
+--        fp :: Path Rel File
+--        fp = getFileName f
     ----------------- tests
 origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 -- /home/frank/additionalSpace/DataBig/LitTest/carol

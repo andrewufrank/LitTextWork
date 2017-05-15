@@ -12,7 +12,7 @@ library
         , uniform-strings
         , uniform-error
         , uniform-convenience
-        , uniform-fileio >=0.0.12.10
+        , uniform-fileio >=0.0.12.14
         , uniform-algebras
         , uniform-http
         , split
