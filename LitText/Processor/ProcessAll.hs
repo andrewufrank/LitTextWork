@@ -18,6 +18,7 @@
 
 module Processor.ProcessAll
     (htf_thisModulesTests
+    , processAll
     ) where
 
 import           Test.Framework
@@ -26,10 +27,12 @@ import           Uniform.Strings         hiding ((<|>))
 import Uniform.FileIO
 -- todo hasExtension
 import Parser.Foundation
+import Main2sub
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
 import Pipes ((>->), (~>))
+-- todo fileio - export for pipes
 
 
 import Uniform.Error
@@ -37,24 +40,6 @@ import Uniform.FileIO
 import Uniform.FileStatus
 import Uniform.Strings hiding ((</>))
 
-
---import Pipes
---import qualified Pipes.Prelude as P
---import Control.Monad (forM_)
---import System.Directory (doesDirectoryExist, getDirectoryContents)
---import System.Environment (getArgs)
---import System.FilePath ((</>))
-
---getRecursiveContents :: FilePath -> Pipe.Producer FilePath IO ()
---getRecursiveContents topPath = do
---  names <- lift $ getDirectoryContents topPath
---  let properNames = filter (`notElem` [".", ".."]) names
---  forM_ properNames $ \name -> do
---    let path = topPath </> name
---    isDirectory <- lift $ doesDirectoryExist path
---    if isDirectory
---      then getRecursiveContents path
---      else yield path
 
 
 processAll :: TextState2 ->   Path ar File  -> ErrIO ()
@@ -79,21 +64,27 @@ isMarkup  = hasExtension (Extension "markup")
 --filterMarkup :: [LegalPathname] -> [LegalPathname]
 --filterMarkup   = filter (hasExtension "markup")
 
+--debugNLP = False
+litDebugOnly = False
+
 processOneMarkup :: TextState2 -> Path Abs File -> ErrIO Text
 processOneMarkup textstate0 lfp = do
     let textstate2 = fillTextState textstate0 lfp
-    putIOwords [showT textstate2]
+    putIOwords ["processOneMarkup", showT textstate2]
+    mainLitAndNLPproduction litDebugOnly textstate2
     return (showT textstate2)
 
 fillTextState :: TextState2 -> Path Abs File -> TextState2
 fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
---                            authorDir = filename2text fp a
-                              buchname = getNakedFileName fp
+                              authorDir = toFilePath . dirname . parent $ fp
+                              , buchname = getNakedFileName fp
 --                            , graph = filename2text fp a   -- the graph is the same as the author
                             }
 --    where
 --        (p,f,e) = splitFilepath fp
 --        a = last . splitDirectories $ p
+getParenDirName :: Path ar File -> FilePath
+getParentDirName = toFilePath . dirname . parent $ fp
 
 getNakedFileName :: Path ar File -> FilePath
 getNakedFileName f = toFilePath . removeExtension $ fp
