@@ -25,7 +25,7 @@ import           Test.Framework
 
 import Parser.Foundation
 import Main2sub
-import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc)
+import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
@@ -37,7 +37,6 @@ import Uniform.Error
 import Uniform.FileIO
 import Uniform.FileStatus
 import Uniform.Strings hiding ((</>),(<|>))
-
 
 
 processAll :: TextState2 ->   Path ar File  -> ErrIO ()
@@ -84,13 +83,15 @@ fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
     ----------------- tests
 origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 -- /home/frank/additionalSpace/DataBig/LitTest/carol
+shortTestDir = "/home/frank/additionalSpace/DataBig/LitTestShort"
 
-
-textstate0 = TextState2 {
+textstateShortTest = TextState2 {
 --      endpoint = "http://127.0.0.1:3030/testDB/update"
 
-        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
-        , originalsDir = makeAbsDir origDirForTest
+--        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
+        serverLoc = host_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
+--        , originalsDir = makeAbsDir origDirForTest
+        , originalsDir = makeAbsDir shortTestDir
         , authorDir = ""
         , buchname = ""
 --        , graph = "automaticTest"
@@ -99,7 +100,7 @@ textstate0 = TextState2 {
 
 test_0 = do
     runErr $ do
-        processAll textstate0 resfileN
+        processAll textstateShortTest resfileN
     resN <- readFile5 resfileN
     res0 <- readFile5 resfile0
     assertEqual res0 resN

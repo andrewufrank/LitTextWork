@@ -24,6 +24,7 @@ module Data.RDF.FileTypes (RDFgraph (..), unRDFgraph
 	where
 
 import qualified Data.RDF        as RDF
+import Data.RDF.Triple2text (triple2text)
 import qualified          System.IO as S
 import           Uniform.FileIO
 import           Uniform.Strings hiding ((<.>), (</>))
@@ -63,7 +64,9 @@ instance TypedFiles5 [RDF.Triple] () where
         when rdfGraphDebug $ putIOwords ["triples write5 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
-        write2handle  hand (unlines' $ Prelude.map showT triples)
+
+        write2handle  hand (unlines' $ Prelude.map triple2text triples)
+
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
         closeFile2  hand
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]

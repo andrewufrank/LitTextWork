@@ -30,7 +30,7 @@ module CoreNLP.Snippets2nt (
 --        , makeNLPrequest5
 --        ,makeNLPrequest6
         , readDocString
-        , nlp_serverLoc
+        , nlp_serverLoc, host_serverLoc
         )  where
 
 import           Test.Framework
@@ -69,6 +69,7 @@ showXML = True
 produceFiles = False
 
 nlp_serverLoc = "http://nlp.gerastree.at" :: PartURI
+host_serverLoc = "http://127.0.0.1" :: PartURI
 serverLoc = "nlp.gerastree.at"
 localHost = "127.0.0.1"
 
