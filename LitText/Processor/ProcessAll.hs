@@ -22,10 +22,7 @@ module Processor.ProcessAll
     ) where
 
 import           Test.Framework
-import           Uniform.Error           (errorT)
-import           Uniform.Strings         hiding ((<|>))
-import Uniform.FileIO
--- todo hasExtension
+
 import Parser.Foundation
 import Main2sub
 import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc)
@@ -39,7 +36,7 @@ import Pipes ((>->), (~>))
 import Uniform.Error
 import Uniform.FileIO
 import Uniform.FileStatus
-import Uniform.Strings hiding ((</>))
+import Uniform.Strings hiding ((</>),(<|>))
 
 
 
@@ -49,14 +46,16 @@ processAll :: TextState2 ->   Path ar File  -> ErrIO ()
 processAll textstate0  file  =  do
   let path = originalsDir textstate0
   resFile <- makeAbsolute file
-  hand <-   openFile2handle resFile WriteMode
-  Pipe.runEffect $
-    getRecursiveContents path
-    >-> Pipe.filter isMarkup --
-    >-> Pipe.mapM (fmap t2s . processOneMarkup textstate0)
---    >-> P.stdoutLn
-    >-> Pipe.toHandle hand
-  closeFile2 hand
+  bracketErrIO (openFile2handle resFile WriteMode)
+                (closeFile2)
+                (\hand -> do
+                      Pipe.runEffect $
+                        getRecursiveContents path
+                        >-> Pipe.filter isMarkup --
+                        >-> Pipe.mapM (fmap t2s . processOneMarkup textstate0)
+                    --    >-> P.stdoutLn
+                        >-> Pipe.toHandle hand
+                )
 
 isMarkup :: Path Abs File -> Bool
 isMarkup  = hasExtension (Extension "markup")
@@ -82,17 +81,6 @@ fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
                               , textfilename = fp
 --                            , graph = filename2text fp a   -- the graph is the same as the author
                             }
---    where
---        (p,f,e) = splitFilepath fp
---        a = last . splitDirectories $ p
---getParentDirName :: Path ar File -> FilePath
---getParentDirName = toFilePath . dirname . parent $ fp
---
---getNakedFileName :: Path ar File -> FilePath
---getNakedFileName f = toFilePath . removeExtension $ fp
---    where
---        fp :: Path Rel File
---        fp = getFileName f
     ----------------- tests
 origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 -- /home/frank/additionalSpace/DataBig/LitTest/carol

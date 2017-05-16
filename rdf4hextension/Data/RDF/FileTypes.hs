@@ -20,7 +20,7 @@
 --{-# Option -w #-}
 
 module Data.RDF.FileTypes (RDFgraph (..), unRDFgraph
-	, ntFile, ntFileTriples) 
+	, ntFile, ntFileTriples)
 	where
 
 import qualified Data.RDF        as RDF
@@ -29,7 +29,7 @@ import           Uniform.FileIO
 import           Uniform.Strings hiding ((<.>), (</>))
 --import Uniform.FilenamesAlgebra
 import Uniform.FileStrings
-import Data.Text.IO (hPutStr)
+--import Data.Text.IO (hPutStr)
 -- todo fileio
 
 
@@ -46,7 +46,7 @@ rdfGraphDebug = False
 ntFile = mkTypedFile5 :: TypedFile5 RDFgraph ()
 -- result is nt, not turtle!
 
-ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] () 
+ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] ()
 
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
@@ -63,7 +63,7 @@ instance TypedFiles5 [RDF.Triple] () where
         when rdfGraphDebug $ putIOwords ["triples write5 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
-        callIO $ hPutStr  hand (unlines' $ Prelude.map showT triples)
+        write2handle  hand (unlines' $ Prelude.map showT triples)
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
         closeFile2  hand
 --        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
