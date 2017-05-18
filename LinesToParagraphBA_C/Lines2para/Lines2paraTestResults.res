@@ -132,6 +132,28 @@ result4BA =
        "da\223 man ihm gleichzeitig, je schonender, desto kr\228nkender, sagte, da\223 seine bisherigen Versuche mi\223lungen seien, da\223 er endlich von ihnen ablassen solle, da\223 er zur\252ckkehren und sich als ein f\252r immer Zur\252ckgekehrter von allen mit gro\223en Augen anstaunen lassen m\252sse, da\223 nur seine Freunde etwas verst\252nden und da\223 er ein altes Kind sei, das den erfolgreichen, zu Hause gebliebenen Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet leicht war. ",
      MarkupZeile BuchEnde ""]
 
+result5BA =
+    [MarkupZeile BuchTitel "The Fables of La Fontaine",
+     KurzeZeile " .Language: English", AllCapsZeile "  PREFACE",
+     AllCapsZeile "II.--THE COUNCIL HELD BY THE RATS [4]",
+     KurzeZeile "   Old Rodilard,[5] a certain cat,",
+     TextZeile "      Such havoc of the rats had made,",
+     KurzeZeile "    'Twas difficult to find a rat",
+     KurzeZeile "      With nature's debt unpaid.",
+     FussnoteZeile
+       "[4] Faerno and Abstemius both have fables upon this subject. Gabriel",
+     TextZeile "    Faerno (1500-1561) . Perrault published",
+     KurzeZeile "    them at Paris in 1699.",
+     FussnoteZeile
+       "[5] _Rodilard_.--The name no doubt taken from the famous cat",
+     TextZeile
+       "    Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII.",
+     AllCapsZeile "IV.--THE TWO BULLS AND THE FROG.[9]",
+     TextZeile "   Of little folks it oft has been the fate",
+     TextZeile "   To suffer for the follies of the great.",
+     FussnoteZeile "[9] Phaedrus, I. 30.", MarkupZeile BuchEnde "",
+     LeerZeile]
+
 result1C  :: [TZ]
 result1C  =
     [TZmarkup{tzloc =
