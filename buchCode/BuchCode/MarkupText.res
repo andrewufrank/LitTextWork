@@ -11,6 +11,9 @@ result0B = unlines'  ["adfka;dfaskl"
             ,""
             ,".titel TIT"
             ,"defpageerest"
+            ,"II - ALL CAPS"
+            , "[44]"  -- seitenzahl
+            , "[1] eine Fussnote"
             ,"77"] ::  Text
 
 result1B  =
@@ -67,7 +70,8 @@ result0BA =
      NeueSeite, ZahlZeile "[54/0002]",
      TextZeile "da\223 man ihm gleichzeitig,", LeerZeile,
      MarkupZeile BuchTitel "TIT", KurzeZeile "defpageerest",
-     ZahlZeile "77"]
+     AllCapsZeile "II - ALL CAPS", ZahlZeile "[44]",
+     FussnoteZeile "[1] eine Fussnote", ZahlZeile "77"]
 
 result1BA =
     [LeerZeile, MarkupZeile BuchSprache "German", LeerZeile,

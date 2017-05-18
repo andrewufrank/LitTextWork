@@ -73,6 +73,7 @@ type TextParsecBuch = Parsec Text () [MarkupElement]
 -- using the data, e.g Lines2para in etts2tz
 data TextZeilen =  TextZeile Text
         | ZahlZeile Text
+        | FussnoteZeile Text
         | MarkupZeile BuchToken Text
         | KurzeZeile Text
         | ParaZeile  Text
@@ -87,7 +88,7 @@ data TextZeilen =  TextZeile Text
 
 parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
 -- parse a text file to TextZeilen form
-parseMarkup  =  markShortLines . markAllCapsLines
+parseMarkup  =  markShortLines  . markAllCapsLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 -- TODO filter for char
 
@@ -133,8 +134,12 @@ ettParser = do
     <|>
     try zahlzeile
     <|>
+    try fussnotezeile
+    <|>
     try markupzeile
     <|>
+--    try allCapsZeile   -- identified later - better?
+--    <|>
     try textzeile
         <?> "lineparser"
 
@@ -148,6 +153,16 @@ zahlzeile = do
     many1 newline
     return . ZahlZeile . s2t $ res
 
+fussnotezeile :: TextParsec TextZeilen
+fussnotezeile = do
+    res <- many1  (oneOf "0123456789[")
+    res1 <- oneOf ")]"
+                -- these are characters encountered in german textarchive
+--    res <- many1  digit  - simpler, but not including []
+    res2 <- many (noneOf "\n")
+    many1 newline
+    return . FussnoteZeile . s2t $ (res ++ [res1] ++ res2)
+
 markupzeile :: TextParsec TextZeilen
 markupzeile = do
     char '.'
@@ -155,6 +170,12 @@ markupzeile = do
     res <- many (noneOf "\n")
     newline
     return . MarkupZeile mk . s2t . trim' $ res
+
+--allCapsZeile  :: TextParsec TextZeilen
+--allCapsZeile = do
+--    res <- many (satisfy (\c -> isUpper c && ('\n' /= c)))  -- wichtig: do not consume end of line
+--    newline
+--    return . AllCapsZeile . s2t $ res
 
 textzeile :: TextParsec TextZeilen
 textzeile = do
@@ -278,8 +299,8 @@ markAllCapsLines :: [TextZeilen] -> [TextZeilen]
 markAllCapsLines = map markOneAllCaps
 
 markOneAllCaps :: TextZeilen -> TextZeilen
-markOneAllCaps tx @ (TextZeile t) = if isCapitalizedTitle t then MarkupZeile BuchHL2 t else tx
-markOneAllCaps tx @ (KurzeZeile t) = if isCapitalizedTitle t then MarkupZeile BuchHL2 t else tx
+markOneAllCaps tx @ (TextZeile t) = if isCapitalizedTitle t then AllCapsZeile t else tx
+markOneAllCaps tx @ (KurzeZeile t) = if isCapitalizedTitle t then AllCapsZeile  t else tx
 markOneAllCaps x = x
 
 isCapitalizedTitle ::  Text ->   Bool
