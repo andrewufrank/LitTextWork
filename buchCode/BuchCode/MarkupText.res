@@ -1,5 +1,4 @@
 
-
 result0B = unlines'  ["adfka;dfaskl"
             ,"55"
             ,""

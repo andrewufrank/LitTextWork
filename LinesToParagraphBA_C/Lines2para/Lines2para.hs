@@ -32,6 +32,8 @@ module Lines2para.Lines2para (paragraphs2TZ
 
 import BuchCode.MarkupText (Zeilen (..), TextZeilen (..))
 import BuchCode.BuchToken (LanguageCode (..), BuchToken (..), markerPure)
+import Lines2para.HandleLayout
+
 import           Data.List.Split
 --import           Parser.Foundation   hiding ((</>)) -- gives TZ
 import           Uniform.Error
@@ -41,59 +43,29 @@ import Uniform.FileIO
 import Data.List (nub)
 import           Text.Printf         (printf)
 
-newtype ParaID = ParaID Text deriving (Show, Eq)
--- just to avoid confusions
-unparaID (ParaID t) = t
-instance Zeros ParaID where zero = formatParaID zero
-
-formatParaID :: Int -> ParaID
-formatParaID nr = ParaID $ "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
--- format to 5 digits
-
-formatLineID :: Int -> Text
-formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
--- format to 3 digits
-
-data TextLoc = TextLoc {tlpage :: Text, tlpara :: ParaID, tlline :: Text} deriving (Show, Eq)
--- ^ the place of a line in the full text
--- for simplification, all counts are from the start of the text
--- not relative to the page or paragraph (can be computed, if desired)
--- page number (tlline) is text, to deal with III etc.
-
-
-instance Zeros TextLoc where zero = TextLoc zero zero zero
-
-data TZ =  TZtext {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
-        | TZzahl  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
-        | TZmarkup  {tzloc :: TextLoc, tztext:: Text
-                        , tztok :: BuchToken, tzlang :: LanguageCode, tzInPart :: ParaID}
-        | TZkurz  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
-        -- a short line, can be merged at the end of a paragraph (but only one)
-        | TZparaZeile  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
---        -- ^ a line which is a paragraph, not mergable with other
---        -- could be used for poems as well
---        -- but usually poems are automatically recognized by short lines
-        | TZleer  {tzloc :: TextLoc, tzlang :: LanguageCode}
-        | TZneueSeite  {tzloc :: TextLoc, tzlang :: LanguageCode}
-        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode, tzInPart :: ParaID}
-        | TZignore {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
-              -- para can be short (gedicht) or long (text) lines
-                -- in tzloc only tlpara is valid
-           deriving (Show, Eq )
-
-instance Zeros TZ where zero = TZleer zero zero
+--newtype ParaID = ParaID Text deriving (Show, Eq)
+---- just to avoid confusions
+--unparaID (ParaID t) = t
+--instance Zeros ParaID where zero = formatParaID zero
+--
+--formatParaID :: Int -> ParaID
+--formatParaID nr = ParaID $ "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
+---- format to 5 digits
+--
+--formatLineID :: Int -> Text
+--formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
+---- format to 3 digits
 
 
 unparseTZs :: [TZ] -> Text
 -- produce a text which can be written to a file and compared with the original
 unparseTZs = concat' . map renderZeile
 
-paragraphs2TZ :: [TextZeilen] -> [TZ]  -- test BA -> C
+paragraphs2TZlit :: [TZ] -> [TZ]  -- test BA -> C
 -- ^ produce the paragraphs with the seitenzahlen in each line
 -- and the header linked
-paragraphs2TZ = distributeHeader . markParaNr . formParagraphs
-    . distributeIgnore . distributeLanguage . distributePageNrs
-    . filterZeilen . etts2tzs
+paragraphs2TZlit = distributeHeader . markParaNr . formParagraphs
+    . distributeIgnore . distributeLanguage
     -- test BA -> BAA ... BAG -> C
 
 
@@ -141,7 +113,7 @@ collectInParagrah tzs =
     TZpara {tztzs  = tzs
            , tzloc = TextLoc
                 {tlpage = tlpage . tzloc . headNote "collectInParagrah" $ tzs
-                , tlpara = formatParaID 0
+--                , tlpara = formatParaID 0
                 , tlline = tlline . tzloc . headNote "collectInParagrah 2" $ tzs
                 }
            , tzlang = tzlang . headNote "collectInParagrah3" $ tzs
@@ -168,41 +140,6 @@ markParaNr = zipWith markOnePara  [1..]
 markOnePara :: Int -> TZ -> TZ
 markOnePara nr tz = tz {tzloc = (tzloc tz) {tlpara = formatParaID nr} }
 
--------------------------PAGES
-
-distributePageNrs :: [TZ] -> [TZ]
--- mark the zeilen with the page number
--- no pagenumber left
-distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
-    where
-        pages :: [TZ] -> [[TZ]]
-        pages tz = (split .  keepDelimsR . whenElt) isSeitenzahl tz
-            -- (TZzahl zero zero : tz)
-        -- to start with a page 0  -- break after page number
-        -- appends the page to the sublist
-        pageNrOfSublist :: [TZ] -> Maybe Text
-        pageNrOfSublist tzs = if isSeitenzahl lasttz then Just . zeilenText  $ lasttz -- isSeitenzahl
-                                            else Nothing
-            where
-                lasttz = last tzs
-
-        markSublist :: [[TZ]] -> [[TZ]]
-        markSublist []  = []
-        markSublist sls =  map markSublist2 (init sls) ++ [last sls]
---            [markSublist2 $ head sls ] ++ (map markSublist2 . tail $ sls)
---the last sublist contains just the end mark
-        markSublist2 :: [TZ] -> [TZ]
-        markSublist2 [] = []
-        markSublist2 sl = markTZsWithPage (fromJustNote "distributePageNrs" $ pageNrOfSublist sl)
-                                    (init sl)
-
-markTZsWithPage :: Text -> [TZ] -> [TZ]
--- put the page number into the list
-markTZsWithPage i  = map  (\tz -> tz {tzloc = (tzloc tz) {tlpage = i} } )
-
-checkSeitenzahl [] = []
-checkSeitenzahl (t:ts) = if isSeitenzahl t then errorT ["checkSeitenzahl found one ", showT t]
-                                else t : checkSeitenzahl ts
 ------- distribute ignore to  ignore end TODO
 distributeIgnore :: [TZ] -> [TZ]
 -- mark the zeilen with the Ignore
@@ -322,79 +259,11 @@ lowerHeader BuchHL2   = Just BuchHL3
 lowerHeader BuchHL3   = Nothing
 lowerHeader l         = errorT ["lowerHeader", "for ", showT l]
 
-instance Zeilen TZ where
-    isLeerzeile TZleer  {} = True
-    isLeerzeile _          = False
-
-    isSeitenzahl  TZzahl {} = True
-    isSeitenzahl _          = False
-
-    isTextZeile TZtext {} = True
-    isTextZeile _         = False
-
-    isMarkupZeile TZmarkup {} = True
-    isMarkupZeile _           = False
-
-    isKurzeZeile TZkurz {} = True
-    isKurzeZeile _         = False
-
-    isNeueSeite TZneueSeite {} = True
-    isNeueSeite _ = False
-
-    isMarkupX code TZmarkup{tztok=c} =  code == c
-    isMarkupX code _                 = False
-
-    zeilenText TZleer {} = ""
-    zeilenText TZpara {tztzs=tok} = fromJustNote "zeilenText " . intercalate' "\n" . map zeilenText $ tok
-    zeilenText t = tztext  t
-
-    renderZeile  tz =  case tz of
-        TZleer {} -> ""
-        TZzahl {} -> errorT ["renderZeile seitenzahl", "should not occur", showT tz]
-        TZmarkup {tztok=tok} -> unwords' ["." <> markerPure (tztok tz), tztext tz] <>
---                        if tok == BuchHL1 then
-                                " - para " <> (unparaID . tlpara . tzloc $ tz) <>
-                                " in " <> (unparaID . tzInPart $ tz) <>
---                                " tok "
---                                (markerPure . tztok $ tz) <>  "  text"
---                                (tztext $ tz) <>
-                                "\n"
---                                            else "\n"
-        -- leerzeile nach markup
-        -- TZkurz {} ->  tztext tz <> "\n"
-        TZtext {} ->  tztext tz <> "\n"
-        TZpara {} -> "\n" <> (unparaID . tlpara . tzloc $ tz)
-                <> " in " <> (unparaID . tzInPart $ tz)
-                <> " on page " <> (tlpage . tzloc $ tz)
-                <> "\n" <> (concat' . map renderZeile  . tztzs $ tz) <> "\n"
 
 
-etts2tzs :: [TextZeilen] -> [TZ]
--- gives line numbers
-etts2tzs = zipWith line2tz [1..] . map ett2tz
 
-ett2tz :: TextZeilen -> TZ
--- convert the et to tz without filling location
-ett2tz (TextZeile t) = TZtext {tztext = t, tzloc = zero, tzlang=zero}
-ett2tz (ZahlZeile t) = TZzahl {tztext = t, tzloc = zero, tzlang=zero}
-ett2tz (MarkupZeile BuchIgnore t) = TZignore {tztext = t,  tzloc = zero, tzlang=zero}
-ett2tz (MarkupZeile BuchGedicht t) = TZkurz {tztext = t,  tzloc = zero, tzlang=zero}
-ett2tz (MarkupZeile BuchEnde t) = TZleer {tzloc = zero, tzlang=zero}
--- will be filtered out
--- keep the gedicht mark content as kuzre zeile, TODO could be processed as marker
--- for parts where the layout should be kept
-ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero, tzlang=zero, tzInPart=zero}
--- ett2tz (KurzeZeile t) = TZkurz {tztext = t, tzloc = zero, tzlang=zero}
-ett2tz LeerZeile = TZleer {tzloc = zero, tzlang=zero}
-ett2tz (KurzeZeile t) = TZkurz {tztext = t,  tzloc = zero, tzlang=zero}
-ett2tz (ParaZeile t) = TZparaZeile {tztext = t,  tzloc = zero, tzlang=zero}
-ett2tz (NeueSeite) = TZneueSeite {tzloc = zero,  tzlang=zero}
-ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]
+--filterZeilen :: [TZ] -> [TZ]
+---- ^ remove some lines - here the neueSeite, where i have no idea what to do with
+--filterZeilen = filter (not.isNeueSeite)
 
-filterZeilen :: [TZ] -> [TZ]
--- ^ remove some lines - here the neueSeite, where i have no idea what to do with
-filterZeilen = filter (not.isNeueSeite)
 
-line2tz :: Int -> TZ -> TZ
--- ^ fill a TZ with the linenumber
-line2tz i tz = tz {tzloc = (tzloc tz) {tlline = formatLineID i} }
