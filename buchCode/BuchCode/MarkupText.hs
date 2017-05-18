@@ -97,6 +97,13 @@ test_1B_BA = assertEqual result1BA (parseMarkup result1B)
 test_2B_BA = assertEqual result2BA (parseMarkup result2B)
 test_3B_BA = assertEqual result3BA (parseMarkup result3B)
 test_4B_BA = assertEqual result4BA (parseMarkup result4B)
+test_5B_BA = assertEqual result5BA (parseMarkup result5B)
+--test_5B_BA = do
+--        res <- runErr $ do
+--            result5b <- readFile2 "t5.markup"
+--            return (parseMarkup result5b)
+--        result5ba <- readFile  "t5.ba"
+--        assertEqual (Right []) res
 
 
 renderETTs :: [TextZeilen] -> Text

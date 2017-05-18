@@ -1,5 +1,5 @@
 
---the input which could be a file
+
 result0B = unlines'  ["adfka;dfaskl"
             ,"55"
             ,""
@@ -43,24 +43,28 @@ result4B =
   \Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet \
   \leicht war. \n.ende\n"
 
-result4Bx =
-  ".sprache German\r\n.isbn ISBN 3-88769-324-8\r\n.author Yoko Tawada\r\n.titel \
-  \Das nackte Auge\r\n.verlag konkursbuch verlag claudia gehrke\r\n.dedication f\252r C.D.\r\n6\r\n.hl1 \
-  \Kapitel 1 REPULSION\r\nEin gefilmtes Auge, angeheftet an einem bewusstlosen K\246rper. Es sieht nichts, \
-  \denn die Kamera hat ihm schon die Sehkraft geraubt.  Er hatte uns mehrmals von seinem Aufenthalt in \
-  \Berlin und einem gewissen \"Pergamonmuseum\" erz\228hlt. \"Pergamon\"\r\n7\r\nklang wie der Name \
-  \eines Wandervogels, und uns gefiel die Vorstellung des Berliner Himmels, in dem dieser Vogel flatterte.  \
-  \Einer\r\n8\r\nvon ihnen nahm mir meine Reisetasche ab. Was sollte man einem solchen Manne schreiben, \
-  \der sich offenbar verrannt hatte. Sollte man ihm vielleicht raten, wieder nach Hause zu kommen, \
-  \seine Existenz hierher zu verlegen, alle die alten freundschaftlichen Beziehungen wieder \
-  \aufzunehmen \8212 wof\252r ja kein Hindernis bestand \8212 und im \252brigen auf die Hilfe der Freunde \
-  \zu vertrauen? Das bedeutete aber nichts anderes, als\r\n\f\r\n[54/0002]\r\nda\223 man ihm gleichzeitig, \
-  \je schonender, desto kr\228nkender, sagte, da\223 seine bisherigen Versuche mi\223lungen seien, \
-  \da\223 er endlich von ihnen ablassen solle, da\223 er zur\252ckkehren und sich als ein f\252r immer \
-  \Zur\252ckgekehrter von allen mit gro\223en Augen anstaunen lassen m\252sse, da\223 nur seine Freunde \
-  \etwas verst\252nden und da\223 er ein altes Kind sei, das den erfolgreichen, zu Hause gebliebenen \
-  \Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet \
-  \leicht war. \r\n.ende\r\n"
+result5B = unlines'
+    [".Title: The Fables of La Fontaine"
+    ," .Language: English"
+    ,"  PREFACE"
+    ,"II.--THE COUNCIL HELD BY THE RATS [4]"
+    ,"   Old Rodilard,[5] a certain cat,"
+    ,"      Such havoc of the rats had made,"
+    ,"    'Twas difficult to find a rat"
+    ,"      With nature's debt unpaid."
+    ,"[4] Faerno and Abstemius both have fables upon this subject. Gabriel"
+    ,"    Faerno (1500-1561) . Perrault published"
+    ,"    them at Paris in 1699."
+    ,"[5] _Rodilard_.--The name no doubt taken from the famous cat"
+    ,"    Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII."
+    ,"IV.--THE TWO BULLS AND THE FROG.[9]"
+    , "   Of little folks it oft has been the fate"
+     ,"   To suffer for the follies of the great."
+    ,"[9] Phaedrus, I. 30."
+    ,".ende\n"
+    ]
+
+
 
 result0BA =
     [KurzeZeile "adfka;dfaskl", ZahlZeile "55",
@@ -193,3 +197,25 @@ result4BA =
      ParaZeile
        "da\223 man ihm gleichzeitig, je schonender, desto kr\228nkender, sagte, da\223 seine bisherigen Versuche mi\223lungen seien, da\223 er endlich von ihnen ablassen solle, da\223 er zur\252ckkehren und sich als ein f\252r immer Zur\252ckgekehrter von allen mit gro\223en Augen anstaunen lassen m\252sse, da\223 nur seine Freunde etwas verst\252nden und da\223 er ein altes Kind sei, das den erfolgreichen, zu Hause gebliebenen Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet leicht war. ",
      MarkupZeile BuchEnde ""]
+
+result5BA =
+    [MarkupZeile BuchTitel "The Fables of La Fontaine",
+     KurzeZeile " .Language: English", AllCapsZeile "  PREFACE",
+     AllCapsZeile "II.--THE COUNCIL HELD BY THE RATS [4]",
+     KurzeZeile "   Old Rodilard,[5] a certain cat,",
+     TextZeile "      Such havoc of the rats had made,",
+     KurzeZeile "    'Twas difficult to find a rat",
+     KurzeZeile "      With nature's debt unpaid.",
+     FussnoteZeile
+       "[4] Faerno and Abstemius both have fables upon this subject. Gabriel",
+     TextZeile "    Faerno (1500-1561) . Perrault published",
+     KurzeZeile "    them at Paris in 1699.",
+     FussnoteZeile
+       "[5] _Rodilard_.--The name no doubt taken from the famous cat",
+     TextZeile
+       "    Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII.",
+     AllCapsZeile "IV.--THE TWO BULLS AND THE FROG.[9]",
+     TextZeile "   Of little folks it oft has been the fate",
+     TextZeile "   To suffer for the follies of the great.",
+     FussnoteZeile "[9] Phaedrus, I. 30.", MarkupZeile BuchEnde "",
+     LeerZeile]
