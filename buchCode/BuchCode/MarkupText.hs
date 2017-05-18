@@ -23,10 +23,7 @@
 module BuchCode.MarkupText ( TextZeilen (..)
     , Zeilen (..)
     , BuchToken (..)
---    , markupFileType5
     , parseMarkup
---    , bomWarning
-    -- for main/debug
     , countSeiten
     , countLeerzeilen
     , readSeitenzahl, checkSeitenzahlen
@@ -46,8 +43,8 @@ import           BuchCode.BuchToken
 import           Data.Char
 import           Text.Parsec
 import           Uniform.Error
-import           Uniform.FileIO hiding ((<|>))
---import           Uniform.Strings   hiding ((<|>))
+--import           Uniform.FileIO hiding ((<|>))
+import           Uniform.Strings   hiding ((<|>))
 import           Test.Framework
 
 
@@ -55,7 +52,7 @@ class Zeilen z where
 -- ^ ops on zeilen
     isLeerzeile
         , isSeitenzahl
-        , isTextZeile
+        , isTextZeile   -- ^ any line containing lit text
         , isNeueSeite
         , isMarkupZeile
         , isKurzeZeile  :: z -> Bool
@@ -68,19 +65,24 @@ class Zeilen z where
 type TextParsec a = Parsec Text () a
 type TextParsecBuch = Parsec Text () [MarkupElement]
 
+-- the type of the line
+data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0 | AllCaps0
+        deriving (Show, Eq )
+
+
 -- the kinds of lines differentiated
 -- changes here must be reflected in the programs
 -- using the data, e.g Lines2para in etts2tz
-data TextZeilen =  TextZeile Text
-        | ZahlZeile Text
-        | FussnoteZeile Text
-        | MarkupZeile BuchToken Text
-        | KurzeZeile Text
-        | ParaZeile  Text
+data TextZeilen =  TextZeile {ttt::TextType, ttx::Text}
+--        | ZahlZeile Text
+--        | FussnoteZeile Text
+        | MarkupZeile {ttok:: BuchToken, ttx:: Text}
+--        | KurzeZeile Text
+--        | ParaZeile  Text
         -- ^ a line which is a paragraph, not mergable with other
         -- could be used for poems as well
         -- but usually poems are automatically recognized by short lines
-        | AllCapsZeile Text   -- ^ to recognize titles automatically
+--        | AllCapsZeile Text   -- ^ to recognize titles automatically
         | LeerZeile
         | NeueSeite
         deriving (Show, Eq )
@@ -98,12 +100,6 @@ test_2B_BA = assertEqual result2BA (parseMarkup result2B)
 test_3B_BA = assertEqual result3BA (parseMarkup result3B)
 test_4B_BA = assertEqual result4BA (parseMarkup result4B)
 test_5B_BA = assertEqual result5BA (parseMarkup result5B)
---test_5B_BA = do
---        res <- runErr $ do
---            result5b <- readFile2 "t5.markup"
---            return (parseMarkup result5b)
---        result5ba <- readFile  "t5.ba"
---        assertEqual (Right []) res
 
 
 renderETTs :: [TextZeilen] -> Text
@@ -129,12 +125,12 @@ fileParser = do
 
 lineParser :: TextParsec TextZeilen
 lineParser = do
-    res <- ettParser
---    newline   -- zeile is limited by newline
-    return res
-
-ettParser :: TextParsec TextZeilen
-ettParser = do
+--    res <- ettParser
+----    newline   -- zeile is limited by newline
+--    return res
+--
+--ettParser :: TextParsec TextZeilen
+--ettParser = do
     try leerzeile
     <|>
     try neueSeite
@@ -158,7 +154,7 @@ zahlzeile = do
                 -- these are characters encountered in german textarchive
 --    res <- many1  digit  - simpler, but not including []
     many1 newline
-    return . ZahlZeile . s2t $ res
+    return . TextZeile Zahl0 . s2t $ res
 
 fussnotezeile :: TextParsec TextZeilen
 fussnotezeile = do
@@ -168,7 +164,7 @@ fussnotezeile = do
 --    res <- many1  digit  - simpler, but not including []
     res2 <- many (noneOf "\n")
     many1 newline
-    return . FussnoteZeile . s2t $ (res ++ [res1] ++ res2)
+    return . TextZeile Fussnote0 . s2t $ (res ++ [res1] ++ res2)
 
 markupzeile :: TextParsec TextZeilen
 markupzeile = do
@@ -188,7 +184,7 @@ textzeile :: TextParsec TextZeilen
 textzeile = do
     res <- many (noneOf "\n")  -- wichtig: do not consume end of line
     newline
-    return . TextZeile . s2t $ res
+    return . TextZeile Text0 . s2t $ res
 
 leerzeile :: TextParsec TextZeilen
 leerzeile = do
@@ -241,10 +237,13 @@ instance Zeilen TextZeilen where
     isLeerzeile LeerZeile = True
     isLeerzeile _         = False
 
-    isSeitenzahl (ZahlZeile _) = True
-    isSeitenzahl _             = False
+    isSeitenzahl (TextZeile Zahl0 _) = True
+    isSeitenzahl _ = False
 
-    isTextZeile (TextZeile _) = True
+    isTextZeile (TextZeile Text0 _) = True   -- can include footnote text
+    isTextZeile (TextZeile Kurz0 _) = True
+    isTextZeile (TextZeile Para0 _) = True
+    isTextZeile (TextZeile AllCaps0 _) = True
     isTextZeile _             = False
 
     isNeueSeite (NeueSeite) = True
@@ -256,18 +255,18 @@ instance Zeilen TextZeilen where
     isMarkupX code (MarkupZeile mk t) =  code == mk
     isMarkupX _ _                     = False
 
-    isKurzeZeile (KurzeZeile t) = True
-    isKurzeZeile _              = False
+    isKurzeZeile = (Kurz0 ==).ttt
 
-    -- zeilenText (KurzeZeile p) = p
-    zeilenText (ZahlZeile p) = p
-    zeilenText (TextZeile t) = t
+    -- zeilenText (TextZeile Kurz0 p) = p
+    zeilenText (TextZeile _ p) = p
+--    zeilenText (TextZeile Text0 t) = t
     zeilenText LeerZeile     = "\n"
 
-    renderZeile (ZahlZeile p) = ".SeitenZahl " <> p <> "page \n"
-    renderZeile (TextZeile t) = t
+    renderZeile (TextZeile Zahl0 p) = ".SeitenZahl " <> p <> "page \n"
+    renderZeile (TextZeile _ t) = t
     renderZeile LeerZeile     = "\n"
-    -- renderZeile (KurzeZeile p) = p
+    renderZeile _ = ""
+    -- renderZeile (TextZeile Kurz0 p) = p
 
 checkSeitenzahlen :: [TextZeilen] -> [(Int, Int)]
 checkSeitenzahlen =  diff2 . map  readSeitenzahl . filter isSeitenzahl
@@ -277,7 +276,7 @@ diff2 [] = []
 diff2 a   =  filter (not . (1==) . snd) . zip a  $ zipWith (subtract) a (tail a)
 
 readSeitenzahl :: TextZeilen -> Int
-readSeitenzahl (ZahlZeile n) = readNoteTs ["seitenzahlread", showT n]  n
+readSeitenzahl (TextZeile Zahl0 n) = readNoteTs ["seitenzahlread", showT n]  n
 readSeitenzahl z             = errorT ["not a seitenzahl ", showT z]
 
 
@@ -294,26 +293,23 @@ markShortLines tx = map (markOneSL limit1 limit2)  tx
 
 
 markOneSL :: Int -> Int -> TextZeilen -> TextZeilen--
-markOneSL limitshort limitlong (TextZeile t)    | lengthChar t < limitshort = KurzeZeile t
-                                                | lengthChar t > limitlong =  ParaZeile t
-                                                | otherwise                =  TextZeile t
+markOneSL limitshort limitlong (TextZeile Text0 t)
+    | lengthChar t < limitshort = TextZeile Kurz0 t
+    | lengthChar t > limitlong =  TextZeile Para0 t
+    | otherwise                =  TextZeile Text0 t
 
 markOneSL _ _ x = x
 
 markAllCapsLines :: [TextZeilen] -> [TextZeilen]
--- ^ lines shorter than 55 (i.e. 0.9 * average)
--- missed breaks will need manual intervention
 markAllCapsLines = map markOneAllCaps
 
 markOneAllCaps :: TextZeilen -> TextZeilen
-markOneAllCaps tx @ (TextZeile t) = if isCapitalizedTitle t then AllCapsZeile t else tx
-markOneAllCaps tx @ (KurzeZeile t) = if isCapitalizedTitle t then AllCapsZeile  t else tx
+markOneAllCaps tx @ (TextZeile _ t)  =
+    if isCapitalizedTitle t then TextZeile AllCaps0 t else tx
 markOneAllCaps x = x
 
 isCapitalizedTitle ::  Text ->   Bool
 isCapitalizedTitle =  not . any isLower . t2s
-    where
-            -- okCase char = isUpper char || isPunctuation char || isSeparator cha
 
 averageLengthTextLines :: [TextZeilen] -> (Int,Int)
 --  compute average and max length of text lines
@@ -322,11 +318,9 @@ averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
         txtLs = filter isTextZeile etts
         txtCt = length txtLs
         totChar = sum lengthLs
-        lengthLs = map (lengthChar . getText4textZeile) $ txtLs
+        lengthLs = map (lengthChar . zeilenText) $ txtLs
         maxChars = maximum lengthLs
 
-getText4textZeile (TextZeile t) = t
-getText4textZeile x             = errorT ["getText4textLine  for ", showT x]
 
 --------------------
 #include "MarkupText.res"
