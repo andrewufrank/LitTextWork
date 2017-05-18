@@ -21,6 +21,7 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 
 module BuchCode.MarkupText ( TextZeilen (..)
+    , TextType (..)
     , Zeilen (..)
     , BuchToken (..)
     , parseMarkup
