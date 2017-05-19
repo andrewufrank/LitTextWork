@@ -1,4 +1,4 @@
-
+result0B, result1B, result2B, result3B, result4B, result5B :: Text
 result0B = unlines'  ["adfka;dfaskl"
             ,"55"
             ,""
@@ -6,11 +6,11 @@ result0B = unlines'  ["adfka;dfaskl"
             ,"abcpawerqe"
             ,"66"
             , "als\n\f\n[54/0002]\nda\223 man ihm gleichzeitig,"
-            , "als\r\n\f\r\n[54/0002]\r\nda\223 man ihm gleichzeitig,"
+            , "als\r\n\f\r\n[54/0002]\r\nda\223 man[2] ihm [1] gleichzeitig,"
             ,""
             ,".titel TIT"
             ,"defpageerest"
-            ,"II - ALL CAPS"
+            ,"II - ALL CAPS TEST"
             , "[44]"  -- seitenzahl
             , "[1] eine Fussnote"
             ,"77"] ::  Text
@@ -40,7 +40,7 @@ result4B =
   \Zur\252ckgekehrter von allen mit gro\223en Augen anstaunen lassen m\252sse, da\223 nur seine Freunde \
   \etwas verst\252nden und da\223 er ein altes Kind sei, das den erfolgreichen, zu Hause gebliebenen \
   \Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet \
-  \leicht war. \n.ende\n"
+  \leicht war. \n.ende\n" :: Text
 
 result5B = unlines'
     [".Title: The Fables of La Fontaine"
@@ -61,28 +61,29 @@ result5B = unlines'
      ,"   To suffer for the follies of the great."
     ,"[9] Phaedrus, I. 30."
     ,".ende\n"
-    ]
+    ] :: Text
 
 
 
 result0BA =
-    [TextZeile{ttt = Text0, ttx = "adfka;dfaskl"},
-     TextZeile{ttt = AllCaps0, ttx = "55"},
+    [TextZeile{ttt = Kurz0, ttx = "adfka;dfaskl"},
+     TextZeile{ttt = Zahl0, ttx = "55"},
      TextZeile{ttt = Text0, ttx = "1960 is a good"},
-     TextZeile{ttt = Text0, ttx = "abcpawerqe"},
-     TextZeile{ttt = AllCaps0, ttx = "66"},
+     TextZeile{ttt = Kurz0, ttx = "abcpawerqe"},
+     TextZeile{ttt = Zahl0, ttx = "66"},
      TextZeile{ttt = Kurz0, ttx = "als"}, NeueSeite,
-     TextZeile{ttt = AllCaps0, ttx = "[54/0002]"},
+     TextZeile{ttt = Zahl0, ttx = "[54/0002]"},
      TextZeile{ttt = Text0, ttx = "da\223 man ihm gleichzeitig,"},
      TextZeile{ttt = Kurz0, ttx = "als"}, NeueSeite,
-     TextZeile{ttt = AllCaps0, ttx = "[54/0002]"},
-     TextZeile{ttt = Text0, ttx = "da\223 man ihm gleichzeitig,"},
+     TextZeile{ttt = Zahl0, ttx = "[54/0002]"},
+     TextZeile{ttt = Text0,
+               ttx = "da\223 man[2] ihm [1] gleichzeitig,"},
      LeerZeile, MarkupZeile{ttok = BuchTitel, ttx = "TIT"},
-     TextZeile{ttt = Text0, ttx = "defpageerest"},
+     TextZeile{ttt = Kurz0, ttx = "defpageerest"},
      TextZeile{ttt = AllCaps0, ttx = "II - ALL CAPS"},
-     TextZeile{ttt = AllCaps0, ttx = "[44]"},
+     TextZeile{ttt = Zahl0, ttx = "[44]"},
      TextZeile{ttt = Fussnote0, ttx = "[1] eine Fussnote"},
-     TextZeile{ttt = AllCaps0, ttx = "77"}]
+     TextZeile{ttt = Zahl0, ttx = "77"}]
 
 result1BA =
     [LeerZeile, MarkupZeile{ttok = BuchSprache, ttx = "German"},
