@@ -22,6 +22,7 @@
 
 module BuchCode.MarkupText ( TextZeilen (..)
     , TextType (..)
+    , TextWithMarks (..)
     , Zeilen (..)
     , BuchToken (..)
     , parseMarkup

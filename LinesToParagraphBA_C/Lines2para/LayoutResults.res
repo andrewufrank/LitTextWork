@@ -1,364 +1,658 @@
 ----------- test results
 result0BAC =
-    [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 1},
-            tztext = "adfka;dfaskl"},
+
+    [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 1},
+            tztext = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 2},
-            tztext = "55"},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 3},
-            tztext = "1960 is a good"},
+            tztext = TextWithMarks{twm = "55", twmMarks = []}},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 3},
+            tztext = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 4},
-            tztext = "abcpawerqe"},
+            tztext =
+              TextWithMarks{twm = "eine kurze [vielleicht wichtige] zeile",
+                            twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 5},
-            tztext = "66"},
+            tztext = TextWithMarks{twm = "66", twmMarks = []}},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 6},
-            tztext = "als"},
+            tztext = TextWithMarks{twm = "als", twmMarks = []}},
      TZneueSeite{tzloc = TextLoc{tlpage = "", tlline = 7}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 8},
-            tztext = "[54/0002]"},
+            tztext = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 9},
-            tztext = "da\223 man ihm gleichzeitig,"},
+            tztext =
+              TextWithMarks{twm = "da\223 man ihm erstens,", twmMarks = []}},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 10},
-            tztext = "als"},
+            tztext = TextWithMarks{twm = "als", twmMarks = []}},
      TZneueSeite{tzloc = TextLoc{tlpage = "", tlline = 11}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 12},
-            tztext = "[54/0002]"},
+            tztext = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 13},
-            tztext = "da\223 man ihm gleichzeitig,"},
+            tztext =
+              TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
+                            twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 15}, tztext = "TIT",
+     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 15},
+              tztext =
+                TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]"), (0, "")]},
               tztok = BuchTitel},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 16},
-            tztext = "defpageerest"},
+            tztext =
+              TextWithMarks{twm = "zweite,  kurze zeile",
+                            twmMarks =
+                              [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 17},
-            tztext = "II - ALL CAPS"},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 18},
-            tztext = "[44]"},
-     TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 19},
-            tztext = "[1] eine Fussnote"},
+            tztext =
+              TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
+                            twmMarks = [(34, "[4]"), (0, "")]}},
+     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 18},
+            tztext =
+              TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                            twmMarks = [(16, "[5]"), (15, "")]}},
+     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 19},
+            tztext = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 20},
-            tztext = "77"}]
+            tztext = TextWithMarks{twm = "[44]", twmMarks = []}},
+     TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 21},
+            tztext =
+              TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}},
+     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 22},
+            tztext = TextWithMarks{twm = "77", twmMarks = []}}]
 
 result1BAC =
+
     [TZleer{tzloc = TextLoc{tlpage = "", tlline = 1}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 2},
-              tztext = "German", tztok = BuchSprache},
+              tztext = TextWithMarks{twm = "German", twmMarks = []},
+              tztok = BuchSprache},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 3}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 4},
-              tztext = "PETER WATERHOUSE", tztok = BuchAuthor},
+              tztext = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []},
+              tztok = BuchAuthor},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 5}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 6},
-              tztext = "(Krieg f\252r Welt)", tztok = BuchTitel},
+              tztext = TextWithMarks{twm = "(Krieg f\252r Welt)", twmMarks = []},
+              tztok = BuchTitel},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 7},
-            tztext = "11"},
+            tztext = TextWithMarks{twm = "11", twmMarks = []}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 8},
-              tztext = "Unsere Br\228uche werden lebendig", tztok = BuchHL1},
+              tztext =
+                TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
+                              twmMarks = []},
+              tztok = BuchHL1},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 9},
-            tztext = "12"},
+            tztext = TextWithMarks{twm = "12", twmMarks = []}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 10},
             tztext =
-              "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?"},
+              TextWithMarks{twm =
+                              "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
+                            twmMarks = []}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 11}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 12},
-            tztext = "Er fragte sich als zweiter Paragraph."},
+            tztext =
+              TextWithMarks{twm = "Er fragte sich als zweiter Paragraph.",
+                            twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 13},
-            tztext = "13"},
+            tztext = TextWithMarks{twm = "13", twmMarks = []}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}}]
 
 result2BAC =
+
     [TZleer{tzloc = TextLoc{tlpage = "", tlline = 1}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 2},
-              tztext = "German", tztok = BuchSprache},
+              tztext = TextWithMarks{twm = "German", twmMarks = []},
+              tztok = BuchSprache},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 3}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 4},
-              tztext = "PETER WATERHOUSE", tztok = BuchAuthor},
+              tztext = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []},
+              tztok = BuchAuthor},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 5}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 6},
-              tztext = "(Krieg f\252r Welt) - als test fuer paragraph per zeile",
+              tztext =
+                TextWithMarks{twm =
+                                "(Krieg f\252r Welt) - als test fuer paragraph per zeile",
+                              twmMarks = []},
               tztok = BuchTitel},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 7},
-            tztext = "11"},
+            tztext = TextWithMarks{twm = "11", twmMarks = []}},
      TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 8},
-              tztext = "Unsere Br\228uche werden lebendig", tztok = BuchHL1},
+              tztext =
+                TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
+                              twmMarks = []},
+              tztok = BuchHL1},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 9},
-            tztext = "12"},
+            tztext = TextWithMarks{twm = "12", twmMarks = []}},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 10},
             tztext =
-              "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?"},
+              TextWithMarks{twm =
+                              "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
+                            twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 11},
-            tztext = "13"},
+            tztext = TextWithMarks{twm = "13", twmMarks = []}},
      TZtext{tzt = Para0, tzloc = TextLoc{tlpage = "", tlline = 12},
             tztext =
-              "Es war einmal ein Dorf in einem Tal, in dem kein Reis wuchs. Eine schwangere Frau hatte einen Fisch gefunden und verzehrte ihn, weil sie hungrig war, roh und ohne daran zu denken, ihn mit den anderen im Dorf zu teilen. Sie gebar einen sch\246nen Sohn. Sp\228ter aber wuchsen auf ihrem K\246rper Schuppen und sie wurde zu einem gro\223en Fisch. Weil sie zu Lande nicht mehr wohnen konnte, f\252hrte sie fortan ein einsames Leben im Fluss. Ihr Sohn wurde von einem Alten im Dorf aufgezogen. Zu allen Zeiten verh\246hnen die Knaben die M\252tter der anderen im Streit. Sie streiten, ohne zu verstehen, was sie sagen: \187Deine Mutter ist eine Hure!\171"},
+              TextWithMarks{twm =
+                              "Es war einmal ein Dorf in einem Tal, in dem kein Reis wuchs. Eine schwangere Frau hatte einen Fisch gefunden und verzehrte ihn, weil sie hungrig war, roh und ohne daran zu denken, ihn mit den anderen im Dorf zu teilen. Sie gebar einen sch\246nen Sohn. Sp\228ter aber wuchsen auf ihrem K\246rper Schuppen und sie wurde zu einem gro\223en Fisch. Weil sie zu Lande nicht mehr wohnen konnte, f\252hrte sie fortan ein einsames Leben im Fluss. Ihr Sohn wurde von einem Alten im Dorf aufgezogen. Zu allen Zeiten verh\246hnen die Knaben die M\252tter der anderen im Streit. Sie streiten, ohne zu verstehen, was sie sagen: \187Deine Mutter ist eine Hure!\171",
+                            twmMarks = []}},
      TZtext{tzt = Para0, tzloc = TextLoc{tlpage = "", tlline = 13},
             tztext =
-              "Ich wusch mein Gesicht mit wei\223em Sand. Nur so konnte ich meine Haut, die zu einer W\252ste geworden war, wieder glatt bekommen. Man sagt, dass dieser Sand von den Knochen eines Dinosauriers stamme, von Knochen, die die Wellen des Meeres lange gewaschen haben und die die Sonne getrocknet hat. Ich verteilte ihn auf meine Handfl\228chen und legte diese auf mein Gesicht; sie fingen durch das Fleisch hindurch mit meinen Knochen ein Gespr\228ch an. Ich konnte die Form meines Sch\228dels in meinen H\228nden genau sp\252ren. Au\223er der aus Licht gewordenen Haut und des aus Wasser gewordenen Fleisches gibt es noch einen K\246rper. Aber solange ich lebe, kann niemand diesen K\246rper umarmen."},
+              TextWithMarks{twm =
+                              "Ich wusch mein Gesicht mit wei\223em Sand. Nur so konnte ich meine Haut, die zu einer W\252ste geworden war, wieder glatt bekommen. Man sagt, dass dieser Sand von den Knochen eines Dinosauriers stamme, von Knochen, die die Wellen des Meeres lange gewaschen haben und die die Sonne getrocknet hat. Ich verteilte ihn auf meine Handfl\228chen und legte diese auf mein Gesicht; sie fingen durch das Fleisch hindurch mit meinen Knochen ein Gespr\228ch an. Ich konnte die Form meines Sch\228dels in meinen H\228nden genau sp\252ren. Au\223er der aus Licht gewordenen Haut und des aus Wasser gewordenen Fleisches gibt es noch einen K\246rper. Aber solange ich lebe, kann niemand diesen K\246rper umarmen.",
+                            twmMarks = []}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}}]
 
 result5BAC =
+
     [TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 1},
-              tztext = "The Fables of La Fontaine", tztok = BuchTitel},
+              tztext =
+                TextWithMarks{twm = "The Fables of La Fontaine", twmMarks = []},
+              tztok = BuchTitel},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 2},
-            tztext = " .Language: English"},
+            tztext = TextWithMarks{twm = ".Language: English", twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 3},
-            tztext = "  PREFACE"},
+            tztext = TextWithMarks{twm = "PREFACE", twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 4},
-            tztext = "II.--THE COUNCIL HELD BY THE RATS [4]"},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 5},
-            tztext = "   Old Rodilard,[5] a certain cat,"},
+            tztext =
+              TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
+                            twmMarks = [(34, "[4]"), (0, "")]}},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 5},
+            tztext =
+              TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                            twmMarks = [(16, "[5]"), (15, "")]}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 6},
-            tztext = "      Such havoc of the rats had made,"},
+            tztext =
+              TextWithMarks{twm = "Such havoc of the rats had made,",
+                            twmMarks = []}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 7},
-            tztext = "    'Twas difficult to find a rat"},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 8},
-            tztext = "      With nature's debt unpaid."},
+            tztext =
+              TextWithMarks{twm = "'Twas difficult to find a rat",
+                            twmMarks = []}},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 8},
+            tztext =
+              TextWithMarks{twm = "With nature's debt unpaid.", twmMarks = []}},
      TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 9},
             tztext =
-              "[4] Faerno and Abstemius both have fables upon this subject. Gabriel"},
+              TextWithMarks{twm =
+                              "[4]Faerno and Abstemius both have fables upon this subject. Gabriel",
+                            twmMarks = [(0, "[4]")]}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 10},
-            tztext = "    Faerno (1500-1561) . Perrault published"},
+            tztext =
+              TextWithMarks{twm = "Faerno (1500-1561) . Perrault published",
+                            twmMarks = []}},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 11},
-            tztext = "    them at Paris in 1699."},
+            tztext =
+              TextWithMarks{twm = "them at Paris in 1699.", twmMarks = []}},
      TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 12},
             tztext =
-              "[5] _Rodilard_.--The name no doubt taken from the famous cat"},
+              TextWithMarks{twm =
+                              "[5]_Rodilard_.--The name no doubt taken from the famous cat",
+                            twmMarks = [(0, "[5]")]}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 13},
             tztext =
-              "    Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII."},
+              TextWithMarks{twm =
+                              "Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII.",
+                            twmMarks = []}},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 14},
-            tztext = "IV.--THE TWO BULLS AND THE FROG.[9]"},
+            tztext =
+              TextWithMarks{twm = "IV.--THE TWO BULLS AND THE FROG.",
+                            twmMarks = [(32, "[9]"), (0, "")]}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 15},
-            tztext = "   Of little folks it oft has been the fate"},
+            tztext =
+              TextWithMarks{twm = "Of little folks it oft has been the fate",
+                            twmMarks = []}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 16},
-            tztext = "   To suffer for the follies of the great."},
+            tztext =
+              TextWithMarks{twm = "To suffer for the follies of the great.",
+                            twmMarks = []}},
      TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 17},
-            tztext = "[9] Phaedrus, I. 30."},
+            tztext =
+              TextWithMarks{twm = "[9]Phaedrus, I. 30.",
+                            twmMarks = [(0, "[9]")]}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 18}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 19}}]
 
 -- test inputs
 
+
 result0BA =
-    [TextZeile{ttt = Text0, ttx = "adfka;dfaskl"},
-     TextZeile{ttt = AllCaps0, ttx = "55"},
-     TextZeile{ttt = Text0, ttx = "1960 is a good"},
-     TextZeile{ttt = Text0, ttx = "abcpawerqe"},
-     TextZeile{ttt = AllCaps0, ttx = "66"},
-     TextZeile{ttt = Kurz0, ttx = "als"}, NeueSeite,
-     TextZeile{ttt = AllCaps0, ttx = "[54/0002]"},
-     TextZeile{ttt = Text0, ttx = "da\223 man ihm gleichzeitig,"},
-     TextZeile{ttt = Kurz0, ttx = "als"}, NeueSeite,
-     TextZeile{ttt = AllCaps0, ttx = "[54/0002]"},
-     TextZeile{ttt = Text0, ttx = "da\223 man ihm gleichzeitig,"},
-     LeerZeile, MarkupZeile{ttok = BuchTitel, ttx = "TIT"},
-     TextZeile{ttt = Text0, ttx = "defpageerest"},
-     TextZeile{ttt = AllCaps0, ttx = "II - ALL CAPS"},
-     TextZeile{ttt = AllCaps0, ttx = "[44]"},
-     TextZeile{ttt = Fussnote0, ttx = "[1] eine Fussnote"},
-     TextZeile{ttt = AllCaps0, ttx = "77"}]
+
+    [TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "55", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "eine kurze [vielleicht wichtige] zeile",
+                               twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "66", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "als", twmMarks = []}},
+     NeueSeite,
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "da\223 man ihm erstens,", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "als", twmMarks = []}},
+     NeueSeite,
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
+                               twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]}},
+     LeerZeile,
+     MarkupZeile{ttok = BuchTitel,
+                 ttx =
+                   TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]"), (0, "")]}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "zweite,  kurze zeile",
+                               twmMarks =
+                                 [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]}},
+     TextZeile{ttt = AllCaps0,
+               ttx =
+                 TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
+                               twmMarks = [(34, "[4]"), (0, "")]}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                               twmMarks = [(16, "[5]"), (15, "")]}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "[44]", twmMarks = []}},
+     TextZeile{ttt = Fussnote0,
+               ttx =
+                 TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "77", twmMarks = []}}]
 
 result1BA =
-    [LeerZeile, MarkupZeile{ttok = BuchSprache, ttx = "German"},
-     LeerZeile,
-     MarkupZeile{ttok = BuchAuthor, ttx = "PETER WATERHOUSE"},
-     LeerZeile,
-     MarkupZeile{ttok = BuchTitel, ttx = "(Krieg f\252r Welt)"},
-     TextZeile{ttt = AllCaps0, ttx = "11"},
-     MarkupZeile{ttok = BuchHL1,
-                 ttx = "Unsere Br\228uche werden lebendig"},
-     TextZeile{ttt = AllCaps0, ttx = "12"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?"},
-     LeerZeile,
-     TextZeile{ttt = Text0,
-               ttx = "Er fragte sich als zweiter Paragraph."},
-     TextZeile{ttt = AllCaps0, ttx = "13"},
 
-     MarkupZeile{ttok = BuchEnde, ttx = ""}]
-result2BA =
-    [LeerZeile, MarkupZeile{ttok = BuchSprache, ttx = "German"},
+    [LeerZeile,
+     MarkupZeile{ttok = BuchSprache,
+                 ttx = TextWithMarks{twm = "German", twmMarks = []}},
      LeerZeile,
-     MarkupZeile{ttok = BuchAuthor, ttx = "PETER WATERHOUSE"},
+     MarkupZeile{ttok = BuchAuthor,
+                 ttx = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []}},
      LeerZeile,
      MarkupZeile{ttok = BuchTitel,
-                 ttx = "(Krieg f\252r Welt) - als test fuer paragraph per zeile"},
-     TextZeile{ttt = AllCaps0, ttx = "11"},
+                 ttx = TextWithMarks{twm = "(Krieg f\252r Welt)", twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "11", twmMarks = []}},
      MarkupZeile{ttok = BuchHL1,
-                 ttx = "Unsere Br\228uche werden lebendig"},
-     TextZeile{ttt = AllCaps0, ttx = "12"},
+                 ttx =
+                   TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
+                                 twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "12", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
+                               twmMarks = []}},
+     LeerZeile,
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "Er fragte sich als zweiter Paragraph.",
+                               twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "13", twmMarks = []}},
+     MarkupZeile{ttok = BuchEnde,
+                 ttx = TextWithMarks{twm = "", twmMarks = []}}]
+
+
+result2BA =
+
+    [LeerZeile,
+     MarkupZeile{ttok = BuchSprache,
+                 ttx = TextWithMarks{twm = "German", twmMarks = []}},
+     LeerZeile,
+     MarkupZeile{ttok = BuchAuthor,
+                 ttx = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []}},
+     LeerZeile,
+     MarkupZeile{ttok = BuchTitel,
+                 ttx =
+                   TextWithMarks{twm =
+                                   "(Krieg f\252r Welt) - als test fuer paragraph per zeile",
+                                 twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "11", twmMarks = []}},
+     MarkupZeile{ttok = BuchHL1,
+                 ttx =
+                   TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
+                                 twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "12", twmMarks = []}},
      TextZeile{ttt = Kurz0,
                ttx =
-                 "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?"},
-     TextZeile{ttt = AllCaps0, ttx = "13"},
+                 TextWithMarks{twm =
+                                 "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
+                               twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "13", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
-                 "Es war einmal ein Dorf in einem Tal, in dem kein Reis wuchs. Eine schwangere Frau hatte einen Fisch gefunden und verzehrte ihn, weil sie hungrig war, roh und ohne daran zu denken, ihn mit den anderen im Dorf zu teilen. Sie gebar einen sch\246nen Sohn. Sp\228ter aber wuchsen auf ihrem K\246rper Schuppen und sie wurde zu einem gro\223en Fisch. Weil sie zu Lande nicht mehr wohnen konnte, f\252hrte sie fortan ein einsames Leben im Fluss. Ihr Sohn wurde von einem Alten im Dorf aufgezogen. Zu allen Zeiten verh\246hnen die Knaben die M\252tter der anderen im Streit. Sie streiten, ohne zu verstehen, was sie sagen: \187Deine Mutter ist eine Hure!\171"},
+                 TextWithMarks{twm =
+                                 "Es war einmal ein Dorf in einem Tal, in dem kein Reis wuchs. Eine schwangere Frau hatte einen Fisch gefunden und verzehrte ihn, weil sie hungrig war, roh und ohne daran zu denken, ihn mit den anderen im Dorf zu teilen. Sie gebar einen sch\246nen Sohn. Sp\228ter aber wuchsen auf ihrem K\246rper Schuppen und sie wurde zu einem gro\223en Fisch. Weil sie zu Lande nicht mehr wohnen konnte, f\252hrte sie fortan ein einsames Leben im Fluss. Ihr Sohn wurde von einem Alten im Dorf aufgezogen. Zu allen Zeiten verh\246hnen die Knaben die M\252tter der anderen im Streit. Sie streiten, ohne zu verstehen, was sie sagen: \187Deine Mutter ist eine Hure!\171",
+                               twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
-                 "Ich wusch mein Gesicht mit wei\223em Sand. Nur so konnte ich meine Haut, die zu einer W\252ste geworden war, wieder glatt bekommen. Man sagt, dass dieser Sand von den Knochen eines Dinosauriers stamme, von Knochen, die die Wellen des Meeres lange gewaschen haben und die die Sonne getrocknet hat. Ich verteilte ihn auf meine Handfl\228chen und legte diese auf mein Gesicht; sie fingen durch das Fleisch hindurch mit meinen Knochen ein Gespr\228ch an. Ich konnte die Form meines Sch\228dels in meinen H\228nden genau sp\252ren. Au\223er der aus Licht gewordenen Haut und des aus Wasser gewordenen Fleisches gibt es noch einen K\246rper. Aber solange ich lebe, kann niemand diesen K\246rper umarmen."},
-     MarkupZeile{ttok = BuchEnde, ttx = ""}]
+                 TextWithMarks{twm =
+                                 "Ich wusch mein Gesicht mit wei\223em Sand. Nur so konnte ich meine Haut, die zu einer W\252ste geworden war, wieder glatt bekommen. Man sagt, dass dieser Sand von den Knochen eines Dinosauriers stamme, von Knochen, die die Wellen des Meeres lange gewaschen haben und die die Sonne getrocknet hat. Ich verteilte ihn auf meine Handfl\228chen und legte diese auf mein Gesicht; sie fingen durch das Fleisch hindurch mit meinen Knochen ein Gespr\228ch an. Ich konnte die Form meines Sch\228dels in meinen H\228nden genau sp\252ren. Au\223er der aus Licht gewordenen Haut und des aus Wasser gewordenen Fleisches gibt es noch einen K\246rper. Aber solange ich lebe, kann niemand diesen K\246rper umarmen.",
+                               twmMarks = []}},
+     MarkupZeile{ttok = BuchEnde,
+                 ttx = TextWithMarks{twm = "", twmMarks = []}}]
+
 result3BA =
-    [LeerZeile, MarkupZeile{ttok = BuchSprache, ttx = "German"},
+    [LeerZeile,
+     MarkupZeile{ttok = BuchSprache,
+                 ttx = TextWithMarks{twm = "German", twmMarks = []}},
      LeerZeile, LeerZeile,
      MarkupZeile{ttok = BuchTitel,
-                 ttx = "test fuer paragraphen mit mehreren zeilen"},
+                 ttx =
+                   TextWithMarks{twm = "test fuer paragraphen mit mehreren zeilen",
+                                 twmMarks = []}},
      MarkupZeile{ttok = BuchIgnore,
                  ttx =
-                   "Der Autor dankt dem Deutschen Literaturfonds f\252r die Unterst\252tzung."},
+                   TextWithMarks{twm =
+                                   "Der Autor dankt dem Deutschen Literaturfonds f\252r die Unterst\252tzung.",
+                                 twmMarks = []}},
      MarkupZeile{ttok = BuchCopyright,
-                 ttx = "\169 2006 Jung und Jung, Salzburg und Wien"},
+                 ttx =
+                   TextWithMarks{twm = "\169 2006 Jung und Jung, Salzburg und Wien",
+                                 twmMarks = []}},
      MarkupZeile{ttok = BuchIgnore,
-                 ttx = "Satz: Media Design: Riznerat, Salzburg"},
+                 ttx =
+                   TextWithMarks{twm = "Satz: Media Design: Riznerat, Salzburg",
+                                 twmMarks = []}},
      MarkupZeile{ttok = BuchIgnore,
-                 ttx = "Druck: Friedrich Pustet, Regensburg"},
+                 ttx =
+                   TextWithMarks{twm = "Druck: Friedrich Pustet, Regensburg",
+                                 twmMarks = []}},
      MarkupZeile{ttok = BuchISBN,
-                 ttx = "ISBN 3-902497-13-0, 978-3-902497-13-0"},
+                 ttx =
+                   TextWithMarks{twm = "ISBN 3-902497-13-0, 978-3-902497-13-0",
+                                 twmMarks = []}},
      LeerZeile, LeerZeile, LeerZeile,
-     TextZeile{ttt = Kurz0, ttx = ",author PETER WATERHOUSE"},
-     MarkupZeile{ttok = BuchIgnore, ttx = "(Krieg und Welt)"},
-     LeerZeile, MarkupZeile{ttok = BuchVerlag, ttx = "JUNG UND JUNG"},
+     TextZeile{ttt = Kurz0,
+               ttx =
+                 TextWithMarks{twm = ",author PETER WATERHOUSE", twmMarks = []}},
+     MarkupZeile{ttok = BuchIgnore,
+                 ttx = TextWithMarks{twm = "(Krieg und Welt)", twmMarks = []}},
+     LeerZeile,
+     MarkupZeile{ttok = BuchVerlag,
+                 ttx = TextWithMarks{twm = "JUNG UND JUNG", twmMarks = []}},
      LeerZeile, LeerZeile, LeerZeile, LeerZeile, LeerZeile,
-     MarkupZeile{ttok = BuchHL1, ttx = "Unsere Namen werden lebendig"},
+     MarkupZeile{ttok = BuchHL1,
+                 ttx =
+                   TextWithMarks{twm = "Unsere Namen werden lebendig",
+                                 twmMarks = []}},
      TextZeile{ttt = Kurz0,
-               ttx = "Was ist ihm fremd und was sein eigen?"},
+               ttx =
+                 TextWithMarks{twm = "Was ist ihm fremd und was sein eigen?",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "Ich ging aus dem Dorf und tr\228umte vor mich hin einen Satz, oder es"},
+                 TextWithMarks{twm =
+                                 "Ich ging aus dem Dorf und tr\228umte vor mich hin einen Satz, oder es",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "waren ein paar Worte oder Worte aus Worten kommend, eine halbe"},
+                 TextWithMarks{twm =
+                                 "waren ein paar Worte oder Worte aus Worten kommend, eine halbe",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "Melodie. Das Dorf bald tausend Meter zur\252ck, das W\228ldchen eine halbe"},
+                 TextWithMarks{twm =
+                                 "Melodie. Das Dorf bald tausend Meter zur\252ck, das W\228ldchen eine halbe",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "Meile hinter Wiese und Wiese: Das Dorf tanzte heran und war wie mit"},
+                 TextWithMarks{twm =
+                                 "Meile hinter Wiese und Wiese: Das Dorf tanzte heran und war wie mit",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "der Hand ber\252hrbar und das W\228ldchen gleichwohl ein Wegbegleiter und"},
+                 TextWithMarks{twm =
+                                 "der Hand ber\252hrbar und das W\228ldchen gleichwohl ein Wegbegleiter und",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "die vielen Wiesen ein einziges Hemd. Gerettet. Wovor das Dorf gerettet?"},
+                 TextWithMarks{twm =
+                                 "die vielen Wiesen ein einziges Hemd. Gerettet. Wovor das Dorf gerettet?",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "Ein Engel legt mir die H\228nde auf den K\246rper? Wald eine Kinderschar?"},
+                 TextWithMarks{twm =
+                                 "Ein Engel legt mir die H\228nde auf den K\246rper? Wald eine Kinderschar?",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
-                 "Alle meine Kinder? Mehr als ein Vater, Land aller V\228ter; stehen da auf"},
-     TextZeile{ttt = Kurz0, ttx = "der leeren Wiese die V\228ter?"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Ich stand. Wie standen die? Ich ging wenige Schritte und sagte mir hin:"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Ich werde geschoben. Stand. Ich werde gehoben. Es war still. Ich werde"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "geh\246rt. Ich h\246rte. Ich werde geh\246rt. Es war kein Haus da. Es ist kein"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Haus da. Ein Strauch rauschte. Er rauscht, so sagte ich es mir. Es war in"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "diesem Aus-dem-Dorf-Gehen kein Vergehen. Gar kein Leichenbegr\228bnis."},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Warum ziehen hier keine Leichenz\252ge? Wo sind die Toten? Wo hingelegt?"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Der Ruf auf der Dorfstra\223e - den ich jetzt h\246rte - wird f\252nfzig und mehr"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Jahre durchrufen. Der Ruf ist ein Mensch, der lang ist. Ich nehme den"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Dorfruf mit wie mich selbst, hab ihn wie ein Auge und Ohr und wie"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Finger so viel. Ich \246ffnete die Hand, hielt sie ge\246ffnet vor mich hin, die"},
-     TextZeile{ttt = AllCaps0, ttx = "51"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Innenfl\228che aufw\228rts w\252st und offen. Was w\252rde mit der Hand gesche-"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "hen? Ich schaute sie lange an. Um die Hand eine w\252ste, wei\223e Welt."},
-     LeerZeile, TextZeile{ttt = Kurz0, ttx = "Meine Hand war rot."},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "Und wendete mich und schaute. Da war das Dorf. Es war braun und"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "rot. Es war etwas, ein Fleck, eine dunkle Frucht. Es rauchte aus Stellen"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "der Frucht. Das Dorf schwebte an einer Art von Asth\246he und in einer Art"},
-     TextZeile{ttt = Text0,
-               ttx =
-                 "und Weise. Tiefer als das Dorf waren Wiesen, das Gr\252ne. Das Dorf jetzt"},
+                 TextWithMarks{twm =
+                                 "Alle meine Kinder? Mehr als ein Vater, Land aller V\228ter; stehen da auf",
+                               twmMarks = []}},
      TextZeile{ttt = Kurz0,
-               ttx = "nicht viel gr\246\223er als meine Hand. Fast ein Auge."},
-     LeerZeile, MarkupZeile{ttok = BuchEnde, ttx = ""}, LeerZeile,
+               ttx =
+                 TextWithMarks{twm = "der leeren Wiese die V\228ter?",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Ich stand. Wie standen die? Ich ging wenige Schritte und sagte mir hin:",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Ich werde geschoben. Stand. Ich werde gehoben. Es war still. Ich werde",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "geh\246rt. Ich h\246rte. Ich werde geh\246rt. Es war kein Haus da. Es ist kein",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Haus da. Ein Strauch rauschte. Er rauscht, so sagte ich es mir. Es war in",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "diesem Aus-dem-Dorf-Gehen kein Vergehen. Gar kein Leichenbegr\228bnis.",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Warum ziehen hier keine Leichenz\252ge? Wo sind die Toten? Wo hingelegt?",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Der Ruf auf der Dorfstra\223e - den ich jetzt h\246rte - wird f\252nfzig und mehr",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Jahre durchrufen. Der Ruf ist ein Mensch, der lang ist. Ich nehme den",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Dorfruf mit wie mich selbst, hab ihn wie ein Auge und Ohr und wie",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Finger so viel. Ich \246ffnete die Hand, hielt sie ge\246ffnet vor mich hin, die",
+                               twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "51", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Innenfl\228che aufw\228rts w\252st und offen. Was w\252rde mit der Hand gesche-",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "hen? Ich schaute sie lange an. Um die Hand eine w\252ste, wei\223e Welt.",
+                               twmMarks = []}},
+     LeerZeile,
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "Meine Hand war rot.", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "Und wendete mich und schaute. Da war das Dorf. Es war braun und",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "rot. Es war etwas, ein Fleck, eine dunkle Frucht. Es rauchte aus Stellen",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "der Frucht. Das Dorf schwebte an einer Art von Asth\246he und in einer Art",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "und Weise. Tiefer als das Dorf waren Wiesen, das Gr\252ne. Das Dorf jetzt",
+                               twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx =
+                 TextWithMarks{twm =
+                                 "nicht viel gr\246\223er als meine Hand. Fast ein Auge.",
+                               twmMarks = []}},
+     LeerZeile,
+     MarkupZeile{ttok = BuchEnde,
+                 ttx = TextWithMarks{twm = "", twmMarks = []}},
      LeerZeile, LeerZeile, LeerZeile, LeerZeile, LeerZeile, LeerZeile,
-     LeerZeile]
+     LeerZeile, LeerZeile]
+
 
 result4BA =
-    [MarkupZeile{ttok = BuchSprache, ttx = "German"},
-     MarkupZeile{ttok = BuchISBN, ttx = "ISBN 3-88769-324-8"},
-     MarkupZeile{ttok = BuchAuthor, ttx = "Yoko Tawada"},
-     MarkupZeile{ttok = BuchTitel, ttx = "Das nackte Auge"},
+
+    [MarkupZeile{ttok = BuchSprache,
+                 ttx = TextWithMarks{twm = "German", twmMarks = []}},
+     MarkupZeile{ttok = BuchISBN,
+                 ttx = TextWithMarks{twm = "ISBN 3-88769-324-8", twmMarks = []}},
+     MarkupZeile{ttok = BuchAuthor,
+                 ttx = TextWithMarks{twm = "Yoko Tawada", twmMarks = []}},
+     MarkupZeile{ttok = BuchTitel,
+                 ttx = TextWithMarks{twm = "Das nackte Auge", twmMarks = []}},
      MarkupZeile{ttok = BuchVerlag,
-                 ttx = "konkursbuch verlag claudia gehrke"},
-     MarkupZeile{ttok = BuchDedikation, ttx = "f\252r C.D."},
-     TextZeile{ttt = AllCaps0, ttx = "6"},
-     MarkupZeile{ttok = BuchHL1, ttx = "Kapitel 1 REPULSION"},
+                 ttx =
+                   TextWithMarks{twm = "konkursbuch verlag claudia gehrke",
+                                 twmMarks = []}},
+     MarkupZeile{ttok = BuchDedikation,
+                 ttx = TextWithMarks{twm = "f\252r C.D.", twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "6", twmMarks = []}},
+     MarkupZeile{ttok = BuchHL1,
+                 ttx = TextWithMarks{twm = "Kapitel 1 REPULSION", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
-                 "Ein gefilmtes Auge, angeheftet an einem bewusstlosen K\246rper. Es sieht nichts, denn die Kamera hat ihm schon die Sehkraft geraubt.  Er hatte uns mehrmals von seinem Aufenthalt in Berlin und einem gewissen \"Pergamonmuseum\" erz\228hlt. \"Pergamon\""},
-     TextZeile{ttt = AllCaps0, ttx = "7"},
+                 TextWithMarks{twm =
+                                 "Ein gefilmtes Auge, angeheftet an einem bewusstlosen K\246rper. Es sieht nichts, denn die Kamera hat ihm schon die Sehkraft geraubt.  Er hatte uns mehrmals von seinem Aufenthalt in Berlin und einem gewissen \"Pergamonmuseum\" erz\228hlt. \"Pergamon\"",
+                               twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "7", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
-                 "klang wie der Name eines Wandervogels, und uns gefiel die Vorstellung des Berliner Himmels, in dem dieser Vogel flatterte.  Einer"},
-     TextZeile{ttt = AllCaps0, ttx = "8"},
+                 TextWithMarks{twm =
+                                 "klang wie der Name eines Wandervogels, und uns gefiel die Vorstellung des Berliner Himmels, in dem dieser Vogel flatterte.  Einer",
+                               twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "8", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
-                 "von ihnen nahm mir meine Reisetasche ab. Was sollte man einem solchen Manne schreiben, der sich offenbar verrannt hatte. Sollte man ihm vielleicht raten, wieder nach Hause zu kommen, seine Existenz hierher zu verlegen, alle die alten freundschaftlichen Beziehungen wieder aufzunehmen \8212 wof\252r ja kein Hindernis bestand \8212 und im \252brigen auf die Hilfe der Freunde zu vertrauen? Das bedeutete aber nichts anderes, als"},
-     NeueSeite, TextZeile{ttt = AllCaps0, ttx = "[54/0002]"},
+                 TextWithMarks{twm =
+                                 "von ihnen nahm mir meine Reisetasche ab. Was sollte man einem solchen Manne schreiben, der sich offenbar verrannt hatte. Sollte man ihm vielleicht raten, wieder nach Hause zu kommen, seine Existenz hierher zu verlegen, alle die alten freundschaftlichen Beziehungen wieder aufzunehmen \8212 wof\252r ja kein Hindernis bestand \8212 und im \252brigen auf die Hilfe der Freunde zu vertrauen? Das bedeutete aber nichts anderes, als",
+                               twmMarks = []}},
+     NeueSeite,
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
-                 "da\223 man ihm gleichzeitig, je schonender, desto kr\228nkender, sagte, da\223 seine bisherigen Versuche mi\223lungen seien, da\223 er endlich von ihnen ablassen solle, da\223 er zur\252ckkehren und sich als ein f\252r immer Zur\252ckgekehrter von allen mit gro\223en Augen anstaunen lassen m\252sse, da\223 nur seine Freunde etwas verst\252nden und da\223 er ein altes Kind sei, das den erfolgreichen, zu Hause gebliebenen Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet leicht war. "},
-     MarkupZeile{ttok = BuchEnde, ttx = ""}]
+                 TextWithMarks{twm =
+                                 "da\223 man ihm gleichzeitig, je schonender, desto kr\228nkender, sagte, da\223 seine bisherigen Versuche mi\223lungen seien, da\223 er endlich von ihnen ablassen solle, da\223 er zur\252ckkehren und sich als ein f\252r immer Zur\252ckgekehrter von allen mit gro\223en Augen anstaunen lassen m\252sse, da\223 nur seine Freunde etwas verst\252nden und da\223 er ein altes Kind sei, das den erfolgreichen, zu Hause gebliebenen Freunden einfach zu folgen habe.Er schien etwas erschrocken zu sein, wahrscheinlich, weil sie unerwartet leicht war.",
+                               twmMarks = []}},
+     MarkupZeile{ttok = BuchEnde,
+                 ttx = TextWithMarks{twm = "", twmMarks = []}}]
 
 result5BA =
     [MarkupZeile{ttok = BuchTitel,
-                 ttx = "The Fables of La Fontaine"},
-     TextZeile{ttt = Kurz0, ttx = " .Language: English"},
-     TextZeile{ttt = AllCaps0, ttx = "  PREFACE"},
+                 ttx =
+                   TextWithMarks{twm = "The Fables of La Fontaine", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = ".Language: English", twmMarks = []}},
      TextZeile{ttt = AllCaps0,
-               ttx = "II.--THE COUNCIL HELD BY THE RATS [4]"},
-     TextZeile{ttt = Text0, ttx = "   Old Rodilard,[5] a certain cat,"},
+               ttx = TextWithMarks{twm = "PREFACE", twmMarks = []}},
+     TextZeile{ttt = AllCaps0,
+               ttx =
+                 TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
+                               twmMarks = [(34, "[4]"), (0, "")]}},
+     TextZeile{ttt = Kurz0,
+               ttx =
+                 TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                               twmMarks = [(16, "[5]"), (15, "")]}},
      TextZeile{ttt = Text0,
-               ttx = "      Such havoc of the rats had made,"},
-     TextZeile{ttt = Text0, ttx = "    'Twas difficult to find a rat"},
-     TextZeile{ttt = Text0, ttx = "      With nature's debt unpaid."},
+               ttx =
+                 TextWithMarks{twm = "Such havoc of the rats had made,",
+                               twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "'Twas difficult to find a rat",
+                               twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx =
+                 TextWithMarks{twm = "With nature's debt unpaid.", twmMarks = []}},
      TextZeile{ttt = Fussnote0,
                ttx =
-                 "[4] Faerno and Abstemius both have fables upon this subject. Gabriel"},
+                 TextWithMarks{twm =
+                                 "[4]Faerno and Abstemius both have fables upon this subject. Gabriel",
+                               twmMarks = [(0, "[4]")]}},
      TextZeile{ttt = Text0,
-               ttx = "    Faerno (1500-1561) . Perrault published"},
-     TextZeile{ttt = Kurz0, ttx = "    them at Paris in 1699."},
+               ttx =
+                 TextWithMarks{twm = "Faerno (1500-1561) . Perrault published",
+                               twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx =
+                 TextWithMarks{twm = "them at Paris in 1699.", twmMarks = []}},
      TextZeile{ttt = Fussnote0,
                ttx =
-                 "[5] _Rodilard_.--The name no doubt taken from the famous cat"},
+                 TextWithMarks{twm =
+                                 "[5]_Rodilard_.--The name no doubt taken from the famous cat",
+                               twmMarks = [(0, "[5]")]}},
      TextZeile{ttt = Text0,
                ttx =
-                 "    Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII."},
+                 TextWithMarks{twm =
+                                 "Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII.",
+                               twmMarks = []}},
      TextZeile{ttt = AllCaps0,
-               ttx = "IV.--THE TWO BULLS AND THE FROG.[9]"},
+               ttx =
+                 TextWithMarks{twm = "IV.--THE TWO BULLS AND THE FROG.",
+                               twmMarks = [(32, "[9]"), (0, "")]}},
      TextZeile{ttt = Text0,
-               ttx = "   Of little folks it oft has been the fate"},
+               ttx =
+                 TextWithMarks{twm = "Of little folks it oft has been the fate",
+                               twmMarks = []}},
      TextZeile{ttt = Text0,
-               ttx = "   To suffer for the follies of the great."},
-     TextZeile{ttt = Fussnote0, ttx = "[9] Phaedrus, I. 30."},
-     MarkupZeile{ttok = BuchEnde, ttx = ""}, LeerZeile]
+               ttx =
+                 TextWithMarks{twm = "To suffer for the follies of the great.",
+                               twmMarks = []}},
+     TextZeile{ttt = Fussnote0,
+               ttx =
+                 TextWithMarks{twm = "[9]Phaedrus, I. 30.",
+                               twmMarks = [(0, "[9]")]}},
+     MarkupZeile{ttok = BuchEnde,
+                 ttx = TextWithMarks{twm = "", twmMarks = []}},
+     LeerZeile]
 

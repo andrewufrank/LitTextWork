@@ -24,13 +24,12 @@
 module Lines2para.HandleLayout (htf_thisModulesTests
     , paragraphs2TZlayout
     , distributePageNrs , etts2tzs
---    , filterZeilen
     , TZ (..), TextLoc (..)
---    , ParaID (..), unparaID
         )  where
 
 import Test.Framework
-import BuchCode.MarkupText (Zeilen (..), TextZeilen (..), TextType (..))
+import BuchCode.MarkupText (Zeilen (..), TextZeilen (..), TextType (..)
+            , TextWithMarks (..))
 import BuchCode.BuchToken (LanguageCode (..), BuchToken (..), markerPure)
 import           Data.List.Split
 -- todo strings
@@ -63,12 +62,12 @@ data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Show, Eq)
 -- page number (tlline) is text, to deal with III etc.
     -- removed paraid
 
-
 instance Zeros TextLoc where zero = TextLoc zero zero
 
-data TZ =  TZtext {tzt:: TextType, tzloc :: TextLoc, tztext:: Text }
+data TZ =
+         TZtext {tzt:: TextType, tzloc :: TextLoc, tztext:: TextWithMarks }
 --        | TZzahl  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
-        | TZmarkup  {tzloc :: TextLoc, tztext:: Text
+        | TZmarkup  {tzloc :: TextLoc, tztext:: TextWithMarks
                         , tztok :: BuchToken}
 --        | TZkurz  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
 --        | TZfussnote  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
@@ -81,12 +80,36 @@ data TZ =  TZtext {tzt:: TextType, tzloc :: TextLoc, tztext:: Text }
         | TZleer  {tzloc :: TextLoc}
         | TZneueSeite  {tzloc :: TextLoc}
 --        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode, tzInPart :: ParaID}
-        | TZignore {tzloc :: TextLoc, tztext:: Text}
+        | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
               -- para can be short (gedicht) or long (text) lines
                 -- in tzloc only tlpara is valid
            deriving (Show, Eq )
 
 instance Zeros TZ where zero = TZleer zero
+
+
+ett2tz :: TextZeilen -> TZ
+-- convert the textzeilen to tz without filling location
+-- some markup is converted to lit text
+ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero }
+--ett2tz (ZahlZeile t) = TZzahl {tztext = t, tzloc = zero, tzlang=zero}
+ett2tz (MarkupZeile BuchIgnore t) = TZignore {tztext = t,  tzloc = zero}
+ett2tz (MarkupZeile BuchGedicht t) =
+    TZtext {tzt=Kurz0, tztext = t,  tzloc = zero}
+ett2tz (MarkupZeile BuchEnde t) = TZleer {tzloc = zero}
+-- will be filtered out
+ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero}
+ett2tz LeerZeile = TZleer {tzloc = zero}
+ett2tz (NeueSeite) = TZneueSeite {tzloc = zero}
+ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]
+
+etts2tzs :: [TextZeilen] -> [TZ]
+-- gives line numbers
+etts2tzs = zipWith line2tz [1..] . map ett2tz
+
+line2tz :: Int -> TZ -> TZ
+-- ^ fill a TZ with the linenumber
+line2tz i tz = tz {tzloc = (tzloc tz) {tlline =  i} }
 
 
 unparseTZs :: [TZ] -> Text
@@ -95,12 +118,8 @@ unparseTZs = concat' . map renderZeile
 
 paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
 -- ^ produce the paragraphs with the seitenzahlen in each line
--- and the header linked
 paragraphs2TZlayout =
---    distributeHeader . markParaNr . formParagraphs
---    . distributeIgnore . distributeLanguage .
     distributePageNrs
---    . filterZeilen
     . etts2tzs
     -- test BA -> BAA ... BAG -> C
 
@@ -164,7 +183,7 @@ instance Zeilen TZ where
     isMarkupX code _                 = False
 
     zeilenText TZleer {} = ""
-    zeilenText (TZtext {tztext=tx}) =  tx
+    zeilenText (TZtext {tztext=tx}) =  twm tx
     zeilenText _ = ""
 
 --    renderZeile  tz =  case tz of
@@ -187,39 +206,11 @@ instance Zeilen TZ where
 --                <> " on page " <> (tlpage . tzloc $ tz)
 --                <> "\n" <> (concat' . map renderZeile  . tztzs $ tz) <> "\n"
 
-etts2tzs :: [TextZeilen] -> [TZ]
--- gives line numbers
-etts2tzs = zipWith line2tz [1..] . map ett2tz
-
-ett2tz :: TextZeilen -> TZ
--- convert the et to tz without filling location
-ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero }
---ett2tz (ZahlZeile t) = TZzahl {tztext = t, tzloc = zero, tzlang=zero}
-ett2tz (MarkupZeile BuchIgnore t) = TZignore {tztext = t,  tzloc = zero}
-ett2tz (MarkupZeile BuchGedicht t) =
-    TZtext {tzt=Kurz0, tztext = t,  tzloc = zero}
-ett2tz (MarkupZeile BuchEnde t) = TZleer {tzloc = zero}
--- will be filtered out
--- keep the gedicht mark content as kuzre zeile, TODO could be processed as marker
--- for parts where the layout should be kept
-ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero}
--- ett2tz (KurzeZeile t) = TZkurz {tztext = t, tzloc = zero, tzlang=zero}
-ett2tz LeerZeile = TZleer {tzloc = zero}
---ett2tz (KurzeZeile t) = TZkurz {tztext = t,  tzloc = zero, tzlang=zero}
---ett2tz (ParaZeile t) = TZparaZeile {tztext = t,  tzloc = zero, tzlang=zero}
-ett2tz (NeueSeite) = TZneueSeite {tzloc = zero}
--- filtered out in buch ?
---ett2tz (AllCapsZeile t) = TZallCaps{tztext = t,  tzloc = zero,  tzlang=zero}
---ett2tz (FussnoteZeile t) = TZfussnote  {tztext = t,  tzloc = zero,  tzlang=zero}
-ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]
 
 --filterZeilen :: [TZ] -> [TZ]
 ---- ^ remove some lines - here the neueSeite, where i have no idea what to do with
 --filterZeilen = id -- filter (not.isNeueSeite)
 
-line2tz :: Int -> TZ -> TZ
--- ^ fill a TZ with the linenumber
-line2tz i tz = tz {tzloc = (tzloc tz) {tlline =  i} }
 
 -- test the first (expected ok) part of the chain
 test_0_BA_BAC =do
@@ -235,6 +226,7 @@ test_5_BA_BAC =do
         putIOwords ["test_5_BA_BAC", "from result5BA_tz_markupResult1 to result5BAC"]
         assertEqual result5BAC (paragraphs2TZlayout result5BA)
 ----------- test results
+
 
 #include "LayoutResults.res"
 
