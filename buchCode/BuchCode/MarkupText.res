@@ -1,15 +1,15 @@
 result0B, result1B, result2B, result3B, result4B, result5B :: Text
-result0B = unlines'  ["adfka;dfaskl"
+result0B = unlines'  ["wort1;langeswort2"
             ,"55"
             ,""
             ,"1960 is a good"
-            ,"abcpawerqe"
+            ,"eine kurze [vielleicht wichtige] zeile"
             ,"66"
-            , "als\n\f\n[54/0002]\nda\223 man ihm gleichzeitig,"
-            , "als\r\n\f\r\n[54/0002]\r\nda\223 man[2] ihm [1] gleichzeitig,"
+            , "als\n\f\n[54/0002]\nda\223 man ihm erstens,"
+            , "als\r\n\f\r\n[54/0002]\r\nda\223 man[2] ihm [1] mit Fussnoten,"
             ,""
             ,".titel TIT"
-            ,"defpageerest"
+            ,"zweite[4] [5][6] kurze zeile[3]"
             ,"II - ALL CAPS TEST"
             , "[44]"  -- seitenzahl
             , "[1] eine Fussnote"
@@ -66,21 +66,23 @@ result5B = unlines'
 
 
 result0BA =
-    [TextZeile{ttt = Kurz0, ttx = "adfka;dfaskl"},
+    [TextZeile{ttt = Text0, ttx = "wort1;langeswort2"},
      TextZeile{ttt = Zahl0, ttx = "55"},
-     TextZeile{ttt = Text0, ttx = "1960 is a good"},
-     TextZeile{ttt = Kurz0, ttx = "abcpawerqe"},
+     TextZeile{ttt = Kurz0, ttx = "1960 is a good"},
+     TextZeile{ttt = Text0,
+               ttx = "eine kurze [vielleicht wichtige] zeile"},
      TextZeile{ttt = Zahl0, ttx = "66"},
      TextZeile{ttt = Kurz0, ttx = "als"}, NeueSeite,
      TextZeile{ttt = Zahl0, ttx = "[54/0002]"},
-     TextZeile{ttt = Text0, ttx = "da\223 man ihm gleichzeitig,"},
+     TextZeile{ttt = Text0, ttx = "da\223 man ihm erstens,"},
      TextZeile{ttt = Kurz0, ttx = "als"}, NeueSeite,
      TextZeile{ttt = Zahl0, ttx = "[54/0002]"},
-     TextZeile{ttt = Text0,
-               ttx = "da\223 man[2] ihm [1] gleichzeitig,"},
+     TextZeileMitFussnote{ttx = "da\223 man ihm  mit Fussnoten,",
+                          ttf = [(7, "[2]"), (5, "[1]"), (15, "")]},
      LeerZeile, MarkupZeile{ttok = BuchTitel, ttx = "TIT"},
-     TextZeile{ttt = Kurz0, ttx = "defpageerest"},
-     TextZeile{ttt = AllCaps0, ttx = "II - ALL CAPS"},
+     TextZeileMitFussnote{ttx = "zweite  kurze zeile",
+                          ttf = [(6, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]},
+     TextZeile{ttt = AllCaps0, ttx = "II - ALL CAPS TEST"},
      TextZeile{ttt = Zahl0, ttx = "[44]"},
      TextZeile{ttt = Fussnote0, ttx = "[1] eine Fussnote"},
      TextZeile{ttt = Zahl0, ttx = "77"}]

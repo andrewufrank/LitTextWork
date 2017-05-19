@@ -42,6 +42,7 @@ module BuchCode.MarkupText ( TextZeilen (..)
 
 import           BuchCode.BuchToken
 import           Data.Char
+import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
 import           Uniform.Error
 --import           Uniform.FileIO hiding ((<|>))
@@ -74,7 +75,10 @@ data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0 | AllCaps0
 -- the kinds of lines differentiated
 -- changes here must be reflected in the programs
 -- using the data, e.g Lines2para in etts2tz
-data TextZeilen =  TextZeile {ttt::TextType, ttx::Text}
+data TextZeilen =
+        TextZeile {ttt::TextType, ttx::Text}
+        | TextZeileMitFussnote {ttx::Text, ttf::[(Int, Text)]}
+        -- the footnote pos (from previous footnote relative) and marker
 --        | ZahlZeile Text
 --        | FussnoteZeile Text
         | MarkupZeile {ttok:: BuchToken, ttx:: Text}
@@ -139,7 +143,9 @@ lineParser = do
     <|>
     try allCapsZeile
     <|>
-    try textzeile
+    textzeileMitFussnote
+--    <|>
+--    try textzeile
         <?> "lineparser"
 
 
@@ -186,16 +192,44 @@ allCapsZeile = do
 
 textzeileMitFussnote :: TextParsec TextZeilen
 textzeileMitFussnote = do
-    res <- many (noneOf "\n[")  -- wichtig: do not consume end of line
-    newline
-    return . TextZeile Text0 . s2t $ res
+    res1 <- many (noneOf "\n[")
+    choice
+        [
+          try $ do -- found a marker has perhaps more markers
+                    fn <- fussnoteMarker
+                    let resx1 = [(res1, fn)]
+                    resx3 <- try annotherFootnoteMarker
+                    res4 <- many (noneOf "\n")
+                    let resx4 = [(res4, "")]
+                    let ress = concat [resx1, resx3, resx4]
+                    newline
+                    let res14 = s2t .concat . map fst $ ress
+                    let list = map (pair (lengthChar, s2t)) ress
+                    return $ TextZeileMitFussnote  res14  list
+
+         ,  do -- found a [ but not marker
+            res2 <- many (noneOf "\n")
+            newline
+            let res12 = res1 ++ res2
+            return $ TextZeile Text0 . s2t $ res12
+      ]
+
+pair (f,g) (a,b) = (f a, g b)
+-- todo algebras
+
+annotherFootnoteMarker :: TextParsec [(String,  String)]
+annotherFootnoteMarker = do
+        res3 <- many (noneOf "\n[")
+        fn2 <-  fussnoteMarker
+        xres <- optionMaybe $ try annotherFootnoteMarker
+        return $ [(res3,  fn2)] ++ fromMaybe [] xres
 
 
-textzeile :: TextParsec TextZeilen
-textzeile = do
-    res <- many (noneOf "\n")  -- wichtig: do not consume end of line
-    newline
-    return . TextZeile Text0 . s2t $ res
+--textzeileEnde :: Text -> TextParsec TextZeilen
+--textzeileEnde start = do
+--    res <- many (noneOf "\n")
+--    newline
+--    return . TextZeile Text0 $  (start <> s2t res)
 
 leerzeile :: TextParsec TextZeilen
 leerzeile = do
