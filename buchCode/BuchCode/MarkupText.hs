@@ -71,17 +71,23 @@ type TextParsecBuch = Parsec Text () [MarkupElement]
 data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0 | AllCaps0
         deriving (Show, Eq )
 
+data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
+        deriving (Show, Eq )
+-- the text is without markers, the markers are a list
+-- of offset of the marker from start of line resp. previous marker
+-- and the marker as text
+-- the list is empty if none
 
 -- the kinds of lines differentiated
 -- changes here must be reflected in the programs
 -- using the data, e.g Lines2para in etts2tz
 data TextZeilen =
-        TextZeile {ttt::TextType, ttx::Text}
-        | TextZeileMitFussnote {ttx::Text, ttf::[(Int, Text)]}
+        TextZeile {ttt::TextType, ttx::TextWithMarks}
+--        | TextZeileMitFussnote {ttx::Text, ttf::[(Int, Text)]}
         -- the footnote pos (from previous footnote relative) and marker
 --        | ZahlZeile Text
 --        | FussnoteZeile Text
-        | MarkupZeile {ttok:: BuchToken, ttx:: Text}
+        | MarkupZeile {ttok:: BuchToken, ttx:: TextWithMarks}
 --        | KurzeZeile Text
 --        | ParaZeile  Text
         -- ^ a line which is a paragraph, not mergable with other
@@ -96,16 +102,16 @@ data TextZeilen =
 parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
 -- parse a text file to TextZeilen form
 parseMarkup  =  markShortLines
---        . markAllCapsLines
+        . markAllCapsLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 -- TODO filter for char
 
 test_0B_BA = assertEqual result0BA (parseMarkup result0B)
---test_1B_BA = assertEqual result1BA (parseMarkup result1B)
---test_2B_BA = assertEqual result2BA (parseMarkup result2B)
---test_3B_BA = assertEqual result3BA (parseMarkup result3B)
---test_4B_BA = assertEqual result4BA (parseMarkup result4B)
---test_5B_BA = assertEqual result5BA (parseMarkup result5B)
+test_1B_BA = assertEqual result1BA (parseMarkup result1B)
+test_2B_BA = assertEqual result2BA (parseMarkup result2B)
+test_3B_BA = assertEqual result3BA (parseMarkup result3B)
+test_4B_BA = assertEqual result4BA (parseMarkup result4B)
+test_5B_BA = assertEqual result5BA (parseMarkup result5B)
 
 
 renderETTs :: [TextZeilen] -> Text
@@ -141,8 +147,8 @@ lineParser = do
     <|>
     try markupzeile
     <|>
-    try allCapsZeile
-    <|>
+--    try allCapsZeile
+--    <|>
     textzeileMitFussnote
 --    <|>
 --    try textzeile
@@ -156,7 +162,7 @@ zahlzeile = do
                 -- these are characters encountered in german textarchive
 --    res <- many1  digit  - simpler, but not including []
     many1 newline
-    return . TextZeile Zahl0 . s2t $ res
+    return $ TextZeile Zahl0 (TextWithMarks (s2t res) [])
 
 fussnotezeile :: TextParsec TextZeilen
 fussnotezeile = do
@@ -164,13 +170,15 @@ fussnotezeile = do
 --    res <- many1  (oneOf "0123456789[")
 --    res1 <- oneOf ")]"
 ----    res <- many1  digit  - simpler, but not including []
-    res2 <- many (noneOf "\n")
-    many1 newline
-    return . TextZeile Fussnote0 . s2t $ (fn ++ res2)
+--    res2 <- many (noneOf "\n")
+--    many1 newline
+    res <- parseTextWithMarkers
+    let restwm = TextWithMarks (s2t fn <> twm res) [(0,s2t fn)]
+    return $ TextZeile Fussnote0  $ restwm
 
 fussnoteMarker :: TextParsec String
 fussnoteMarker = do
-    res <- many1  (oneOf "0123456789[")
+    res <- many1  (oneOf "0123456789[(")
     res1 <- oneOf ")]"
     return (res ++ [res1])
 
@@ -179,47 +187,74 @@ markupzeile :: TextParsec TextZeilen
 markupzeile = do
     char '.'
     mk <- choice ( map (\t -> try (tokenElement t)) [BuchIgnoreEnd .. BuchEnde] )
-    res <- many (noneOf "\n")
-    newline
-    return . MarkupZeile mk . s2t . trim' $ res
+    res <- parseTextWithMarkers
+--    res <- many (noneOf "\n")
+--    newline
+    return $ MarkupZeile mk  res -- $ (TextWithMarks (trim' $ s2t res) [])
 
-allCapsZeile  :: TextParsec TextZeilen
-allCapsZeile = do
-    res <- many (satisfy (\c -> cond c && ('\n' /= c)))  -- wichtig: do not consume end of line
-    newline
-    return . TextZeile AllCaps0 . s2t $ res
-    where cond = not . isLower
+--allCapsZeile  :: TextParsec TextZeilen
+--allCapsZeile = do
+--    res <- many (satisfy (\c -> cond c && (not $ c `elem` ['\n'])))
+--    newline
+--    return . TextZeile AllCaps0 $ (TextWithMarks ( s2t res) [])
+--    where cond = not . isLower
 
 textzeileMitFussnote :: TextParsec TextZeilen
 textzeileMitFussnote = do
-    res1 <- many (noneOf "\n[")
+    res <- parseTextWithMarkers
+    return . TextZeile Text0 $  res
+--    res1 <- many (noneOf "\n[")
+--    choice
+--        [
+--          try $ do -- found a marker has perhaps more markers
+--                    fn <- fussnoteMarker
+--                    let resx1 = [(res1, fn)]
+--                    resx3 <- try annotherFootnoteMarker
+--                    res4 <- many (noneOf "\n")
+--                    let resx4 = [(res4, "")]
+--                    let ress = concat [resx1, resx3, resx4]
+--                    newline
+--                    let res14 = s2t .concat . map fst $ ress
+--                    let list = map (pair (lengthChar, s2t)) ress
+--                    return $ TextZeileMitFussnote  res14  list
+--
+--         ,  do -- found a [ but not marker
+--            res2 <- many (noneOf "\n")
+--            newline
+--            let res12 = res1 ++ res2
+--            return $ TextZeile Text0 . s2t $ res12
+--      ]
+
+pair (f,g) (a,b) = (f a, g b)
+-- todo algebras
+
+parseTextWithMarkers :: TextParsec TextWithMarks
+parseTextWithMarkers = do
+    res1 <- many (noneOf "\n[")  -- symbol for marks
     choice
         [
           try $ do -- found a marker has perhaps more markers
                     fn <- fussnoteMarker
                     let resx1 = [(res1, fn)]
-                    resx3 <- try annotherFootnoteMarker
+                    resx3 <- optionMaybe (try annotherFootnoteMarker)
                     res4 <- many (noneOf "\n")
                     let resx4 = [(res4, "")]
-                    let ress = concat [resx1, resx3, resx4]
+                    let ress = concat [resx1, fromMaybe [] resx3, resx4]
                     newline
-                    let res14 = s2t .concat . map fst $ ress
+                    let res14 = trim' . s2t .concat . map fst $ ress
                     let list = map (pair (lengthChar, s2t)) ress
-                    return $ TextZeileMitFussnote  res14  list
+                    return $ TextWithMarks  res14  list
 
          ,  do -- found a [ but not marker
             res2 <- many (noneOf "\n")
             newline
             let res12 = res1 ++ res2
-            return $ TextZeile Text0 . s2t $ res12
+            return $ TextWithMarks (trim' . s2t $ res12) []
       ]
-
-pair (f,g) (a,b) = (f a, g b)
--- todo algebras
 
 annotherFootnoteMarker :: TextParsec [(String,  String)]
 annotherFootnoteMarker = do
-        res3 <- many (noneOf "\n[")
+        res3 <- many (noneOf "\n[(")
         fn2 <-  fussnoteMarker
         xres <- optionMaybe $ try annotherFootnoteMarker
         return $ [(res3,  fn2)] ++ fromMaybe [] xres
@@ -304,12 +339,12 @@ instance Zeilen TextZeilen where
     isKurzeZeile = (Kurz0 ==).ttt
 
     -- zeilenText (TextZeile Kurz0 p) = p
-    zeilenText (TextZeile _ p) = p
+    zeilenText (TextZeile _ p) = twm p
 --    zeilenText (TextZeile Text0 t) = t
     zeilenText LeerZeile     = "\n"
 
-    renderZeile (TextZeile Zahl0 p) = ".SeitenZahl " <> p <> "page \n"
-    renderZeile (TextZeile _ t) = t
+    renderZeile (TextZeile Zahl0 p) = ".SeitenZahl " <> twm p <> "page \n"
+    renderZeile (TextZeile _ t) = twm t
     renderZeile LeerZeile     = "\n"
     renderZeile _ = ""
     -- renderZeile (TextZeile Kurz0 p) = p
@@ -322,7 +357,7 @@ diff2 [] = []
 diff2 a   =  filter (not . (1==) . snd) . zip a  $ zipWith (subtract) a (tail a)
 
 readSeitenzahl :: TextZeilen -> Int
-readSeitenzahl (TextZeile Zahl0 n) = readNoteTs ["seitenzahlread", showT n]  n
+readSeitenzahl (TextZeile Zahl0 n) = readNoteTs ["seitenzahlread", showT n]  (twm n)
 readSeitenzahl z             = errorT ["not a seitenzahl ", showT z]
 
 
@@ -340,22 +375,24 @@ markShortLines tx = map (markOneSL limit1 limit2)  tx
 
 markOneSL :: Int -> Int -> TextZeilen -> TextZeilen--
 markOneSL limitshort limitlong (TextZeile Text0 t)
-    | lengthChar t < limitshort = TextZeile Kurz0 t
-    | lengthChar t > limitlong =  TextZeile Para0 t
+    | lengthChar txt < limitshort = TextZeile Kurz0 t
+    | lengthChar txt > limitlong =  TextZeile Para0 t
     | otherwise                =  TextZeile Text0 t
+
+  where txt = twm t
 
 markOneSL _ _ x = x
 
---markAllCapsLines :: [TextZeilen] -> [TextZeilen]
---markAllCapsLines = map markOneAllCaps
---
---markOneAllCaps :: TextZeilen -> TextZeilen
---markOneAllCaps tx @ (TextZeile _ t)  =
---    if isCapitalizedTitle t then TextZeile AllCaps0 t else tx
---markOneAllCaps x = x
---
---isCapitalizedTitle ::  Text ->   Bool
---isCapitalizedTitle =  not . any isLower . t2s
+markAllCapsLines :: [TextZeilen] -> [TextZeilen]
+markAllCapsLines = map markOneAllCaps
+
+markOneAllCaps :: TextZeilen -> TextZeilen
+markOneAllCaps tx @ (TextZeile _ t)  =
+    if isCapitalizedTitle (twm t) then TextZeile AllCaps0 t else tx
+markOneAllCaps x = x
+
+isCapitalizedTitle ::  Text ->   Bool
+isCapitalizedTitle =  not . any isLower . t2s
 
 averageLengthTextLines :: [TextZeilen] -> (Int,Int)
 --  compute average and max length of text lines
