@@ -42,18 +42,6 @@ import Uniform.Zero
 import Data.List (nub)
 --import           Text.Printf         (printf)
 
---newtype ParaID = ParaID Text deriving (Show, Eq)
----- just to avoid confusions, defined here to be included in record
---unparaID (ParaID t) = t
-----instance Zeros ParaID where zero = formatParaID zero
---
---formatParaID :: Int -> ParaID
---formatParaID nr = ParaID $ "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
----- format to 5 digits
---
---formatLineID :: Int -> Text
---formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
----- format to 3 digits
 
 data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Show, Eq)
 -- ^ the place of a line in the full text
@@ -65,25 +53,16 @@ data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Show, Eq)
 instance Zeros TextLoc where zero = TextLoc zero zero
 
 data TZ =
-         TZtext {tzt:: TextType, tzloc :: TextLoc, tztext:: TextWithMarks }
---        | TZzahl  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
+         TZtext {tzt:: TextType, tzloc :: TextLoc
+                    , tztext:: TextWithMarks
+                    , tzlang :: LanguageCode }
+--        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode, tzInPart :: ParaID}
         | TZmarkup  {tzloc :: TextLoc, tztext:: TextWithMarks
-                        , tztok :: BuchToken}
---        | TZkurz  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
---        | TZfussnote  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
---        | TZallCaps  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
-        -- a short line, can be merged at the end of a paragraph (but only one)
---        | TZparaZeile  {tzloc :: TextLoc, tztext:: Text, tzlang :: LanguageCode}
---        -- ^ a line which is a paragraph, not mergable with other
---        -- could be used for poems as well
---        -- but usually poems are automatically recognized by short lines
+                        , tztok :: BuchToken, tzlang :: LanguageCode}
         | TZleer  {tzloc :: TextLoc}
         | TZneueSeite  {tzloc :: TextLoc}
---        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode, tzInPart :: ParaID}
         | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
-              -- para can be short (gedicht) or long (text) lines
-                -- in tzloc only tlpara is valid
-           deriving (Show, Eq )
+            deriving (Show, Eq )
 
 instance Zeros TZ where zero = TZleer zero
 
@@ -91,14 +70,14 @@ instance Zeros TZ where zero = TZleer zero
 ett2tz :: TextZeilen -> TZ
 -- convert the textzeilen to tz without filling location
 -- some markup is converted to lit text
-ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero }
+ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero, tzlang=zero }
 --ett2tz (ZahlZeile t) = TZzahl {tztext = t, tzloc = zero, tzlang=zero}
 ett2tz (MarkupZeile BuchIgnore t) = TZignore {tztext = t,  tzloc = zero}
 ett2tz (MarkupZeile BuchGedicht t) =
-    TZtext {tzt=Kurz0, tztext = t,  tzloc = zero}
+    TZtext {tzt=Kurz0, tztext = t,  tzloc = zero, tzlang=zero}
 ett2tz (MarkupZeile BuchEnde t) = TZleer {tzloc = zero}
 -- will be filtered out
-ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero}
+ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero, tzlang=zero}
 ett2tz LeerZeile = TZleer {tzloc = zero}
 ett2tz (NeueSeite) = TZneueSeite {tzloc = zero}
 ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]

@@ -33,9 +33,10 @@ module Lines2para.Lines2paraTests(  htf_thisModulesTests   -- for tests
 
 import           Test.Framework
 --import Parser.ReadMarkupAB
-import qualified BuchCode.MarkupText as ABA  -- (TextZeilen(..))
-import  BuchCode.MarkupText  (TextZeilen(..))
-import BuchCode.BuchToken (LanguageCode (..), BuchToken (..), markerPure)
+--import qualified BuchCode.MarkupText as ABA  -- (TextZeilen(..))
+import  BuchCode.MarkupText
+import BuchCode.BuchToken
+import Lines2para.HandleLayout
 import Lines2para.Lines2para
 import           Data.List.Split
 --import           Parser.Foundation   hiding ((</>)) -- gives TZ
@@ -90,10 +91,11 @@ test_2_BAE_C = do
 
 
 -- these tests are here
-test_1_BA_import_parseMarkup_1 = assertEqual result1BA ABA.result1BA
-test_2_BA_import_parseMarkup_2 = assertEqual result2BA ABA.result2BA
-test_3_BA_import_parseMarkup_3 = assertEqual result3BA ABA.result3BA
-test_4_BA_import_parseMarkup_4 = assertEqual result4BA ABA.result4BA
+-- use imported values
+--test_1_BA_import_parseMarkup_1 = assertEqual result1BA ABA.result1BA
+--test_2_BA_import_parseMarkup_2 = assertEqual result2BA ABA.result2BA
+--test_3_BA_import_parseMarkup_3 = assertEqual result3BA ABA.result3BA
+--test_4_BA_import_parseMarkup_4 = assertEqual result4BA ABA.result4BA
 
 
 -- -- these tests are here

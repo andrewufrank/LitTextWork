@@ -12,7 +12,7 @@ import Uniform.Strings
 import           Test.Framework
 import {-@ HTF_TESTS @-} BuchCode.MarkupText   -- is in Test of BuchCode
 import {-@ HTF_TESTS @-} Lines2para.HandleLayout
---import {-@ HTF_TESTS @-} Lines2para.Lines2paraTests
+import {-@ HTF_TESTS @-} Lines2para.Lines2paraTests
 
 main =  do
     putStrLn "Lit Text Test.hs:\n"

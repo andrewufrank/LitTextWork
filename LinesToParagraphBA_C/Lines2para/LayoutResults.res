@@ -2,124 +2,140 @@
 result0BAC =
 
     [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "55", tlline = 1},
-            tztext = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
+            tztext = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "66", tlline = 3},
-            tztext = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
+            tztext = TextWithMarks{twm = "1960 is a good", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "66", tlline = 4},
             tztext =
               TextWithMarks{twm = "eine kurze [vielleicht wichtige] zeile",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0,
             tzloc = TextLoc{tlpage = "[54/0002]", tlline = 6},
-            tztext = TextWithMarks{twm = "als", twmMarks = []}},
+            tztext = TextWithMarks{twm = "als", twmMarks = []},
+            tzlang = NoLanguage},
      TZneueSeite{tzloc = TextLoc{tlpage = "[54/0002]", tlline = 7}},
      TZtext{tzt = Text0,
             tzloc = TextLoc{tlpage = "[54/0002]", tlline = 9},
             tztext =
-              TextWithMarks{twm = "da\223 man ihm erstens,", twmMarks = []}},
+              TextWithMarks{twm = "da\223 man ihm erstens,", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0,
             tzloc = TextLoc{tlpage = "[54/0002]", tlline = 10},
-            tztext = TextWithMarks{twm = "als", twmMarks = []}},
+            tztext = TextWithMarks{twm = "als", twmMarks = []},
+            tzlang = NoLanguage},
      TZneueSeite{tzloc = TextLoc{tlpage = "[54/0002]", tlline = 11}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 13},
             tztext =
               TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
-                            twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]}},
+                            twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]},
+            tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "[44]", tlline = 14}},
      TZmarkup{tzloc = TextLoc{tlpage = "[44]", tlline = 15},
               tztext =
                 TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]"), (0, "")]},
-              tztok = BuchTitel},
+              tztok = BuchTitel, tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 16},
             tztext =
               TextWithMarks{twm = "zweite,  kurze zeile",
                             twmMarks =
-                              [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]}},
+                              [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]},
+            tzlang = NoLanguage},
      TZtext{tzt = AllCaps0,
             tzloc = TextLoc{tlpage = "[44]", tlline = 17},
             tztext =
               TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
-                            twmMarks = [(34, "[4]"), (0, "")]}},
+                            twmMarks = [(34, "[4]"), (0, "")]},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 18},
             tztext =
               TextWithMarks{twm = "Old Rodilard, a certain cat,",
-                            twmMarks = [(16, "[5]"), (15, "")]}},
+                            twmMarks = [(16, "[5]"), (15, "")]},
+            tzlang = NoLanguage},
      TZtext{tzt = AllCaps0,
             tzloc = TextLoc{tlpage = "[44]", tlline = 19},
-            tztext = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
+            tztext = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Fussnote0,
             tzloc = TextLoc{tlpage = "77", tlline = 21},
             tztext =
-              TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}}]
+              TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]},
+            tzlang = NoLanguage}]
 
 result1BAC =
 
     [TZleer{tzloc = TextLoc{tlpage = "11", tlline = 1}},
      TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 2},
               tztext = TextWithMarks{twm = "German", twmMarks = []},
-              tztok = BuchSprache},
+              tztok = BuchSprache, tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "11", tlline = 3}},
      TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 4},
               tztext = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []},
-              tztok = BuchAuthor},
+              tztok = BuchAuthor, tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "11", tlline = 5}},
      TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 6},
               tztext = TextWithMarks{twm = "(Krieg f\252r Welt)", twmMarks = []},
-              tztok = BuchTitel},
+              tztok = BuchTitel, tzlang = NoLanguage},
      TZmarkup{tzloc = TextLoc{tlpage = "12", tlline = 8},
               tztext =
                 TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
                               twmMarks = []},
-              tztok = BuchHL1},
+              tztok = BuchHL1, tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "13", tlline = 10},
             tztext =
               TextWithMarks{twm =
                               "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "13", tlline = 11}},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "13", tlline = 12},
             tztext =
               TextWithMarks{twm = "Er fragte sich als zweiter Paragraph.",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}}]
 
 result2BAC =
-
     [TZleer{tzloc = TextLoc{tlpage = "11", tlline = 1}},
      TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 2},
               tztext = TextWithMarks{twm = "German", twmMarks = []},
-              tztok = BuchSprache},
+              tztok = BuchSprache, tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "11", tlline = 3}},
      TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 4},
               tztext = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []},
-              tztok = BuchAuthor},
+              tztok = BuchAuthor, tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "11", tlline = 5}},
      TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 6},
               tztext =
                 TextWithMarks{twm =
                                 "(Krieg f\252r Welt) - als test fuer paragraph per zeile",
                               twmMarks = []},
-              tztok = BuchTitel},
+              tztok = BuchTitel, tzlang = NoLanguage},
      TZmarkup{tzloc = TextLoc{tlpage = "12", tlline = 8},
               tztext =
                 TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
                               twmMarks = []},
-              tztok = BuchHL1},
+              tztok = BuchHL1, tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "13", tlline = 10},
             tztext =
               TextWithMarks{twm =
                               "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Para0, tzloc = TextLoc{tlpage = "", tlline = 12},
             tztext =
               TextWithMarks{twm =
                               "Es war einmal ein Dorf in einem Tal, in dem kein Reis wuchs. Eine schwangere Frau hatte einen Fisch gefunden und verzehrte ihn, weil sie hungrig war, roh und ohne daran zu denken, ihn mit den anderen im Dorf zu teilen. Sie gebar einen sch\246nen Sohn. Sp\228ter aber wuchsen auf ihrem K\246rper Schuppen und sie wurde zu einem gro\223en Fisch. Weil sie zu Lande nicht mehr wohnen konnte, f\252hrte sie fortan ein einsames Leben im Fluss. Ihr Sohn wurde von einem Alten im Dorf aufgezogen. Zu allen Zeiten verh\246hnen die Knaben die M\252tter der anderen im Streit. Sie streiten, ohne zu verstehen, was sie sagen: \187Deine Mutter ist eine Hure!\171",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Para0, tzloc = TextLoc{tlpage = "", tlline = 13},
             tztext =
               TextWithMarks{twm =
                               "Ich wusch mein Gesicht mit wei\223em Sand. Nur so konnte ich meine Haut, die zu einer W\252ste geworden war, wieder glatt bekommen. Man sagt, dass dieser Sand von den Knochen eines Dinosauriers stamme, von Knochen, die die Wellen des Meeres lange gewaschen haben und die die Sonne getrocknet hat. Ich verteilte ihn auf meine Handfl\228chen und legte diese auf mein Gesicht; sie fingen durch das Fleisch hindurch mit meinen Knochen ein Gespr\228ch an. Ich konnte die Form meines Sch\228dels in meinen H\228nden genau sp\252ren. Au\223er der aus Licht gewordenen Haut und des aus Wasser gewordenen Fleisches gibt es noch einen K\246rper. Aber solange ich lebe, kann niemand diesen K\246rper umarmen.",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}}]
 
 result5BAC =
@@ -127,68 +143,84 @@ result5BAC =
     [TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 1},
               tztext =
                 TextWithMarks{twm = "The Fables of La Fontaine", twmMarks = []},
-              tztok = BuchTitel},
+              tztok = BuchTitel, tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 2},
-            tztext = TextWithMarks{twm = ".Language: English", twmMarks = []}},
+            tztext = TextWithMarks{twm = ".Language: English", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 3},
-            tztext = TextWithMarks{twm = "PREFACE", twmMarks = []}},
+            tztext = TextWithMarks{twm = "PREFACE", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 4},
             tztext =
               TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
-                            twmMarks = [(34, "[4]"), (0, "")]}},
+                            twmMarks = [(34, "[4]"), (0, "")]},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 5},
             tztext =
               TextWithMarks{twm = "Old Rodilard, a certain cat,",
-                            twmMarks = [(16, "[5]"), (15, "")]}},
+                            twmMarks = [(16, "[5]"), (15, "")]},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 6},
             tztext =
               TextWithMarks{twm = "Such havoc of the rats had made,",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 7},
             tztext =
               TextWithMarks{twm = "'Twas difficult to find a rat",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 8},
             tztext =
-              TextWithMarks{twm = "With nature's debt unpaid.", twmMarks = []}},
+              TextWithMarks{twm = "With nature's debt unpaid.", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 9},
             tztext =
               TextWithMarks{twm =
                               "[4]Faerno and Abstemius both have fables upon this subject. Gabriel",
-                            twmMarks = [(0, "[4]")]}},
+                            twmMarks = [(0, "[4]")]},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 10},
             tztext =
               TextWithMarks{twm = "Faerno (1500-1561) . Perrault published",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 11},
             tztext =
-              TextWithMarks{twm = "them at Paris in 1699.", twmMarks = []}},
+              TextWithMarks{twm = "them at Paris in 1699.", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 12},
             tztext =
               TextWithMarks{twm =
                               "[5]_Rodilard_.--The name no doubt taken from the famous cat",
-                            twmMarks = [(0, "[5]")]}},
+                            twmMarks = [(0, "[5]")]},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 13},
             tztext =
               TextWithMarks{twm =
                               "Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII.",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 14},
             tztext =
               TextWithMarks{twm = "IV.--THE TWO BULLS AND THE FROG.",
-                            twmMarks = [(32, "[9]"), (0, "")]}},
+                            twmMarks = [(32, "[9]"), (0, "")]},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 15},
             tztext =
               TextWithMarks{twm = "Of little folks it oft has been the fate",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 16},
             tztext =
               TextWithMarks{twm = "To suffer for the follies of the great.",
-                            twmMarks = []}},
+                            twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 17},
             tztext =
               TextWithMarks{twm = "[9]Phaedrus, I. 30.",
-                            twmMarks = [(0, "[9]")]}},
+                            twmMarks = [(0, "[9]")]},
+            tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 18}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 19}}]
 
