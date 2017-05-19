@@ -69,11 +69,11 @@ result5B = unlines'
 
 result0BA =
 
-    [TextZeile{ttt = Text0,
+    [TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
      TextZeile{ttt = AllCaps0,
                ttx = TextWithMarks{twm = "55", twmMarks = []}},
-     TextZeile{ttt = Text0,
+     TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =

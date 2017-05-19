@@ -36,16 +36,13 @@ module BuchCode.MarkupText ( TextZeilen (..)
         , result2B, result2BA
         , result3B, result3BA
         , result4B, result4BA
-
     ) where
-
 
 import           BuchCode.BuchToken
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
 import           Uniform.Error
---import           Uniform.FileIO hiding ((<|>))
 import           Uniform.Strings   hiding ((<|>))
 import           Test.Framework
 
@@ -62,7 +59,7 @@ class Zeilen z where
     zeilenText :: z -> Text
     -- returns just the text field
 
-    renderZeile :: z -> Text
+    renderZeile :: z -> Text -- ^ gives the literary text
 
 type TextParsec a = Parsec Text () a
 type TextParsecBuch = Parsec Text () [MarkupElement]
@@ -79,21 +76,9 @@ data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
 -- the list is empty if none
 
 -- the kinds of lines differentiated
--- changes here must be reflected in the programs
--- using the data, e.g Lines2para in etts2tz
 data TextZeilen =
         TextZeile {ttt::TextType, ttx::TextWithMarks}
---        | TextZeileMitFussnote {ttx::Text, ttf::[(Int, Text)]}
-        -- the footnote pos (from previous footnote relative) and marker
---        | ZahlZeile Text
---        | FussnoteZeile Text
         | MarkupZeile {ttok:: BuchToken, ttx:: TextWithMarks}
---        | KurzeZeile Text
---        | ParaZeile  Text
-        -- ^ a line which is a paragraph, not mergable with other
-        -- could be used for poems as well
-        -- but usually poems are automatically recognized by short lines
---        | AllCapsZeile Text   -- ^ to recognize titles automatically
         | LeerZeile
         | NeueSeite
         deriving (Show, Eq )
@@ -127,7 +112,6 @@ parseMarkupText tx =
                    ]
        Right ans ->     ans
 
-
 fileParser :: TextParsec [TextZeilen]
 fileParser = do
     optional (char '\65279')  -- to remove BOM if present
@@ -155,23 +139,16 @@ lineParser = do
         <?> "lineparser"
 
 
-
 zahlzeile :: TextParsec TextZeilen
 zahlzeile = do
     res <- many1  (oneOf "0123456789[]/")
                 -- these are characters encountered in german textarchive
---    res <- many1  digit  - simpler, but not including []
     many1 newline
     return $ TextZeile Zahl0 (TextWithMarks (s2t res) [])
 
 fussnotezeile :: TextParsec TextZeilen
 fussnotezeile = do
     fn <- fussnoteMarker
---    res <- many1  (oneOf "0123456789[")
---    res1 <- oneOf ")]"
-----    res <- many1  digit  - simpler, but not including []
---    res2 <- many (noneOf "\n")
---    many1 newline
     res <- parseTextWithMarkers
     let restwm = TextWithMarks (s2t fn <> twm res) [(0,s2t fn)]
     return $ TextZeile Fussnote0  $ restwm
@@ -188,8 +165,6 @@ markupzeile = do
     char '.'
     mk <- choice ( map (\t -> try (tokenElement t)) [BuchIgnoreEnd .. BuchEnde] )
     res <- parseTextWithMarkers
---    res <- many (noneOf "\n")
---    newline
     return $ MarkupZeile mk  res -- $ (TextWithMarks (trim' $ s2t res) [])
 
 --allCapsZeile  :: TextParsec TextZeilen
@@ -203,27 +178,6 @@ textzeileMitFussnote :: TextParsec TextZeilen
 textzeileMitFussnote = do
     res <- parseTextWithMarkers
     return . TextZeile Text0 $  res
---    res1 <- many (noneOf "\n[")
---    choice
---        [
---          try $ do -- found a marker has perhaps more markers
---                    fn <- fussnoteMarker
---                    let resx1 = [(res1, fn)]
---                    resx3 <- try annotherFootnoteMarker
---                    res4 <- many (noneOf "\n")
---                    let resx4 = [(res4, "")]
---                    let ress = concat [resx1, resx3, resx4]
---                    newline
---                    let res14 = s2t .concat . map fst $ ress
---                    let list = map (pair (lengthChar, s2t)) ress
---                    return $ TextZeileMitFussnote  res14  list
---
---         ,  do -- found a [ but not marker
---            res2 <- many (noneOf "\n")
---            newline
---            let res12 = res1 ++ res2
---            return $ TextZeile Text0 . s2t $ res12
---      ]
 
 pair (f,g) (a,b) = (f a, g b)
 -- todo algebras
@@ -258,13 +212,6 @@ annotherFootnoteMarker = do
         fn2 <-  fussnoteMarker
         xres <- optionMaybe $ try annotherFootnoteMarker
         return $ [(res3,  fn2)] ++ fromMaybe [] xres
-
-
---textzeileEnde :: Text -> TextParsec TextZeilen
---textzeileEnde start = do
---    res <- many (noneOf "\n")
---    newline
---    return . TextZeile Text0 $  (start <> s2t res)
 
 leerzeile :: TextParsec TextZeilen
 leerzeile = do
@@ -338,9 +285,7 @@ instance Zeilen TextZeilen where
 
     isKurzeZeile = (Kurz0 ==).ttt
 
-    -- zeilenText (TextZeile Kurz0 p) = p
     zeilenText (TextZeile _ p) = twm p
---    zeilenText (TextZeile Text0 t) = t
     zeilenText LeerZeile     = "\n"
 
     renderZeile (TextZeile Zahl0 p) = ".SeitenZahl " <> twm p <> "page \n"
@@ -369,7 +314,7 @@ markShortLines :: [TextZeilen] -> [TextZeilen]
 markShortLines tx = map (markOneSL limit1 limit2)  tx
     where
         (av,mx) = averageLengthTextLines tx
-        limit1 =  min  70 (round (0.9 * fromIntegral av))
+        limit1 =  max 20 $ min  70 (round (0.9 * fromIntegral av))
         limit2 = 120
 
 
@@ -378,7 +323,6 @@ markOneSL limitshort limitlong (TextZeile Text0 t)
     | lengthChar txt < limitshort = TextZeile Kurz0 t
     | lengthChar txt > limitlong =  TextZeile Para0 t
     | otherwise                =  TextZeile Text0 t
-
   where txt = twm t
 
 markOneSL _ _ x = x
@@ -403,7 +347,6 @@ averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
         totChar = sum lengthLs
         lengthLs = map (lengthChar . zeilenText) $ txtLs
         maxChars = maximum lengthLs
-
 
 --------------------
 #include "MarkupText.res"
