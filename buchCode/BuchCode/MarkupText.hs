@@ -332,6 +332,7 @@ markAllCapsLines :: [TextZeilen] -> [TextZeilen]
 markAllCapsLines = map markOneAllCaps
 
 markOneAllCaps :: TextZeilen -> TextZeilen
+markOneAllCaps tz @ (TextZeile Zahl0 t) = tz
 markOneAllCaps tx @ (TextZeile _ t)  =
     if isCapitalizedTitle (twm t) then TextZeile AllCaps0 t else tx
 markOneAllCaps x = x

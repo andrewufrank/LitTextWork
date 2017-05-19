@@ -1,133 +1,115 @@
 ----------- test results
 result0BAC =
 
-    [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 1},
+    [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "55", tlline = 1},
             tztext = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 2},
-            tztext = TextWithMarks{twm = "55", twmMarks = []}},
-     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 3},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "66", tlline = 3},
             tztext = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 4},
+     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "66", tlline = 4},
             tztext =
               TextWithMarks{twm = "eine kurze [vielleicht wichtige] zeile",
                             twmMarks = []}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 5},
-            tztext = TextWithMarks{twm = "66", twmMarks = []}},
-     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 6},
+     TZtext{tzt = Kurz0,
+            tzloc = TextLoc{tlpage = "[54/0002]", tlline = 6},
             tztext = TextWithMarks{twm = "als", twmMarks = []}},
-     TZneueSeite{tzloc = TextLoc{tlpage = "", tlline = 7}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 8},
-            tztext = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 9},
+     TZneueSeite{tzloc = TextLoc{tlpage = "[54/0002]", tlline = 7}},
+     TZtext{tzt = Text0,
+            tzloc = TextLoc{tlpage = "[54/0002]", tlline = 9},
             tztext =
               TextWithMarks{twm = "da\223 man ihm erstens,", twmMarks = []}},
-     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 10},
+     TZtext{tzt = Kurz0,
+            tzloc = TextLoc{tlpage = "[54/0002]", tlline = 10},
             tztext = TextWithMarks{twm = "als", twmMarks = []}},
-     TZneueSeite{tzloc = TextLoc{tlpage = "", tlline = 11}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 12},
-            tztext = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 13},
+     TZneueSeite{tzloc = TextLoc{tlpage = "[54/0002]", tlline = 11}},
+     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 13},
             tztext =
               TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
                             twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]}},
-     TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 15},
+     TZleer{tzloc = TextLoc{tlpage = "[44]", tlline = 14}},
+     TZmarkup{tzloc = TextLoc{tlpage = "[44]", tlline = 15},
               tztext =
                 TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]"), (0, "")]},
               tztok = BuchTitel},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 16},
+     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 16},
             tztext =
               TextWithMarks{twm = "zweite,  kurze zeile",
                             twmMarks =
                               [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 17},
+     TZtext{tzt = AllCaps0,
+            tzloc = TextLoc{tlpage = "[44]", tlline = 17},
             tztext =
               TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
                             twmMarks = [(34, "[4]"), (0, "")]}},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 18},
+     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 18},
             tztext =
               TextWithMarks{twm = "Old Rodilard, a certain cat,",
                             twmMarks = [(16, "[5]"), (15, "")]}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 19},
+     TZtext{tzt = AllCaps0,
+            tzloc = TextLoc{tlpage = "[44]", tlline = 19},
             tztext = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 20},
-            tztext = TextWithMarks{twm = "[44]", twmMarks = []}},
-     TZtext{tzt = Fussnote0, tzloc = TextLoc{tlpage = "", tlline = 21},
+     TZtext{tzt = Fussnote0,
+            tzloc = TextLoc{tlpage = "77", tlline = 21},
             tztext =
-              TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 22},
-            tztext = TextWithMarks{twm = "77", twmMarks = []}}]
+              TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}}]
 
 result1BAC =
 
-    [TZleer{tzloc = TextLoc{tlpage = "", tlline = 1}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 2},
+    [TZleer{tzloc = TextLoc{tlpage = "11", tlline = 1}},
+     TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 2},
               tztext = TextWithMarks{twm = "German", twmMarks = []},
               tztok = BuchSprache},
-     TZleer{tzloc = TextLoc{tlpage = "", tlline = 3}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 4},
+     TZleer{tzloc = TextLoc{tlpage = "11", tlline = 3}},
+     TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 4},
               tztext = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []},
               tztok = BuchAuthor},
-     TZleer{tzloc = TextLoc{tlpage = "", tlline = 5}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 6},
+     TZleer{tzloc = TextLoc{tlpage = "11", tlline = 5}},
+     TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 6},
               tztext = TextWithMarks{twm = "(Krieg f\252r Welt)", twmMarks = []},
               tztok = BuchTitel},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 7},
-            tztext = TextWithMarks{twm = "11", twmMarks = []}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 8},
+     TZmarkup{tzloc = TextLoc{tlpage = "12", tlline = 8},
               tztext =
                 TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
                               twmMarks = []},
               tztok = BuchHL1},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 9},
-            tztext = TextWithMarks{twm = "12", twmMarks = []}},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 10},
+     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "13", tlline = 10},
             tztext =
               TextWithMarks{twm =
                               "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
                             twmMarks = []}},
-     TZleer{tzloc = TextLoc{tlpage = "", tlline = 11}},
-     TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 12},
+     TZleer{tzloc = TextLoc{tlpage = "13", tlline = 11}},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "13", tlline = 12},
             tztext =
               TextWithMarks{twm = "Er fragte sich als zweiter Paragraph.",
                             twmMarks = []}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 13},
-            tztext = TextWithMarks{twm = "13", twmMarks = []}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}}]
 
 result2BAC =
 
-    [TZleer{tzloc = TextLoc{tlpage = "", tlline = 1}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 2},
+    [TZleer{tzloc = TextLoc{tlpage = "11", tlline = 1}},
+     TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 2},
               tztext = TextWithMarks{twm = "German", twmMarks = []},
               tztok = BuchSprache},
-     TZleer{tzloc = TextLoc{tlpage = "", tlline = 3}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 4},
+     TZleer{tzloc = TextLoc{tlpage = "11", tlline = 3}},
+     TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 4},
               tztext = TextWithMarks{twm = "PETER WATERHOUSE", twmMarks = []},
               tztok = BuchAuthor},
-     TZleer{tzloc = TextLoc{tlpage = "", tlline = 5}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 6},
+     TZleer{tzloc = TextLoc{tlpage = "11", tlline = 5}},
+     TZmarkup{tzloc = TextLoc{tlpage = "11", tlline = 6},
               tztext =
                 TextWithMarks{twm =
                                 "(Krieg f\252r Welt) - als test fuer paragraph per zeile",
                               twmMarks = []},
               tztok = BuchTitel},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 7},
-            tztext = TextWithMarks{twm = "11", twmMarks = []}},
-     TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 8},
+     TZmarkup{tzloc = TextLoc{tlpage = "12", tlline = 8},
               tztext =
                 TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
                               twmMarks = []},
               tztok = BuchHL1},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 9},
-            tztext = TextWithMarks{twm = "12", twmMarks = []}},
-     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 10},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "13", tlline = 10},
             tztext =
               TextWithMarks{twm =
                               "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
                             twmMarks = []}},
-     TZtext{tzt = AllCaps0, tzloc = TextLoc{tlpage = "", tlline = 11},
-            tztext = TextWithMarks{twm = "13", twmMarks = []}},
      TZtext{tzt = Para0, tzloc = TextLoc{tlpage = "", tlline = 12},
             tztext =
               TextWithMarks{twm =
@@ -213,11 +195,13 @@ result5BAC =
 -- test inputs
 
 
+
 result0BA =
+
 
     [TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "55", twmMarks = []}},
      TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
@@ -225,12 +209,12 @@ result0BA =
                ttx =
                  TextWithMarks{twm = "eine kurze [vielleicht wichtige] zeile",
                                twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "66", twmMarks = []}},
      TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "als", twmMarks = []}},
      NeueSeite,
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
@@ -238,7 +222,7 @@ result0BA =
      TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "als", twmMarks = []}},
      NeueSeite,
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
@@ -257,18 +241,19 @@ result0BA =
                ttx =
                  TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
                                twmMarks = [(34, "[4]"), (0, "")]}},
+
      TextZeile{ttt = Text0,
                ttx =
                  TextWithMarks{twm = "Old Rodilard, a certain cat,",
                                twmMarks = [(16, "[5]"), (15, "")]}},
      TextZeile{ttt = AllCaps0,
                ttx = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[44]", twmMarks = []}},
      TextZeile{ttt = Fussnote0,
                ttx =
                  TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "77", twmMarks = []}}]
 
 result1BA =
@@ -282,13 +267,13 @@ result1BA =
      LeerZeile,
      MarkupZeile{ttok = BuchTitel,
                  ttx = TextWithMarks{twm = "(Krieg f\252r Welt)", twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "11", twmMarks = []}},
      MarkupZeile{ttok = BuchHL1,
                  ttx =
                    TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
                                  twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "12", twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
@@ -296,19 +281,17 @@ result1BA =
                                  "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
                                twmMarks = []}},
      LeerZeile,
-     TextZeile{ttt = Text0,
+     TextZeile{ttt = Kurz0,
                ttx =
                  TextWithMarks{twm = "Er fragte sich als zweiter Paragraph.",
                                twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "13", twmMarks = []}},
      MarkupZeile{ttok = BuchEnde,
                  ttx = TextWithMarks{twm = "", twmMarks = []}}]
 
 
-result2BA =
-
-    [LeerZeile,
+result2BA =    [LeerZeile,
      MarkupZeile{ttok = BuchSprache,
                  ttx = TextWithMarks{twm = "German", twmMarks = []}},
      LeerZeile,
@@ -320,20 +303,20 @@ result2BA =
                    TextWithMarks{twm =
                                    "(Krieg f\252r Welt) - als test fuer paragraph per zeile",
                                  twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "11", twmMarks = []}},
      MarkupZeile{ttok = BuchHL1,
                  ttx =
                    TextWithMarks{twm = "Unsere Br\228uche werden lebendig",
                                  twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "12", twmMarks = []}},
      TextZeile{ttt = Kurz0,
                ttx =
                  TextWithMarks{twm =
                                  "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
                                twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "13", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
@@ -349,6 +332,7 @@ result2BA =
                  ttx = TextWithMarks{twm = "", twmMarks = []}}]
 
 result3BA =
+
     [LeerZeile,
      MarkupZeile{ttok = BuchSprache,
                  ttx = TextWithMarks{twm = "German", twmMarks = []}},
@@ -490,7 +474,7 @@ result3BA =
                  TextWithMarks{twm =
                                  "Finger so viel. Ich \246ffnete die Hand, hielt sie ge\246ffnet vor mich hin, die",
                                twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "51", twmMarks = []}},
      TextZeile{ttt = Text0,
                ttx =
@@ -539,6 +523,7 @@ result3BA =
 
 result4BA =
 
+
     [MarkupZeile{ttok = BuchSprache,
                  ttx = TextWithMarks{twm = "German", twmMarks = []}},
      MarkupZeile{ttok = BuchISBN,
@@ -553,7 +538,7 @@ result4BA =
                                  twmMarks = []}},
      MarkupZeile{ttok = BuchDedikation,
                  ttx = TextWithMarks{twm = "f\252r C.D.", twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "6", twmMarks = []}},
      MarkupZeile{ttok = BuchHL1,
                  ttx = TextWithMarks{twm = "Kapitel 1 REPULSION", twmMarks = []}},
@@ -562,14 +547,14 @@ result4BA =
                  TextWithMarks{twm =
                                  "Ein gefilmtes Auge, angeheftet an einem bewusstlosen K\246rper. Es sieht nichts, denn die Kamera hat ihm schon die Sehkraft geraubt.  Er hatte uns mehrmals von seinem Aufenthalt in Berlin und einem gewissen \"Pergamonmuseum\" erz\228hlt. \"Pergamon\"",
                                twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "7", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
                  TextWithMarks{twm =
                                  "klang wie der Name eines Wandervogels, und uns gefiel die Vorstellung des Berliner Himmels, in dem dieser Vogel flatterte.  Einer",
                                twmMarks = []}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "8", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
@@ -577,7 +562,7 @@ result4BA =
                                  "von ihnen nahm mir meine Reisetasche ab. Was sollte man einem solchen Manne schreiben, der sich offenbar verrannt hatte. Sollte man ihm vielleicht raten, wieder nach Hause zu kommen, seine Existenz hierher zu verlegen, alle die alten freundschaftlichen Beziehungen wieder aufzunehmen \8212 wof\252r ja kein Hindernis bestand \8212 und im \252brigen auf die Hilfe der Freunde zu vertrauen? Das bedeutete aber nichts anderes, als",
                                twmMarks = []}},
      NeueSeite,
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
      TextZeile{ttt = Para0,
                ttx =
