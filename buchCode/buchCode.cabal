@@ -13,10 +13,12 @@ author: Andrew U. Frank
 library
     build-depends:
         base
-        , uniform-strings
+--        , uniform-strings
         , uniform-error
         , uniform-fileio
-        , rdf4hextension
+--        , rdf4hextension
+        , litFoundation
+        , readMarkup
         , parsec
         , parsec-extra
         , split
@@ -35,9 +37,11 @@ Test-Suite  TestAuto
     main-is:    TestMain.hs
     build-depends: base
         , HTF
-        , uniform-strings
+--        , uniform-strings
         , uniform-fileio
         , uniform-convenience
+        , litFoundation
+        , readMarkup
         , buchCode
     hs-source-dirs: src
     default-language: Haskell2010

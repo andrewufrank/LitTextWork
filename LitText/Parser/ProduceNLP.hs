@@ -34,8 +34,8 @@ import           Data.RDF
 --import           Data.Text.Encoding           (decodeLatin1, encodeUtf8)
 import           Parser.Foundation
 import Lines2para.Lines2para
-import           Lines2para.Lines2paraTests
---    (result1C_tzResult1, result1A_textstate)  -- for testing
+--import           Lines2para.Lines2paraTests
+----    (result1C_tzResult1, result1A_textstate)  -- for testing
 import Parser.ReadMarkupAB
 
 --import           Parser.ProduceLit            (buchURIx, paraSigl)

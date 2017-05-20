@@ -12,6 +12,7 @@
 -- seitenzahlen must be numbers (not alpha) - is used to parse!
 -- .ende is necessary to distribute page numbers!
 -----------------------------------------------------------------------------
+{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
@@ -20,8 +21,9 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2para (
-    paragraphs2TZlit
+module Lines2para.Lines2para (htf_thisModulesTests   -- for tests
+
+    ,  paragraphs2TZlit
 -- other exports are for Lines2paraTests:
 --    , formParagraphs
 --    , distributeIgnore
@@ -35,8 +37,8 @@ module Lines2para.Lines2para (
         )  where
 
 
-import BuchCode.MarkupText (Zeilen (..), TextZeilen (..), TextWithMarks (..))
-import BuchCode.BuchToken (LanguageCode (..), BuchToken (..), markerPure)
+import BuchCode.MarkupText
+import BuchCode.BuchToken
 import Lines2para.HandleLayout
 
 import           Data.List.Split
@@ -46,7 +48,8 @@ import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)
-import           Text.Printf         (printf)
+--import           Text.Printf         (printf)
+import           Test.Framework
 
 --newtype ParaID = ParaID Text deriving (Show, Eq)
 ---- just to avoid confusions
@@ -75,6 +78,25 @@ paragraphs2TZlit =
     distributeLanguage .
     distributeIgnore
     -- test BA -> BAA ... BAG -> C
+
+paragraphs2TZsimple :: [TZ] -> [TZ]  -- test BA -> C
+-- ^ produce the text files (ignores removed, language marked)
+-- but not paragraphs
+-- page number and line numbers are in layout
+paragraphs2TZsimple =
+    distributeLanguage .
+    distributeIgnore
+    -- test BA -> BAA ... BAG -> C
+
+-- test the first (expected ok) part of the chain
+test_1_BA_BAD =do
+        putIOwords ["test_1_BA_BAD", "from result1BA_tz_markupResult1 to result1BAD"]
+        assertEqual result1BAD
+            (paragraphs2TZsimple  result1BAC)
+test_2_BA_BAD =do
+        putIOwords ["test_2_BA_BAD", "from result2BA_tz_markupResult1 to result2BAD"]
+        assertEqual result2BAD
+                (paragraphs2TZsimple result2BAC)
 
 ------------LANGUAGE
 
@@ -167,6 +189,7 @@ markTZsWithIgnore  = map  markoneWithIgnore
 -- possibly automatic from guttenberg texts
         markoneWithIgnore  tz1 = tz1
 
+#include "Lines2paraTestResults.res"
 
 {-
 ----------- PARA

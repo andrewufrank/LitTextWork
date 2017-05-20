@@ -20,32 +20,41 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 
-module BuchCode.MarkupText ( TextZeilen (..)
-    , TextType (..)
-    , TextWithMarks (..)
-    , Zeilen (..)
-    , BuchToken (..)
-    , parseMarkup
-    , countSeiten
-    , countLeerzeilen
-    , readSeitenzahl, checkSeitenzahlen
-    , averageLengthTextLines
-    , combine2linesWithHyphenation
-        , htf_thisModulesTests   -- for tests
-        , result0B, result0BA
-        , result1B, result1BA
-        , result2B, result2BA
-        , result3B, result3BA
-        , result4B, result4BA
+module BuchCode.MarkupText
+    (module BuchCode.MarkupText
+    , module BuchCode.BuchToken
+    , module Parser.Foundation
+    , module Uniform.Error
     ) where
+--( TextZeilen (..)
+--    , TextType (..)
+--    , TextWithMarks (..)
+--    , Zeilen (..)
+--    , BuchToken (..)
+--    , parseMarkup
+--    , countSeiten
+--    , countLeerzeilen
+--    , readSeitenzahl, checkSeitenzahlen
+--    , averageLengthTextLines
+--    , combine2linesWithHyphenation
+--        , htf_thisModulesTests   -- for tests
+--        , result0B, result0BA
+--        , result1B, result1BA
+--        , result2B, result2BA
+--        , result3B, result3BA
+--        , result4B, result4BA
+--        , result5B, result5BA
+--    ) where
 
 import           BuchCode.BuchToken
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
 import           Uniform.Error
-import           Uniform.Strings   hiding ((<|>))
+import Parser.Foundation  hiding ((<|>))
+--import           Uniform.Strings   hiding ((<|>))
 import           Test.Framework
+import Parser.ReadMarkupAB
 
 
 class Zeilen z where
@@ -98,7 +107,7 @@ test_2B_BA = assertEqual result2BA (parseMarkup result2B)
 test_3B_BA = assertEqual result3BA (parseMarkup result3B)
 test_4B_BA = assertEqual result4BA (parseMarkup result4B)
 test_5B_BA = assertEqual result5BA (parseMarkup result5B)
-
+test_6B_BA = assertEqual result6BA (parseMarkup result6B)
 
 renderETTs :: [TextZeilen] -> Text
 -- renders the lines

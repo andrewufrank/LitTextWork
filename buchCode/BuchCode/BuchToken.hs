@@ -21,10 +21,11 @@ module BuchCode.BuchToken (BuchTokenized(..)
             , LanguageCode (..)
             ) where
 
-import           Data.RDF.Extension (LanguageCode (..), PartURI)
+--import           Data.RDF.Extension (LanguageCode (..), PartURI)
 import           Uniform.Error
-import           Uniform.Strings
+--import           Uniform.Strings
 --import Safe  -- is export from Error
+import Parser.Foundation
 
 
 data BuchTokenized a = BuchTokenized { btokenType:: a

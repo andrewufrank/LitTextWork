@@ -39,10 +39,10 @@ import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 import           Parser.Foundation
 import Parser.ReadMarkupAB (result1A, result2A, result3A, result4A)
 import Lines2para.Lines2para
-import          Lines2para.Lines2paraTests (result1C, result2C, result3C
---        , result1B_textstate, result2B_textstate, result3B_textstate
---            , result1A_textstate, result2A_textstate,result3A_textstate
-            )
+--import          Lines2para.Lines2paraTests (result1C, result2C, result3C
+----        , result1B_textstate, result2B_textstate, result3B_textstate
+----            , result1A_textstate, result2A_textstate,result3A_textstate
+--            )
 import           Uniform.Error           (errorT)
 import           Uniform.Strings         hiding ((<|>))
 --import Uniform.FileIO (LegalPathname (..))  -- for test

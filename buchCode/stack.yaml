@@ -16,9 +16,13 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
+- location: ../LitFoundation
+  extra-dep: true
 - location: ../rdf4hextension
   extra-dep: true
 - location: ../rdf4store
+  extra-dep: true
+- location: ../readMarkup
   extra-dep: true
 extra-deps:
 - data-easy-0.7.0

@@ -15,7 +15,7 @@ import           Test.Framework
 import {-@ HTF_TESTS @-} Parser.ReadMarkupAB
 import {-@ HTF_TESTS @-} BuchCode.MarkupText
 import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
---import   {-@ HTF_TESTS @-} Lines2para.Lines2paraTests
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2para
 --import   {-@ HTF_TESTS @-} Parser.ProduceLit
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLP
 ------ makes call to NLP

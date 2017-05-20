@@ -17,11 +17,12 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ReadMarkupAB (textstate2Text
-    , htf_thisModulesTests
-    , result1A, result2A, result3A, result4A
-    , result1B, result2B, result3B, result4B
-        ) where
+module Parser.ReadMarkupAB where
+--    (textstate2Text
+--    , htf_thisModulesTests
+--    , result1A, result2A, result3A, result4A
+--    , result1B, result2B, result3B, result4B
+--        ) where
 
 import           Test.Framework
 

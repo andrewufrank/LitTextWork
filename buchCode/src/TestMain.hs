@@ -8,7 +8,7 @@
 
 module Main     where      -- must have Main (main) or Main where
 
-import Uniform.Strings
+--import Uniform.Strings
 import           Test.Framework
 import {-@ HTF_TESTS @-} BuchCode.MarkupText
 

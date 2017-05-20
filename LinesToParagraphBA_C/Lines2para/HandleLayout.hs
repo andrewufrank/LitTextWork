@@ -21,11 +21,12 @@
 {-# OPTIONS_GHC -w #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
-module Lines2para.HandleLayout (htf_thisModulesTests
-    , paragraphs2TZlayout
-    , distributePageNrs , etts2tzs
-    , TZ (..), TextLoc (..)
-        )  where
+module Lines2para.HandleLayout where
+-- (htf_thisModulesTests
+--    , paragraphs2TZlayout
+--    , distributePageNrs , etts2tzs
+--    , TZ (..), TextLoc (..)
+--        )  where
 
 import Test.Framework
 import BuchCode.MarkupText (Zeilen (..), TextZeilen (..), TextType (..)
