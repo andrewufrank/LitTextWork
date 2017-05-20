@@ -17,29 +17,31 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-{-# OPTIONS_GHC -w #-}
+--{-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2para (htf_thisModulesTests   -- for tests
+module Lines2para.Lines2para where
+--    (htf_thisModulesTests   -- for tests
+--
+--    ,  paragraphs2TZlit
+---- other exports are for Lines2paraTests:
+----    , formParagraphs
+----    , distributeIgnore
+--    , distributeLanguage
+----    , distributePageNrs
+----    , etts2tzs
+----    , distributeHeader
+----    , markParaNr
+----    , filterZeilen
+----    , TZ (..), TextLoc (..), ParaID (..), unparaID
+--        )  where
 
-    ,  paragraphs2TZlit
--- other exports are for Lines2paraTests:
---    , formParagraphs
---    , distributeIgnore
-    , distributeLanguage
---    , distributePageNrs
---    , etts2tzs
---    , distributeHeader
---    , markParaNr
---    , filterZeilen
---    , TZ (..), TextLoc (..), ParaID (..), unparaID
-        )  where
 
-
-import BuchCode.MarkupText
-import BuchCode.BuchToken
-import Lines2para.HandleLayout
+--import BuchCode.MarkupText
+--import BuchCode.BuchToken
+import Lines2para.Lines2ignore
 
 import           Data.List.Split
 --import           Parser.Foundation   hiding ((</>)) -- gives TZ
@@ -51,10 +53,25 @@ import Data.List (nub)
 --import           Text.Printf         (printf)
 import           Test.Framework
 
---newtype ParaID = ParaID Text deriving (Show, Eq)
----- just to avoid confusions
---unparaID (ParaID t) = t
---instance Zeros ParaID where zero = formatParaID zero
+-- the format accumulation all detail info to build the triples.
+-- only tzpara and tzmarkup in final result
+data TZ2 =
+--         TZtext {tzt:: TextType, tzloc :: TextLoc
+--                    , tztext:: TextWithMarks
+--                    , tzlang :: LanguageCode }
+         TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
+                , tz2para :: ParaNum
+                , tz2InPart :: ParaNum}
+        | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
+                        , tz2tok :: BuchToken, tz2lang :: LanguageCode
+                        , tz2para :: ParaNum
+                        , tz2InPart :: ParaNum
+                        }
+--        | TZleer  {tzloc :: TextLoc}
+--        | TZneueSeite  {tzloc :: TextLoc}
+--        | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
+            deriving (Show, Eq )
+
 --
 --formatParaID :: Int -> ParaID
 --formatParaID nr = ParaID $ "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
@@ -65,157 +82,68 @@ import           Test.Framework
 ---- format to 3 digits
 
 
-unparseTZs :: [TZ] -> Text
--- produce a text which can be written to a file and compared with the original
-unparseTZs = concat' . map renderZeile
 
-paragraphs2TZlit :: [TZ] -> [TZ]  -- test BA -> C
--- ^ produce the paragraphs with the seitenzahlen in each line
--- and the header linked
-paragraphs2TZlit =
---    distributeHeader . markParaNr .
---    formParagraphs .
-    distributeLanguage .
-    distributeIgnore
-    -- test BA -> BAA ... BAG -> C
-
-paragraphs2TZsimple :: [TZ] -> [TZ]  -- test BA -> C
+paragraphs2TZpara :: [TZ] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
 -- but not paragraphs
 -- page number and line numbers are in layout
-paragraphs2TZsimple =
-    distributeLanguage .
-    distributeIgnore
-    -- test BA -> BAA ... BAG -> C
+paragraphs2TZpara =
+--- ^ produce the paragraphs with the seitenzahlen in each line
+--- and the header linked
+    distributeHeader . markParaNr .
+--    filterAlleLeer .  -- these are not used after forming paras
+    formParagraphs
+        -- test BAD -> BAE ...   -> C
 
 -- test the first (expected ok) part of the chain
-test_1_BA_BAD =do
-        putIOwords ["test_1_BA_BAD", "from result1BA_tz_markupResult1 to result1BAD"]
-        assertEqual result1BAD
-            (paragraphs2TZsimple  result1BAC)
-test_2_BA_BAD =do
-        putIOwords ["test_2_BA_BAD", "from result2BA_tz_markupResult1 to result2BAD"]
-        assertEqual result2BAD
-                (paragraphs2TZsimple result2BAC)
+test_1_BAD_BAE =do
+        putIOwords ["test_1_BAD_BAE", "BAD to result1BAE"]
+        assertEqual result1BAE
+            (paragraphs2TZpara  result1BAD)
+test_2_BAD_BAE =do
+        putIOwords ["test_2_BAD_BAE", "BAD to result2BAD"]
+        assertEqual result2BAE
+                (paragraphs2TZpara result2BAD)
+test_6_BAD_BAE =do
+        putIOwords ["test_6_BAD_BAE", "BAD to result6BAD"]
+        assertEqual result6BAE
+                (paragraphs2TZpara result6BAD)
 
-------------LANGUAGE
 
-distributeLanguage :: [TZ] -> [TZ]
--- mark the zeilen with the language
--- removes the language markup lines
-distributeLanguage tz0 = concat . markSublistLanguage . pages $ tz0
-    where
-        pages :: [TZ] -> [[TZ]]
-        pages  = (split .  keepDelimsL . whenElt) isLanguageCode
---      prepends
-        isLanguageCode TZmarkup{tztok=BuchSprache} = True
-        isLanguageCode _                 = False
-
-        getLangCode _ tz3@TZmarkup{tztext=tx}  =
-                    readLanguageCode "distributeLanguage" .twm $ tx
-        getLangCode l tz3 = errorT ["distributeLanguage - languageCode 2"
-                , showT tz3, "\n"
-                , unlines' . map showT $ l
-                , "fulllist is \n", unlines' . map showT $ tz0]
-
-        markSublistLanguage :: [[TZ]] -> [[TZ]]
-        markSublistLanguage []       = []
-        markSublistLanguage (s1:sl1) = s1 : map markSublistLanguage2 sl1
-        -- s1 is the partial start sublist with no language code
-
-        markSublistLanguage2 :: [TZ] -> [TZ]
-        markSublistLanguage2 [] = []
-        markSublistLanguage2 sl2 = markTZsWithLanguage
-                (getLangCode sl2 . headNote "distributeLanguage" $ sl2) (tail sl2)
-
-readLanguageCode :: Text -> Text -> LanguageCode
--- ^ read the code for the language German, Deutsch, Englisch
---readLanguageCode  = readNoteT
--- todo move to parser
-readLanguageCode _ "Deutsch" = German
-readLanguageCode msg l  = readNoteT msg l
-
-markTZsWithLanguage :: LanguageCode -> [TZ] -> [TZ]
--- put the page number into the list
-markTZsWithLanguage lg = map  (markoneLanguage lg)
-    where
-        markoneLanguage lg tz@TZtext {} = tz {tzlang = lg }
-        markoneLanguage lg tz@TZmarkup {} = tz {tzlang = lg }
-        markoneLanguage lg tz = tz
-
-------- distribute ignore to  ignore end TODO
-distributeIgnore :: [TZ] -> [TZ]
--- mark the zeilen with the Ignore
-distributeIgnore  = concat . markSublistIgnore . pages
-    where
-        pages :: [TZ] -> [[TZ]]
-        pages = (split .  keepDelimsL . whenElt) isIgnoreCode
---      prepends
-        isIgnoreCode TZmarkup{tztok=BuchIgnoreTo} = True
-        isIgnoreCode TZmarkup{tztok=BuchIgnoreEnd} = True
-        isIgnoreCode _            = False
-
-        -- getLangCode _ tz3@TZmarkup{}  = readIgnoreCode "distributeIgnore" . tztext $ tz3
-        -- getLangCode l tz3 = errorT ["distributeIgnore - IgnoreCode 2", showT tz3, "\n"
-        --         , unlines' . map showT $ l
-        --         , "fulllist is \n", unlines' . map showT $ tz0]
-
-        markSublistIgnore :: [[TZ]] -> [[TZ]]
-        markSublistIgnore []       = []
-        markSublistIgnore (s1:sl1) = s1 : map markSublistIgnore2 sl1
-        -- s1 is the partial start sublist with no Ignore code
-
-        markSublistIgnore2 :: [TZ] -> [TZ]
-        markSublistIgnore2 [] = []
-        markSublistIgnore2 (s2: sl2) = case tztok s2 of
-        -- a list of sublist with a ignore at start
-                    BuchIgnoreTo  -> markTZsWithIgnore sl2  -- this is a sublist to ignore
-                    BuchIgnoreEnd -> sl2  -- this is to keep
-                    _             -> errorT ["markSublistIgnore2", showT s2]
-
--- readIgnoreCode :: Text -> Text -> IgnoreCode
--- readIgnoreCode msg t = readNoteT msg t
-
-markTZsWithIgnore ::  [TZ] -> [TZ]
--- this should convert all lines, independent to ignorezeile
---markTZsWithIgnore  = map  (\tz1 -> TZignore {tzloc = tzloc tz1, tztext = tztext tz1, tzlang = tzlang tz1 } )
-markTZsWithIgnore  = map  markoneWithIgnore
-    where
-        markoneWithIgnore  tz1@TZtext {} =
-                TZignore {tzloc = tzloc tz1, tztext = tztext tz1 }
---        markoneWithIgnore  tz1@TZmarkup {} =
---                TZignore {tzloc = tzloc tz1, tztext = tztext tz1 }
--- keep the markup codes in the ignore blocks, simplifies markup
--- possibly automatic from guttenberg texts
-        markoneWithIgnore  tz1 = tz1
 
 #include "Lines2paraTestResults.res"
 
-{-
+
 ----------- PARA
 
-formParagraphs :: [TZ] -> [TZ]
+formParagraphs :: [TZ] -> [TZ2]
 -- grouplines to meaningful paragraphs (for nlp)
 formParagraphs [] = []
-formParagraphs [t] = [t]
+--formParagraphs [t] = [t]
 formParagraphs (t:ts) = case t of
-    TZzahl {}  -> errorT ["formParagraphs","should not have TZzahl left", showT t]
-    TZneueSeite {}  -> errorT ["formParagraphs","should not have TZneueSeite left", showT t]
-    TZmarkup {} -> t : formParagraphs ts
     TZleer {} -> formParagraphs ts  -- removes empty lines
+    TZneueSeite {}  -> errorT ["formParagraphs","should not have TZneueSeite left", showT t]
     TZignore {} -> formParagraphs ts  -- removes ignore lines
-    TZtext {} -> p : formParagraphs rest
+
+    TZmarkup {..} -> TZ2markup {tz2loc=tzloc, tz2text=tztext
+                    , tz2tok=tztok, tz2lang=tzlang
+                    , tz2para = zero, tz2InPart=zero} : formParagraphs ts
+
+    TZtext {tzt=Zahl0}  -> errorT ["formParagraphs","should not have TZzahl left", showT t]
+
+    TZtext {tzt=Text0} -> p : formParagraphs rest
                         where (p,rest) = collectPara (t:ts)
-    TZparaZeile {} -> p : formParagraphs ts
+    TZtext {tzt=Para0} -> p : formParagraphs ts
             where p = collectInParagrah [t]
-    TZkurz {} -> p : formParagraphs rest
+    TZtext {tzt=Kurz0} -> p : formParagraphs rest
                         where (p,rest) = collectKurz (t:ts)
+
     otherwise -> errorT ["formParagraph - other ", showT t]
 
 --formParagraphs x = errorT ["formParagraph - outer  ", showT x]
 
 
-collectPara :: [TZ] -> (TZ, [TZ])
+collectPara :: [TZ] -> (TZ2, [TZ])
 -- group longest poossible chain
 collectPara  tzs
     | null rest = (collectInParagrah ts, [])
@@ -229,53 +157,69 @@ collectPara  tzs
 lastChar :: Text -> Maybe Char
 lastChar t = if null' t then Nothing else Just . headNote "lastChar" . t2s$ t
 
-collectInParagrah :: [TZ] -> TZ
+collectInParagrah :: [TZ] -> TZ2
 -- collect the text lines in a paragraph
 collectInParagrah [] = errorT ["collectInParagrah ", "should not occur with empty list"]
 collectInParagrah tzs =
-    TZpara {tztzs  = tzs
-           , tzloc = TextLoc
+    TZ2para {tz2tzs  = tzs
+           , tz2loc = TextLoc
                 {tlpage = tlpage . tzloc . headNote "collectInParagrah" $ tzs
---                , tlpara = formatParaID 0
+
                 , tlline = tlline . tzloc . headNote "collectInParagrah 2" $ tzs
                 }
-           , tzlang = tzlang . headNote "collectInParagrah3" $ tzs
+           , tz2para = zero
+           , tz2lang = tzlang . headNote "collectInParagrah3" $ tzs
            -- could check that all have the same langauges
-           , tzInPart = zero  -- this is the id of the title? check that the titel has this
+           , tz2InPart = zero  -- this is the id of the title? check that the titel has this
         }
 
-collectKurz :: [TZ] -> (TZ, [TZ])
+collectKurz :: [TZ] -> (TZ2, [TZ])
 -- group longest poossible chain, including merging paragraph
 -- paragraphs broken by seitenzahl is not merged - should go here?
 collectKurz  tzs
     | null rest = (collectInParagrah ts, [])
-    | isKurzeZeile h  =  (collectInParagrah (ts ++ [h]), tail rest)
+    | isKurzeZeile h  = (collectInParagrah (ts ++ [h]), tail rest)
     | otherwise = (collectInParagrah ts, rest)
 
     where
         (ts, rest) = span isKurzeZeile tzs
         h = headNote "headCollectPara kurz" $ rest
 
-markParaNr :: [TZ] -> [TZ]
+filterAlleLeer :: [TZ] -> [TZ]
+filterAlleLeer = filter notLeer
+    where
+            notLeer (TZleer {}) = False
+            notLeer (TZneueSeite {}) = False
+            notLeer (TZmarkup {tztext=t}) = not . null' . twm $ t
+            notLeer _ = True
+-----------------------------------
+
+markParaNr :: [TZ2] -> [TZ2]
 ---- put paragrah numbers in (all TZ items are paragraphs, unless collected)
 markParaNr = zipWith markOnePara  [1..]
 
-markOnePara :: Int -> TZ -> TZ
-markOnePara nr tz = tz {tzloc = (tzloc tz) {tlpara = formatParaID nr} }
+markOnePara :: Int -> TZ2 -> TZ2
+markOnePara nr tz@TZ2para {} = tz { tz2para = ParaNum nr}
+markOnePara nr tz@TZ2markup {} = tz { tz2para = ParaNum nr}
+--markOnePara _ tz = error (show tz)
 
 
 --------------- HEADERS
+instance Zeilen TZ2 where
+    isMarkupX code TZ2markup{tz2tok=c} =  code == c
+    isMarkupX code _                 = False
+
 distributeHeader = distributeHeader2 BuchTitel
 
-distributeHeader2 :: BuchToken -> [TZ] -> [TZ]
+distributeHeader2 :: BuchToken -> [TZ2] -> [TZ2]
 -- mark the TZ with the immediately preceding header
 distributeHeader2  tok [] = []
 distributeHeader2  tok tzs = concat  .  markSublistHeader . chapters $ tzs
     where
-        chapters :: [TZ] -> [[TZ]]
+        chapters :: [TZ2] -> [[TZ2]]
         chapters = (split .  keepDelimsL . whenElt) (isMarkupX tok)
 
-        markSublistHeader :: [[TZ]] -> [[TZ]]
+        markSublistHeader :: [[TZ2]] -> [[TZ2]]
         -- the first must not be marked, the rest
         markSublistHeader [] = errorT ["markSublistHeader2", "empty list of sublist should not occur"]
 
@@ -284,7 +228,7 @@ distributeHeader2  tok tzs = concat  .  markSublistHeader . chapters $ tzs
         markSublistHeaderLower [] = []
         markSublistHeaderLower sl1 = getHeader sl1 : (
                          (\sl3 -> maybe sl3 (\tok2 -> distributeHeader2 tok2 sl3) (lowerHeader tok)) .
-                         markTZsWithHeader (tlpara . tzloc . getHeader $ sl1 )
+                         markTZsWithHeader (tz2para .  getHeader $ sl1 )
                          )
                         (tail sl1)
 
@@ -293,14 +237,14 @@ distributeHeader2  tok tzs = concat  .  markSublistHeader . chapters $ tzs
 --isHeader tz = isMarkupX BuchTitel tz || isMarkupX BuchHL1 tz
 --            || isMarkupX BuchHL2 tz || isMarkupX BuchHL3 tz
 
-markTZsWithHeader :: ParaID -> [TZ] -> [TZ]
+markTZsWithHeader :: ParaNum -> [TZ2] -> [TZ2]
 markTZsWithHeader p []           = [] -- errorT ["markTZsWithHeader", "empty list should not occur", showT p]
 markTZsWithHeader headerPara tzs = map  (markoneheader headerPara) tzs
 --markTZsWithHeader p t = errorT ["markTZsWithHeader", "should not occur2", showT p]
 
-markoneheader headerPara tz@TZpara{} = tz {tzInPart = headerPara}
-markoneheader headerPara tz@TZmarkup{} = tz {tzInPart = headerPara}
-markoneheader headerPara tz@TZleer{} = tz
+markoneheader headerPara tz@TZ2para{} = tz {tz2InPart = headerPara}
+markoneheader headerPara tz@TZ2markup{} = tz {tz2InPart = headerPara}
+--markoneheader headerPara tz@TZleer{} = tz
 markoneheader headerPara tz = errorT ["markoneheader", showT headerPara, showT tz,
         "at this stage in the transformation, only para, markup and leer should occur"]
 
@@ -316,5 +260,5 @@ lowerHeader l         = errorT ["lowerHeader", "for ", showT l]
 --filterZeilen :: [TZ] -> [TZ]
 ---- ^ remove some lines - here the neueSeite, where i have no idea what to do with
 --filterZeilen = filter (not.isNeueSeite)
--}
+
 

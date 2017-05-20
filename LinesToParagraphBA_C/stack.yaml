@@ -16,15 +16,16 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
-  extra-dep: true
 - location: ../rdf4hextension
   extra-dep: true
 - location: ../buchCode
   extra-dep: true
+- location: ../LitFoundation
+  extra-dep: true
+- location: ../readMarkup
+  extra-dep: true
 extra-deps:
 - data-easy-0.7.0
-- hgal-2.0.0.2
 - parsec-extra-0.2.0.0
 - rdf4h-3.0.1
-- test-invariant-0.4.5.0
 resolver: lts-8.13

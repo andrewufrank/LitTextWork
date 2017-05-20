@@ -16,12 +16,17 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# OPTIONS_GHC -fno-warn-missing-methods #-}
-{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-{-# OPTIONS_GHC -w #-}
+{-# OPTIONS_GHC -Wall #-}
+--{-# OPTIONS_GHC -fno-warn-missing-methods #-}
+--{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+--{-# OPTIONS_GHC -w #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
-module Lines2para.HandleLayout where
+module Lines2para.HandleLayout
+    (module Lines2para.HandleLayout
+    , module BuchCode.MarkupText
+    , module Uniform.Error
+    ) where
 -- (htf_thisModulesTests
 --    , paragraphs2TZlayout
 --    , distributePageNrs , etts2tzs
@@ -29,18 +34,21 @@ module Lines2para.HandleLayout where
 --        )  where
 
 import Test.Framework
-import BuchCode.MarkupText (Zeilen (..), TextZeilen (..), TextType (..)
-            , TextWithMarks (..))
-import BuchCode.BuchToken (LanguageCode (..), BuchToken (..), markerPure)
+--import Parser.Foundation
+import BuchCode.MarkupText
+--    (Zeilen (..), TextZeilen (..), TextType (..)
+--            , TextWithMarks (..))
+--import BuchCode.BuchToken
+--    (LanguageCode (..), BuchToken (..), markerPure)
 import           Data.List.Split
 -- todo strings
 import           Uniform.Error
-import           Uniform.Strings     hiding ((<|>), (</>))
+--import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.Zero
 -- todo include zero  in error and strings
 --import Uniform.FileIO
 -- TODO string s
-import Data.List (nub)
+--import Data.List (nub)
 --import           Text.Printf         (printf)
 
 
@@ -53,13 +61,25 @@ data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Show, Eq)
 
 instance Zeros TextLoc where zero = TextLoc zero zero
 
+newtype ParaNum = ParaNum Int deriving (Show, Eq)
+-- just to avoid confusions
+unparaID (ParaNum t) = t
+instance Zeros ParaNum where zero =  ParaNum zero
+
+-- the format accumulation all detail info to build the triples.
+-- only tzpara and tzmarkup in final result
 data TZ =
          TZtext {tzt:: TextType, tzloc :: TextLoc
                     , tztext:: TextWithMarks
                     , tzlang :: LanguageCode }
---        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode, tzInPart :: ParaID}
+--        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
+--                , tlpara :: ParaNum
+--                , tzInPart :: ParaNum}
         | TZmarkup  {tzloc :: TextLoc, tztext:: TextWithMarks
-                        , tztok :: BuchToken, tzlang :: LanguageCode}
+                        , tztok :: BuchToken, tzlang :: LanguageCode
+--                        , tlpara :: ParaNum
+--                        , tzInPart :: ParaNum
+                        }
         | TZleer  {tzloc :: TextLoc}
         | TZneueSeite  {tzloc :: TextLoc}
         | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
@@ -78,7 +98,10 @@ ett2tz (MarkupZeile BuchGedicht t) =
     TZtext {tzt=Kurz0, tztext = t,  tzloc = zero, tzlang=zero}
 ett2tz (MarkupZeile BuchEnde t) = TZleer {tzloc = zero}
 -- will be filtered out
-ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero, tzlang=zero}
+ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero
+        , tzlang=zero
+--        , tlpara = zero , tzInPart = zero
+             }
 ett2tz LeerZeile = TZleer {tzloc = zero}
 ett2tz (NeueSeite) = TZneueSeite {tzloc = zero}
 ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]
@@ -205,6 +228,9 @@ test_2_BA_BAC =do
 test_5_BA_BAC =do
         putIOwords ["test_5_BA_BAC", "from result5BA_tz_markupResult1 to result5BAC"]
         assertEqual result5BAC (paragraphs2TZlayout result5BA)
+test_6_BA_BAC =do
+        putIOwords ["test_6_BA_BAC", "from result6BA_tz_markupResult1 to result6BAC"]
+        assertEqual result6BAC (paragraphs2TZlayout result6BA)
 ----------- test results
 
 

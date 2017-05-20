@@ -18,11 +18,13 @@ library
         , uniform-fileio
         , uniform-algebras
         , buchCode
+        , litFoundation
         , split
         , HTF
 
     exposed-modules:
         Lines2para.Lines2para
+        Lines2para.Lines2ignore
         Lines2para.HandleLayout
 --        Lines2para.Lines2paraTests  -- should not been used, test in specific modules
     exposed: True
@@ -38,6 +40,7 @@ Test-Suite  TestAuto
         , uniform-strings
         , uniform-fileio
         , uniform-convenience
+        , litFoundation
         , lines2para
         , buchCode
     hs-source-dirs: src
