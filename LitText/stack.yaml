@@ -15,8 +15,10 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
+- ../LitFoundation
 - ../coreNLP
 - ../buchCode
+- ../readMarkup
 - ../rdf4hextension
 - '.'
 - ../LinesToParagraphBA_C

@@ -61,10 +61,6 @@ data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Show, Eq)
 
 instance Zeros TextLoc where zero = TextLoc zero zero
 
-newtype ParaNum = ParaNum Int deriving (Show, Eq)
--- just to avoid confusions
-unparaID (ParaNum t) = t
-instance Zeros ParaNum where zero =  ParaNum zero
 
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result

@@ -23,18 +23,20 @@ module Parser.Main2subTest (htf_thisModulesTests
 import           Test.Framework
 import           Parser.Foundation        hiding ((</>))
 
-import qualified          Parser.ReadMarkupAB as AB
-        (textstate2Text, result1B, result2B, result3B, result4B)
+import qualified          Parser.ReadMarkupAB
+--     as AB
+--        (textstate2Text, result1B, result2B, result3B, result4B)
 import           Lines2para.Lines2para hiding ((</>))
 --import qualified Lines2para.Lines2paraTests as C
 --                ( result1BA, result2BA, result3BA, result4BA,
 --                result1C, result2C, result3C, result4C)
 import           Store.Fuseki
-import           Uniform.Error
-import           Uniform.Strings
-import qualified BuchCode.MarkupText as ABA
-            (parseMarkup, result0B, result1B, result2B, result3B, result4B
-            , result1BA, result2BA, result3BA, result4BA)
+--import           Uniform.Error
+--import           Uniform.Strings
+import qualified BuchCode.MarkupText
+--    as ABA
+--            (parseMarkup, result0B, result1B, result2B, result3B, result4B
+--            , result1BA, result2BA, result3BA, result4BA)
 
 --
 ---- A_B test is in ReadMarkup

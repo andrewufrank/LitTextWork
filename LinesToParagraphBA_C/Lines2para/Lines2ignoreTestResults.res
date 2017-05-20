@@ -1,25 +1,5 @@
 
 
-result1C  :: [TZ]
-result1C  =
-    []
-
-result2C  :: [TZ]
-result2C  =
-    []
-
-
-result3C  =
-    []
-
-result4C =
-
-    []
-
-
-
-
-
 -- result from first step in lines2para (ignore, language)
 
 result1BAD =

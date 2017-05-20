@@ -80,6 +80,15 @@ test_1_BAE_C = do
 test_2_BAD_BAE = do
         putIOwords ["test_2_BAD_BAE", "from result2BAD to result2BAE"]
         assertEqual result2BAE (formParagraphs result2BAD)
+
+--test_2_BAD_BAE = do
+--        putIOwords ["test_2_BAD_BAE", "from result2BAD to result2BAE"]
+--        assertEqual result2BAE (formParagraphs result2BAD)
+--
+--test_2_BAD_BAE = do
+--        putIOwords ["test_2_BAD_BAE", "from result2BAD to result2BAE"]
+--        assertEqual result2BAE (formParagraphs result2BAD)
+
 test_2_BAE_C = do
         putIOwords ["test_2_BAE_C", "from result2BAE to result2C_tzResult1"]
         assertEqual result2C (distributeHeader . markParaNr

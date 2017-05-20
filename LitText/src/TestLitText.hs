@@ -12,12 +12,13 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Strings
 import           Test.Framework
-import {-@ HTF_TESTS @-} Parser.ReadMarkupAB
-import {-@ HTF_TESTS @-} BuchCode.MarkupText
-import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
---import   {-@ HTF_TESTS @-} Lines2para.Lines2para
---import   {-@ HTF_TESTS @-} Parser.ProduceLit
---import   {-@ HTF_TESTS @-} Parser.ProduceNLP
+--import {-@ HTF_TESTS @-} Parser.ReadMarkupAB
+--import {-@ HTF_TESTS @-} BuchCode.MarkupText
+--import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore
+import   {-@ HTF_TESTS @-} Lines2para.Lines2para
+import   {-@ HTF_TESTS @-} Parser.ProduceLit
+import   {-@ HTF_TESTS @-} Parser.ProduceNLP
 ------ makes call to NLP
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
 ----import   {-@ HTF_TESTS @-} CoreNLP.Snippets2nt  -- no tests?
@@ -27,7 +28,8 @@ import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
 
 main =  do
     putStrLn "Lit Text Test.hs:\n"
-    r <- htfMainWithArgs ["--colors=True", "--fail-fast"] htf_importedTests
+--    r <- htfMainWithArgs ["--colors=True", "--fail-fast"] htf_importedTests
+    r <- htfMain htf_importedTests
     return ()
 
 

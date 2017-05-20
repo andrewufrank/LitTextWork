@@ -22,7 +22,11 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 --{-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2para where
+module Lines2para.Lines2para
+    (module Lines2para.Lines2para
+    , module Lines2para.Lines2ignore
+--    , module Lines2para.HandleLayout
+        ) where
 --    (htf_thisModulesTests   -- for tests
 --
 --    ,  paragraphs2TZlit
@@ -50,8 +54,12 @@ import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)
---import           Text.Printf         (printf)
 import           Test.Framework
+
+newtype ParaNum = ParaNum Int deriving (Show, Eq)
+-- just to avoid confusions
+unparaNum (ParaNum t) = t
+instance Zeros ParaNum where zero =  ParaNum zero
 
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result
@@ -59,14 +67,14 @@ data TZ2 =
 --         TZtext {tzt:: TextType, tzloc :: TextLoc
 --                    , tztext:: TextWithMarks
 --                    , tzlang :: LanguageCode }
-         TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
-                , tz2para :: ParaNum
-                , tz2InPart :: ParaNum}
-        | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
-                        , tz2tok :: BuchToken, tz2lang :: LanguageCode
-                        , tz2para :: ParaNum
-                        , tz2InPart :: ParaNum
-                        }
+     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
+            , tz2para :: ParaNum
+            , tz2InPart :: ParaNum}
+    | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
+                    , tz2tok :: BuchToken, tz2lang :: LanguageCode
+                    , tz2para :: ParaNum
+                    , tz2InPart :: ParaNum
+                    }
 --        | TZleer  {tzloc :: TextLoc}
 --        | TZneueSeite  {tzloc :: TextLoc}
 --        | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
@@ -208,6 +216,10 @@ markOnePara nr tz@TZ2markup {} = tz { tz2para = ParaNum nr}
 instance Zeilen TZ2 where
     isMarkupX code TZ2markup{tz2tok=c} =  code == c
     isMarkupX code _                 = False
+
+    zeilenText TZ2markup {tz2text=tx} = twm tx
+    zeilenText (TZ2para {tz2tzs=ts}) =  concat' . map zeilenText $ ts
+    zeilenText _ = ""
 
 distributeHeader = distributeHeader2 BuchTitel
 
