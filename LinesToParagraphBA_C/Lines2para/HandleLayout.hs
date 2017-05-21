@@ -20,26 +20,14 @@ module Lines2para.HandleLayout
     , module BuchCode.MarkupText
     , module Uniform.Error
     ) where
--- (htf_thisModulesTests
---    , paragraphs2TZlayout
---    , distributePageNrs , etts2tzs
---    , TZ (..), TextLoc (..)
---        )  where
 
 import Test.Framework
---import Parser.Foundation
 import BuchCode.MarkupText
---    (Zeilen (..), TextZeilen (..), TextType (..)
---            , TextWithMarks (..))
---import BuchCode.BuchToken
---    (LanguageCode (..), BuchToken (..), markerPure)
 import           Data.List.Split
 -- todo strings
 import           Uniform.Error
---import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.Zero
 -- todo include zero  in error and strings
---import Uniform.FileIO
 -- TODO string s
 --import Data.List (nub)
 --import           Text.Printf         (printf)
@@ -76,6 +64,14 @@ data TZ =
 
 instance Zeros TZ where zero = TZleer zero
 
+paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
+-- ^ produce the paragraphs with the seitenzahlen in each line
+paragraphs2TZlayout =
+    removeSeitenZahlen .
+    distributePageNrs
+    . etts2tzs
+    -- test BA -> BAA ... BAG -> C
+
 
 ett2tz :: TextZeilen -> TZ
 -- convert the textzeilen to tz without filling location
@@ -108,13 +104,6 @@ unparseTZs :: [TZ] -> Text
 -- produce a text which can be written to a file and compared with the original
 unparseTZs = concat' . map renderZeile
 
-paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
--- ^ produce the paragraphs with the seitenzahlen in each line
-paragraphs2TZlayout =
-    removeSeitenZahlen .
-    distributePageNrs
-    . etts2tzs
-    -- test BA -> BAA ... BAG -> C
 
 removeSeitenZahlen :: [TZ] -> [TZ]
 removeSeitenZahlen = filter (not . isSeitenzahl) . filter (not . isNeueSeite)
