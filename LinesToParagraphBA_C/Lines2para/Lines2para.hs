@@ -27,28 +27,10 @@ module Lines2para.Lines2para
     , module Lines2para.Lines2ignore
 --    , module Lines2para.HandleLayout
         ) where
---    (htf_thisModulesTests   -- for tests
---
---    ,  paragraphs2TZlit
----- other exports are for Lines2paraTests:
-----    , formParagraphs
-----    , distributeIgnore
---    , distributeLanguage
-----    , distributePageNrs
-----    , etts2tzs
-----    , distributeHeader
-----    , markParaNr
-----    , filterZeilen
-----    , TZ (..), TextLoc (..), ParaID (..), unparaID
---        )  where
 
-
---import BuchCode.MarkupText
---import BuchCode.BuchToken
 import Lines2para.Lines2ignore
 
 import           Data.List.Split
---import           Parser.Foundation   hiding ((</>)) -- gives TZ
 import           Uniform.Error
 import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.FileIO
@@ -64,9 +46,6 @@ instance Zeros ParaNum where zero =  ParaNum zero
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result
 data TZ2 =
---         TZtext {tzt:: TextType, tzloc :: TextLoc
---                    , tztext:: TextWithMarks
---                    , tzlang :: LanguageCode }
      TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
             , tz2para :: ParaNum
             , tz2InPart :: ParaNum}
@@ -75,20 +54,7 @@ data TZ2 =
                     , tz2para :: ParaNum
                     , tz2InPart :: ParaNum
                     }
---        | TZleer  {tzloc :: TextLoc}
---        | TZneueSeite  {tzloc :: TextLoc}
---        | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
             deriving (Show, Eq )
-
---
---formatParaID :: Int -> ParaID
---formatParaID nr = ParaID $ "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
----- format to 5 digits
---
---formatLineID :: Int -> Text
---formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
----- format to 3 digits
-
 
 
 paragraphs2TZpara :: [TZ] -> [TZ2]  -- test BA -> C
@@ -116,7 +82,6 @@ test_6_BAD_BAE =do
         putIOwords ["test_6_BAD_BAE", "BAD to result6BAD"]
         assertEqual result6BAE
                 (paragraphs2TZpara result6BAD)
-
 
 
 #include "Lines2paraTestResults.res"
@@ -246,9 +211,6 @@ distributeHeader2  tok tzs = concat  .  markSublistHeader . chapters $ tzs
 
         getHeader = headNote "distributeHeaders2"
 
---isHeader tz = isMarkupX BuchTitel tz || isMarkupX BuchHL1 tz
---            || isMarkupX BuchHL2 tz || isMarkupX BuchHL3 tz
-
 markTZsWithHeader :: ParaNum -> [TZ2] -> [TZ2]
 markTZsWithHeader p []           = [] -- errorT ["markTZsWithHeader", "empty list should not occur", showT p]
 markTZsWithHeader headerPara tzs = map  (markoneheader headerPara) tzs
@@ -256,8 +218,7 @@ markTZsWithHeader headerPara tzs = map  (markoneheader headerPara) tzs
 
 markoneheader headerPara tz@TZ2para{} = tz {tz2InPart = headerPara}
 markoneheader headerPara tz@TZ2markup{} = tz {tz2InPart = headerPara}
---markoneheader headerPara tz@TZleer{} = tz
-markoneheader headerPara tz = errorT ["markoneheader", showT headerPara, showT tz,
+--markoneheader headerPara tz = errorT ["markoneheader", showT headerPara, showT tz,
         "at this stage in the transformation, only para, markup and leer should occur"]
 
 lowerHeader BuchTitel = Just BuchHL1
@@ -266,11 +227,5 @@ lowerHeader BuchHL2   = Just BuchHL3
 lowerHeader BuchHL3   = Nothing
 lowerHeader l         = errorT ["lowerHeader", "for ", showT l]
 
-
-
-
---filterZeilen :: [TZ] -> [TZ]
----- ^ remove some lines - here the neueSeite, where i have no idea what to do with
---filterZeilen = filter (not.isNeueSeite)
 
 
