@@ -31,16 +31,17 @@ library
         , pipes
 
     exposed-modules:
+        -- in order of inclusion
 --        Parser.ReadMarkupAB
---        Parser.Main2subTest
         Parser.ProduceLit
         Parser.ProduceNLP
---        Parser.ProduceNLPtriples
---        Parser.NLPvocabulary
+        Parser.ConvertTaggerOutput
+        Parser.CompleteSentence
+        Parser.NLPvocabulary
+        Parser.ProduceNLPtriples
 --        Parser.Foundation
---        Parser.CompleteSentence
---        Parser.ConvertTaggerOutput
 --        Processor.ProcessAll
+--        Parser.Main2subTest
 --        Main2sub
 
     exposed: True

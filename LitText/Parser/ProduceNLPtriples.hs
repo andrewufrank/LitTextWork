@@ -57,20 +57,20 @@ import           Parser.NLPvocabulary
 --import Parser.ProduceLit (result1C)   -- for test
 import           Uniform.Strings              hiding ((<|>))
 import Uniform.FileIO
-import Parser.CompleteSentence (completeSentence)
+import Parser.CompleteSentence -- (completeSentence)
 -- for tests
-import Parser.ReadMarkupAB (result1A)
-import Lines2para.Lines2paraTests (result1C)
+import Parser.ReadMarkupAB -- (result1A)
+--import Lines2para.Lines2paraTests  -- (result1C)
 import Data.Either
 
-debugNLP = False
+debugNLP1 = False
 
 -- main export
-produceNLPtriples :: TextState2 -> [TZ] -> ErrIO () -- test C -> D -> X
+produceNLPtriples :: TextState2 -> [TZ3] -> ErrIO () -- test C -> D -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
-produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP textstate) . prepareTZ4nlp
+produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate) . prepareTZ4nlp
 
         -- prepareTZ4nlp is in ProduceNLP
 
@@ -81,7 +81,7 @@ test_1_D_XproduceNLPtriples =  do   -- test D -> H
 --    putIOwords ["produceNLPtriples:  result ", showT t1]
     assertEqual (Right ())  t1
 
-produceOneParaNLP :: Bool -> TextState2 -> TZ -> ErrIO ()
+produceOneParaNLP :: Bool -> TextState2 -> TZ3 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp =
         do
             (tz, xml) <- convertTZ2nlp (serverLoc textstate) tzp  -- calls to coreNLP    D -> E
@@ -141,7 +141,7 @@ completeOneDoc lang doc = do
     s2 <- mapM (completeSentence False lang) s1
     return (doc {docSents = s2})
 
-processDoc0toTriples2 :: TextState2 -> TZ ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: TextState2 -> TZ3 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 processDoc0toTriples2 textstate tz  doc0  =       t2  :  concat [sents]
                     -- , corefs] corefs not produced
@@ -215,7 +215,7 @@ right (Right a) = a
 
 test_1_E_F_readDocString = do   -- E -> F
     putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
-    let in1 :: [Text] = map (snd . right) (result1E_nlpResult ::[Either Text (TZ, Text)])
+    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (TZ3, Text)])
     t1 <- runErr $ mapM (readDocString False) in1
     putIOwords ["test_readDocString: result  ) ", showT  t1]
 --    putIOwords ["test_parseToTZ:  result ", show' t1]

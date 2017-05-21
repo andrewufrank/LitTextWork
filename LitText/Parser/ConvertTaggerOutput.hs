@@ -14,7 +14,7 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-{-# OPTIONS_GHC -w #-}
+--{-# OPTIONS_GHC -w #-}
 
 module Parser.ConvertTaggerOutput (convertTT
     , TTdata (..)
