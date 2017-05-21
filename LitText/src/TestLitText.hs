@@ -29,7 +29,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
 ----import   {-@ HTF_TESTS @-} CoreNLP.Snippets2nt  -- no tests?
 ----import {-@ HTF_TESTS @-} Main2sub
 --import {-@ HTF_TESTS @-} Parser.Main2subTest
---import  {-@ HTF_TESTS @-} Processor.ProcessAll
+import  {-@ HTF_TESTS @-} Processor.ProcessAll
 
 main =  do
     putStrLn "Lit Text Test.hs:\n"

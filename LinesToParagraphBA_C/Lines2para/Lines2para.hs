@@ -112,6 +112,7 @@ formParagraphs (t:ts) = case t of
                         where (p,rest) = collectKurz (t:ts)
 
     otherwise -> errorT ["formParagraph - other ", showT t]
+    -- allCaps ?
 
 --formParagraphs x = errorT ["formParagraph - outer  ", showT x]
 
@@ -164,6 +165,7 @@ filterAlleLeer = filter notLeer
             notLeer (TZleer {}) = False
             notLeer (TZneueSeite {}) = False
             notLeer (TZmarkup {tztext=t}) = not . null' . twm $ t
+            notLeer (TZtext {tztext=t}) = not . null' . twm $ t
             notLeer _ = True
 -----------------------------------
 
@@ -184,7 +186,7 @@ instance Zeilen TZ2 where
 
     zeilenText TZ2markup {tz2text=tx} = twm tx
     zeilenText (TZ2para {tz2tzs=ts}) =  concat' . map zeilenText $ ts
-    zeilenText _ = ""
+--    zeilenText _ = ""
 
 distributeHeader = distributeHeader2 BuchTitel
 
@@ -219,7 +221,7 @@ markTZsWithHeader headerPara tzs = map  (markoneheader headerPara) tzs
 markoneheader headerPara tz@TZ2para{} = tz {tz2InPart = headerPara}
 markoneheader headerPara tz@TZ2markup{} = tz {tz2InPart = headerPara}
 --markoneheader headerPara tz = errorT ["markoneheader", showT headerPara, showT tz,
-        "at this stage in the transformation, only para, markup and leer should occur"]
+--        "at this stage in the transformation, only para, markup and leer should occur"]
 
 lowerHeader BuchTitel = Just BuchHL1
 lowerHeader BuchHL1   = Just BuchHL2

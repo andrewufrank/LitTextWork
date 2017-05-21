@@ -344,6 +344,9 @@ markOneAllCaps :: TextZeilen -> TextZeilen
 markOneAllCaps tz @ (TextZeile Zahl0 t) = tz
 markOneAllCaps tx @ (TextZeile _ t)  =
     if isCapitalizedTitle (twm t) then TextZeile AllCaps0 t else tx
+--    if isCapitalizedTitle (twm t) then MarkupZeile BuchHL2 t else tx
+    -- is this a clever idea? hl2 for all caps
+    -- how to allow a switch?
 markOneAllCaps x = x
 
 isCapitalizedTitle ::  Text ->   Bool

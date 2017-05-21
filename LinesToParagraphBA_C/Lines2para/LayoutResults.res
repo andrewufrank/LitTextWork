@@ -16,7 +16,6 @@ result0BAC =
             tzloc = TextLoc{tlpage = "[54/0002]", tlline = 6},
             tztext = TextWithMarks{twm = "als", twmMarks = []},
             tzlang = NoLanguage},
-     TZneueSeite{tzloc = TextLoc{tlpage = "[54/0002]", tlline = 7}},
      TZtext{tzt = Text0,
             tzloc = TextLoc{tlpage = "[54/0002]", tlline = 9},
             tztext =
@@ -26,7 +25,6 @@ result0BAC =
             tzloc = TextLoc{tlpage = "[54/0002]", tlline = 10},
             tztext = TextWithMarks{twm = "als", twmMarks = []},
             tzlang = NoLanguage},
-     TZneueSeite{tzloc = TextLoc{tlpage = "[54/0002]", tlline = 11}},
      TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "[44]", tlline = 13},
             tztext =
               TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",

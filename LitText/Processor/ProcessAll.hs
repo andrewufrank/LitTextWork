@@ -95,12 +95,13 @@ textstateShortTest = TextState2 {
         , authorDir = ""
         , buchname = ""
 --        , graph = "automaticTest"
-		, textfilename = makeAbsFile "/unusable"
+		, textfilename = makeAbsFile "/home/frank/"
         }
 
 test_0 = do
-    runErr $ do
+    res0 <- runErr $ do
         processAll textstateShortTest resfileN
+    putIOwords ["test_0 - return:", showT res0]
     resN <- readFile5 resfileN
     res0 <- readFile5 resfile0
     assertEqual res0 resN

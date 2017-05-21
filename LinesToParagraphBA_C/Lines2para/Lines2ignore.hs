@@ -17,6 +17,7 @@
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
@@ -63,9 +64,17 @@ paragraphs2TZsimple :: [TZ] -> [TZ]  -- test BA -> C
 -- but not paragraphs
 -- page number and line numbers are in layout
 paragraphs2TZsimple =
+    map fixTextAllCaps .
     distributeLanguage .
     distributeIgnore
     -- test BA -> BAD
+
+fixTextAllCaps ::  TZ  ->  TZ
+fixTextAllCaps TZtext {tzt=AllCaps0, ..} = TZmarkup{tzloc = tzloc
+            , tztext=tztext, tztok= BuchHL2, tzlang=tzlang}
+            -- can later be dealt with similar to language
+            -- with a switch in the markup file
+fixTextAllCaps tz = tz
 
 
 -- test the first (expected ok) part of the chain

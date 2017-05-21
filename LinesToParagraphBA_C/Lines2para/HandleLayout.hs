@@ -3,14 +3,7 @@
 -- Module      :  Parser . MarkupLines
 -- Copyright   :  andrew u frank -
 --
--- |  grouping the lines to paragraphs  - completes the parsing
--- TextZeilen is reading in , TZ is a conversion of TextZeilen (no IO)
--- works only on text lines
--- unpare the internal TZ representation and produce a tile to compare with the
---original txt file
--- does not show the page numbers
--- seitenzahlen must be numbers (not alpha) - is used to parse!
--- .ende is necessary to distribute page numbers!
+-- |  encode the layout on pages (lines, pages)
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -118,9 +111,13 @@ unparseTZs = concat' . map renderZeile
 paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
 -- ^ produce the paragraphs with the seitenzahlen in each line
 paragraphs2TZlayout =
+    removeSeitenZahlen .
     distributePageNrs
     . etts2tzs
     -- test BA -> BAA ... BAG -> C
+
+removeSeitenZahlen :: [TZ] -> [TZ]
+removeSeitenZahlen = filter (not . isSeitenzahl) . filter (not . isNeueSeite)
 
 -------------------------PAGES
 

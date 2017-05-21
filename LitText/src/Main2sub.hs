@@ -25,24 +25,25 @@ import           Test.Framework
 import Parser.Main2subTest
 -- immediate under this, imports everything here imported
 import Parser.ReadMarkupAB
-import           Parser.Foundation        hiding ((</>))
+--import           Parser.Foundation        hiding ((</>))
 import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
-import           Parser.ProduceNLP
+--import           Parser.ProduceNLP
 import           Parser.ProduceNLPtriples
 import           Store.Fuseki
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
-import           BuchCode.MarkupText (parseMarkup, result1B, result2B, result3B, result4B)
+import           BuchCode.MarkupText
+-- (parseMarkup, result1B, result2B, result3B, result4B)
 
 debugNLP = False
 debugLit = False
-mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO () 
+mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO ()
 mainLitAndNLPproduction debugLitonly textstate = do
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
-    let tzpara = paragraphs2TZ ttzeilen     -- test BA -> C  in LinesToParagraph
+    let tzpara = (paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout) ttzeilen     -- test BA -> C  in LinesToParagraph
 
 --    tzpara <- textstate2TZ textstate  -- test A -> C
 
@@ -57,7 +58,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
 
     when debugLit $ putIOwords ["lit: triples stored with fuseki in graph "
 --                    , showT . graph $  textstate
---                    , " \n", showT response 
+--                    , " \n", showT response
                     ]
 
     when debugLitonly $  errorT [ "MainLit stopped because debugLitOnly true - set to lit only!"
@@ -71,7 +72,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
 
     putIOwords ["npl: triples stored with fuseki in graph (responses and para/seite) "
 --           , showT . graph $ textstate, " \n"
---            , unlines' . map showT $ responses 
+--            , unlines' . map showT $ responses
             ]
 
     return ()
