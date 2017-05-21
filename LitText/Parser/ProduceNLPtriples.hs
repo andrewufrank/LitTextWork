@@ -3,16 +3,15 @@
 -- Module      :  Parser . Produce NLP triples
 -- Copyright   :  andrew u frank -
 --
--- | consist of two parts - preparation of the data to submit and
--- analysis of the return
+-- | the processing with NLP processors are in ProduceNLP
 --
 -- version 2 assumes that each paragraph is individually analyzed
 --  for german - the lemma are determined for each sentence individually
 -- using the tokenization from the coreNLP
 
--- later:
+-- later - open language changes inside paragraph :
 -- snippets are pieces in one paragraph of one languageBreakCode
--- therefore the snippet id is paragraph id + count
+-- therefo~~~~~re the snippet id is paragraph id + count
 --
 -- the aggregation of small paragraphs to longer units to snaps will be
 -- done later, which will require a snap unit consisting of serveral paragraphs
@@ -29,18 +28,19 @@
 {-# OPTIONS_GHC -w #-}
 
 module Parser.ProduceNLPtriples
-    (produceNLPtriples
-    , TextState2 (..)
-    , htf_thisModulesTests
-    , result1E_nlpResult
-    , TZ (..)
---    , storeTriplesFuseki
-    , writeTriples2file
+    (module Parser.ProduceNLPtriples
+--    produceNLPtriples
+--    , TextState2 (..)
+--    , htf_thisModulesTests
+--    , result1E_nlpResult
+--    , TZ (..)
+----    , storeTriplesFuseki
+--    , writeTriples2file
     ) where
 
 import           Test.Framework
 
-import Parser.Foundation  hiding ((</>)) -- for TZ
+import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
 import           Store.Fuseki
 import Parser.ProduceNLP
 import Uniform.Error   -- For ErrOrVal
@@ -49,13 +49,13 @@ import Uniform.Error   -- For ErrOrVal
 import           Data.RDF   -- should all be imported from extension
 --import           Data.RDF.Extension
 import          Data.RDF.FileTypes
-import Lines2para.Lines2para
+import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 --import           Parser.LinesToParagraphs (result1A)  -- for test
 --import Lines2para.Lines2paraTests (result1A)
-import           Parser.NLPvocabulary
+import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
 --import Parser.ProduceLit -- (result1C)   -- for test
 import           Uniform.Strings              hiding ((<|>))
-import Uniform.FileIO
+import Uniform.FileIO hiding ((</>), (<.>))
 import Parser.CompleteSentence -- (completeSentence)
 -- for tests
 import Parser.ReadMarkupAB -- (result1A)
@@ -70,27 +70,22 @@ produceNLPtriples :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
 produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
-                                    . prepareTZ4nlp
 
         -- prepareTZ4nlp is in ProduceNLP and converts tz2 to nlptext
 
-test_1_D_XproduceNLPtriples =  do   -- test D -> H
-    putIOwords ["produceNLPtriples:  D -> H  "] -- , showT tzResult]
-    t1 <-   runErr $ produceNLPtriples  result1A result1C
+test_1_D_XproduceNLPtriples =  do   -- test C -> H
+    putIOwords ["produceNLPtriples:  C=BAE -> H  "] -- , showT tzResult]
+    t1 <-   runErr $ produceNLPtriples  result1A result1BAE
 --    putIOwords ["produceNLPtriples: result (for next) ", s2t $ show t1]
 --    putIOwords ["produceNLPtriples:  result ", showT t1]
     assertEqual (Right ())  t1
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
-produceOneParaNLP showXML textstate tzp =
-        do
-            (tz, xml) <- convertTZ2nlp showXML (serverLoc textstate) tzp
-                -- calls to coreNLP    D -> E
-            -- tests: result1E_nlpResult
---            tri1 <- produceNLPtriples2 showXML textstate tz_text
-            doc0 <- readDocString showXML xml                    -- E -> F
-            --  tests: readDocStringResult
-
+produceOneParaNLP showXML textstate tzp = do
+    m1 <- convertTZ2nlp showXML (serverLoc textstate) tzp  -- C -> E
+    case m1 of
+        Nothing -> return ()
+        Just (tz, doc0)  -> do
             let lang = tz2lang tzp
             let sents1 = docSents doc0
 
@@ -103,12 +98,18 @@ produceOneParaNLP showXML textstate tzp =
             when debugNLP $
                     putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
         --    let buchuri = buchURIx textstate :: RDFsubj
-            let triples  = processDoc0toTriples2 textstate tz doc0'  -- G -> H
+            let triples  = processDoc0toTriples2 textstate tzp doc0'  -- G -> H
 
             when debugNLP $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples "
                     , unlines' . map showT $ triples]
-            writeTriples2file textstate triples
+                    -- todo fileio add filepath to dir
+            let newFileName =  (authorDir textstate)
+                               ++ "/" ++ buchname textstate  ++ "." ++ ("nt"::FilePath) ::FilePath
+            filenameRes :: Path Abs File <- resolveFile (originalsDir textstate)
+                               (newFileName::FilePath)
+            let textstate2 = textstate{textfilename=filenameRes}
+            writeTriples2file textstate2 triples
 --            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
 --                        , showT . textfilename $ textstate, " \n", showT response ]
 --            let response2 = response <>
@@ -190,14 +191,20 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
         tokensigl = mkTokenSigl sentSigl (tid tok)
         t0 = mkTripleType (unTokenSigl tokensigl) (mkRDFtype Token)
         t1 = mkTriplePartOf (unTokenSigl tokensigl)     (unSentSigl sentSigl)
-        t2 = mkTripleLang lang (unTokenSigl tokensigl) (mkRDFproperty Lemma) (decode lang . lemma0 $ tlemma tok)
-        t2a = mkTripleLang3 lang (unTokenSigl tokensigl) (mkRDFproperty Lemma3) (decode lang . lemma0 $ tlemma tok)
-        t3 = mkTripleText (unTokenSigl tokensigl) (mkRDFproperty Pos) (show' . tpos $ tok)  -- use the encoding from Conll
+        t2 = mkTripleLang lang (unTokenSigl tokensigl)
+                    (mkRDFproperty Lemma) (lemma0 $ tlemma tok)
+        t2a = mkTripleLang3 lang (unTokenSigl tokensigl)
+                    (mkRDFproperty Lemma3) (lemma0 $ tlemma tok)
+        t3 = mkTripleText (unTokenSigl tokensigl)
+                    (mkRDFproperty Pos) (show' . tpos $ tok)  -- use the encoding from Conll
         -- t4 = mkTripleLang lang tokenid lemmapPoSProp $ mkLemmaPoS (tlemma tok) (tpos tok)
 --            ((lemma0 .t1lemma $ tok) <:> (show' . t1pos $tok))
-        t5 = mkTripleLang lang (unTokenSigl tokensigl) (mkRDFproperty WordForm) (decode lang . word0 . tword $ tok)
-        t6 = map (mkTripleText (unTokenSigl tokensigl) (mkRDFproperty Nertag)) (tner tok)
-        t7 = map (mkTripleText (unTokenSigl tokensigl) (mkRDFproperty SpeakerTag) . showT )
+        t5 = mkTripleLang lang (unTokenSigl tokensigl) (mkRDFproperty WordForm)
+                ( word0 . tword $ tok)
+        t6 = map (mkTripleText (unTokenSigl tokensigl)
+                (mkRDFproperty Nertag)) (tner tok)
+        t7 = map (mkTripleText (unTokenSigl tokensigl)
+                    (mkRDFproperty SpeakerTag) . showT )
                     (tspeaker tok)
 
 
@@ -215,24 +222,15 @@ right :: Either Text a -> a
 right (Left a) = errorT ["not a right",   a]
 right (Right a) = a
 
-test_1_E_F_readDocString = do   -- E -> F
-    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
-    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
-    t1 <- runErr $ mapM (readDocString False) in1
-    putIOwords ["test_readDocString: result  ) ", showT  t1]
---    putIOwords ["test_parseToTZ:  result ", show' t1]
-    assertEqual resutl1F_readDocStringResult t1
-
-
+--test_1_E_F_readDocString = do   -- E -> F
+--    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
+--    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
+--    t1 <- runErr $ mapM (readDocString False) in1
+--    putIOwords ["test_readDocString: result  ) ", showT  t1]
+----    putIOwords ["test_parseToTZ:  result ", show' t1]
+--    assertEqual resutl1F_readDocStringResult t1
 --
-decode :: LanguageCode -> Text -> Text
-decode lang wf = wf
---                case lang of
---                        English -> wf
---                        German ->   wf -- s2t . latin1ToUnicode . t2s $ wf
-----                        German ->   decodeLatin1 . t2b $ wf
-----                        German -> fromJustNote "decode from german" . b2t . convert "Latin1" "UTF-8"  . t2b $ wf
-
-
+--
+--
 #include "ProduceNLP.res"
 -- result1X_CD, resutl1F_readDocStringResult, result1_G_readDocCompleted, nlpTriplesResult
