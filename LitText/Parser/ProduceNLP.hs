@@ -1,11 +1,10 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Parser . Produce NLP triples
+-- Module      :  Parser . Produce NLP  - betteer useNLPprocessors
 -- Copyright   :  andrew u frank -
 --
--- | consist of two parts - preparation of the data to submit and
--- analysis of the return
---
+-- | analyzes one paragraph
+
 -- version 2 assumes that each paragraph is individually analyzed -
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -20,6 +19,7 @@
 
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
+    , module CoreNLP.Defs0
 --    (convertTZ2nlp
 --    , prepareTZ4nlp
 --    , ErrIO (..)
@@ -31,6 +31,7 @@ import           Test.Framework
 
 --import           CoreNLP.Snippets2nt          (makeNLPrequest5) -- , readDocString)
 import           Data.RDF
+import Data.Maybe -- todo
 -- import           Data.RDF.Extension
 --import           Data.Text.Encoding           (decodeLatin1, encodeUtf8)
 import           Parser.Foundation  -- todo should be comming up
@@ -47,6 +48,8 @@ import Parser.ReadMarkupAB  -- todo
 import Uniform.Error  -- todo should be comming up
 import Uniform.HttpGet
 --import Parser.ProduceNLPtriples
+import           CoreNLP.Snippets2nt    --      (readDocString)
+import           CoreNLP.Defs0
 
 debugNLP = False
 
@@ -55,9 +58,12 @@ data NLPtext = NLPtext { tz3loc :: TextLoc
                     , tz3lang :: LanguageCode }
             deriving (Show, Eq )
 
-prepareTZ4nlp :: [TZ2] -> [NLPtext]  -- test C  -> D
+prepareTZ4nlp :: TZ2 -> Maybe NLPtext  -- test C  -> D
 -- selecte the text from TZ and convert to text
-prepareTZ4nlp = map formatParaText . filter condNLPtext
+prepareTZ4nlp tz2 = if condNLPtext tz2 then Just $ formatParaText tz2
+                    else Nothing
+
+--prepareTZ4nlp = map formatParaText . filter condNLPtext
         ---------------------------------preparing for analysis
 
 condNLPtext :: TZ2 -> Bool
@@ -105,113 +111,222 @@ nlpServerNone loc = nlpServerEnglish loc
 -- should be a server just returning the input tokenized etc
 
 ----------------
-test_prepareTZ4nlp :: IO ()  -- C -> D
-test_prepareTZ4nlp =  do
+test_C_D :: IO ()  -- C -> D
+test_C_D =  do
     putIOwords ["prepareTZ4nlp:   "] -- tzResult]
-    let t1 = prepareTZ4nlp result1BAE
---    putIOwords ["prepareTZ4nlp: result (for next) ", s2t $ show t1]
---    putIOwords ["prepareTZ4nlp:  result ", show' t1]
-    assertEqual result1D t1
+    let t1 = map prepareTZ4nlp result1BAE
+    assertEqual result1D (catMaybes t1)
 
 -------------------------------------------------D -> E
 
-convertTZ2nlp :: PartURI -> NLPtext -> ErrIO (NLPtext,Text)   -- the xml to analyzse  D -> E
+-- only entry point !
+convertTZ2nlp :: Bool -> PartURI -> TZ2 -> ErrIO (Maybe (NLPtext,Doc0))   -- the xml to analyzse  D -> E
 -- send a tz text to coreNLP server
 -- works on individual paragraphs
-convertTZ2nlp sloc tz = do
+convertTZ2nlp showXML sloc tz2 = do
     when debugNLP $ putIOwords ["convertTZ2nlp"]
+    let mtz = prepareTZ4nlp tz2
+    case mtz of
+        Nothing -> return Nothing
+        Just tz -> do
+            let language = tz3lang tz
+            let text = tz3text tz
 
-    let language = tz3lang tz
-    let text = tz3text tz
+            let nlpServer = case language of
+                            English -> nlpServerEnglish sloc
+                            German -> nlpServerGerman sloc
+                            NoLanguage -> nlpServerNone sloc
+                            _ -> errorT ["convertTZ2nlp", showT language, "language has no server"]
 
-    let nlpServer = case language of
-                    English -> nlpServerEnglish sloc
-                    German -> nlpServerGerman sloc
-                    NoLanguage -> nlpServerNone sloc
-                    _ -> errorT ["convertTZ2nlp", showT language, "language has no server"]
-
---        let textstate2 = textstate {language = language}
---    let requestBytestring = case language of   -- this should be captured in the server
---                    English -> text
---                    German ->  (decodeLatin1 . encodeUtf8 ) text
---                    NoLanguage -> text
---                    _ -> errorT ["convertTZ2nlp", showT language, "language has no conversion"]
---                    -- the german parser requires latin1 !!
-
---    lbs ::  Text  <- do     ret <- makeNLPrequest6 True nlpServer (t2b text)
---                            return $  bb2t ret
---    lbs ::  Text  <-   makeNLPrequest5 False nlpServer text
-    let vars =  [("annotators","tokenize,ssplit,pos,lemma,ner,parse")
---                    -- removed ,coref
-                    , ("outputFormat","xml")
-                    ]
-    lbs ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
-
---    lbs ::  Text  <- case language of
---                    English -> do
---                                    ret <- makeNLPrequest6 True nlpServer (t2b text)
---                                    return $  bb2t ret
---                    German ->  do
---                                    ret <- makeNLPrequest6 True nlpServer (t2b text) -- (t3latin text)
---                                    return $ bb2t ret -- latin2t ret
---
---                    NoLanguage -> do
---                                    ret <- makeNLPrequest6 True nlpServer (t2b text)
---                                    return $  bb2t ret
+            let vars =  [("annotators","tokenize,ssplit,pos,lemma,ner,parse")
+        --                    -- removed ,coref
+                            , ("outputFormat","xml")
+                            ]
+            xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
 -- german parser seems to understand utf8encoded bytestring
 
---    makeNLPrequest nlpServer (text2)  -- should be bytestring
---    -- try twice
---    lbs <- case mlbs of
---        Nothing -> do
---                putIOwords ["convertTZ2nlp first request not successfull"]
---                errorT ["request to nlp server was not successful, quit"]
---                mlbs2 <- makeNLPrequest nlpServer (text2)
---                case mlbs2 of
---                    Nothing -> do
---                            putIOwords ["convertTZ2nlp second request not successfull"]
---                            throwErrorT ["convertTZ2nlp second request not successfull"]
---                    Just lbs -> return lbs
---        Just lbs ->
-    return lbs
+            when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]
 
-    when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT lbs]
+            doc0 <- readDocString showXML xml                    -- E -> F
 
-    return (tz,lbs)
+            return . Just $ (tz,doc0)
 
 
-test_1_D_E_convertTZ2nlp ::   IO ()  -- D -> E
-test_1_D_E_convertTZ2nlp =  do
+test_1_C_E  ::   IO ()  -- D -> E
+test_1_C_E  =  do
     putIOwords ["convertTZ2nlp: result1D to result1E  "] -- tzResult]
     let sloc = serverLoc result1A
-    res <- mapM (runErr . convertTZ2nlp sloc) result1D
---    putIOwords ["prepareTZ4nlp: result (for next) ", s2t $ show t1]
---    putIOwords ["prepareTZ4nlp:  result ", show' t1]
+    res <- mapM (runErr . convertTZ2nlp False sloc) result1BAE
     assertEqual result1E res
 
 result1E =
-    [Right
-       (NLPtext{tz3loc = TextLoc{tlpage = "11", tlline = 6},
-                tz3text = "(Krieg f\252r Welt)", tz3lang = German},
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>-LRB-</word><lemma>-lrb-</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>1</CharacterOffsetEnd><POS>TRUNC</POS><NER>O</NER></token><token id=\"2\"><word>Krieg</word><lemma>krieg</lemma><CharacterOffsetBegin>1</CharacterOffsetBegin><CharacterOffsetEnd>6</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"3\"><word>f\252r</word><lemma>f\252r</lemma><CharacterOffsetBegin>7</CharacterOffsetBegin><CharacterOffsetEnd>10</CharacterOffsetEnd><POS>APPR</POS><NER>O</NER></token><token id=\"4\"><word>Welt</word><lemma>welt</lemma><CharacterOffsetBegin>11</CharacterOffsetBegin><CharacterOffsetEnd>15</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"5\"><word>-RRB-</word><lemma>-rrb-</lemma><CharacterOffsetBegin>15</CharacterOffsetBegin><CharacterOffsetEnd>16</CharacterOffsetEnd><POS>TRUNC</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (NUR\n    (S\n      (NP\n        (CNP (TRUNC -LRB-) (NN Krieg))\n        (PP (APPR f\252r) (NN Welt)))\n      (VP\n        (CVP\n          (VP (TRUNC -RRB-)))))))\n\n</parse></sentence></sentences></document></root>\r\n"),
+    [Right Nothing,
      Right
-       (NLPtext{tz3loc = TextLoc{tlpage = "12", tlline = 8},
-                tz3text = "Unsere Br\228uche werden lebendig", tz3lang = German},
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>Unsere</word><lemma>unsere</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>6</CharacterOffsetEnd><POS>PPOSAT</POS><NER>O</NER></token><token id=\"2\"><word>Br\228uche</word><lemma>br\228uche</lemma><CharacterOffsetBegin>7</CharacterOffsetBegin><CharacterOffsetEnd>14</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"3\"><word>werden</word><lemma>werden</lemma><CharacterOffsetBegin>15</CharacterOffsetBegin><CharacterOffsetEnd>21</CharacterOffsetEnd><POS>VAFIN</POS><NER>O</NER></token><token id=\"4\"><word>lebendig</word><lemma>lebendig</lemma><CharacterOffsetBegin>22</CharacterOffsetBegin><CharacterOffsetEnd>30</CharacterOffsetEnd><POS>ADJD</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Br\228uche))\n      (VAFIN werden) (ADJD lebendig))))\n\n</parse></sentence></sentences></document></root>\r\n"),
+       (Just
+          (NLPtext{tz3loc = TextLoc{tlpage = "11", tlline = 6},
+                   tz3text = "(Krieg f\252r Welt)", tz3lang = German},
+           Doc0{docSents =
+                  [Sentence0{sid = SentID0{unSentID0 = 1},
+                             sparse =
+                               "(ROOT\n  (NUR\n    (S\n      (NP\n        (CNP (TRUNC -LRB-) (NN Krieg))\n        (PP (APPR f\252r) (NN Welt)))\n      (VP\n        (CVP\n          (VP (TRUNC -RRB-)))))))\n\n",
+                             stoks =
+                               [Token0{tid = TokenID0{untid0 = 1},
+                                       tword = Wordform0{word0 = "-LRB-"},
+                                       tlemma = Lemma0{lemma0 = "-lrb-"}, tbegin = 0, tend = 1,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 2},
+                                       tword = Wordform0{word0 = "Krieg"},
+                                       tlemma = Lemma0{lemma0 = "krieg"}, tbegin = 1, tend = 6,
+                                       tpos = NN, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 3},
+                                       tword = Wordform0{word0 = "f\252r"},
+                                       tlemma = Lemma0{lemma0 = "f\252r"}, tbegin = 7, tend = 10,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 4},
+                                       tword = Wordform0{word0 = "Welt"},
+                                       tlemma = Lemma0{lemma0 = "welt"}, tbegin = 11, tend = 15,
+                                       tpos = NN, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 5},
+                                       tword = Wordform0{word0 = "-RRB-"},
+                                       tlemma = Lemma0{lemma0 = "-rrb-"}, tbegin = 15, tend = 16,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}],
+                             sdeps = Nothing}],
+                docCorefs = []})),
      Right
-       (NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 10},
-                tz3text =
-                  "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
-                tz3lang = German},
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>Was</word><lemma>was</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>3</CharacterOffsetEnd><POS>PWS</POS><NER>O</NER></token><token id=\"2\"><word>w\252rde</word><lemma>w\252rde</lemma><CharacterOffsetBegin>4</CharacterOffsetBegin><CharacterOffsetEnd>9</CharacterOffsetEnd><POS>VAFIN</POS><NER>O</NER></token><token id=\"3\"><word>ihm</word><lemma>ihm</lemma><CharacterOffsetBegin>10</CharacterOffsetBegin><CharacterOffsetEnd>13</CharacterOffsetEnd><POS>PPER</POS><NER>O</NER></token><token id=\"4\"><word>fremd</word><lemma>fremd</lemma><CharacterOffsetBegin>14</CharacterOffsetBegin><CharacterOffsetEnd>19</CharacterOffsetEnd><POS>ADJD</POS><NER>O</NER></token><token id=\"5\"><word>und</word><lemma>und</lemma><CharacterOffsetBegin>20</CharacterOffsetBegin><CharacterOffsetEnd>23</CharacterOffsetEnd><POS>KON</POS><NER>O</NER></token><token id=\"6\"><word>was</word><lemma>was</lemma><CharacterOffsetBegin>24</CharacterOffsetBegin><CharacterOffsetEnd>27</CharacterOffsetEnd><POS>PWS</POS><NER>O</NER></token><token id=\"7\"><word>m\246chte</word><lemma>m\246chte</lemma><CharacterOffsetBegin>28</CharacterOffsetBegin><CharacterOffsetEnd>34</CharacterOffsetEnd><POS>VMFIN</POS><NER>O</NER></token><token id=\"8\"><word>sein</word><lemma>sein</lemma><CharacterOffsetBegin>35</CharacterOffsetBegin><CharacterOffsetEnd>39</CharacterOffsetEnd><POS>PPOSAT</POS><NER>O</NER></token><token id=\"9\"><word>eigen</word><lemma>eigen</lemma><CharacterOffsetBegin>40</CharacterOffsetBegin><CharacterOffsetEnd>45</CharacterOffsetEnd><POS>ADJD</POS><NER>O</NER></token><token id=\"10\"><word>sein</word><lemma>sein</lemma><CharacterOffsetBegin>46</CharacterOffsetBegin><CharacterOffsetEnd>50</CharacterOffsetEnd><POS>VAINF</POS><NER>O</NER></token><token id=\"11\"><word>in</word><lemma>in</lemma><CharacterOffsetBegin>51</CharacterOffsetBegin><CharacterOffsetEnd>53</CharacterOffsetEnd><POS>APPR</POS><NER>O</NER></token><token id=\"12\"><word>C\233rb\232re</word><lemma>c\233rb\232re</lemma><CharacterOffsetBegin>54</CharacterOffsetBegin><CharacterOffsetEnd>61</CharacterOffsetEnd><POS>NN</POS><NER>I-LOC</NER></token><token id=\"13\"><word>?</word><lemma>?</lemma><CharacterOffsetBegin>61</CharacterOffsetBegin><CharacterOffsetEnd>62</CharacterOffsetEnd><POS>$.</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (CS\n    (S\n      (NP (PWS Was))\n      (VAFIN w\252rde) (PPER ihm) (ADJD fremd))\n    (KON und)\n    (S (PWS was) (VMFIN m\246chte)\n      (VP\n        (NP\n          (CNP\n            (NP (PPOSAT sein)\n              (CNP\n                (NP\n                  (AP (ADJD eigen)))))))\n        (VAINF sein)\n        (PP (APPR in) (NN C\233rb\232re))))\n    ($. ?)))\n\n</parse></sentence></sentences></document></root>\r\n"),
+       (Just
+          (NLPtext{tz3loc = TextLoc{tlpage = "12", tlline = 8},
+                   tz3text = "Unsere Br\228uche werden lebendig", tz3lang = German},
+           Doc0{docSents =
+                  [Sentence0{sid = SentID0{unSentID0 = 1},
+                             sparse =
+                               "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Br\228uche))\n      (VAFIN werden) (ADJD lebendig))))\n\n",
+                             stoks =
+                               [Token0{tid = TokenID0{untid0 = 1},
+                                       tword = Wordform0{word0 = "Unsere"},
+                                       tlemma = Lemma0{lemma0 = "unsere"}, tbegin = 0, tend = 6,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 2},
+                                       tword = Wordform0{word0 = "Br\228uche"},
+                                       tlemma = Lemma0{lemma0 = "br\228uche"}, tbegin = 7,
+                                       tend = 14, tpos = NN, tpostt = "", tner = ["O"],
+                                       tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 3},
+                                       tword = Wordform0{word0 = "werden"},
+                                       tlemma = Lemma0{lemma0 = "werden"}, tbegin = 15, tend = 21,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 4},
+                                       tword = Wordform0{word0 = "lebendig"},
+                                       tlemma = Lemma0{lemma0 = "lebendig"}, tbegin = 22, tend = 30,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}],
+                             sdeps = Nothing}],
+                docCorefs = []})),
      Right
-       (NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 12},
-                tz3text = "Er fragte sich als zweiter Paragraph.",
-                tz3lang = German},
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>Er</word><lemma>er</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>2</CharacterOffsetEnd><POS>PPER</POS><NER>O</NER></token><token id=\"2\"><word>fragte</word><lemma>fragte</lemma><CharacterOffsetBegin>3</CharacterOffsetBegin><CharacterOffsetEnd>9</CharacterOffsetEnd><POS>VVFIN</POS><NER>O</NER></token><token id=\"3\"><word>sich</word><lemma>sich</lemma><CharacterOffsetBegin>10</CharacterOffsetBegin><CharacterOffsetEnd>14</CharacterOffsetEnd><POS>PRF</POS><NER>O</NER></token><token id=\"4\"><word>als</word><lemma>als</lemma><CharacterOffsetBegin>15</CharacterOffsetBegin><CharacterOffsetEnd>18</CharacterOffsetEnd><POS>APPR</POS><NER>O</NER></token><token id=\"5\"><word>zweiter</word><lemma>zweiter</lemma><CharacterOffsetBegin>19</CharacterOffsetBegin><CharacterOffsetEnd>26</CharacterOffsetEnd><POS>ADJA</POS><NER>O</NER></token><token id=\"6\"><word>Paragraph</word><lemma>paragraph</lemma><CharacterOffsetBegin>27</CharacterOffsetBegin><CharacterOffsetEnd>36</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"7\"><word>.</word><lemma>.</lemma><CharacterOffsetBegin>36</CharacterOffsetBegin><CharacterOffsetEnd>37</CharacterOffsetEnd><POS>$.</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (S (PPER Er) (VVFIN fragte) (PRF sich)\n    (PP (APPR als) (ADJA zweiter) (NN Paragraph))\n    ($. .)))\n\n</parse></sentence></sentences></document></root>\r\n")]
-
+       (Just
+          (NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 10},
+                   tz3text =
+                     "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
+                   tz3lang = German},
+           Doc0{docSents =
+                  [Sentence0{sid = SentID0{unSentID0 = 1},
+                             sparse =
+                               "(ROOT\n  (CS\n    (S\n      (NP (PWS Was))\n      (VAFIN w\252rde) (PPER ihm) (ADJD fremd))\n    (KON und)\n    (S (PWS was) (VMFIN m\246chte)\n      (VP\n        (NP\n          (CNP\n            (NP (PPOSAT sein)\n              (CNP\n                (NP\n                  (AP (ADJD eigen)))))))\n        (VAINF sein)\n        (PP (APPR in) (NN C\233rb\232re))))\n    ($. ?)))\n\n",
+                             stoks =
+                               [Token0{tid = TokenID0{untid0 = 1},
+                                       tword = Wordform0{word0 = "Was"},
+                                       tlemma = Lemma0{lemma0 = "was"}, tbegin = 0, tend = 3,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 2},
+                                       tword = Wordform0{word0 = "w\252rde"},
+                                       tlemma = Lemma0{lemma0 = "w\252rde"}, tbegin = 4, tend = 9,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 3},
+                                       tword = Wordform0{word0 = "ihm"},
+                                       tlemma = Lemma0{lemma0 = "ihm"}, tbegin = 10, tend = 13,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 4},
+                                       tword = Wordform0{word0 = "fremd"},
+                                       tlemma = Lemma0{lemma0 = "fremd"}, tbegin = 14, tend = 19,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 5},
+                                       tword = Wordform0{word0 = "und"},
+                                       tlemma = Lemma0{lemma0 = "und"}, tbegin = 20, tend = 23,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 6},
+                                       tword = Wordform0{word0 = "was"},
+                                       tlemma = Lemma0{lemma0 = "was"}, tbegin = 24, tend = 27,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 7},
+                                       tword = Wordform0{word0 = "m\246chte"},
+                                       tlemma = Lemma0{lemma0 = "m\246chte"}, tbegin = 28,
+                                       tend = 34, tpos = Unk, tpostt = "", tner = ["O"],
+                                       tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 8},
+                                       tword = Wordform0{word0 = "sein"},
+                                       tlemma = Lemma0{lemma0 = "sein"}, tbegin = 35, tend = 39,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 9},
+                                       tword = Wordform0{word0 = "eigen"},
+                                       tlemma = Lemma0{lemma0 = "eigen"}, tbegin = 40, tend = 45,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 10},
+                                       tword = Wordform0{word0 = "sein"},
+                                       tlemma = Lemma0{lemma0 = "sein"}, tbegin = 46, tend = 50,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 11},
+                                       tword = Wordform0{word0 = "in"},
+                                       tlemma = Lemma0{lemma0 = "in"}, tbegin = 51, tend = 53,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 12},
+                                       tword = Wordform0{word0 = "C\233rb\232re"},
+                                       tlemma = Lemma0{lemma0 = "c\233rb\232re"}, tbegin = 54,
+                                       tend = 61, tpos = NN, tpostt = "", tner = ["I-LOC"],
+                                       tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 13}, tword = Wordform0{word0 = "?"},
+                                       tlemma = Lemma0{lemma0 = "?"}, tbegin = 61, tend = 62,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}],
+                             sdeps = Nothing}],
+                docCorefs = []})),
+     Right
+       (Just
+          (NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 12},
+                   tz3text = "Er fragte sich als zweiter Paragraph.",
+                   tz3lang = German},
+           Doc0{docSents =
+                  [Sentence0{sid = SentID0{unSentID0 = 1},
+                             sparse =
+                               "(ROOT\n  (S (PPER Er) (VVFIN fragte) (PRF sich)\n    (PP (APPR als) (ADJA zweiter) (NN Paragraph))\n    ($. .)))\n\n",
+                             stoks =
+                               [Token0{tid = TokenID0{untid0 = 1},
+                                       tword = Wordform0{word0 = "Er"},
+                                       tlemma = Lemma0{lemma0 = "er"}, tbegin = 0, tend = 2,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 2},
+                                       tword = Wordform0{word0 = "fragte"},
+                                       tlemma = Lemma0{lemma0 = "fragte"}, tbegin = 3, tend = 9,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 3},
+                                       tword = Wordform0{word0 = "sich"},
+                                       tlemma = Lemma0{lemma0 = "sich"}, tbegin = 10, tend = 14,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 4},
+                                       tword = Wordform0{word0 = "als"},
+                                       tlemma = Lemma0{lemma0 = "als"}, tbegin = 15, tend = 18,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 5},
+                                       tword = Wordform0{word0 = "zweiter"},
+                                       tlemma = Lemma0{lemma0 = "zweiter"}, tbegin = 19, tend = 26,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 6},
+                                       tword = Wordform0{word0 = "Paragraph"},
+                                       tlemma = Lemma0{lemma0 = "paragraph"}, tbegin = 27,
+                                       tend = 36, tpos = NN, tpostt = "", tner = ["O"],
+                                       tspeaker = []},
+                                Token0{tid = TokenID0{untid0 = 7}, tword = Wordform0{word0 = "."},
+                                       tlemma = Lemma0{lemma0 = "."}, tbegin = 36, tend = 37,
+                                       tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}],
+                             sdeps = Nothing}],
+                docCorefs = []}))]
 result1D =
-
     [NLPtext{tz3loc = TextLoc{tlpage = "11", tlline = 6},
              tz3text = "(Krieg f\252r Welt)", tz3lang = German},
      NLPtext{tz3loc = TextLoc{tlpage = "12", tlline = 8},

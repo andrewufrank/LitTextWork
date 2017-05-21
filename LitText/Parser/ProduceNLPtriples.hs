@@ -45,8 +45,7 @@ import           Store.Fuseki
 import Parser.ProduceNLP
 import Uniform.Error   -- For ErrOrVal
 
-import           CoreNLP.Defs0
-import           CoreNLP.Snippets2nt          (readDocString)
+--import           CoreNLP.Defs0
 import           Data.RDF   -- should all be imported from extension
 --import           Data.RDF.Extension
 import          Data.RDF.FileTypes
@@ -85,7 +84,7 @@ test_1_D_XproduceNLPtriples =  do   -- test D -> H
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp =
         do
-            (tz, xml) <- convertTZ2nlp (serverLoc textstate) tzp
+            (tz, xml) <- convertTZ2nlp showXML (serverLoc textstate) tzp
                 -- calls to coreNLP    D -> E
             -- tests: result1E_nlpResult
 --            tri1 <- produceNLPtriples2 showXML textstate tz_text

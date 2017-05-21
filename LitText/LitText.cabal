@@ -38,7 +38,7 @@ library
         Parser.ConvertTaggerOutput
         Parser.CompleteSentence
         Parser.NLPvocabulary
-        Parser.ProduceNLPtriples
+--        Parser.ProduceNLPtriples
 --        Parser.Foundation
 --        Processor.ProcessAll
 --        Parser.Main2subTest
