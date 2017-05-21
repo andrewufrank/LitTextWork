@@ -48,13 +48,13 @@ import Uniform.Error   -- For ErrOrVal
 import           CoreNLP.Defs0
 import           CoreNLP.Snippets2nt          (readDocString)
 import           Data.RDF   -- should all be imported from extension
-import           Data.RDF.Extension
+--import           Data.RDF.Extension
 import          Data.RDF.FileTypes
 import Lines2para.Lines2para
 --import           Parser.LinesToParagraphs (result1A)  -- for test
 --import Lines2para.Lines2paraTests (result1A)
 import           Parser.NLPvocabulary
---import Parser.ProduceLit (result1C)   -- for test
+--import Parser.ProduceLit -- (result1C)   -- for test
 import           Uniform.Strings              hiding ((<|>))
 import Uniform.FileIO
 import Parser.CompleteSentence -- (completeSentence)
@@ -66,13 +66,14 @@ import Data.Either
 debugNLP1 = False
 
 -- main export
-produceNLPtriples :: TextState2 -> [TZ3] -> ErrIO () -- test C -> D -> X
+produceNLPtriples :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
-produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate) . prepareTZ4nlp
+produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
+                                    . prepareTZ4nlp
 
-        -- prepareTZ4nlp is in ProduceNLP
+        -- prepareTZ4nlp is in ProduceNLP and converts tz2 to nlptext
 
 test_1_D_XproduceNLPtriples =  do   -- test D -> H
     putIOwords ["produceNLPtriples:  D -> H  "] -- , showT tzResult]
@@ -81,16 +82,17 @@ test_1_D_XproduceNLPtriples =  do   -- test D -> H
 --    putIOwords ["produceNLPtriples:  result ", showT t1]
     assertEqual (Right ())  t1
 
-produceOneParaNLP :: Bool -> TextState2 -> TZ3 -> ErrIO ()
+produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp =
         do
-            (tz, xml) <- convertTZ2nlp (serverLoc textstate) tzp  -- calls to coreNLP    D -> E
+            (tz, xml) <- convertTZ2nlp (serverLoc textstate) tzp
+                -- calls to coreNLP    D -> E
             -- tests: result1E_nlpResult
 --            tri1 <- produceNLPtriples2 showXML textstate tz_text
             doc0 <- readDocString showXML xml                    -- E -> F
             --  tests: readDocStringResult
 
-            let lang = tzlang tzp
+            let lang = tz2lang tzp
             let sents1 = docSents doc0
 
             sents2 <- if lang == German
@@ -105,7 +107,8 @@ produceOneParaNLP showXML textstate tzp =
             let triples  = processDoc0toTriples2 textstate tz doc0'  -- G -> H
 
             when debugNLP $
-                putIOwords ["\n\nproduceOneParaNLP nlp triples ", unlines' . map showT $ triples]
+                putIOwords ["\n\nproduceOneParaNLP nlp triples "
+                    , unlines' . map showT $ triples]
             writeTriples2file textstate triples
 --            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
 --                        , showT . textfilename $ textstate, " \n", showT response ]
@@ -141,12 +144,12 @@ completeOneDoc lang doc = do
     s2 <- mapM (completeSentence False lang) s1
     return (doc {docSents = s2})
 
-processDoc0toTriples2 :: TextState2 -> TZ3 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: TextState2 -> TZ2 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 processDoc0toTriples2 textstate tz  doc0  =       t2  :  concat [sents]
                     -- , corefs] corefs not produced
     where
-        lang = tzlang tz
+        lang = tz2lang tz
         paraid = paraSigl textstate tz
         snipid = paraid
         t2 = mkTripleText (unParaSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
@@ -215,7 +218,7 @@ right (Right a) = a
 
 test_1_E_F_readDocString = do   -- E -> F
     putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
-    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (TZ3, Text)])
+    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
     t1 <- runErr $ mapM (readDocString False) in1
     putIOwords ["test_readDocString: result  ) ", showT  t1]
 --    putIOwords ["test_parseToTZ:  result ", show' t1]

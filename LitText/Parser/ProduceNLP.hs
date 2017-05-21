@@ -50,12 +50,12 @@ import Uniform.HttpGet
 
 debugNLP = False
 
-data TZ3 = TZ3text { tz3loc :: TextLoc
+data NLPtext = NLPtext { tz3loc :: TextLoc
                     , tz3text:: Text
                     , tz3lang :: LanguageCode }
             deriving (Show, Eq )
 
-prepareTZ4nlp :: [TZ2] -> [TZ3]  -- test C  -> D
+prepareTZ4nlp :: [TZ2] -> [NLPtext]  -- test C  -> D
 -- selecte the text from TZ and convert to text
 prepareTZ4nlp = map formatParaText . filter condNLPtext
         ---------------------------------preparing for analysis
@@ -81,14 +81,14 @@ condNLPtext tz  = case tz of
 --                        where (p,rest) = collectKurz (t:ts)
 --    _ -> errorT ["ProduceLit.hs conv2", "missing TZ case", showT tz]
 
-formatParaText :: TZ2 -> TZ3
+formatParaText :: TZ2 -> NLPtext
 -- convert the headers to a tztext
-formatParaText tz@TZ2para{} = TZ3text {tz3loc = tz2loc tz, tz3lang = tz2lang tz
+formatParaText tz@TZ2para{} = NLPtext {tz3loc = tz2loc tz, tz3lang = tz2lang tz
         , tz3text = foldl1 combine2linesWithHyphenation
             . map (twm . tztext) $ (tz2tzs tz)
         }
 
-formatParaText tz@TZ2markup {} = TZ3text {tz3loc = tz2loc tz
+formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
         , tz3lang = tz2lang tz
         , tz3text =  twm . tz2text $ tz}
 
@@ -115,7 +115,7 @@ test_prepareTZ4nlp =  do
 
 -------------------------------------------------D -> E
 
-convertTZ2nlp :: PartURI -> TZ3 -> ErrIO (TZ3,Text)   -- the xml to analyzse  D -> E
+convertTZ2nlp :: PartURI -> NLPtext -> ErrIO (NLPtext,Text)   -- the xml to analyzse  D -> E
 -- send a tz text to coreNLP server
 -- works on individual paragraphs
 convertTZ2nlp sloc tz = do
@@ -191,36 +191,36 @@ test_1_D_E_convertTZ2nlp =  do
 
 result1E =
     [Right
-       (TZ3text{tz3loc = TextLoc{tlpage = "11", tlline = 6},
+       (NLPtext{tz3loc = TextLoc{tlpage = "11", tlline = 6},
                 tz3text = "(Krieg f\252r Welt)", tz3lang = German},
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>-LRB-</word><lemma>-lrb-</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>1</CharacterOffsetEnd><POS>TRUNC</POS><NER>O</NER></token><token id=\"2\"><word>Krieg</word><lemma>krieg</lemma><CharacterOffsetBegin>1</CharacterOffsetBegin><CharacterOffsetEnd>6</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"3\"><word>f\252r</word><lemma>f\252r</lemma><CharacterOffsetBegin>7</CharacterOffsetBegin><CharacterOffsetEnd>10</CharacterOffsetEnd><POS>APPR</POS><NER>O</NER></token><token id=\"4\"><word>Welt</word><lemma>welt</lemma><CharacterOffsetBegin>11</CharacterOffsetBegin><CharacterOffsetEnd>15</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"5\"><word>-RRB-</word><lemma>-rrb-</lemma><CharacterOffsetBegin>15</CharacterOffsetBegin><CharacterOffsetEnd>16</CharacterOffsetEnd><POS>TRUNC</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (NUR\n    (S\n      (NP\n        (CNP (TRUNC -LRB-) (NN Krieg))\n        (PP (APPR f\252r) (NN Welt)))\n      (VP\n        (CVP\n          (VP (TRUNC -RRB-)))))))\n\n</parse></sentence></sentences></document></root>\r\n"),
      Right
-       (TZ3text{tz3loc = TextLoc{tlpage = "12", tlline = 8},
+       (NLPtext{tz3loc = TextLoc{tlpage = "12", tlline = 8},
                 tz3text = "Unsere Br\228uche werden lebendig", tz3lang = German},
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>Unsere</word><lemma>unsere</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>6</CharacterOffsetEnd><POS>PPOSAT</POS><NER>O</NER></token><token id=\"2\"><word>Br\228uche</word><lemma>br\228uche</lemma><CharacterOffsetBegin>7</CharacterOffsetBegin><CharacterOffsetEnd>14</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"3\"><word>werden</word><lemma>werden</lemma><CharacterOffsetBegin>15</CharacterOffsetBegin><CharacterOffsetEnd>21</CharacterOffsetEnd><POS>VAFIN</POS><NER>O</NER></token><token id=\"4\"><word>lebendig</word><lemma>lebendig</lemma><CharacterOffsetBegin>22</CharacterOffsetBegin><CharacterOffsetEnd>30</CharacterOffsetEnd><POS>ADJD</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Br\228uche))\n      (VAFIN werden) (ADJD lebendig))))\n\n</parse></sentence></sentences></document></root>\r\n"),
      Right
-       (TZ3text{tz3loc = TextLoc{tlpage = "13", tlline = 10},
+       (NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 10},
                 tz3text =
                   "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
                 tz3lang = German},
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>Was</word><lemma>was</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>3</CharacterOffsetEnd><POS>PWS</POS><NER>O</NER></token><token id=\"2\"><word>w\252rde</word><lemma>w\252rde</lemma><CharacterOffsetBegin>4</CharacterOffsetBegin><CharacterOffsetEnd>9</CharacterOffsetEnd><POS>VAFIN</POS><NER>O</NER></token><token id=\"3\"><word>ihm</word><lemma>ihm</lemma><CharacterOffsetBegin>10</CharacterOffsetBegin><CharacterOffsetEnd>13</CharacterOffsetEnd><POS>PPER</POS><NER>O</NER></token><token id=\"4\"><word>fremd</word><lemma>fremd</lemma><CharacterOffsetBegin>14</CharacterOffsetBegin><CharacterOffsetEnd>19</CharacterOffsetEnd><POS>ADJD</POS><NER>O</NER></token><token id=\"5\"><word>und</word><lemma>und</lemma><CharacterOffsetBegin>20</CharacterOffsetBegin><CharacterOffsetEnd>23</CharacterOffsetEnd><POS>KON</POS><NER>O</NER></token><token id=\"6\"><word>was</word><lemma>was</lemma><CharacterOffsetBegin>24</CharacterOffsetBegin><CharacterOffsetEnd>27</CharacterOffsetEnd><POS>PWS</POS><NER>O</NER></token><token id=\"7\"><word>m\246chte</word><lemma>m\246chte</lemma><CharacterOffsetBegin>28</CharacterOffsetBegin><CharacterOffsetEnd>34</CharacterOffsetEnd><POS>VMFIN</POS><NER>O</NER></token><token id=\"8\"><word>sein</word><lemma>sein</lemma><CharacterOffsetBegin>35</CharacterOffsetBegin><CharacterOffsetEnd>39</CharacterOffsetEnd><POS>PPOSAT</POS><NER>O</NER></token><token id=\"9\"><word>eigen</word><lemma>eigen</lemma><CharacterOffsetBegin>40</CharacterOffsetBegin><CharacterOffsetEnd>45</CharacterOffsetEnd><POS>ADJD</POS><NER>O</NER></token><token id=\"10\"><word>sein</word><lemma>sein</lemma><CharacterOffsetBegin>46</CharacterOffsetBegin><CharacterOffsetEnd>50</CharacterOffsetEnd><POS>VAINF</POS><NER>O</NER></token><token id=\"11\"><word>in</word><lemma>in</lemma><CharacterOffsetBegin>51</CharacterOffsetBegin><CharacterOffsetEnd>53</CharacterOffsetEnd><POS>APPR</POS><NER>O</NER></token><token id=\"12\"><word>C\233rb\232re</word><lemma>c\233rb\232re</lemma><CharacterOffsetBegin>54</CharacterOffsetBegin><CharacterOffsetEnd>61</CharacterOffsetEnd><POS>NN</POS><NER>I-LOC</NER></token><token id=\"13\"><word>?</word><lemma>?</lemma><CharacterOffsetBegin>61</CharacterOffsetBegin><CharacterOffsetEnd>62</CharacterOffsetEnd><POS>$.</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (CS\n    (S\n      (NP (PWS Was))\n      (VAFIN w\252rde) (PPER ihm) (ADJD fremd))\n    (KON und)\n    (S (PWS was) (VMFIN m\246chte)\n      (VP\n        (NP\n          (CNP\n            (NP (PPOSAT sein)\n              (CNP\n                (NP\n                  (AP (ADJD eigen)))))))\n        (VAINF sein)\n        (PP (APPR in) (NN C\233rb\232re))))\n    ($. ?)))\n\n</parse></sentence></sentences></document></root>\r\n"),
      Right
-       (TZ3text{tz3loc = TextLoc{tlpage = "13", tlline = 12},
+       (NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 12},
                 tz3text = "Er fragte sich als zweiter Paragraph.",
                 tz3lang = German},
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<?xml-stylesheet href=\"CoreNLP-to-HTML.xsl\" type=\"text/xsl\"?>\r\n<root><document><sentences><sentence id=\"1\"><tokens><token id=\"1\"><word>Er</word><lemma>er</lemma><CharacterOffsetBegin>0</CharacterOffsetBegin><CharacterOffsetEnd>2</CharacterOffsetEnd><POS>PPER</POS><NER>O</NER></token><token id=\"2\"><word>fragte</word><lemma>fragte</lemma><CharacterOffsetBegin>3</CharacterOffsetBegin><CharacterOffsetEnd>9</CharacterOffsetEnd><POS>VVFIN</POS><NER>O</NER></token><token id=\"3\"><word>sich</word><lemma>sich</lemma><CharacterOffsetBegin>10</CharacterOffsetBegin><CharacterOffsetEnd>14</CharacterOffsetEnd><POS>PRF</POS><NER>O</NER></token><token id=\"4\"><word>als</word><lemma>als</lemma><CharacterOffsetBegin>15</CharacterOffsetBegin><CharacterOffsetEnd>18</CharacterOffsetEnd><POS>APPR</POS><NER>O</NER></token><token id=\"5\"><word>zweiter</word><lemma>zweiter</lemma><CharacterOffsetBegin>19</CharacterOffsetBegin><CharacterOffsetEnd>26</CharacterOffsetEnd><POS>ADJA</POS><NER>O</NER></token><token id=\"6\"><word>Paragraph</word><lemma>paragraph</lemma><CharacterOffsetBegin>27</CharacterOffsetBegin><CharacterOffsetEnd>36</CharacterOffsetEnd><POS>NN</POS><NER>O</NER></token><token id=\"7\"><word>.</word><lemma>.</lemma><CharacterOffsetBegin>36</CharacterOffsetBegin><CharacterOffsetEnd>37</CharacterOffsetEnd><POS>$.</POS><NER>O</NER></token></tokens><parse>(ROOT\n  (S (PPER Er) (VVFIN fragte) (PRF sich)\n    (PP (APPR als) (ADJA zweiter) (NN Paragraph))\n    ($. .)))\n\n</parse></sentence></sentences></document></root>\r\n")]
 
 result1D =
 
-    [TZ3text{tz3loc = TextLoc{tlpage = "11", tlline = 6},
+    [NLPtext{tz3loc = TextLoc{tlpage = "11", tlline = 6},
              tz3text = "(Krieg f\252r Welt)", tz3lang = German},
-     TZ3text{tz3loc = TextLoc{tlpage = "12", tlline = 8},
+     NLPtext{tz3loc = TextLoc{tlpage = "12", tlline = 8},
              tz3text = "Unsere Br\228uche werden lebendig", tz3lang = German},
-     TZ3text{tz3loc = TextLoc{tlpage = "13", tlline = 10},
+     NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 10},
              tz3text =
                "Was w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?",
              tz3lang = German},
-     TZ3text{tz3loc = TextLoc{tlpage = "13", tlline = 12},
+     NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 12},
              tz3text = "Er fragte sich als zweiter Paragraph.",
              tz3lang = German}]
 

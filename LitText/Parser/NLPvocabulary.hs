@@ -14,15 +14,17 @@
 module Parser.NLPvocabulary
     ( module Parser.NLPvocabulary
       , module CoreNLP.DependencyCodes
-      , buchURIx, paraSigl
-      , PartURI, RDFproperty
-      , NLPproperty (..)
-      , nlpURItext
+      , module Parser.ProduceLit
+      , module Data.RDF.Extension
+--      , buchURIx, paraSigl, unPara
+--      , PartURI, RDFproperty
+--      , NLPproperty (..)
+--      , nlpURItext
     ) where
 
 import           CoreNLP.Defs0
 import           CoreNLP.DependencyCodes
-import           Data.RDF.Extension      (PartURI, RDFproperty)
+import           Data.RDF.Extension      --(PartURI, RDFproperty)
 import           Parser.Foundation
 import           Parser.ProduceLit     --  (buchURIx, paraSigl)
 import           Text.Printf             (printf)
