@@ -115,6 +115,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
         Just tz -> do
             let language = tz3lang tz
             let text = tz3text tz
+            when debugNLP $ putIOwords ["convertTZ2nlp tz", showT tz]
 
             let nlpServer = case language of
                             English -> nlpServerEnglish sloc
@@ -126,7 +127,8 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
         --                    -- removed ,coref
                             , ("outputFormat","xml")
                             ]
-            xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
+            when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
+            xml ::  Text  <-   makeHttpPost7 True nlpServer vars "text/plain" text
 -- german parser seems to understand utf8encoded bytestring
 
             when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]

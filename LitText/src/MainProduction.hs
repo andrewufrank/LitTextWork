@@ -92,9 +92,10 @@ cmd2textstate args  = TextState2
                     -- waterhouse/kuw.markup
         , authorDir =   argdir $ args
         , buchname =   argbuch $ args
-        , textfilename = makeAbsFile
-                ("/home/frank/additionalSpace/DataBig/LitOriginals/"
-	            ++ "/" ++ argdir args ++ "/" ++ argbuch args ::FilePath)
+        , textfilename = (makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/")
+	           </> (argdir args </> argbuch args ::FilePath)
+--                ("/home/frank/additionalSpace/DataBig/LitOriginals/"
+--	            ++ "/" ++ argdir args ++ "/" ++ argbuch args ::FilePath)
 -- todo strings or fileio
 --        , graph = s2t . arggraph $ args
         }
