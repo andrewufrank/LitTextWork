@@ -17,29 +17,28 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ReadMarkupAB where
---    (textstate2Text
---    , htf_thisModulesTests
---    , result1A, result2A, result3A, result4A
---    , result1B, result2B, result3B, result4B
---        ) where
+module Parser.ReadMarkupAB
+    (module Parser.ReadMarkupAB
+        ) where
 
 import           Test.Framework
 
 import           Parser.Foundation        hiding ((</>), (<.>))
+import          Producer.Servers
 import           Uniform.FileIO
 --import           Uniform.Strings  hiding ((</>), (<.>))
 -- import           BuchCode.MarkupText (parseMarkup, result1B, result2B, result3B, result4B)
 
 --  the inputs for the tests
 
-testEndpoint = "http://127.0.0.1:3030/testDB/update"
+--testEndpoint = "http://127.0.0.1:3030/testDB/update"
 testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
-serverLocTest = "http://127.0.0.1"
+--serverLocTest = serverBrest --
+serverLocTest = serverLocalhost
 
 
 data Markup
--- just a marking
+-- just a marking for a file type
 
 markupFileType5 = mkTypedFile5 :: TypedFile5 Text Markup
 

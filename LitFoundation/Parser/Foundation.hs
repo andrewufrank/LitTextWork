@@ -11,14 +11,15 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 module Parser.Foundation (
+        module Parser.Foundation
 --TextLoc (..)
 --      Zeilen (..)
 --    , TextZeilen (..)
-    TextState2 (..)
+--    TextState2 (..)
 --    , parseMarkup
 --    , BuchToken (..), Unparser (..)
 --    , LanguageCode (..)
-    , authorText, buchnameText
+--    , authorText, buchnameText
 ----    , formatParaID, unparaID -- ParaID
 ----    , formatLineID
 --    , combine2linesWithHyphenation
@@ -29,7 +30,8 @@ module Parser.Foundation (
 --    , ParaSigl (..), unParaSigl
     , module Data.RDF.Extension
     , module Uniform.Strings  -- cannot export FileIO as well
-    , Path (..), Abs, Dir, File
+    , module Uniform.FileIO
+--    , Path (..), Abs, Dir, File
 --    , module Uniform.FileIO
 --    , ParaID (..)  -- for testing
 --    , P
