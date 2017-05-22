@@ -41,7 +41,7 @@ module Parser.ProduceNLPtriples
 import           Test.Framework
 
 import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
-import           Store.Fuseki
+--import           Store.Fuseki
 import Parser.ProduceNLP
 import Uniform.Error   -- For ErrOrVal
 

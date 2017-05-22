@@ -20,6 +20,7 @@
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
     , module CoreNLP.Defs0
+    , module CoreNLP.Snippets2nt
 --    (convertTZ2nlp
 --    , prepareTZ4nlp
 --    , ErrIO (..)
@@ -39,6 +40,7 @@ import Parser.ReadMarkupAB  -- todo
 import Uniform.Error  -- todo should be comming up
 import Uniform.HttpGet
 import Producer.Servers
+-- import           Text.XML.HXT.Core       hiding (when)
 
 import           CoreNLP.Snippets2nt    --      (readDocString)
 import           CoreNLP.Defs0
@@ -85,11 +87,12 @@ formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
 --serverbrest = "nlp.gerastree.at"
 --localhost = "127.0.0.1"
 
-nlpServerEnglish, nlpServerGerman, nlpServerNone ::PartURI -> PartURI
-nlpServerEnglish loc =   loc <> ":9000"  -- not localhost!
+nlpServerEnglish, nlpServerGerman, nlpServerNone :: URI ->  URI
+nlpServerEnglish   =  relativeTo (makeURI ":9000")     -- from Network-URI
+-- not localhost!
 --nlpServer = "http://nlp.gerastree.at:9000"
-nlpServerGerman loc =   loc <> ":9001"  -- for german
-nlpServerNone loc = nlpServerEnglish loc
+nlpServerGerman   = relativeTo (makeURI ":9001")  -- for german
+nlpServerNone  = nlpServerEnglish
 -- for no language which can be processed
 -- should be a server just returning the input tokenized etc
 
@@ -103,7 +106,7 @@ test_C_D =  do
 -------------------------------------------------D -> E
 
 -- only entry point !
-convertTZ2nlp :: Bool -> Bool -> PartURI -> TZ2 -> ErrIO (Maybe (NLPtext,Doc0))   -- the xml to analyzse  D -> E
+convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO (Maybe (NLPtext,Doc0))   -- the xml to analyzse  D -> E
 -- send a tz text to coreNLP server
 -- works on individual paragraphs
 convertTZ2nlp debugNLP showXML sloc tz2 = do
@@ -142,7 +145,7 @@ test_1_C_E  ::   IO ()  -- D -> E
 test_1_C_E  =  do
     putIOwords ["convertTZ2nlp: result1D to result1E  "] -- tzResult]
     let sloc = serverLoc result1A
-    putIOwords ["test_1_C_E server location is ", sloc]
+    putIOwords ["test_1_C_E server location is ", showT sloc]
     putIOwords ["test_1_C_E server input is ", showT result1BAE]
 
     res <- runErr $ mapM (convertTZ2nlp True False sloc) result1BAE
@@ -329,4 +332,3 @@ result1D =
      NLPtext{tz3loc = TextLoc{tlpage = "13", tlline = 12},
              tz3text = "Er fragte sich als zweiter Paragraph.",
              tz3lang = German}]
-

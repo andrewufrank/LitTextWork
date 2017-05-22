@@ -19,8 +19,10 @@
 --{-# OPTIONS_GHC -w #-}
 
 module Parser.CompleteSentence (
-    completeSentence
+    module Parser.CompleteSentence
+    -- completeSentence
     , htf_thisModulesTests
+    , module Producer.Servers
     )   where
 
 import           Test.Framework
@@ -28,6 +30,7 @@ import           Test.Framework
 import Uniform.Strings
 import Uniform.Error
 import Uniform.Zero
+import Producer.Servers
 import qualified System.IO as IO
 import Parser.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
@@ -52,8 +55,9 @@ completeSentence debugCS lang sent1 = do
     when debugCS $ putIOwords ["completeSentence end", showT sent5]
     return sent5
 
-ttserver = "http://127.0.0.1:17701"
-ttserverTest = "http://127.0.0.1:17701/test"  -- expects blank separated tokens
+ttserver = relativeTo (makeURI ":17701") serverLocalhost
+        --  http://127.0.0.1:17701"
+--ttserverTest = "http://127.0.0.1:17701/test"  -- expects blank separated tokens
 ttProcess :: LanguageCode -> [Text] ->ErrIO Text
 -- just the call to the server at 17701 ttscottyServer
 ttProcess lang toks = do

@@ -14,14 +14,17 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module BuchCode.BuchToken (BuchTokenized(..)
-            , BuchToken (..), unusedTokens, tokenNLPanalysed
-            , Unparser (..)
-            , MarkupElement, mkBuchTKwithoutnum, numberBuchTK
-            , LanguageCode (..)
+module BuchCode.BuchToken (module BuchCode.BuchToken
+        , module Uniform.Error
+        , module Data.RDF.Extension 
+            --     BuchTokenized(..)
+            -- , BuchToken (..), unusedTokens, tokenNLPanalysed
+            -- , Unparser (..)
+            -- , MarkupElement, mkBuchTKwithoutnum, numberBuchTK
+            -- , LanguageCode (..)
             ) where
 
---import           Data.RDF.Extension (LanguageCode (..), PartURI)
+import           Data.RDF.Extension -- (LanguageCode (..), PartURI)
 import           Uniform.Error
 --import           Uniform.Strings
 --import Safe  -- is export from Error
@@ -119,4 +122,3 @@ instance Unparser BuchToken where
     markerPureMult BuchPublikationDetail = [markerPure BuchPublikationDetail, "publicationDetail"
                                 , "publikationsdetail"]
     markerPureMult a           = [markerPure a]
-

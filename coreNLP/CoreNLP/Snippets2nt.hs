@@ -25,12 +25,12 @@
 --{-# LANGUAGE TypeSynonymInstances  #-}
 
 module CoreNLP.Snippets2nt (
---        module CoreNLP.Snippets2nt
-         htf_thisModulesTests
+       module CoreNLP.Snippets2nt
+        , htf_thisModulesTests
 --        , makeNLPrequest5
 --        ,makeNLPrequest6
         , readDocString
-        , nlp_serverLoc, host_serverLoc
+        -- , nlp_serverLoc, host_serverLoc
         )  where
 
 import           Test.Framework
@@ -49,43 +49,43 @@ import           Data.RDF.FileTypes      (RDFgraph (..), ntFile, unRDFgraph)
 import           Data.RDF.Prefs          (prefixs2pm, startPrefix)
 
 --import           CoreNLP.Defs0
-import           Store.Fuseki
+-- import           Store.Fuseki
 --import           Store.RDFstore.HttpCall (RequestMethod (..)
 ----                                      , callHTTP6,
 ----                                          makeHTTPrequest6
 --                                          , parseURLchecked,
 --                                          callHTTP7, makeHTTPrequest5,
 --                                          urlEncodeVarsT)
-import           Store.StoreAlg
+-- import           Store.StoreAlg
 --import Store.Fuseki (fusekiServer, ShowServer (..))
 --import           Store.RDFstore.HttpCall
 import           Data.Text.Encoding
 import           Text.XML.HXT.Core       hiding (when)
 
-debugParse = False
-loadGraphDebug = False
-
-showXML = True
-produceFiles = False
-
-nlp_serverLoc = "http://nlp.gerastree.at" :: PartURI
-host_serverLoc = "http://127.0.0.1" :: PartURI
-serverLoc = "nlp.gerastree.at"
-localHost = "127.0.0.1"
-
-nlpServerEnglish = "http://" <> serverLoc <> ":9000"  -- not localhost!
---nlpServer = "http://nlp.gerastree.at:9000"
-nlpServerGerman = "http://" <> serverLoc <> ":9001"  -- for german
-nlpServerNone = nlpServerEnglish -- for no language which can be processed
--- should be a server just returning the input tokenized etc
-
---sparqlServer = "http://" <> serverLoc <> ":8890" -- virtuoso
---sparqlServer = "http://" <> serverLoc <> ":3030/march17/update"  -- fuseki
--- sparqlServerBrest = "http://" <> serverLoc <> ":3030/march25/update"  -- fuseki brest
---sparqlServer = "http://" <> localHost <> ":3030/marchDB/update"  -- fuseki
--- change the dirname and mkdir for it, but leave web address the same
-
-pm = prefixs2pm startPrefix
+-- debugParse = False
+-- loadGraphDebug = False
+--
+-- showXML = True
+-- produceFiles = False
+--
+-- nlp_serverLoc = "http://nlp.gerastree.at" :: PartURI
+-- host_serverLoc = "http://127.0.0.1" :: PartURI
+-- serverLoc = "nlp.gerastree.at"
+-- localHost = "127.0.0.1"
+--
+-- nlpServerEnglish = "http://" <> serverLoc <> ":9000"  -- not localhost!
+-- --nlpServer = "http://nlp.gerastree.at:9000"
+-- nlpServerGerman = "http://" <> serverLoc <> ":9001"  -- for german
+-- nlpServerNone = nlpServerEnglish -- for no language which can be processed
+-- -- should be a server just returning the input tokenized etc
+--
+-- --sparqlServer = "http://" <> serverLoc <> ":8890" -- virtuoso
+-- --sparqlServer = "http://" <> serverLoc <> ":3030/march17/update"  -- fuseki
+-- -- sparqlServerBrest = "http://" <> serverLoc <> ":3030/march25/update"  -- fuseki brest
+-- --sparqlServer = "http://" <> localHost <> ":3030/marchDB/update"  -- fuseki
+-- -- change the dirname and mkdir for it, but leave web address the same
+--
+-- pm = prefixs2pm startPrefix
 
 -- could be done in one call, but too complicated
 -- readDocHTTP :: Text  -> ErrIO  Doc0

@@ -31,7 +31,7 @@ import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
 --import           Parser.ProduceNLP
 import           Parser.ProduceNLPtriples
-import           Store.Fuseki
+--import           Store.Fuseki
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
 -- (parseMarkup, result1B, result2B, result3B, result4B)

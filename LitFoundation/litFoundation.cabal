@@ -16,8 +16,10 @@ library
         , uniform-strings
         , uniform-error
         , uniform-fileio
---        , uniform-http  -- not yet required, should replace rdf4hextension for PartURI
-        , rdf4hextension
+        , network-uri
+        , uniform-http
+        -- not yet required, should replace rdf4hextension for PartURI
+        -- , rdf4hextension
         , HTF
 
     exposed-modules:

@@ -12,14 +12,15 @@
 
 module Parser.Foundation (
         module Parser.Foundation
-    , module Data.RDF.Extension
+    -- , module Data.RDF.Extension
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
     ) where
 
-import           Data.RDF.Extension
+-- import           Data.RDF.Extension
 import           Uniform.FileIO (Path (..), Abs, Dir, File)
 import           Uniform.Strings    -- hiding ((<|>))
+import Producer.Servers
 
 buchnameText = s2t . buchname
 authorText = s2t . authorDir
@@ -28,7 +29,7 @@ authorText = s2t . authorDir
 data TextState2 = TextState2
     {                -- the projp buchcode gives the code for the book,
                 -- add the element number
-     serverLoc       :: PartURI  -- where the nlp servers are
+     serverLoc       :: URI  -- where the nlp servers are
     , originalsDir :: Path Abs Dir -- the directory in which the files are
                     -- either LitOrig or a test dir
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are

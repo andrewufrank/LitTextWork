@@ -20,7 +20,7 @@ packages:
 - rdf4hextension
 - LitText
 - LinesToParagraphBA_C
-- rdf4store
+#- rdf4store
 - readMarkup
 - LitFoundation
 extra-deps:

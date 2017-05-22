@@ -22,12 +22,14 @@
 module CoreNLP.Defs0 (
         module CoreNLP.Defs0
         , module CoreNLP.DependencyCodes
+        -- ,readDocString
         )  where
 
 import              Uniform.Strings
 import              Uniform.FileIO
 --import              LitNLP.Tools
 import              CoreNLP.DependencyCodes
+-- import           Text.XML.HXT.Core       hiding (when)
 
 
 newtype  Wordform0 = Wordform0 {word0 :: Text} deriving (Show, Read, Eq, Ord, Zeros)

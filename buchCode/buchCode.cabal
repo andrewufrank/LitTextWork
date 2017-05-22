@@ -16,7 +16,7 @@ library
 --        , uniform-strings
         , uniform-error
         , uniform-fileio
---        , rdf4hextension
+       , rdf4hextension
         , litFoundation
         , readMarkup
         , parsec

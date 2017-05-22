@@ -19,6 +19,7 @@ import           Main2sub                     (mainLitAndNLPproduction)
 import           Lines2para.Lines2para   hiding ((<>) , (</>), (<.>))
 import           Uniform.Convenience.StartApp
 import           Uniform.FileIO          hiding ((<>))
+import Producer.Servers
 --import           Uniform.Strings              hiding ((<>), (</>), (<.>))
 -- for the command line parser:
 import           Options.Applicative
@@ -84,18 +85,24 @@ cmd2textstate :: LitArgs -> TextState2
 cmd2textstate args  = TextState2
         {
 --          endpoint = "http://nlp.gerastree.at:3030/aprilDB/update"
-           serverLoc = "http://nlp.gerastree.at"
+           serverLoc = serverBrest
           -- endpoint = "http://127.0.0.1:3030/marchDB/update"
         -- , originalsDir = mkFilepath lpX "/home/frank/testLit/"
-        , originalsDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/"
+        , originalsDir = originalsdir
         -- , originalsDir = mkFilepath lpX "/home/frank/additionalSpace/DataBig/LitTest/"
                     -- waterhouse/kuw.markup
         , authorDir =   argdir $ args
         , buchname =   argbuch $ args
-        , textfilename = (makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/")
-	           </> (argdir args </> argbuch args ::FilePath)
---                ("/home/frank/additionalSpace/DataBig/LitOriginals/"
---	            ++ "/" ++ argdir args ++ "/" ++ argbuch args ::FilePath)
--- todo strings or fileio
+        , textfilename = originalsdir </> dir_file
+
 --        , graph = s2t . arggraph $ args
         }
+
+        where
+                originalsdir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/"
+                dir_file :: FilePath
+                dir1 :: FilePath
+                dir1 = argdir args
+                fil :: FilePath
+                fil = argbuch args
+                dir_file =  dir1 </> fil

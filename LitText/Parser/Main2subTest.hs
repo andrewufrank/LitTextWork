@@ -30,7 +30,7 @@ import           Lines2para.Lines2para hiding ((</>))
 --import qualified Lines2para.Lines2paraTests as C
 --                ( result1BA, result2BA, result3BA, result4BA,
 --                result1C, result2C, result3C, result4C)
-import           Store.Fuseki
+--import           Store.Fuseki
 --import           Uniform.Error
 --import           Uniform.Strings
 import qualified BuchCode.MarkupText
