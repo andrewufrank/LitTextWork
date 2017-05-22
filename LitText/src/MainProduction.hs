@@ -15,11 +15,11 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 import           Main2sub                     (mainLitAndNLPproduction)
-import           Parser.Foundation
--- import           Parser.LinesToParagrahs
+--import           Parser.Foundation
+import           Lines2para.Lines2para   hiding ((<>) , (</>), (<.>))
 import           Uniform.Convenience.StartApp
-import           Uniform.FileIO         hiding ((<>))
-import           Uniform.Strings              hiding ((<>), (</>), (<.>))
+import           Uniform.FileIO          hiding ((<>))
+--import           Uniform.Strings              hiding ((<>), (</>), (<.>))
 -- for the command line parser:
 import           Options.Applicative
 -- the http://hackage.haskell.org/package/optparse-applicative package
@@ -44,10 +44,10 @@ data LitArgs = LitArgs
                         -- where the markup file is
                         -- the same dirname is used in convertsDir
   , argbuch  :: String -- ^ the filename in the dir
-  , arggraph :: String   -- ^ is attached to gerstreeURI for graph name
+--  , arggraph :: String   -- ^ is attached to gerstreeURI for graph name
   }
 
-cmdArgs :: Parser LitArgs
+cmdArgs :: Parser (LitArgs)
 cmdArgs = LitArgs
      <$> argument str
           (
@@ -83,8 +83,8 @@ cmd2textstate :: LitArgs -> TextState2
 -- language is by default english, buchcode is the same as proj
 cmd2textstate args  = TextState2
         {
-          endpoint = "http://nlp.gerastree.at:3030/aprilDB/update"
-          , serverLoc = "http://nlp.gerastree.at"
+--          endpoint = "http://nlp.gerastree.at:3030/aprilDB/update"
+           serverLoc = "http://nlp.gerastree.at"
           -- endpoint = "http://127.0.0.1:3030/marchDB/update"
         -- , originalsDir = mkFilepath lpX "/home/frank/testLit/"
         , originalsDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/"
@@ -92,7 +92,9 @@ cmd2textstate args  = TextState2
                     -- waterhouse/kuw.markup
         , authorDir =   argdir $ args
         , buchname =   argbuch $ args
-        , textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitOriginals/"
-						</> (argdir args) </> argbuch $ args
+        , textfilename = makeAbsFile
+                ("/home/frank/additionalSpace/DataBig/LitOriginals/"
+	            ++ "/" ++ argdir args ++ "/" ++ argbuch args ::FilePath)
+-- todo strings or fileio
 --        , graph = s2t . arggraph $ args
         }

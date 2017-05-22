@@ -107,7 +107,9 @@ executable produce2
         , uniform-fileio
         , uniform-convenience
         , LitText
+        , litFoundation
         , buchCode
+        , readMarkup
         , lines2para
         , rdf4store
         , optparse-applicative

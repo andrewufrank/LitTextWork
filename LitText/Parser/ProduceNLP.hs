@@ -32,22 +32,12 @@ import           Test.Framework
 --import           CoreNLP.Snippets2nt          (makeNLPrequest5) -- , readDocString)
 import           Data.RDF
 import Data.Maybe -- todo
--- import           Data.RDF.Extension
---import           Data.Text.Encoding           (decodeLatin1, encodeUtf8)
 import           Parser.Foundation  -- todo should be comming up
 import Lines2para.Lines2para
 import Lines2para.HandleLayout
---import           Lines2para.Lines2paraTests
-----    (result1C_tzResult1, result1A_textstate)  -- for testing
 import Parser.ReadMarkupAB  -- todo
-
---import           Parser.ProduceLit            (buchURIx, paraSigl)
---import           Uniform.Convenience.StartApp
---import           Uniform.FileIO
---import           Uniform.Strings              hiding ((<|>))
 import Uniform.Error  -- todo should be comming up
 import Uniform.HttpGet
---import Parser.ProduceNLPtriples
 import           CoreNLP.Snippets2nt    --      (readDocString)
 import           CoreNLP.Defs0
 

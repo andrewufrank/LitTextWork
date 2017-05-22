@@ -21,6 +21,8 @@ packages:
 - LitText
 - LinesToParagraphBA_C
 - rdf4store
+- readMarkup
+- LitFoundation
 extra-deps:
 - chatter-0.8.0.1
 - data-easy-0.7.0

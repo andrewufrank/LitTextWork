@@ -56,6 +56,12 @@ data TZ2 =
                     }
             deriving (Show, Eq )
 
+paragraphs2TZ :: [TextZeilen] -> [TZ2]  -- test BA -> C
+-- ^ produce the text files (ignores removed, language marked)
+-- paragraphs formed etc.  (all together in LinesToParagraph)
+-- page number and line numbers are in layout
+paragraphs2TZ =
+    paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout
 
 paragraphs2TZpara :: [TZ] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)

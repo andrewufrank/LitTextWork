@@ -89,7 +89,8 @@ textstateShortTest = TextState2 {
 --      endpoint = "http://127.0.0.1:3030/testDB/update"
 
 --        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
-        serverLoc = host_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
+--        serverLoc = host_serverLoc  --
+        serverLoc = "http://nlp.gerastree.at"  -- "http://127.0.0.1"
 --        , originalsDir = makeAbsDir origDirForTest
         , originalsDir = makeAbsDir shortTestDir
         , authorDir = ""

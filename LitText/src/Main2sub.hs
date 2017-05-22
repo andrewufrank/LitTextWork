@@ -25,6 +25,7 @@ import           Test.Framework
 import Parser.Main2subTest
 -- immediate under this, imports everything here imported
 import Parser.ReadMarkupAB
+import           BuchCode.MarkupText
 --import           Parser.Foundation        hiding ((</>))
 import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
@@ -33,7 +34,6 @@ import           Parser.ProduceNLPtriples
 import           Store.Fuseki
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
-import           BuchCode.MarkupText
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 
 debugNLP = False
@@ -43,7 +43,8 @@ mainLitAndNLPproduction debugLitonly textstate = do
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
-    let tzpara = (paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout) ttzeilen     -- test BA -> C  in LinesToParagraph
+    let tzpara = paragraphs2TZ  ttzeilen     -- test BA -> C  in LinesToParagraph
+--    let tzpara = (paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout) ttzeilen     -- test BA -> C  in LinesToParagraph
 
 --    tzpara <- textstate2TZ textstate  -- test A -> C
 
