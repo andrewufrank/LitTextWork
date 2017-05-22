@@ -82,7 +82,7 @@ test_1_D_XproduceNLPtriples =  do   -- test C -> H
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
-    m1 <- convertTZ2nlp showXML (serverLoc textstate) tzp  -- C -> E
+    m1 <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
     case m1 of
         Nothing -> return ()
         Just (tz, doc0)  -> do
@@ -95,12 +95,12 @@ produceOneParaNLP showXML textstate tzp = do
 
             let doc0' = doc0{docSents = sents2}
 
-            when debugNLP $
+            when debugNLP1 $
                     putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
         --    let buchuri = buchURIx textstate :: RDFsubj
             let triples  = processDoc0toTriples2 textstate tzp doc0'  -- G -> H
 
-            when debugNLP $
+            when debugNLP1 $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples "
                     , unlines' . map showT $ triples]
                     -- todo fileio add filepath to dir
