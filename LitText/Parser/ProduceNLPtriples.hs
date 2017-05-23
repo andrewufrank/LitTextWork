@@ -29,37 +29,22 @@
 
 module Parser.ProduceNLPtriples
     (module Parser.ProduceNLPtriples
---    produceNLPtriples
---    , TextState2 (..)
---    , htf_thisModulesTests
---    , result1E_nlpResult
---    , TZ (..)
-----    , storeTriplesFuseki
---    , writeTriples2file
     ) where
 
 import           Test.Framework
 
 import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
---import           Store.Fuseki
 import Parser.ProduceNLP
 import Uniform.Error   -- For ErrOrVal
-
---import           CoreNLP.Defs0
 import           Data.RDF   -- should all be imported from extension
---import           Data.RDF.Extension
 import          Data.RDF.FileTypes
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
---import           Parser.LinesToParagraphs (result1A)  -- for test
---import Lines2para.Lines2paraTests (result1A)
 import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
---import Parser.ProduceLit -- (result1C)   -- for test
 import           Uniform.Strings              hiding ((<|>))
 import Uniform.FileIO hiding ((</>), (<.>))
 import Parser.CompleteSentence -- (completeSentence)
 -- for tests
 import Parser.ReadMarkupAB -- (result1A)
---import Lines2para.Lines2paraTests  -- (result1C)
 import Data.Either
 
 debugNLP1 = False
@@ -88,9 +73,10 @@ produceOneParaNLP showXML textstate tzp = do
         Just (tz, doc0)  -> do
             let lang = tz2lang tzp
             let sents1 = docSents doc0
+            let nlpserver = serverLoc textstate
 
             sents2 <- if lang == German
-                    then mapM (completeSentence False lang) sents1  -- F -> G
+                    then mapM (completeSentence False nlpserver lang) sents1  -- F -> G
                     else return sents1
 
             let doc0' = doc0{docSents = sents2}
@@ -131,17 +117,17 @@ writeTriples2file textstate tris = do
 
 test_completeSentence = do  -- F -> G
     putIOwordsT ["completeSentence F -> G ", showT resutl1F_readDocStringResult]
-    s2 <- runErr $ mapM (completeOneDoc German) (rightNote "isNotRight" resutl1F_readDocStringResult)
+    s2 <- runErr $ mapM (completeOneDoc serverBrest German) (rightNote "isNotRight" resutl1F_readDocStringResult)
     assertEqual result1_G_readDocCompleted s2
 
 rightNote :: Text ->  ErrOrVal a -> a
 rightNote msg (Right a) = a
 rightNote msg (Left t) = errorT [ msg, t]
 
-completeOneDoc :: LanguageCode -> Doc0  -> ErrIO Doc0  -- F -> G
-completeOneDoc lang doc = do
+completeOneDoc :: URI -> LanguageCode -> Doc0  -> ErrIO Doc0  -- F -> G
+completeOneDoc serverloc lang doc = do
     let s1 = docSents doc
-    s2 <- mapM (completeSentence False lang) s1
+    s2 <- mapM (completeSentence False serverloc lang) s1
     return (doc {docSents = s2})
 
 processDoc0toTriples2 :: TextState2 -> TZ2 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H

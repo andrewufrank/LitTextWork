@@ -41,12 +41,12 @@ import Data.RDF.Extension (LanguageCode (..))
 
 import Uniform.HttpGet
 
-completeSentence :: Bool -> LanguageCode -> Sentence0 -> ErrIO Sentence0
-completeSentence debugCS lang sent1 = do
+completeSentence :: Bool -> URI ->  LanguageCode -> Sentence0 -> ErrIO Sentence0
+completeSentence debugCS serverloc lang sent1 = do
     when debugCS $ putIOwords ["completeSentence start", showT sent1]
     let  toks = extractTokens sent1  -- not working: made strict in text to delay till text is available
                 -- may resolve problem of error in accept (limit 5 caller)
-    ttres <- ttProcess lang toks   -- replace by httpcall
+    ttres <- ttProcess serverloc lang toks   -- replace by httpcall
     let tags = convertTT ttres
     let toks2 = zipWith putTags2token tags (stoks sent1)
     let sent2 = sent1{stoks = toks2}
@@ -55,13 +55,13 @@ completeSentence debugCS lang sent1 = do
     when debugCS $ putIOwords ["completeSentence end", showT sent5]
     return sent5
 
-ttserver = relativeTo (makeURI ":17701") serverLocalhost
+ttserver s =  addPort2URI  s 17701
         --  http://127.0.0.1:17701"
 --ttserverTest = "http://127.0.0.1:17701/test"  -- expects blank separated tokens
-ttProcess :: LanguageCode -> [Text] ->ErrIO Text
+ttProcess :: URI -> LanguageCode -> [Text] ->ErrIO Text
 -- just the call to the server at 17701 ttscottyServer
-ttProcess lang toks = do
-    response <- makeHttpPost7 False ttserver [] "text/plain" (unlines' toks)
+ttProcess serverLoc lang toks = do
+    response <- makeHttpPost7 False (ttserver serverLoc) [] "text/plain" (unlines' toks)
 --
 --    let request = makeHTTPrequest5 POST ttserver "text/plain " (unlines' toks)
 --    putIOwords ["ttprocess request", s2t $ show  request]
@@ -121,7 +121,7 @@ s9 = Sentence0{sid = SentID0{unSentID0 = 1},
           sdeps = Nothing}
 --test_complete :: IO ()
 test_complete = do
-    s1 <- runErr $ completeSentence False German s0
+    s1 <- runErr $ completeSentence False serverBrest German s0
     case s1 of
         Left msg -> errorT ["test complete", msg]
         Right s2 -> assertEqual s9 s2
