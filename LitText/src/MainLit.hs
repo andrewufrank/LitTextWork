@@ -21,6 +21,7 @@ import           Parser.ProduceNLPtriples
 import           Uniform.Convenience.StartApp
 import           Uniform.FileIO
 import           Uniform.Strings
+import Producer.Servers
 
 import CoreNLP.Snippets2nt
 
@@ -29,24 +30,10 @@ main = do
 --    putIOwords ["test1", showT testF1]
 --    putIOwords ["functionality test1", showT $ test1 == test1result]
 
---main2tt :: ErrIO ()
----- a not working approach to access the tree tagger wtih http
---main2tt = do
---  putIOwords ["testTT"]
---  let litTriplesOnly = False   -- stops automatically
---  r <- makeTTrequest litTriplesOnly "http://127.0.0.1:7001" "A\nsentence\n."
---
---  putIOwords ["testTT", showT r]
-
--- minimal deutsch /home/frank/additionalSpace/DataBig/LitTest/waterhouse/t1markup.txt
 main1 = do
     let textstate = TextState2 {
---            endpoint = "http://nlp.gerastree.at:3030/aprilDB/update"
---              endpoint = "http://127.0.0.1:3030/testDB/update"
-              serverLoc = "http://127.0.0.1"
-            -- , originalsDir = mkFilepath lpX "/home/frank/testLit/"
---            , originalsDir = mkFilepath lpX "/home/frank/additionalSpace/DataBig/LitOriginals"
-            , originalsDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+              serverLoc = serverBrest
+           , originalsDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
 --            , authorDir=  "carol" -- "waterhouse"
 --            , buchname =  "minimal"  -- "pg11"
 --            , authorDir=  "Boccacio" --
@@ -62,7 +49,6 @@ main1 = do
             -- , buchname =  "kuw"
             -- , buchname =  "test1"
         , textfilename = makeAbsFile ("/home/frank/additionalSpace/DataBig/LitTest/test/t1")
---             , graph = "tbang"
              }
 
     putIOwords ["ProduceLit for", showT textstate]

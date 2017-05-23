@@ -20,11 +20,8 @@ import           Parser.Foundation
 import           Uniform.Convenience.StartApp
 import           Uniform.FileIO         hiding ((<>))
 import           Uniform.Strings              hiding ((<>), (</>), (<.>))
--- for the command line parser:
---import           Options.Applicative
--- the http://hackage.haskell.org/package/optparse-applicative package
---import           Data.Semigroup               ((<>))
---import           Options.Applicative.Builder
+import Producer.Servers
+
 
 programName = "may13 = ProduceLit" :: Text
 progTitle = "produce the lit for all markup files " :: Text
@@ -38,14 +35,11 @@ origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 resfile  = makeRelFile "resultCollectAll"
 
 textstateX = TextState2 {
---        endpoint = "http://127.0.0.1:3030/testDB/update"
---        , serverLoc = "http://127.0.0.1"
-        serverLoc = "http://nlp.gerastree.at/"
+        serverLoc = serverBrest
         , originalsDir = makeAbsDir origDirForTest
         , authorDir = ""
         , buchname = ""
         , textfilename = makeAbsFile ("/home/frank/additionalSpace/DataBig/LitOriginals/notafile")
- --       , graph = "Test1"
         }
 
---main1 = processAll textstateX resfile
+

@@ -116,9 +116,11 @@ formParagraphs (t:ts) = case t of
             where p = collectInParagrah [t]
     TZtext {tzt=Kurz0} -> p : formParagraphs rest
                         where (p,rest) = collectKurz (t:ts)
+    TZtext {tzt=Fussnote0} ->  formParagraphs ts
+            -- are not preserved
 
     otherwise -> errorT ["formParagraph - other ", showT t]
-    -- allCaps ?
+    -- allCaps ?  fussnote
 
 --formParagraphs x = errorT ["formParagraph - outer  ", showT x]
 
