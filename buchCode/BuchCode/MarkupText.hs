@@ -46,11 +46,11 @@ module BuchCode.MarkupText
 --        , result5B, result5BA
 --    ) where
 
-import           BuchCode.BuchToken
+import           BuchCode.BuchToken hiding (try, (<|>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
-import           Uniform.Error
+import           Uniform.Error hiding (try, (<|>))
 import Parser.Foundation  hiding ((<|>))
 --import           Uniform.Strings   hiding ((<|>))
 import           Test.Framework

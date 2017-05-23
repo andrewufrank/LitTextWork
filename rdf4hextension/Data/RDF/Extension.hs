@@ -17,26 +17,9 @@
 
 module Data.RDF.Extension (
     module Data.RDF.Extension
-
---      mkTripleLang, mkTripleLang3
---      , mkTripleRef, mkTripleText
---      , mkTripleInt, mkTripleInteger
---      , mkTripleType, mkTriplePartOf
---      , getTripleLanguage
---     , module Data.RDF
--- --    , module Data.RDF.Types
---     , RDF.RDF (..), RDF.Node (..)
---     , RDF.LValue (..) -- , RDF.RDFserializer
---     , LanguageCode (..)
---     , PartURI  -- a replacement for Text
---     , gerastreeURI, baseurl
--- --    , Triple
---     , RDFsubj (..), unRDFsubj, extendHashRDFsubj, extendSlashRDFsubj
---     , RDFproperty (..)
---     -- , makeRDFproperty
---     , RDFtype (..), RDFtypes (..)   -- makeRDFtype
---     , RDFproperties (..)
---     , (</>)
+    , module Data.RDF
+    , module Data.RDF.Prefs
+    , module Uniform.Convenience.LitTypes
     )     where
 
 
@@ -51,7 +34,7 @@ import qualified Data.RDF.Types      as RDF (RDF (..), RdfSerializer (..))
 -- import qualified Data.Text           as T (append, concat, null, strip)
 import           Uniform.Error
 -- import           Uniform.FileIO      (thd3)
--- import           Uniform.StringInfix ((</>)) 
+-- import           Uniform.StringInfix ((</>))
 -- import           Uniform.Strings
 -- import           Uniform.Zero
 import           Uniform.Convenience.LitTypes

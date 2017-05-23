@@ -1,5 +1,5 @@
 name: readMarkup
-version: 0.1.7.2
+version: 0.1.7.3
 cabal-version: >=1.24
 build-type: Simple
 license: AllRightsReserved

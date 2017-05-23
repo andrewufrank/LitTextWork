@@ -15,14 +15,14 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
-- coreNLP
-- buchCode
-- rdf4hextension
-- LitText
-- LinesToParagraphBA_C
-#- rdf4store
-- readMarkup
-- LitFoundation
+- ../LitFoundation
+- ../coreNLP
+- ../buchCode
+- ../readMarkup
+- ../rdf4hextension
+- '.'
+- ../LinesToParagraphBA_C
+# - ../rdf4store
 extra-deps:
 - chatter-0.8.0.1
 - data-easy-0.7.0
@@ -30,4 +30,4 @@ extra-deps:
 - parsec-extra-0.2.0.0
 - rdf4h-3.0.1
 - tokenize-0.3.0
-resolver: lts-8.15
+resolver: lts-8.13

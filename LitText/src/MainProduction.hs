@@ -17,7 +17,7 @@
 import           Main2sub                     (mainLitAndNLPproduction)
 --import           Parser.Foundation
 import           Lines2para.Lines2para   hiding ((<>) , (</>), (<.>))
-import           Uniform.Convenience.StartApp
+import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import           Uniform.FileIO          hiding ((<>))
 import Producer.Servers
 --import           Uniform.Strings              hiding ((<>), (</>), (<.>))

@@ -31,7 +31,8 @@
 -- {-# LANGUAGE UndecidableInstances      #-}
 
 module CoreNLP.CoreNLPxml (
-            module CoreNLP.Defs0
+            module CoreNLP.CoreNLPxml
+            , module CoreNLP.Defs0
             -- , module CoreNLP.DependencyCodes
             ) where
 

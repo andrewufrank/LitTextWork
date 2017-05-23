@@ -33,8 +33,8 @@ import           Uniform.FileIO
 
 --testEndpoint = "http://127.0.0.1:3030/testDB/update"
 testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
---serverLocTest = serverBrest --
-serverLocTest = serverLocalhost
+serverLocTest = serverBrest --
+--serverLocTest = serverLocalhost
 
 
 data Markup

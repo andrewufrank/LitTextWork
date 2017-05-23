@@ -14,6 +14,7 @@
 module Producer.Servers (
     module Producer.Servers
     , module Network.URI
+    , module Uniform.HttpGet
     ) where
 
 

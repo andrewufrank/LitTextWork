@@ -15,12 +15,18 @@
 {-# LANGUAGE TypeSynonymInstances       #-}
 -- {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 
-module Data.RDF.Prefs   where
+module Data.RDF.Prefs
+(module Data.RDF.Prefs
+-- , module Uniform.HttpGet
+, module Uniform.Strings
+, module Uniform.Error)  where
 
 -- import           Safe
 import           Uniform.Error   -- (fromJustNote)
 import           Uniform.Strings
 import           Uniform.Zero
+-- import Uniform.HttpGet  -- for URI
+-- the URI here is just text - URItext
 
 import qualified Data.Map        as Map (fromList)
 import           Data.Maybe      (listToMaybe)
@@ -40,16 +46,16 @@ class Entity2 f a b where
 
 
 
-instance Entity2 PrefixPairX Text URI where
+instance Entity2 PrefixPairX Text URItext where
     mk2 a b = PrefixPair a b
     remove2 a = filter ( (a/=) . pfCode)
     find2 a =   fmap pfURI  -- . fromJustGuarded "endpoints not found"
                 . listToMaybe . filter ( (a==) . pfCode)
 
-mkPrefixPair :: Text -> URI -> PrefixPair
+mkPrefixPair :: Text -> URItext -> PrefixPair
 mkPrefixPair = mk2
 
-instance Entity2 EndptsPairX Text URI where
+instance Entity2 EndptsPairX Text URItext where
     mk2 = EndptsPairX
     remove2 a = filter ( (a/=) . epCode)
     find2 a =   fmap epURI .   listToMaybe . filter ( (a==) . epCode)
@@ -58,23 +64,23 @@ reorderEndpts a eps = add2 a b . remove2 a $ eps
     where  b = fromJustNote "reorderEndpts" . find2 a $  eps
 
 --type EndPoint = String  -- from connection
-type URI = Text  -- just the uri, not the <..>
+type URItext = Text  -- just the uri, not the <..>
 
 data RDFeditorPrefs = RDFeditorPrefs { prefix :: [PrefixPair]
                                 , endpts      :: [EndptsPair]
-                                } deriving (Show, Read, Eq, Ord)
+                                } deriving (Show,  Eq, Ord)
 
-type PrefixPair = PrefixPairX Text URI
+type PrefixPair = PrefixPairX Text URItext
 --{prefixShort::Text, prefixVal ::Text}
 data PrefixPairX a b = PrefixPair
                         { pfCode :: a  -- Text  -- does not include the ":"
-                        , pfURI  ::  b --  URI
-                                    } deriving (Show, Read, Eq, Ord)
+                        , pfURI  ::  b --  URItext
+                                    } deriving (Show,  Eq, Ord)
                                     -- TODO is twice the same structure as EndptsPair !
 
 instance Zeros PrefixPair where zero = mk2 zero zero
 
-type EndptsPair = EndptsPairX Text URI
+type EndptsPair = EndptsPairX Text URItext
 data EndptsPairX a b  = EndptsPairX {epCode :: a
                             , epURI         ::  b
                             } deriving (Show, Read, Eq, Ord)

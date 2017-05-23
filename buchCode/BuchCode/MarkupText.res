@@ -16,7 +16,7 @@ result0B = unlines'  ["wort1;langeswort2"
             ,"II.--THE COUNCIL HELD BY THE RATS [4]"
             ,"   Old Rodilard,[5] a certain cat,"
             ,"II - ALL CAPS TEST"
-            , "[44]"  -- seitenzahl
+            , "[44]"  -- seitenzahl 
             , "[1] eine Fussnote"
             ,"77"] ::  Text
 
