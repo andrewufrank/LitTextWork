@@ -18,7 +18,7 @@
 module Data.RDF.Prefs   where
 
 -- import           Safe
-import           Uniform.Error   (fromJustNote)
+import           Uniform.Error   -- (fromJustNote)
 import           Uniform.Strings
 import           Uniform.Zero
 

@@ -10,9 +10,9 @@
 
 
 module Data.RDF.Predicates
-    (
-    isP
-    , getURI4Node, getText4node
+    (module Data.RDF.Predicates
+    -- isP
+    -- , getURI4Node, getText4node
 --    , nlp, t2o -- export only the prefixes, because ntriple are construcyted
 --    , nlpPrefix
 --    , t2oPrefix, litPrefix   -- move to littext
@@ -23,12 +23,12 @@ module Data.RDF.Predicates
     where
 
 
-import           Data.Text       hiding (map)
-import qualified Data.Text       as T (append, concat, null, strip)
+-- import           Data.Text       hiding (map)
+-- import qualified Data.Text       as T (append, concat, null, strip)
 
 -- import           Safe
 import           Uniform.Error
-import           Uniform.Strings
+-- import           Uniform.Strings
 import           Uniform.Zero
 
 import           Data.Map        as Map (fromList)

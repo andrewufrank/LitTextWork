@@ -19,9 +19,11 @@
 {-# LANGUAGE TypeFamilies  #-}
 --{-# Option -w #-}
 
-module Data.RDF.FileTypes (RDFgraph (..), unRDFgraph
-	, ntFile, ntFileTriples)
-	where
+module Data.RDF.FileTypes (
+  module Data.RDF.FileTypes
+-- RDFgraph (..), unRDFgraph
+-- , ntFile, ntFileTriples)
+  ) where
 
 import qualified Data.RDF        as RDF
 import Data.RDF.Triple2text (triple2text)

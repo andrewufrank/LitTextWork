@@ -1,6 +1,6 @@
 name: rdf4hextension
-version: 0.0.8.2
-cabal-version: >=1.8
+version: 0.0.8.3
+cabal-version: >=1.24
 build-type: Simple
 license: BSD3
 license-file: LICENSE.txt
@@ -34,4 +34,5 @@ library
         -- not used, only for version
         -- safe -any
     hs-source-dirs: .
+    default-language: Haskell2010
     other-modules:

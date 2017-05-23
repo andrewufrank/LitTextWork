@@ -13,7 +13,10 @@
 --{-# LANGUAGE TypeSynonymInstances       #-}
 -- {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 
-module Data.RDF.Triple2text   where
+module Data.RDF.Triple2text
+    (module Data.RDF.Triple2text
+    -- , module Data.RDF   -- is imported qualified 
+    ) where
 
 import Uniform.Strings
 
