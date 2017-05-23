@@ -134,7 +134,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
                             , ("outputFormat","xml")
                             ]
             when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
-            xml ::  Text  <-   makeHttpPost7 True nlpServer vars "text/plain" text
+            xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
 -- german parser seems to understand utf8encoded bytestring
 
             when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]
@@ -151,7 +151,7 @@ test_1_C_E  =  do
     putIOwords ["test_1_C_E server location is ", showT sloc]
     putIOwords ["test_1_C_E server input is ", showT result1BAE]
 
-    res <- runErr $ mapM (convertTZ2nlp True False sloc) result1BAE
+    res <- runErr $ mapM (convertTZ2nlp False False sloc) result1BAE
     assertEqual result1E res
 
 result1E :: ErrOrVal [Maybe (NLPtext, Doc0)]
