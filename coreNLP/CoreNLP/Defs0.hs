@@ -26,7 +26,8 @@ module CoreNLP.Defs0 (
         )  where
 
 import              Uniform.Strings
-import              Uniform.FileIO
+import Uniform.Zero
+-- import              Uniform.FileIO
 --import              LitNLP.Tools
 import              CoreNLP.DependencyCodes
 -- import           Text.XML.HXT.Core       hiding (when)

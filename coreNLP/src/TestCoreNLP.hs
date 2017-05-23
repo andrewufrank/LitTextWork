@@ -16,7 +16,7 @@ import           Test.Framework
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLP   -- pay attention to HTF_TESTS !
 -- makes call to NLP
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples   -- pay attention to HTF_TESTS !
-import   {-@ HTF_TESTS @-} CoreNLP.Snippets2nt   -- pay attention to HTF_TESTS !
+-- import   {-@ HTF_TESTS @-} CoreNLP.Snippets2nt   -- pay attention to HTF_TESTS !
 -- must have {-@ HTF_TESTS @-}
 
 main =  do
@@ -24,6 +24,3 @@ main =  do
     r <- htfMain htf_importedTests
     putStrLn ("other tests t:\n" ++ show r)
     return ()
-
-
-

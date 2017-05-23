@@ -25,13 +25,14 @@
 {-# LANGUAGE Arrows                    #-}
 {-# LANGUAGE FlexibleContexts          #-}
 {-# LANGUAGE FlexibleInstances         #-}
-{-# LANGUAGE NoMonomorphismRestriction #-}
+-- {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE OverloadedStrings         #-}
 {-# LANGUAGE ScopedTypeVariables       #-}
-{-# LANGUAGE UndecidableInstances      #-}
+-- {-# LANGUAGE UndecidableInstances      #-}
 
-module CoreNLP.CoreNLPxml (readDoc, getDoc0
-            , Doc0 (..)
+module CoreNLP.CoreNLPxml (
+            module CoreNLP.Defs0
+            -- , module CoreNLP.DependencyCodes
             ) where
 
 import qualified NLP.Corpora.Conll      as Conll
@@ -40,10 +41,11 @@ import           Uniform.Error
 import           Uniform.FileIO
 import           Uniform.Strings
 
-import           Text.XML.HXT.Core
+import           Text.XML.HXT.Core hiding (when)
 
 import           CoreNLP.Defs0
-import           CoreNLP.DependencyCodes
+-- import CoreNLP.ReadDoc0
+-- import           CoreNLP.DependencyCodes
 import Data.Maybe
 
 {-<root>
@@ -262,27 +264,50 @@ getSpeaker = atTag "Speaker" >>>
         returnA -< nx
 
 
-readDocumentT args lfp = readDocument args (toFilePath lfp)
-            -- (t2fp . filepath2text lpX $ lfp)
-
-readDoc :: Path ar File   -> ErrIO  Doc0
-readDoc fp = do
-
+readDocString :: Bool -> Text  -> ErrIO  Doc0
+readDocString showXML text = do
   docs  :: [Doc0] <-callIO $ do
-                d1 :: [Doc0] <-  runX (readDocumentT [withValidate no] fp
-                                        >>> getDoc0)   -- getToken1)
-                return d1
+        d1 :: [Doc0] <-  runX (readString [withValidate no]  (t2s text)
+                                >>> getDoc0)
+        return d1
+  when showXML $ do
+      putIOwords ["the xml formated"]
+      res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
+                                        >>> indentDoc
+      putIOwords  $ map s2t res
+      putIOwords ["the xml formated ---------------------"]
 
 --  let toks2 = filter ((0 /=). sid) toks
   -- seems to add a lot of empty sentences
-  case (length docs) of
-    1 -> do
-        let d  = headNoteT  ["readDoc:", "no document found, but count 1"
-                          , showT docs] (docs :: [Doc0])
-        return d
-    0 -> do
-        putIOwords ["readDoc: count 0", showT docs]
-        throwError "readDoc count 0"
-    _ -> do
-       putIOwords ["readDoc: count ", showT (length docs), showT docs]
-       throwError "read doc count more than 1"
+
+  if (length docs) > 1
+        then error "multiple document tags"
+        else  do
+--            putIOwords ["readDocString - the xml read"]
+            return (headNote "no document found" docs)
+            -- error in case of 0
+
+-- readDocumentT args lfp = readDocument args (toFilePath lfp)
+--             -- (t2fp . filepath2text lpX $ lfp)
+--
+-- readDoc :: Path ar File   -> ErrIO  Doc0
+-- readDoc fp = do
+--
+--   docs  :: [Doc0] <-callIO $ do
+--                 d1 :: [Doc0] <-  runX (readDocumentT [withValidate no] fp
+--                                         >>> getDoc0)   -- getToken1)
+--                 return d1
+--
+-- --  let toks2 = filter ((0 /=). sid) toks
+--   -- seems to add a lot of empty sentences
+--   case (length docs) of
+--     1 -> do
+--         let d  = headNoteT  ["readDoc:", "no document found, but count 1"
+--                           , showT docs] (docs :: [Doc0])
+--         return d
+--     0 -> do
+--         putIOwords ["readDoc: count 0", showT docs]
+--         throwError "readDoc count 0"
+--     _ -> do
+--        putIOwords ["readDoc: count ", showT (length docs), showT docs]
+--        throwError "read doc count more than 1"
