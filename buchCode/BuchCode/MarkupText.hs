@@ -23,8 +23,8 @@
 module BuchCode.MarkupText
     (module BuchCode.MarkupText
     , module BuchCode.BuchToken
-    , module Parser.Foundation
-    , module Uniform.Error
+--    , module Parser.Foundation
+--    , module Uniform.Error
     ) where
 --( TextZeilen (..)
 --    , TextType (..)
@@ -51,7 +51,7 @@ import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
 import           Uniform.Error hiding (try, (<|>))
-import Parser.Foundation  hiding ((<|>))
+--import Parser.Foundation  hiding (try, (<|>))
 --import           Uniform.Strings   hiding ((<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB

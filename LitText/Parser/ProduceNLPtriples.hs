@@ -92,7 +92,7 @@ produceOneParaNLP showXML textstate tzp = do
                     -- todo fileio add filepath to dir
             let newFileName =  (authorDir textstate)
                                ++ "/" ++ buchname textstate  ++ "." ++ ("nt"::FilePath) ::FilePath
-            filenameRes :: Path Abs File <- resolveFile (originalsDir textstate)
+            filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
                                (newFileName::FilePath)
             let textstate2 = textstate{textfilename=filenameRes}
             writeTriples2file textstate2 triples

@@ -147,7 +147,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
 test_1_C_E  ::   IO ()  -- D -> E
 test_1_C_E  =  do
     putIOwords ["convertTZ2nlp: result1D to result1E  "] -- tzResult]
-    let sloc = serverLoc result1A
+    let sloc = serverLoc  result1A
     putIOwords ["test_1_C_E server location is ", showT sloc]
     putIOwords ["test_1_C_E server input is ", showT result1BAE]
 

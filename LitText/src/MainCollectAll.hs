@@ -29,17 +29,18 @@ progTitle = "produce the lit for all markup files " :: Text
 
 main = do
     startProg programName progTitle
-        (processAll textstateX resfile)
+        (processAll sourceTest4 generalityTest4 resfile)
+        -- defined in processAll
 
-origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
+origDirForTest3 = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 resfile  = makeRelFile "resultCollectAll"
 
-textstateX = TextState2 {
-        serverLoc = serverBrest
-        , originalsDir = makeAbsDir origDirForTest
-        , authorDir = ""
-        , buchname = ""
-        , textfilename = makeAbsFile ("/home/frank/additionalSpace/DataBig/LitOriginals/notafile")
-        }
+--textstateX = TextState2 {
+--        serverLoc = serverBrest
+--        , originalsDir = makeAbsDir origDirForTest3
+--        , authorDir = ""
+--        , buchname = ""
+--        , textfilename = makeAbsFile ("/home/frank/additionalSpace/DataBig/LitOriginals/notafile")
+--        }
 
 

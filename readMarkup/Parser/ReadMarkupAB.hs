@@ -75,7 +75,7 @@ textstate2Text textstate = do
 
 _readMarkupFile :: TextState2 -> ErrIO Text
 _readMarkupFile textstate = do
-    text <-  read5 ((originalsDir textstate) </>
+    text <-  read5 ((originalsDir $ textstate) </>
                 (makeRelDir .  authorDir $ textstate) :: Path Abs Dir)
 
             (makeRelFile .  buchname $ textstate) markupFileType5
@@ -138,35 +138,47 @@ test_6_A_B_textstate_text_1 = do
     t1 <- runErr $  textstate2Text result6A
     assertEqual (Right result6B)  t1
 
-result1A = TextState2 { --endpoint = testEndpoint,
-    serverLoc = serverLocTest
-    , originalsDir =  testDir
-    , authorDir = "test", buchname = "t1"}
+litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}
+destinationTest = DGoutDir litTestDir1
 
-result2A = TextState2 { -- endpoint = testEndpoint,
-    serverLoc = serverLocTest
-    , originalsDir =  testDir
-    , authorDir = "test", buchname = "t2"}
+result1A = fillTextState2 sourceTest destinationTest "test" "t1"
+result2A = fillTextState2 sourceTest destinationTest "test" "t2"
+result3A = fillTextState2 sourceTest destinationTest "test" "t3"
+result4A = fillTextState2 sourceTest destinationTest "test" "t4"
+result5A = fillTextState2 sourceTest destinationTest "test" "t5"
+result6A = fillTextState2 sourceTest destinationTest "test" "t6"
 
-result3A = TextState2 { --endpoint = testEndpoint,
-    serverLoc = serverLocTest
-    , originalsDir = testDir
-    , authorDir = "test", buchname = "t3"}
 
-result4A = TextState2 { --endpoint = testEndpoint,
-    serverLoc = serverLocTest
-    , originalsDir = testDir
-    , authorDir = "test", buchname = "t4"}
+--result1A = TextState2 { --endpoint = testEndpoint,
+--    serverLoc = serverLocTest
+--    , originalsDir =  testDir
+--    , authorDir = "test", buchname = "t1"}
 
-result5A = TextState2 { --endpoint = testEndpoint,
-    serverLoc = serverLocTest
-    , originalsDir = testDir
-    , authorDir = "test", buchname = "t5"}
-
-result6A = TextState2 { --endpoint = testEndpoint,
-    serverLoc = serverLocTest
-    , originalsDir = testDir
-    , authorDir = "test", buchname = "t6"}
+--result2A = TextState2 { -- endpoint = testEndpoint,
+--    serverLoc = serverLocTest
+--    , originalsDir =  testDir
+--    , authorDir = "test", buchname = "t2"}
+--
+--result3A = TextState2 { --endpoint = testEndpoint,
+--    serverLoc = serverLocTest
+--    , originalsDir = testDir
+--    , authorDir = "test", buchname = "t3"}
+--
+--result4A = TextState2 { --endpoint = testEndpoint,
+--    serverLoc = serverLocTest
+--    , originalsDir = testDir
+--    , authorDir = "test", buchname = "t4"}
+--
+--result5A = TextState2 { --endpoint = testEndpoint,
+--    serverLoc = serverLocTest
+--    , originalsDir = testDir
+--    , authorDir = "test", buchname = "t5"}
+--
+--result6A = TextState2 { --endpoint = testEndpoint,
+--    serverLoc = serverLocTest
+--    , originalsDir = testDir
+--    , authorDir = "test", buchname = "t6"}
 
 result1B  =
         "\n.sprache German\n\n.author PETER WATERHOUSE\n\n.titel (Krieg f\252r Welt)\n11\n\n.hl1 Unsere Br\228uche werden lebendig\n12\nWas w\252rde ihm fremd und was m\246chte sein eigen sein in C\233rb\232re?\n\nEr fragte sich als zweiter Paragraph.\n13\n\n.ende\n"

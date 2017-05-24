@@ -36,14 +36,14 @@ import Pipes ((>->), (~>))
 import Uniform.Error
 import Uniform.FileIO
 import Uniform.FileStatus
-import Uniform.Strings hiding ((</>),(<|>))
+--import Uniform.Strings hiding ((</>),(<|>))
 
 
-processAll :: TextState2 ->   Path ar File  -> ErrIO ()
+processAll :: TextSource -> DestGenerality -> Path ar File  -> ErrIO ()
 -- | get all markup files in the partially filled TextState2
--- the result goes to the second
-processAll textstate0  file  =  do
-  let path = originalsDir textstate0
+-- the output goes to the second, not the triples
+processAll ts dg  file  =  do
+  let path = sourceDir ts
   resFile <- makeAbsolute file
   bracketErrIO (openFile2handle resFile WriteMode)
                 (closeFile2)
@@ -51,7 +51,7 @@ processAll textstate0  file  =  do
                       Pipe.runEffect $
                         getRecursiveContents path
                         >-> Pipe.filter isMarkup --
-                        >-> Pipe.mapM (fmap t2s . processOneMarkup textstate0)
+                        >-> Pipe.mapM (fmap t2s . processOneMarkup ts dg)
                     --    >-> P.stdoutLn
                         >-> Pipe.toHandle hand
                 )
@@ -66,43 +66,58 @@ isMarkup  = hasExtension (Extension "markup")
 --debugNLP = False
 litDebugOnly = False
 
-processOneMarkup :: TextState2 -> Path Abs File -> ErrIO Text
-processOneMarkup textstate0 lfp = do
-    let textstate2 = fillTextState textstate0 lfp
+processOneMarkup :: TextSource -> DestGenerality -> Path Abs File -> ErrIO Text
+-- process one markup file
+processOneMarkup ts dg lfp = do
+    let textstate2 = fillTextState ts dg lfp
     putIOwords ["processOneMarkup", showT textstate2]
     mainLitAndNLPproduction litDebugOnly textstate2
     return (showT textstate2)
 
-fillTextState :: TextState2 -> Path Abs File -> TextState2
-fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
-                              authorDir = getImmediateParentDir  $ fp
-                              , buchname = getNakedFileName fp
-                              , textfilename = fp
---                            , graph = filename2text fp a   -- the graph is the same as the author
-                            }
+fillTextState :: TextSource -> DestGenerality -> Path Abs File -> TextState2
+fillTextState ts dg fp = fillTextState2 ts dg author buch
+    where
+        author = getImmediateParentDir fp
+        buch = getNakedFileName fp
+
+--fillTextState :: TextState2 -> Path Abs File -> TextState2
+--fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
+--                              authorDir = getImmediateParentDir  $ fp
+--                              , buchname = getNakedFileName fp
+--                              , textfilename = fp
+----                            , graph = filename2text fp a   -- the graph is the same as the author
+--                            }
     ----------------- tests
 origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 -- /home/frank/additionalSpace/DataBig/LitTest/carol
 shortTestDir = "/home/frank/additionalSpace/DataBig/LitTestShort"
+shortTestDir2 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTestShort"
 
-textstateShortTest = TextState2 {
---      endpoint = "http://127.0.0.1:3030/testDB/update"
+litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+sourceTest4 = TextSource {server = serverBrest, sourceDir = litTestDir1}
+generalityTest4 = DGoutDir litTestDir1
 
---        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
---        serverLoc = host_serverLoc  --
-        serverLoc = serverBrest
-                    -- makeAbsURI "http://nlp.gerastree.at"  -- "http://127.0.0.1"
---        , originalsDir = makeAbsDir origDirForTest
-        , originalsDir = makeAbsDir shortTestDir
-        , authorDir = ""
-        , buchname = ""
---        , graph = "automaticTest"
-		, textfilename = makeAbsFile "/home/frank/"
-        }
+sourceShortTest = TextSource {server = serverBrest, sourceDir=shortTestDir2}
+generalityShortTest = DGoutDir shortTestDir2
+
+--textstateShortTest = TextState2 {
+----      endpoint = "http://127.0.0.1:3030/testDB/update"
+--
+----        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
+----        serverLoc = host_serverLoc  --
+--        serverLoc = serverBrest
+--                    -- makeAbsURI "http://nlp.gerastree.at"  -- "http://127.0.0.1"
+----        , originalsDir = makeAbsDir origDirForTest
+--        , originalsDir = makeAbsDir shortTestDir
+--        , authorDir = ""
+--        , buchname = ""
+----        , graph = "automaticTest"
+--		, textfilename = makeAbsFile "/home/frank/"
+--        }
 
 test_0 = do
     res0 <- runErr $ do
-        processAll textstateShortTest resfileN
+        processAll sourceShortTest generalityShortTest resfileN
     putIOwords ["test_0 - return:", showT res0]
     resN <- readFile5 resfileN
     res0 <- readFile5 resfile0

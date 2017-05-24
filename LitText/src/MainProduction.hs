@@ -26,6 +26,7 @@ import           Options.Applicative
 -- the http://hackage.haskell.org/package/optparse-applicative package
 import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
+import Processor.ProcessAll -- for the destination and source
 
 programName = "main production" :: Text
 progTitle = "put file into the store  " :: Text
@@ -82,27 +83,29 @@ parseAndExecute t1 t2 op  = do
 cmd2textstate :: LitArgs -> TextState2
 -- fillst the textstate with directory and filename and proj
 -- language is by default english, buchcode is the same as proj
-cmd2textstate args  = TextState2
-        {
---          endpoint = "http://nlp.gerastree.at:3030/aprilDB/update"
-           serverLoc = serverBrest
-          -- endpoint = "http://127.0.0.1:3030/marchDB/update"
-        -- , originalsDir = mkFilepath lpX "/home/frank/testLit/"
-        , originalsDir = originalsdir
-        -- , originalsDir = mkFilepath lpX "/home/frank/additionalSpace/DataBig/LitTest/"
-                    -- waterhouse/kuw.markup
-        , authorDir =   argdir $ args
-        , buchname =   argbuch $ args
-        , textfilename = originalsdir </> dir_file
-
---        , graph = s2t . arggraph $ args
-        }
-
-        where
-                originalsdir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/"
-                dir_file :: FilePath
-                dir1 :: FilePath
-                dir1 = argdir args
-                fil :: FilePath
-                fil = argbuch args
-                dir_file =  dir1 </> fil
+cmd2textstate args  = fillTextState2 sourceTest4 generalityTest4
+                 (argdir args) (argbuch args)
+--Tex     tState2
+--        {
+----          endpoint = "http://nlp.gerastree.at:3030/aprilDB/update"
+--           serverLoc = serverBrest
+--          -- endpoint = "http://127.0.0.1:3030/marchDB/update"
+--        -- , originalsDir = mkFilepath lpX "/home/frank/testLit/"
+--        , originalsDir = originalsdir
+--        -- , originalsDir = mkFilepath lpX "/home/frank/additionalSpace/DataBig/LitTest/"
+--                    -- waterhouse/kuw.markup
+--        , authorDir =   argdir $ args
+--        , buchname =   argbuch $ args
+--        , textfilename = originalsdir </> dir_file
+--
+----        , graph = s2t . arggraph $ args
+--        }
+--
+--        where
+--                originalsdir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals/"
+--                dir_file :: FilePath
+--                dir1 :: FilePath
+--                dir1 = argdir args
+--                fil :: FilePath
+--                fil = argbuch args
+--                dir_file =  dir1 </> fil

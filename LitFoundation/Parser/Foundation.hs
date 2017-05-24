@@ -28,6 +28,8 @@ import           Test.Framework
 
 buchnameText = s2t . buchname
 authorText = s2t . authorDir
+originalsDir = sourceDir . source
+serverLoc =  server . source
 
 -- | the descriptor where the output should go
 data DestDescriptor = OutFile {ddFile:: Path Abs File}
@@ -53,7 +55,7 @@ data TextState2 = TextState2
     , textfilename :: Path Abs File -- the input path of the file with the triples
     , tripleOutDesc :: DestDescriptor
                 -- a description where the ouptut goes
-    } deriving (Show )
+    } deriving (Show, Eq)
 
 -- | the descriptor where the output should go
 data DestGenerality = DGoutDir {dgDir:: Path Abs Dir}
@@ -68,14 +70,14 @@ data DestGenerality = DGoutDir {dgDir:: Path Abs Dir}
 -- | the description of where the files are and where the result shuld go
 -- before any particular text is opened
 data TextSource = TextSource
-    {      serverLoc       :: URI  -- where the nlp servers are
-    , originalsDir :: Path Abs Dir -- the directory in which the files are
+    {      server       :: URI  -- where the nlp servers are
+    ,sourceDir :: Path Abs Dir -- the directory in which the files are
 
 
      }                     deriving (Show, Eq)
 
 litTestDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
-sourceE1 = TextSource {serverLoc = serverBrest, originalsDir = litTestDir}
+sourceE1 = TextSource {server = serverBrest, sourceDir = litTestDir}
 generalityE1 = DGoutDir litTestDir
 
 fillTextState2 :: TextSource -> DestGenerality -> FilePath -> FilePath -> TextState2
@@ -84,7 +86,7 @@ fillTextState2 ts dg author buch = TextState2 {
     source = ts
     , authorDir = author
     , buchname = buch
-    , textfilename = (originalsDir ts) </> (author </> buch)
+    , textfilename = (sourceDir ts) </> (author </> buch)
     , tripleOutDesc =  fillDestination dg author buch True
     }
 
@@ -97,8 +99,16 @@ fillDestination  (DGoutDir dir) author buch True = OutFile (dir </> (author </> 
 fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
 
 
-test_fillTextState10 = assertEqual "" (showT res)
+test_fillTextState10 = assertEqual res10 res
     where
         res = fillTextState2 sourceE1 generalityE1 "may" "test"
+res10 =  TextState2 {source = TextSource
+                        {server = makeURI "http://nlp.gerastree.at",
+                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
+                authorDir ="may",
+                buchname = "test",
+            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
+            tripleOutDesc = OutFile
+                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
 
 
