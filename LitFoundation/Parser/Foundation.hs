@@ -18,12 +18,21 @@ module Parser.Foundation (
     ) where
 
 -- import           Data.RDF.Extension
-import           Uniform.FileIO (Path (..), Abs, Dir, File)
+import           Uniform.FileIO  (Path (..), Abs, Dir, File)
 import           Uniform.Strings    -- hiding ((<|>))
+import System.IO (Handle)  -- todo include in FileIO exports
+
 import Producer.Servers
 
 buchnameText = s2t . buchname
 authorText = s2t . authorDir
+
+-- | the descriptor where the output should go
+data DestDescriptor = OutFile (Path Abs File)
+                    | OutHandle Handle
+                    | TripleStore {ddURI:: URI, ddGraph :: Text}
+                    | NotKnown
+                    deriving (Show, Eq)
 
 -- | the description of a file to operate as texts - make legalfilen, when needed
 data TextState2 = TextState2
@@ -37,8 +46,7 @@ data TextState2 = TextState2
                                  -- and where the converted data go
     , buchname     :: FilePath -- filename in directory gives the buch sigl
     , textfilename :: Path Abs File -- the input path of the file with the triples
-                -- same as input, but with nt extension
-                -- where is exension removed? -- initially remove markup?
+    , tripleOutDesc :: DestDescriptor
+                -- a description where the ouptut goes
     } deriving (Show )
 
---class Zeilen z where  -- is now in BuchCode
