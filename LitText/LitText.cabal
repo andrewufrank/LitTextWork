@@ -39,6 +39,7 @@ library
         Parser.NLPvocabulary
         Parser.ProduceNLPtriples
         Processor.ProcessAll
+        Processor.CheckServers
         Parser.Main2subTest
         Main2sub
 
@@ -55,6 +56,7 @@ Test-Suite nlpTestAuto
         , uniform-strings
         , uniform-fileio
         , uniform-convenience
+        , uniform-error
         , litFoundation
         , readMarkup
         , buchCode
