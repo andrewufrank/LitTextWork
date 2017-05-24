@@ -5,6 +5,7 @@
 --
 -- | the definitions which are at the bottom
 -----------------------------------------------------------------------------
+{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE OverloadedStrings   #-}
@@ -18,19 +19,22 @@ module Parser.Foundation (
     ) where
 
 -- import           Data.RDF.Extension
-import           Uniform.FileIO  (Path (..), Abs, Dir, File)
-import           Uniform.Strings    -- hiding ((<|>))
+import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
+import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
 import System.IO (Handle)  -- todo include in FileIO exports
 
 import Producer.Servers
+import           Test.Framework
 
 buchnameText = s2t . buchname
 authorText = s2t . authorDir
 
 -- | the descriptor where the output should go
-data DestDescriptor = OutFile (Path Abs File)
+data DestDescriptor = OutFile {ddFile:: Path Abs File}
+                    -- ^ the path is where the files should go
+                    -- the filename is - if set the current Filename to append to
                     | OutHandle Handle
-                    | TripleStore {ddURI:: URI, ddGraph :: Text}
+                    | TripleStoreGraph {ddURI:: URI, ddGraph :: Text}
                     | NotKnown
                     deriving (Show, Eq)
 
@@ -38,9 +42,10 @@ data DestDescriptor = OutFile (Path Abs File)
 data TextState2 = TextState2
     {                -- the projp buchcode gives the code for the book,
                 -- add the element number
-     serverLoc       :: URI  -- where the nlp servers are
-    , originalsDir :: Path Abs Dir -- the directory in which the files are
-                    -- either LitOrig or a test dir
+     source :: TextSource
+--     serverLoc       :: URI  -- where the nlp servers are
+--    , originalsDir :: Path Abs Dir -- the directory in which the files are
+--                    -- either LitOrig or a test dir
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
                                  -- and where the converted data go
@@ -49,4 +54,51 @@ data TextState2 = TextState2
     , tripleOutDesc :: DestDescriptor
                 -- a description where the ouptut goes
     } deriving (Show )
+
+-- | the descriptor where the output should go
+data DestGenerality = DGoutDir {dgDir:: Path Abs Dir}
+                    -- ^ the path is where the files should go
+                    -- the filename is - if set the current Filename to append to
+--                    | OutHandle Handle
+                    | DGtripleStore {dgURI:: URI }
+--                    | NotKnown
+                    deriving (Show, Eq)
+
+
+-- | the description of where the files are and where the result shuld go
+-- before any particular text is opened
+data TextSource = TextSource
+    {      serverLoc       :: URI  -- where the nlp servers are
+    , originalsDir :: Path Abs Dir -- the directory in which the files are
+
+
+     }                     deriving (Show, Eq)
+
+litTestDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+sourceE1 = TextSource {serverLoc = serverBrest, originalsDir = litTestDir}
+generalityE1 = DGoutDir litTestDir
+
+fillTextState2 :: TextSource -> DestGenerality -> FilePath -> FilePath -> TextState2
+-- construct at text state with authorDir and buchFilename as FilePath
+fillTextState2 ts dg author buch = TextState2 {
+    source = ts
+    , authorDir = author
+    , buchname = buch
+    , textfilename = (originalsDir ts) </> (author </> buch)
+    , tripleOutDesc =  fillDestination dg author buch True
+    }
+
+fillDestination :: DestGenerality -> FilePath -> FilePath -> Bool -> DestDescriptor
+-- | build the description of the destination
+-- either a file or a uri with grah
+-- later add handle with switch - true for file append output
+-- false for use a handle
+fillDestination  (DGoutDir dir) author buch True = OutFile (dir </> (author </> buch))
+fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
+
+
+test_fillTextState10 = assertEqual "" (showT res)
+    where
+        res = fillTextState2 sourceE1 generalityE1 "may" "test"
+
 

@@ -17,8 +17,7 @@
 
 
 module Processor.ProcessAll
-    (htf_thisModulesTests
-    , processAll
+    (module Processor.ProcessAll
     ) where
 
 import           Test.Framework
@@ -94,7 +93,7 @@ textstateShortTest = TextState2 {
         serverLoc = serverBrest
                     -- makeAbsURI "http://nlp.gerastree.at"  -- "http://127.0.0.1"
 --        , originalsDir = makeAbsDir origDirForTest
-        , originalsDir = makeAbsDir shortTestDir 
+        , originalsDir = makeAbsDir shortTestDir
         , authorDir = ""
         , buchname = ""
 --        , graph = "automaticTest"
