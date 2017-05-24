@@ -105,7 +105,10 @@ produceOneParaNLP showXML textstate tzp = do
 
 writeTriples2file :: TextState2 -> [Triple] -> ErrIO ()
 writeTriples2file textstate tris = do
-    write6 (textfilename textstate)  ntFileTriples tris
+--    write6 (textfilename textstate)  ntFileTriples tris
+    append6 (textfilename textstate)  ntFileTriples tris
+    -- file must be deleted first!
+
     -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
 --    insertTriplesIntoGraph fusekiServer (endpoint textstate)
 --            tris  (Just (gerastreeURI </> graph textstate ))

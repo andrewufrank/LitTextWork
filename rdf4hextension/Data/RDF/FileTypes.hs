@@ -29,6 +29,7 @@ import qualified Data.RDF        as RDF
 import Data.RDF.Triple2text (triple2text)
 import qualified          System.IO as S
 import           Uniform.FileIO
+--import Uniform.TypedFile (append6) -- should be included in fileio
 import           Uniform.Strings hiding ((<.>), (</>))
 --import Uniform.FilenamesAlgebra
 import Uniform.FileStrings
@@ -58,20 +59,34 @@ instance TypedFiles5 [RDF.Triple] () where
     mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
 --      where e = mkExtension lpX "nt"
 
+    append6 fp  tp triples = do
+
+        when rdfGraphDebug $ putIOwords ["triples append6", showT fp]
+--        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+        let fn2 = fromJustNote "typedfile triples append6" . setExtension (tpext5 tp) $ fp
+--        when rdfGraphDebug $ putIOwords ["triples append6 fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["triples append6", showT fn2]
+
+        appendFile2 fn2 (unlines' $ Prelude.map triple2text triples)
+
+--        when rdfGraphDebug $ putIOwords ["triples append6", showT fn2]
+--        closeFile2  hand
+
     write6 fp  tp triples = do
 
-        when rdfGraphDebug $ putIOwords ["triples write5", showT fp]
+        when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
 --        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
         let fn2 = fromJustNote "typedfile triples write6" . setExtension (tpext5 tp) $ fp
-        when rdfGraphDebug $ putIOwords ["triples write5 fn", showT fn2]
+        when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
+--        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
         write2handle  hand (unlines' $ Prelude.map triple2text triples)
 
---        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
+--        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
         closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["triples write5", showT fn2]
+--        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
 --    read6 fp  tp = do
 --        let fn2 = fromJustNote "typedfile triples read6" . setExtension (tpext5 tp) $ fp
