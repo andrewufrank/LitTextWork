@@ -18,11 +18,13 @@
 
 module Processor.ProcessAll
     (module Processor.ProcessAll
+    , module Parser.Foundation
+    , module Main2sub
     ) where
 
 import           Test.Framework
 
-import Parser.Foundation
+import Parser.Foundation hiding ((<>) , (</>), (<.>))
 import Producer.Servers
 import Main2sub
 -- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
@@ -80,17 +82,10 @@ fillTextState ts dg fp = fillTextState2 ts dg author buch
         author = getImmediateParentDir fp
         buch = getNakedFileName fp
 
---fillTextState :: TextState2 -> Path Abs File -> TextState2
---fillTextState textState0 fp = textState0 {  -- enthaelt endpotin, originalsDir
---                              authorDir = getImmediateParentDir  $ fp
---                              , buchname = getNakedFileName fp
---                              , textfilename = fp
-----                            , graph = filename2text fp a   -- the graph is the same as the author
---                            }
     ----------------- tests
-origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
+--origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
 -- /home/frank/additionalSpace/DataBig/LitTest/carol
-shortTestDir = "/home/frank/additionalSpace/DataBig/LitTestShort"
+--shortTestDir = "/home/frank/additionalSpace/DataBig/LitTestShort"
 shortTestDir2 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTestShort"
 
 litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
@@ -100,20 +95,9 @@ generalityTest4 = DGoutDir litTestDir1
 sourceShortTest = TextSource {server = serverBrest, sourceDir=shortTestDir2}
 generalityShortTest = DGoutDir shortTestDir2
 
---textstateShortTest = TextState2 {
-----      endpoint = "http://127.0.0.1:3030/testDB/update"
---
-----        serverLoc = nlp_serverLoc  -- "http://nlp.gerastree.at"  -- "http://127.0.0.1"
-----        serverLoc = host_serverLoc  --
---        serverLoc = serverBrest
---                    -- makeAbsURI "http://nlp.gerastree.at"  -- "http://127.0.0.1"
-----        , originalsDir = makeAbsDir origDirForTest
---        , originalsDir = makeAbsDir shortTestDir
---        , authorDir = ""
---        , buchname = ""
-----        , graph = "automaticTest"
---		, textfilename = makeAbsFile "/home/frank/"
---        }
+litOrigDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals"
+sourceOrig4 = TextSource {server = serverBrest, sourceDir = litOrigDir1}
+generalityOrig4 = DGoutDir litOrigDir1
 
 test_0 = do
     res0 <- runErr $ do

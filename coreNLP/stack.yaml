@@ -20,13 +20,12 @@ packages:
   extra-dep: true
 - location: ../rdf4hextension
   extra-dep: true
-- location: ../rdf4store
-  extra-dep: true
+#- location: ../rdf4store
+#  extra-dep: true
 extra-deps:
 - chatter-0.8.0.1
-- data-easy-0.7.0
 - fullstop-0.1.4
 - parsec-extra-0.2.0.0
 - rdf4h-3.0.1
 - tokenize-0.3.0
-resolver: lts-8.13
+resolver: lts-8.15

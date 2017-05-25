@@ -29,9 +29,11 @@ progTitle = "produce the lit for all markup files " :: Text
 
 main = do
     startProg programName progTitle
-        (processAll sourceOrig4 generalityOrig4 resfile)
+        (processAll sourceTest4 generalityTest4 resfile)
         -- defined in processAll
 
-resfile  = makeRelFile "resultCollectAll"
+resfile  = makeRelFile "resultCollectTest"
+
+
 
 

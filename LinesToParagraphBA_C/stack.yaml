@@ -25,7 +25,6 @@ packages:
 - location: ../readMarkup
   extra-dep: true
 extra-deps:
-- data-easy-0.7.0
 - parsec-extra-0.2.0.0
 - rdf4h-3.0.1
-resolver: lts-8.13
+resolver: lts-8.15

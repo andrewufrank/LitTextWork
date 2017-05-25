@@ -21,23 +21,17 @@
 module Parser.CompleteSentence (
     module Parser.CompleteSentence
     -- completeSentence
-    , htf_thisModulesTests
+--    , htf_thisModulesTests
     , module Producer.Servers
     )   where
 
 import           Test.Framework
---import           Test.Invariant
-import Uniform.Strings
 import Uniform.Error
-import Uniform.Zero
 import Producer.Servers
-import qualified System.IO as IO
 import Parser.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
 import CoreNLP.DependencyCodes
-import Data.RDF.Extension (LanguageCode (..))
---import qualified Network.HTTP            as Net (Net.Post)
---import           Store.RDFstore.HttpCall -- (callHTTP3, parseURLchecked)
+import BuchCode.BuchToken (LanguageCode(..))
 
 import Uniform.HttpGet
 
