@@ -81,11 +81,12 @@ data BuchToken =   -- just the markers
         | BuchHL1
         | BuchHL2
         | BuchHL3
+        | BuchGedicht   -- should not be necessary
+                        -- parses as markup, is dropped later
         | BuchEnde
     -- special parses
         | BuchParagraph
         | BuchParagraphLayout  -- not input, property only
-        | BuchGedicht
         | BuchLeer
         | BuchPropBuch    -- fuer turtle code (prefix Buchsigl)
         | BuchPropText    -- fuer turtle code (prefix TextSigl)

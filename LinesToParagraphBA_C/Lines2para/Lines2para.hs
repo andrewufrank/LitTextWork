@@ -251,12 +251,28 @@ test_zeilenText = do
     assertEqual t1_res res
 
 t1_res =
-    ["CHAPTER IV. The Rabbit Sends in a Little Bill",
+    ["'Fury said to a mouse, That he met in the house. ",
+     "CHAPTER IV. The Rabbit Sends in a Little Bill",
      "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
 
 
 t11 =
-    [TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
+    [TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
+             tz2tzs =
+               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
+                       tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 51},
+                       tztext = TextWithMarks{twm = "mouse, That he", twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 52},
+                       tztext = TextWithMarks{twm = "met in the", twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 53},
+                       tztext = TextWithMarks{twm = "house.", twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 9, tz2InPart = ParaNum 4},
+    TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
                tz2text =
                  TextWithMarks{twm =
                                  "CHAPTER IV. The Rabbit Sends in a Little Bill",
