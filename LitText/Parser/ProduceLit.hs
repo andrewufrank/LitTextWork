@@ -61,6 +61,8 @@ test_2_C_H = assertEqual result2H_tripleResult1
     (produceLitTriples result2A result2BAE)
 --test_3_C_H = assertEqual result3H_tripleResult1
 --    (produceLitTriples result3A result3BAE)
+test_6_C_H = assertEqual result6H
+    (produceLitTriples result6A result6BAE)
 
 buchURIx textstate = RDFsubj $ gerastreeURI
             <#> authorText textstate <-> buchnameText textstate
@@ -202,22 +204,22 @@ paraTriple textstate tz =
         sigl = paraSigl textstate tz
         lang = tz2lang tz
 
-test_1_C_H_TZ_litTriples_1 =   do
---    putIOwords ["test_ProduceLit: read text for "] -- tzResult]
-    let t1 = produceLitTriples result1A result1BAE
---    putIOwords ["test_ProduceLit: result (for next) ", s2t $ show t1]
---    putIOwords ["test_parseToTZ:  result ", show' t1]
-    assertEqual result1H_tripleResult1 t1
-
-test_2_C_H_TZ_litTriples_1 =   do
---    putIOwords ["test_ProduceLit: read text for "] -- tzResult]
-    let t1 = produceLitTriples result2A result2BAE
-    assertEqual result2H_tripleResult1 t1
-
---test_3_C_H_TZ_litTriples_1 =   do
+--test_1_C_H_TZ_litTriples_1 =   do
 ----    putIOwords ["test_ProduceLit: read text for "] -- tzResult]
---    let t1 = produceLitTriples result3A  result3BAE
---    assertEqual result3H_tripleResult1 t1
+--    let t1 = produceLitTriples result1A result1BAE
+----    putIOwords ["test_ProduceLit: result (for next) ", s2t $ show t1]
+----    putIOwords ["test_parseToTZ:  result ", show' t1]
+--    assertEqual result1H_tripleResult1 t1
+--
+--test_2_C_H_TZ_litTriples_1 =   do
+----    putIOwords ["test_ProduceLit: read text for "] -- tzResult]
+--    let t1 = produceLitTriples result2A result2BAE
+--    assertEqual result2H_tripleResult1 t1
+--
+----test_3_C_H_TZ_litTriples_1 =   do
+------    putIOwords ["test_ProduceLit: read text for "] -- tzResult]
+----    let t1 = produceLitTriples result3A  result3BAE
+----    assertEqual result3H_tripleResult1 t1
 
 #include "ProduceLit.res"
 

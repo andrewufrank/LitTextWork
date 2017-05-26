@@ -142,7 +142,7 @@ getDep1 = atTag "dependent" >>>
     proc x -> do
         i <- getAttrValue "idx" -< x
         t <- text -< x
-        returnA -< DP0 (TokenID0 $ readNote "governor id" i) (Wordform0   t)
+        returnA -< DP0 (TokenID0 $ readNote "dependent id" i) (Wordform0   t)
 
 
 getDependence = atTag "dep" >>>

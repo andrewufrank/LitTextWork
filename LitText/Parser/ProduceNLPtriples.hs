@@ -166,7 +166,7 @@ mkSentenceTriple2 lang   snipid sent
         t0 = mkTripleType (unSentSigl sentSigl) (mkRDFtype Sentence)
         t1 = mkTripleText   (unSentSigl sentSigl) (mkRDFproperty Parse) (sparse sent)
         t2 = mkTriplePartOf (unSentSigl sentSigl) (unDocSigl snipid)
-        -- depsTrips = maybe []  (mkDependenceTypeTriples2 lang sentSigl ) ( sdeps sent) :: [Triple]
+        -- depsTrips = maybe []  (mkDependenceTypeTriple s2 lang sentSigl ) ( sdeps sent) :: [Triple]
         toktrips = concat . map (mkTokenTriple2 lang sentSigl) $ (stoks sent):: [Triple]
 --        toktrips = (mkTokenTriple2 lang sentSigl) $ (concat . stoks $ sent):: [Triple]
         senteceForm = mkTripleLang lang (unSentSigl sentSigl) (mkRDFproperty SentenceForm)

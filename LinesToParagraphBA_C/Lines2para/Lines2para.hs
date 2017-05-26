@@ -192,8 +192,14 @@ instance Zeilen TZ2 where
     isMarkupX code TZ2markup{tz2tok=c} =  code == c
     isMarkupX code _                 = False
 
+    -- combinet the zeilen to a single paragraph
+    -- adds a " " at end of line
+    -- adds blanks before punctation marks and at end of the paragraph
+
     zeilenText TZ2markup {tz2text=tx} = twm tx
-    zeilenText (TZ2para {tz2tzs=ts}) =  concat' . map zeilenText $ ts
+    zeilenText (TZ2para {tz2tzs=ts}) =  concat'
+        . map (\s -> append s " ") .  map zeilenText
+                 $ ts
 --    zeilenText _ = ""
 
 distributeHeader = distributeHeader2 BuchTitel
@@ -237,5 +243,40 @@ lowerHeader BuchHL2   = Just BuchHL3
 lowerHeader BuchHL3   = Nothing
 lowerHeader l         = errorT ["lowerHeader", "for ", showT l]
 
+
+-- test text combinatioin zeilenText
+
+test_zeilenText = do
+    let res = map zeilenText t11
+    assertEqual t1_res res
+
+t1_res =
+    ["CHAPTER IV. The Rabbit Sends in a Little Bill",
+     "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
+
+
+t11 =
+    [TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
+               tz2text =
+                 TextWithMarks{twm =
+                                 "CHAPTER IV. The Rabbit Sends in a Little Bill",
+                               twmMarks = []},
+               tz2tok = BuchHL1, tz2lang = English, tz2para = ParaNum 10,
+               tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 57},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 57},
+                       tztext =
+                         TextWithMarks{twm =
+                                         "It was the White Rabbit, trotting slowly back again, and looking",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 58},
+                       tztext =
+                         TextWithMarks{twm =
+                                         "anxiously about as it went, as if it had lost something .",
+                                       twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 11, tz2InPart = ParaNum 10}]
 
 

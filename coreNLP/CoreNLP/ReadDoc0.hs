@@ -24,7 +24,7 @@
 --{-# LANGUAGE TypeFamilies          #-}
 --{-# LANGUAGE TypeSynonymInstances  #-}
 
-module CoreNLP.ReadDoc0 (
+module xCoreNLP.ReadDoc0 (
        module CoreNLP.ReadDoc0
         -- , htf_thisModulesTests
 --        , makeNLPrequest5
