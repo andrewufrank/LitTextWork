@@ -36,9 +36,9 @@ nlpURItext = gerastreeURI </> "nlp_2015" :: PartURI
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | WordForm | Nertag | SpeakerTag
-          | DependencyType
+          | DependencyType | Dependency
           | SentenceForm
-          | Governor | Dependent
+          | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
           deriving (Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
@@ -47,7 +47,7 @@ instance RDFproperties NLPproperty where
     mkRDFproperty p = RDFproperty $ nlpURItext <#> (toLowerStart . showT $ p)
 
 data NLPtype = Doc | Sentence | Token
-    | Dependence | Mention | Coreference
+    | DepType | Dependence | Mention | Coreference
   deriving (Show, Eq, Enum)
 
 instance RDFtypes NLPtype where
@@ -83,6 +83,25 @@ mkTokenSigl sentsigl  tok =  TokenSigl
     -- format an Int to 3 decimals for tokens in sentence
     formatTokenID  = ("T" <>) .s2t . printf ('%' : '0' : '3' : 'd' :[])
 
+newtype DepTypeSigl = DepTypeSigl RDFsubj deriving (Show, Eq)
+unDepTypeSigl (DepTypeSigl a) = a
+
+mkDepTypeSigl :: SentSigl -> DepTypeID0 -> DepTypeSigl
+-- make the token sigl from sentence id
+mkDepTypeSigl sentsigl  did =  DepTypeSigl
+      . extendSlashRDFsubj did   -- is a Text
+      . unSentSigl $ sentsigl
+
+newtype DepSigl = DepSigl RDFsubj deriving (Show, Eq)
+unDepSigl (DepSigl a) = a
+
+mkDepSigl :: DepTypeSigl -> DepCode -> DepSigl
+-- make the token sigl from sentence id
+mkDepSigl deptsigl  did =  DepSigl
+      . extendSlashRDFsubj (showT did)   -- is a Text
+      . unDepTypeSigl $ deptsigl
+
+-- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
 
 --mkCorefID :: CorefID -> Text
 --mkCorefID c =  t2oURI <#>  "Coref"<> (coref2text c)

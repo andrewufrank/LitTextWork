@@ -69,8 +69,9 @@ data Sentence0 = Sentence0 {sid :: SentID0
                         -- should be only one of none
                         } deriving (Show,  Eq)
 
+type DepTypeID0 = Text
 
-data DependenceType0 = DependenceType0 { dtt :: Text
+data DependenceType0 = DependenceType0 { dtt :: DepTypeID0
             , dtd :: [Dependence0]
             } deriving (Show, Read, Eq, Zeros)
 

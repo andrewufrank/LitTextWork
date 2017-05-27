@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :   a test for automatic check of treetagger call
+-- Module      : currently no tests in this package
 -- insert {-@ HTF_TESTS @-} for each import
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
