@@ -129,11 +129,23 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
                             NoLanguage -> nlpServerNone sloc
                             _ -> errorT ["convertTZ2nlp", showT language, "language has no server"]
 
-            let vars =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse, coref")
-        --                    -- removed ,coref
+            let varsEng =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse,dcoref")
+--                        tokenize,ssplit,pos,lemma,ner")
+        --                    -- removed ,coref, ,depparse,, coref
         -- changed to depparse, coref  instead of parse
                             , ("outputFormat","xml")
                             ]
+            let varsGer =  [("annotators","tokenize,ssplit,pos,lemma,ner,parse")
+--                        tokenize,ssplit,pos,lemma,ner")
+        --                    -- removed ,coref, ,depparse,, coref
+        -- changed to depparse, coref  instead of parse
+                            , ("outputFormat","xml")
+                            ]
+            let vars = case language of
+            -- the different parsers do not deal with all annotators well
+                        German -> varsGer
+                        English -> varsEng
+
             when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
             xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
 -- german parser seems to understand utf8encoded bytestring
@@ -154,6 +166,18 @@ test_1_C_E  =  do
 
     res <- runErr $ mapM (convertTZ2nlp False False sloc) result1BAE
     assertEqual result1E res
+
+test_6_C_E  ::   IO ()  -- D -> E
+test_6_C_E  =  do
+    putIOwords ["convertTZ2nlp: result6D to result6E  "] -- tzResult]
+    let sloc = serverLoc  result6A
+    putIOwords ["test_6_C_E server location is ", showT sloc]
+    putIOwords ["test_6_C_E server input is ", showT result6BAE]
+
+    res <- runErr $ mapM (convertTZ2nlp False False sloc) result6BAE
+    assertEqual result6E res
+
+result6E = Right []
 
 result1E :: ErrOrVal [Maybe (NLPtext, Doc0)]
 result1E =
