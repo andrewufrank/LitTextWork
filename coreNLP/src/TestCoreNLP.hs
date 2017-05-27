@@ -10,7 +10,7 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Strings
 import           Test.Framework
---import {-@ HTF_TESTS @-} Main2sub
+import {-@ HTF_TESTS @-} CoreNLP.DepCodes
 --import   {-@ HTF_TESTS @-} Parser.LinesToParagraphs   -- pay attention to HTF_TESTS !
 --import   {-@ HTF_TESTS @-} Parser.ProduceLit   -- pay attention to HTF_TESTS !
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLP   -- pay attention to HTF_TESTS !

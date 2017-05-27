@@ -21,15 +21,23 @@
 
 module CoreNLP.Defs0 (
         module CoreNLP.Defs0
-        , module CoreNLP.DependencyCodes
+--        , module CoreNLP.POScodes
+        , readSpeakerTag
+--        , module CoreNLP.NERcodes -- import separately when needed
+            , DepCode (..), readDepCodes, hasDepCode
+            , DepCode1 (..), DepCode2 (..)
+--        , module CoreNLP.DEPcodes  -- import separately when needed
         -- ,readDocString
         )  where
 
 import              Uniform.Strings
 import Uniform.Zero
+import CoreNLP.POScodes
+import CoreNLP.NERcodes
+import CoreNLP.DEPcodes
 -- import              Uniform.FileIO
 --import              LitNLP.Tools
-import              CoreNLP.DependencyCodes
+--import              CoreNLP.DependencyCodes
 -- import           Text.XML.HXT.Core       hiding (when)
 
 

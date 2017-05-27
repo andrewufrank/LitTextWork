@@ -1,5 +1,5 @@
 name: coreNLP
-version: 0.1.6.1
+version: 0.1.6.3
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
@@ -36,7 +36,9 @@ library
     exposed-modules:
         CoreNLP.Defs0
         CoreNLP.CoreNLPxml
-        CoreNLP.DependencyCodes
+        CoreNLP.POScodes
+        CoreNLP.NERcodes
+        CoreNLP.DEPcodes
 --        LitMain.HttpCall
         -- CoreNLP.ReadDoc0
     exposed: True
