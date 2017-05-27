@@ -30,7 +30,7 @@ import Uniform.Error
 import Producer.Servers
 import Parser.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
-import CoreNLP.DependencyCodes
+--import CoreNLP.DependencyCodes
 import BuchCode.BuchToken (LanguageCode(..))
 
 import Uniform.HttpGet

@@ -13,7 +13,7 @@
 
 module Parser.NLPvocabulary
     ( module Parser.NLPvocabulary
-      , module CoreNLP.DependencyCodes
+      , module CoreNLP.Defs0
       , module Parser.ProduceLit
       , module Data.RDF.Extension
 --      , buchURIx, paraSigl, unPara
@@ -23,7 +23,7 @@ module Parser.NLPvocabulary
     ) where
 
 import           CoreNLP.Defs0
-import           CoreNLP.DependencyCodes
+--import           CoreNLP.DependencyCodes
 import           Data.RDF.Extension      --(PartURI, RDFproperty)
 import           Parser.Foundation hiding ((</>), (<.>), (<|>))
 import           Parser.ProduceLit     --  (buchURIx, paraSigl)
