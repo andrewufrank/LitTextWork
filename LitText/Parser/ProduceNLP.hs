@@ -129,8 +129,9 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
                             NoLanguage -> nlpServerNone sloc
                             _ -> errorT ["convertTZ2nlp", showT language, "language has no server"]
 
-            let vars =  [("annotators","tokenize,ssplit,pos,lemma,ner,parse")
+            let vars =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse, coref")
         --                    -- removed ,coref
+        -- changed to depparse, coref  instead of parse
                             , ("outputFormat","xml")
                             ]
             when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
