@@ -357,7 +357,7 @@ result6H =
      Triple (UNode "http://gerastree.at#test-t6/P00009")
        (UNode "http://gerastree.at/lit_2014#paragraph")
        (LNode
-          (PlainLL ".gedicht 'Fury said to a mouse, That he met in the house. "
+          (PlainLL " 'Fury said to a mouse, That he met in the house. "
              "en")),
      Triple (UNode "http://gerastree.at#test-t6/P00009")
        (UNode "http://gerastree.at/lit_2014#inBuch")

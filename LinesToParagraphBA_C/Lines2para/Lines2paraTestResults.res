@@ -147,6 +147,8 @@ result6BAE =
              tz2lang = English, tz2para = ParaNum 8, tz2InPart = ParaNum 4},
      TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
              tz2tzs =
+                [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 49},
+                       tztext = TextWithMarks{twm = "", twmMarks = []}, tzlang = English},
                 TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
                        tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
                        tzlang = English},

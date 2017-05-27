@@ -75,6 +75,7 @@ result2BAD =
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 14}}]
 
 result6BAD =
+
     [TZignore{tzloc = TextLoc{tlpage = "", tlline = 2},
               tztext =
                 TextWithMarks{twm =
@@ -172,6 +173,8 @@ result6BAD =
             tzlang = English},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 47}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 48}},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 49},
+            tztext = TextWithMarks{twm = "", twmMarks = []}, tzlang = English},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
             tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
             tzlang = English},

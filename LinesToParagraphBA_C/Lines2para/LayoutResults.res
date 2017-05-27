@@ -295,6 +295,7 @@ result5BAC =
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 46}}]
 
 result6BAC =
+
     [TZmarkup{tzloc = TextLoc{tlpage = "", tlline = 1},
               tztext = TextWithMarks{twm = "", twmMarks = []},
               tztok = BuchIgnoreTo, tzlang = NoLanguage},
@@ -416,6 +417,9 @@ result6BAC =
             tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 47}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 48}},
+     TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 49},
+            tztext = TextWithMarks{twm = "", twmMarks = []},
+            tzlang = NoLanguage},
      TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
             tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
             tzlang = NoLanguage},
@@ -469,5 +473,7 @@ result6BAC =
               tztok = BuchIgnoreEnd, tzlang = NoLanguage},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 68}},
      TZleer{tzloc = TextLoc{tlpage = "", tlline = 69}}]
+
+
 
 
