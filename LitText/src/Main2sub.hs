@@ -29,7 +29,7 @@ import           BuchCode.MarkupText
 --import           Parser.Foundation        hiding ((</>))
 import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
---import           Parser.ProduceNLP
+--import           Parser.ProduceDocCallNLP
 import           Parser.ProduceNLPtriples
 --import           Store.Fuseki
 import           Uniform.FileIO (when, errorT)

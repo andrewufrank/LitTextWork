@@ -34,7 +34,7 @@ module Parser.ProduceNLPtriples
 import           Test.Framework
 
 import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
-import Parser.ProduceNLP
+import Parser.ProduceDocCallNLP
 import Uniform.Error   -- For ErrOrVal
 import           Data.RDF   -- should all be imported from extension
 import          Data.RDF.FileTypes
@@ -56,7 +56,7 @@ produceNLPtriples :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
 -- repeated for each paragraph
 produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
 
-        -- prepareTZ4nlp is in ProduceNLP and converts tz2 to nlptext
+        -- prepareTZ4nlp is in ProduceDocCallNLP and converts tz2 to nlptext
 
 test_1_D_XproduceNLPtriples =  do   -- test C -> H
     putIOwords ["produceNLPtriples:  C=BAE -> H  "] -- , showT tzResult]

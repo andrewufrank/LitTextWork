@@ -16,8 +16,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceNLP
-    (module Parser.ProduceNLP
+module Parser.ProduceDocCallNLP
+    (module Parser.ProduceDocCallNLP
     , module CoreNLP.Defs0
     ) where
 

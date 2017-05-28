@@ -11,13 +11,7 @@ module Main     where      -- must have Main (main) or Main where
 import Uniform.Strings
 import           Test.Framework
 import {-@ HTF_TESTS @-} CoreNLP.DepCodes
---import   {-@ HTF_TESTS @-} Parser.LinesToParagraphs   -- pay attention to HTF_TESTS !
---import   {-@ HTF_TESTS @-} Parser.ProduceLit   -- pay attention to HTF_TESTS !
---import   {-@ HTF_TESTS @-} Parser.ProduceNLP   -- pay attention to HTF_TESTS !
--- makes call to NLP
---import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples   -- pay attention to HTF_TESTS !
--- import   {-@ HTF_TESTS @-} CoreNLP.Snippets2nt   -- pay attention to HTF_TESTS !
--- must have {-@ HTF_TESTS @-}
+--import {-@ HTF_TESTS @-} CoreNLP.DepCodes
 
 main =  do
     putStrLn "Lit Text Test.hs:\n"

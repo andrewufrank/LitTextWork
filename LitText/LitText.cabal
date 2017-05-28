@@ -33,7 +33,7 @@ library
     exposed-modules:
         -- in order of inclusion
         Parser.ProduceLit
-        Parser.ProduceNLP
+        Parser.ProduceDocCallNLP
         Parser.ConvertTaggerOutput
         Parser.CompleteSentence
         Parser.NLPvocabulary
