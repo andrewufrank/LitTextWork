@@ -32,38 +32,44 @@ module Parser.ProduceNLP
     ) where
 
 import           Test.Framework
-
-import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
 import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples
-import Uniform.Error   -- For ErrOrVal
-import           Data.RDF   -- should all be imported from extension
-import          Data.RDF.FileTypes
-import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
-import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
-import           Uniform.Strings              hiding ((<|>))
-import Uniform.FileIO hiding ((</>), (<.>))
-import Parser.CompleteSentence -- (completeSentence)
--- for tests
-import Parser.ReadMarkupAB -- (result1A)
-import Data.Either
+import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
+import          Data.RDF.FileTypes (ntFileTriples)
+
+-- for tests:
+import Parser.ReadMarkupAB
+
+--import Producer.Servers
+
+--import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
+--import Parser.ProduceDocCallNLP
+--import Uniform.Error   -- For ErrOrVal
+--import           Data.RDF   -- should all be imported from extension
+--import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
+--import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
+--import           Uniform.Strings              hiding ((<|>))
+--import Uniform.FileIO hiding ((</>), (<.>))
+---- for tests
+--import Parser.ReadMarkupAB -- (result1A)
+--import Data.Either
 
 debugNLP1 = False
 
 -- main export
-produceNLPtriples :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
+produceNLP :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
-produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
+produceNLP textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
 
         -- prepareTZ4nlp is in ProduceDocCallNLP and converts tz2 to nlptext
 
 test_1_D_XproduceNLPtriples =  do   -- test C -> H
-    putIOwords ["produceNLPtriples:  C=BAE -> H  "] -- , showT tzResult]
-    t1 <-   runErr $ produceNLPtriples  result1A result1BAE
---    putIOwords ["produceNLPtriples: result (for next) ", s2t $ show t1]
---    putIOwords ["produceNLPtriples:  result ", showT t1]
+    putIOwords ["produceNLP:  C=BAE -> H  "] -- , showT tzResult]
+    t1 <-   runErr $ produceNLP  result1A result1BAE
+--    putIOwords ["produceNLP: result (for next) ", s2t $ show t1]
+--    putIOwords ["produceNLP:  result ", showT t1]
     assertEqual (Right ())  t1
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
