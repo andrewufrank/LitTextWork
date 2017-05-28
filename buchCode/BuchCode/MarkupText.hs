@@ -101,11 +101,12 @@ parseMarkup  =  markShortLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 -- TODO filter for char
 
-test_0B_BA = assertEqual result0BA (parseMarkup result0B)
+--test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- local test
 
 -- result1A, .. result6A is exported form ReadMarkupAB.
 
+--test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
 test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
 test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
 test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup

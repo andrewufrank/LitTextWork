@@ -33,7 +33,7 @@ import Uniform.Zero
 --import           Text.Printf         (printf)
 
 
-data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Show, Eq)
+data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Read, Show, Eq)
 -- ^ the place of a line in the full text
 -- for simplification, all counts are from the start of the text
 -- not relative to the page or paragraph (can be computed, if desired)
@@ -60,7 +60,7 @@ data TZ =
         | TZleer  {tzloc :: TextLoc}
         | TZneueSeite  {tzloc :: TextLoc}
         | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
-            deriving (Show, Eq )
+            deriving (Read, Show, Eq )
 
 instance Zeros TZ where zero = TZleer zero
 
@@ -197,24 +197,32 @@ instance Zeilen TZ where
 --filterZeilen = id -- filter (not.isNeueSeite)
 
 
--- test the first (expected ok) part of the chain
-test_0_BA_BAC =do
-        putIOwords ["test_0_BA_BAC", "from result0BA_tz_markupResult1 to result0BAC"]
-        assertEqual result0BAC (paragraphs2TZlayout result0BA)
-test_1_BA_BAC =do
-        putIOwords ["test_1_BA_BAC", "from result1BA_tz_markupResult1 to result1BAC"]
-        assertEqual result1BAC (paragraphs2TZlayout result1BA)
-test_2_BA_BAC =do
-        putIOwords ["test_2_BA_BAC", "from result2BA_tz_markupResult1 to result2BAC"]
-        assertEqual result2BAC (paragraphs2TZlayout result2BA)
-test_5_BA_BAC =do
-        putIOwords ["test_5_BA_BAC", "from result5BA_tz_markupResult1 to result5BAC"]
-        assertEqual result5BAC (paragraphs2TZlayout result5BA)
-test_6_BA_BAC =do
-        putIOwords ["test_6_BA_BAC", "from result6BA_tz_markupResult1 to result6BAC"]
-        assertEqual result6BAC (paragraphs2TZlayout result6BA)
+---- test the first (expected ok) part of the chain
+--test_0_BA_BAC =do
+--        putIOwords ["test_0_BA_BAC", "from result0BA_tz_markupResult1 to result0BAC"]
+--        assertEqual result0BAC (paragraphs2TZlayout result0BA)
+--test_1_BA_BAC =do
+--        putIOwords ["test_1_BA_BAC", "from result1BA_tz_markupResult1 to result1BAC"]
+--        assertEqual result1BAC (paragraphs2TZlayout result1BA)
+--test_2_BA_BAC =do
+--        putIOwords ["test_2_BA_BAC", "from result2BA_tz_markupResult1 to result2BAC"]
+--        assertEqual result2BAC (paragraphs2TZlayout result2BA)
+--test_5_BA_BAC =do
+--        putIOwords ["test_5_BA_BAC", "from result5BA_tz_markupResult1 to result5BAC"]
+--        assertEqual result5BAC (paragraphs2TZlayout result5BA)
+--test_6_BA_BAC =do
+--        putIOwords ["test_6_BA_BAC", "from result6BA_tz_markupResult1 to result6BAC"]
+--        assertEqual result6BAC (paragraphs2TZlayout result6BA)
 ----------- test results
 
+--test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZlayout
+test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
+test_2BA_BAC = testFile2File "resultBA2" "resultBAC2" paragraphs2TZlayout
+test_3BA_BAC = testFile2File "resultBA3" "resultBAC3" paragraphs2TZlayout
+test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
+test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
+test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
 
-#include "LayoutResults.res"
+
+-- #include "LayoutResults.res"
 
