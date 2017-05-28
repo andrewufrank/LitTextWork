@@ -168,6 +168,6 @@ markTZsWithIgnore  = map  markoneWithIgnore
 -- possibly automatic from guttenberg texts
         markoneWithIgnore  tz1 = tz1
 
-#include "Lines2ignoreTestResults.res"
+-- #include "Lines2ignoreTestResults.res"
 
 

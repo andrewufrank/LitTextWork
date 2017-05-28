@@ -22,7 +22,7 @@ module Main2sub (mainLitAndNLPproduction
 
 import           Test.Framework
 
-import Parser.Main2subTest
+--import Parser.Main2subTest
 -- immediate under this, imports everything here imported
 import Parser.ReadMarkupAB
 import           BuchCode.MarkupText

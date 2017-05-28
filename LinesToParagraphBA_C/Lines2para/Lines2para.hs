@@ -38,7 +38,7 @@ import Uniform.FileIO
 import Data.List (nub)
 import           Test.Framework
 
-newtype ParaNum = ParaNum Int deriving (Show, Eq)
+newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
 -- just to avoid confusions
 unparaNum (ParaNum t) = t
 instance Zeros ParaNum where zero =  ParaNum zero
@@ -54,7 +54,7 @@ data TZ2 =
                     , tz2para :: ParaNum
                     , tz2InPart :: ParaNum
                     }
-            deriving (Show, Eq )
+            deriving (Read, Show, Eq )
 
 paragraphs2TZ :: [TextZeilen] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
@@ -75,26 +75,33 @@ paragraphs2TZpara =
     formParagraphs
         -- test BAD -> BAE ...   -> C
 
--- test the first (expected ok) part of the chain
-test_1_BAD_BAE =do
-        putIOwords ["test_1_BAD_BAE", "BAD to result1BAE"]
-        assertEqual result1BAE
-            (paragraphs2TZpara  result1BAD)
-test_2_BAD_BAE =do
-        putIOwords ["test_2_BAD_BAE", "BAD to result2BAD"]
-        assertEqual result2BAE
-                (paragraphs2TZpara result2BAD)
-test_5_BAD_BAE =do
-        putIOwords ["test_5_BAD_BAE", "BAD to result5BAD"]
-        assertEqual result5BAE
-                (paragraphs2TZpara result5BAD)
-test_6_BAD_BAE =do
-        putIOwords ["test_6_BAD_BAE", "BAD to result6BAD"]
-        assertEqual result6BAE
-                (paragraphs2TZpara result6BAD)
+---- test the first (expected ok) part of the chain
+--test_1_BAD_BAE =do
+--        putIOwords ["test_1_BAD_BAE", "BAD to result1BAE"]
+--        assertEqual result1BAE
+--            (paragraphs2TZpara  result1BAD)
+--test_2_BAD_BAE =do
+--        putIOwords ["test_2_BAD_BAE", "BAD to result2BAD"]
+--        assertEqual result2BAE
+--                (paragraphs2TZpara result2BAD)
+--test_5_BAD_BAE =do
+--        putIOwords ["test_5_BAD_BAE", "BAD to result5BAD"]
+--        assertEqual result5BAE
+--                (paragraphs2TZpara result5BAD)
+--test_6_BAD_BAE =do
+--        putIOwords ["test_6_BAD_BAE", "BAD to result6BAD"]
+--        assertEqual result6BAE
+--                (paragraphs2TZpara result6BAD)
 
+--test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
+test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphs2TZpara
+test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphs2TZpara
+test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphs2TZpara
+test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphs2TZpara
+test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphs2TZpara
+test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphs2TZpara
 
-#include "Lines2paraTestResults.res"
+-- #include "Lines2paraTestResults.res"
 
 
 ----------- PARA
