@@ -132,12 +132,14 @@ testFile2File  startfile resfile op = do
 
     let tt1 =  op (readNote startfile f0)
     let fn = testDataDir1 </> resfile  :: Path Abs File
-    let fnx = testDataDir </> ("x" ++ resfile) :: Path Abs File
-    writeFile (toFilePath fnx )  (show tt1)
+    let fnx = testDataDir </> ("x" ++ resfile ) :: Path Abs File
     fnexist <- doesFileExist fn
     f1 <- if fnexist then readFile  (toFilePath fn)
                 else return zero
-    assertEqual (readDef zero f1) tt1
+    let testres =  (readDef zero f1) == tt1
+    unless testres $
+            writeFile (toFilePath fnx )  (show tt1)
+    assertBool testres
 
 renderETTs :: [TextZeilen] -> Text
 -- renders the lines

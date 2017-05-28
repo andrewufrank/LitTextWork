@@ -141,8 +141,10 @@ testVar2File  a resfile op = do
                 fnexist <- doesFileExist fn
                 f1 <- if fnexist then readFile  (toFilePath fn)
                             else return zero
-                writeFile (toFilePath fnx )  (show tt1)
-                assertEqual (readNote zero  f1) tt1
+                let testres = (readNote zero f1) == tt1
+                unless testres $
+                    writeFile (toFilePath fnx )  (show tt1)
+                assertBool testres
 --    case t1 of
 --        Left msg -> do
 --                    putIOwords ["test_textstate_text failed", msg]
