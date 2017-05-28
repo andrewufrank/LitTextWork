@@ -29,23 +29,28 @@
 
 module Parser.ProduceNLPtriples
     (module Parser.ProduceNLPtriples
+    , module CoreNLP.Defs0
+    , module Parser.NLPvocabulary
+    , module Lines2para.Lines2para
     ) where
 
 import           Test.Framework
-
-import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
-import Parser.ProduceDocCallNLP
-import Uniform.Error   -- For ErrOrVal
-import           Data.RDF   -- should all be imported from extension
-import          Data.RDF.FileTypes
+import CoreNLP.Defs0
+import Parser.NLPvocabulary
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
-import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
-import           Uniform.Strings              hiding ((<|>))
-import Uniform.FileIO hiding ((</>), (<.>))
-import Parser.CompleteSentence -- (completeSentence)
--- for tests
-import Parser.ReadMarkupAB -- (result1A)
-import Data.Either
+
+--import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
+--import Parser.ProduceDocCallNLP
+--import Uniform.Error   -- For ErrOrVal
+--import           Data.RDF   -- should all be imported from extension
+--import          Data.RDF.FileTypes
+--import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
+--import           Uniform.Strings              hiding ((<|>))
+--import Uniform.FileIO hiding ((</>), (<.>))
+--import Parser.CompleteSentence -- (completeSentence)
+---- for tests
+--import Parser.ReadMarkupAB -- (result1A)
+--import Data.Either
 
 
 processDoc0toTriples2 :: TextState2 -> TZ2 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
