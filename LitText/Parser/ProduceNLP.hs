@@ -5,7 +5,6 @@
 --
 -- | analyzes one paragraph
 
--- version 2 assumes that each paragraph is individually analyzed -
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
@@ -20,29 +19,14 @@
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
     , module CoreNLP.Defs0
-    -- , module CoreNLP.Snippets2nt
---    (convertTZ2nlp
---    , prepareTZ4nlp
---    , ErrIO (..)
---    , htf_thisModulesTests
---    , result1E_nlpResult
     ) where
 
 import           Test.Framework
-
---import           CoreNLP.Snippets2nt          (makeNLPrequest5) -- , readDocString)
--- import           Data.RDF
 import Data.Maybe -- todo
--- import           Parser.Foundation  -- todo should be comming up
 import Lines2para.Lines2para
 import Lines2para.HandleLayout
 import Parser.ReadMarkupAB  -- todo
--- import Uniform.Error  -- todo should be comming up
--- import Uniform.HttpGet
 import Producer.Servers
--- import           Text.XML.HXT.Core       hiding (when)
-
--- import           CoreNLP.Snippets2nt    --      (readDocString)
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml
 
@@ -84,9 +68,6 @@ formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
         , tz3lang = tz2lang tz
         , tz3text =  twm . tz2text $ tz}
 
---serverLoc = localhost
---serverbrest = "nlp.gerastree.at"
---localhost = "127.0.0.1"
 
 nlpServerEnglish, nlpServerGerman, nlpServerNone :: URI ->  URI
 nlpServerEnglish  u =  addPort2URI u 9000
