@@ -39,19 +39,6 @@ import CoreNLP.Defs0
 import Parser.NLPvocabulary
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 
---import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
---import Parser.ProduceDocCallNLP
---import Uniform.Error   -- For ErrOrVal
---import           Data.RDF   -- should all be imported from extension
---import          Data.RDF.FileTypes
---import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
---import           Uniform.Strings              hiding ((<|>))
---import Uniform.FileIO hiding ((</>), (<.>))
---import Parser.CompleteSentence -- (completeSentence)
----- for tests
---import Parser.ReadMarkupAB -- (result1A)
---import Data.Either
-
 
 processDoc0toTriples2 :: TextState2 -> TZ2 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
@@ -119,11 +106,11 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
                     (tspeaker tok)
 
 
-mkLemmaPoS :: Lemma0 -> Pos -> Text
--- to avoid including punctuation characters in the lemmaPoS
--- TODO check
-mkLemmaPoS l p = if isPOSpunctuation p then show' p
-                    else  (lemma0 l) <:> (show' p)
+--mkLemmaPoS :: Lemma0 -> Pos -> Text
+---- to avoid including punctuation characters in the lemmaPoS
+---- TODO check
+--mkLemmaPoS l p = if isPOSpunctuation p then show' p
+--                    else  (lemma0 l) <:> (show' p)
 
 ----------------------------------
 --

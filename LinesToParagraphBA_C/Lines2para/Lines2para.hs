@@ -84,6 +84,10 @@ test_2_BAD_BAE =do
         putIOwords ["test_2_BAD_BAE", "BAD to result2BAD"]
         assertEqual result2BAE
                 (paragraphs2TZpara result2BAD)
+test_5_BAD_BAE =do
+        putIOwords ["test_5_BAD_BAE", "BAD to result5BAD"]
+        assertEqual result5BAE
+                (paragraphs2TZpara result5BAD)
 test_6_BAD_BAE =do
         putIOwords ["test_6_BAD_BAE", "BAD to result6BAD"]
         assertEqual result6BAE

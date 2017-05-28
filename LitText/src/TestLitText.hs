@@ -16,7 +16,7 @@ import                   Test.Framework
 --import {-@ HTF_TESTS @-} BuchCode.MarkupText
 --import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
 --import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore
---import   {-@ HTF_TESTS @-} Lines2para.Lines2para
+import   {-@ HTF_TESTS @-} Lines2para.Lines2para
 --import   {-@ HTF_TESTS @-} Parser.ProduceLit
 import {-@ HTF_TESTS @-} Processor.CheckServers
 ----

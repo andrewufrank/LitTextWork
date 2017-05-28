@@ -60,6 +60,10 @@ test_2_BA_BAD =do
         putIOwords ["test_2_BA_BAD", "from result2BA_tz_markupResult1 to result2BAD"]
         assertEqual result2BAD
                 (paragraphs2TZsimple result2BAC)
+test_5_BA_BAD =do
+        putIOwords ["test_5_BA_BAD", "from result5BA_tz_markupResult1 to result5BAD"]
+        assertEqual result5BAD
+                (paragraphs2TZsimple result5BAC)
 test_6_BA_BAD =do
         putIOwords ["test_6_BA_BAD", "from result6BA_tz_markupResult1 to result6BAD"]
         assertEqual result6BAD

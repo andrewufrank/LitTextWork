@@ -81,6 +81,152 @@ result2BAE =
                        tzlang = German}],
              tz2lang = German, tz2para = ParaNum 6, tz2InPart = ParaNum 3}]
 
+result5BAE =
+    [TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 1},
+               tz2text =
+                 TextWithMarks{twm = "The Fables of La Fontaine", twmMarks = []},
+               tz2tok = BuchTitel, tz2lang = NoLanguage, tz2para = ParaNum 1,
+               tz2InPart = ParaNum 0},
+     TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 4},
+               tz2text =
+                 TextWithMarks{twm = ": Jean de la Fontaine", twmMarks = []},
+               tz2tok = BuchAuthor, tz2lang = NoLanguage, tz2para = ParaNum 2,
+               tz2InPart = ParaNum 1},
+     TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 8},
+               tz2text = TextWithMarks{twm = "PREFACE", twmMarks = []},
+               tz2tok = BuchHL2, tz2lang = English, tz2para = ParaNum 3,
+               tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 10},
+             tz2tzs =
+               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 10},
+                       tztext =
+                         TextWithMarks{twm = "To The Present Edition,", twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 4, tz2InPart = ParaNum 1},
+     TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 14},
+               tz2text =
+                 TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
+                               twmMarks = [(34, "[4]"), (0, "")]},
+               tz2tok = BuchHL2, tz2lang = English, tz2para = ParaNum 5,
+               tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 16},
+             tz2tzs =
+               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 16},
+                       tztext =
+                         TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                                       twmMarks = [(17, "[5]"), (15, "")]},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 6, tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 17},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 17},
+                       tztext =
+                         TextWithMarks{twm = "Such havoc of the rats had made,",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 18},
+                       tztext =
+                         TextWithMarks{twm = "'Twas difficult to find a rat",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 19},
+                       tztext =
+                         TextWithMarks{twm = "With nature's debt unpaid.", twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 7, tz2InPart = ParaNum 1},
+     TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 21},
+               tz2text = TextWithMarks{twm = "", twmMarks = []}, tz2tok = BuchHL2,
+               tz2lang = English, tz2para = ParaNum 8, tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 23},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 23},
+                       tztext =
+                         TextWithMarks{twm =
+                                         "Faerno (1500-1561) was an Italian writer who published fables in",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 24},
+                       tztext =
+                         TextWithMarks{twm =
+                                         "Latin. Perrault translated these into French verse, and published",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 25},
+                       tztext =
+                         TextWithMarks{twm = "them at Paris in 1699.", twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 9, tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 27},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 27},
+                       tztext =
+                         TextWithMarks{twm =
+                                         "Rodilardus (bacon-gnawer), in Rabelais, _Pantagruel_, IV., ch. LXVII.",
+                                       twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 10, tz2InPart = ParaNum 1},
+     TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 29},
+               tz2text =
+                 TextWithMarks{twm = "IV.--THE TWO BULLS AND THE FROG.",
+                               twmMarks = [(32, "[9]"), (0, "")]},
+               tz2tok = BuchHL2, tz2lang = English, tz2para = ParaNum 11,
+               tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 31},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 31},
+                       tztext =
+                         TextWithMarks{twm = "Two bulls engaged in shocking battle,",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 32},
+                       tztext =
+                         TextWithMarks{twm = "Both for a certain heifer's sake,",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 33},
+                       tztext =
+                         TextWithMarks{twm = "And lordship over certain cattle,",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 34},
+                       tztext =
+                         TextWithMarks{twm = "A frog began to groan and quake.",
+                                       twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 12, tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 36},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 36},
+                       tztext =
+                         TextWithMarks{twm =
+                                         "One bull was beat, and much to their expense;",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 37},
+                       tztext =
+                         TextWithMarks{twm = "For, quick retreating to their reedy bower,",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 38},
+                       tztext =
+                         TextWithMarks{twm = "He trod on twenty of them in an hour.",
+                                       twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 13, tz2InPart = ParaNum 1},
+     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 40},
+             tz2tzs =
+               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 40},
+                       tztext =
+                         TextWithMarks{twm = "Of little folks it oft has been the fate",
+                                       twmMarks = []},
+                       tzlang = English},
+                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 41},
+                       tztext =
+                         TextWithMarks{twm = "To suffer for the follies of the great.",
+                                       twmMarks = []},
+                       tzlang = English}],
+             tz2lang = English, tz2para = ParaNum 14, tz2InPart = ParaNum 1}]
+
 result6BAE =
     [TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 25},
                tz2text =

@@ -40,20 +40,6 @@ import          Data.RDF.FileTypes (ntFileTriples)
 -- for tests:
 import Parser.ReadMarkupAB
 
---import Producer.Servers
-
---import Parser.Foundation  hiding ((<|>),(</>), (<.>)) -- for TZ
---import Parser.ProduceDocCallNLP
---import Uniform.Error   -- For ErrOrVal
---import           Data.RDF   -- should all be imported from extension
---import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
---import           Parser.NLPvocabulary hiding ((<|>),(</>), (<.>))
---import           Uniform.Strings              hiding ((<|>))
---import Uniform.FileIO hiding ((</>), (<.>))
----- for tests
---import Parser.ReadMarkupAB -- (result1A)
---import Data.Either
-
 debugNLP1 = False
 
 -- main export
@@ -125,10 +111,10 @@ writeTriples2file textstate tris = do
 --    insertTriplesIntoGraph fusekiServer (endpoint textstate)
 --            tris  (Just (gerastreeURI </> graph textstate ))
 
-test_completeSentence = do  -- F -> G
-    putIOwordsT ["completeSentence F -> G ", showT resutl1F_readDocStringResult]
-    s2 <- runErr $ mapM (completeOneDoc serverBrest German) (rightNote "isNotRight" resutl1F_readDocStringResult)
-    assertEqual result1_G_readDocCompleted s2
+--test_completeSentence = do  -- F -> G
+--    putIOwordsT ["completeSentence F -> G ", showT resutl1F_readDocStringResult]
+--    s2 <- runErr $ mapM (completeOneDoc serverBrest German) (rightNote "isNotRight" resutl1F_readDocStringResult)
+--    assertEqual result1_G_readDocCompleted s2
 
 rightNote :: Text ->  ErrOrVal a -> a
 rightNote msg (Right a) = a
@@ -156,5 +142,5 @@ completeOneDoc serverloc lang doc = do
 --
 --
 --
-#include "ProduceNLP.res"
+-- #include "ProduceNLP.res"
 -- result1X_CD, resutl1F_readDocStringResult, result1_G_readDocCompleted, nlpTriplesResult

@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Parser . MarkupLines
+-- Module      :  Parser . MarkupLines  -- not used
 -- Copyright   :  andrew u frank -
 --
 -- |  grouping the lines to paragraphs  - completes the parsing
@@ -22,7 +22,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2paraTests(  htf_thisModulesTests   -- for tests
+module xxLines2para.Lines2paraTests(  htf_thisModulesTests   -- for tests
 --        , result4A, result2A, result3A
 --    , result4A, result2A, result3A, result4A   -- fromReadMarkp, is textstate used widely
     , result1BA, result2BA, result3BA, result4BA
@@ -53,6 +53,7 @@ test_1_BA_C = assertEqual result1C (paragraphs2TZ result1BA)
 test_2_BA_C = assertEqual result2C (paragraphs2TZ result2BA)
 test_3_BA_C = assertEqual result3C (paragraphs2TZ result3BA)
 test_4_BA_C = assertEqual result4C (paragraphs2TZ result4BA)
+test_5_BA_C = assertEqual result5C (paragraphs2TZ result5BA)
 
 
 
