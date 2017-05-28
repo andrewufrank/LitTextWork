@@ -30,7 +30,7 @@ import           BuchCode.MarkupText
 import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
 --import           Parser.ProduceDocCallNLP
-import           Parser.ProduceNLPtriples
+import           Parser.ProduceNLP
 --import           Store.Fuseki
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings

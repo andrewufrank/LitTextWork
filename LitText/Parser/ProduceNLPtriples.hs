@@ -47,91 +47,6 @@ import Parser.CompleteSentence -- (completeSentence)
 import Parser.ReadMarkupAB -- (result1A)
 import Data.Either
 
-debugNLP1 = False
-
--- main export
-produceNLPtriples :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
--- produce the triples and store them in triple store,
--- first extract only the text TZ lines and convert the hyphenated texts
--- repeated for each paragraph
-produceNLPtriples textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
-
-        -- prepareTZ4nlp is in ProduceDocCallNLP and converts tz2 to nlptext
-
-test_1_D_XproduceNLPtriples =  do   -- test C -> H
-    putIOwords ["produceNLPtriples:  C=BAE -> H  "] -- , showT tzResult]
-    t1 <-   runErr $ produceNLPtriples  result1A result1BAE
---    putIOwords ["produceNLPtriples: result (for next) ", s2t $ show t1]
---    putIOwords ["produceNLPtriples:  result ", showT t1]
-    assertEqual (Right ())  t1
-
-produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
-produceOneParaNLP showXML textstate tzp = do
-    m1 <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
-    case m1 of
-        Nothing -> return ()
-        Just (tz, doc0)  -> do
-            let lang = tz2lang tzp
-            let sents1 = docSents doc0
-            let nlpserver = serverLoc textstate
-
-            sents2 <- if lang == German
-                    then mapM (completeSentence False nlpserver lang) sents1  -- F -> G
-                    else return sents1
-
-            let doc0' = doc0{docSents = sents2}
-
-            when debugNLP1 $
-                    putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
-        --    let buchuri = buchURIx textstate :: RDFsubj
-            let triples  = processDoc0toTriples2 textstate tzp doc0'  -- G -> H
-
-            when debugNLP1 $
-                putIOwords ["\n\nproduceOneParaNLP nlp triples "
-                    , unlines' . map showT $ triples]
-                    -- todo fileio add filepath to dir
-            let newFileName =  (authorDir textstate)
-                               ++ "/" ++ buchname textstate  ++ "." ++ ("nt"::FilePath) ::FilePath
-            filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
-                               (newFileName::FilePath)
-            let textstate2 = textstate{textfilename=filenameRes}
-            writeTriples2file textstate2 triples
---            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
---                        , showT . textfilename $ textstate, " \n", showT response ]
---            let response2 = response <>
---                        (showT . tlpara . tzloc $ tzp) <> "on page" <>
---                        (showT . tlpage . tzloc $ tzp)
-            return ()
-
-writeTriples2file :: TextState2 -> [Triple] -> ErrIO ()
-writeTriples2file textstate tris = do
---    write6 (textfilename textstate)  ntFileTriples tris
-    append6 (textfilename textstate)  ntFileTriples tris
-    -- file must be deleted first!
-
-    -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
---    insertTriplesIntoGraph fusekiServer (endpoint textstate)
---            tris  (Just (gerastreeURI </> graph textstate ))
-
---storeTriplesFuseki textstate tris = do
---    -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
---    insertTriplesIntoGraph fusekiServer (endpoint textstate)
---            tris  (Just (gerastreeURI </> graph textstate ))
-
-test_completeSentence = do  -- F -> G
-    putIOwordsT ["completeSentence F -> G ", showT resutl1F_readDocStringResult]
-    s2 <- runErr $ mapM (completeOneDoc serverBrest German) (rightNote "isNotRight" resutl1F_readDocStringResult)
-    assertEqual result1_G_readDocCompleted s2
-
-rightNote :: Text ->  ErrOrVal a -> a
-rightNote msg (Right a) = a
-rightNote msg (Left t) = errorT [ msg, t]
-
-completeOneDoc :: URI -> LanguageCode -> Doc0  -> ErrIO Doc0  -- F -> G
-completeOneDoc serverloc lang doc = do
-    let s1 = docSents doc
-    s2 <- mapM (completeSentence False serverloc lang) s1
-    return (doc {docSents = s2})
 
 processDoc0toTriples2 :: TextState2 -> TZ2 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
@@ -339,9 +254,9 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
 
 
 
-right :: Either Text a -> a
-right (Left a) = errorT ["not a right",   a]
-right (Right a) = a
+--right :: Either Text a -> a
+--right (Left a) = errorT ["not a right",   a]
+--right (Right a) = a
 
 --test_1_E_F_readDocString = do   -- E -> F
 --    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
@@ -353,5 +268,5 @@ right (Right a) = a
 --
 --
 --
-#include "ProduceNLP.res"
+--  #include "ProduceNLP.res"
 -- result1X_CD, resutl1F_readDocStringResult, result1_G_readDocCompleted, nlpTriplesResult
