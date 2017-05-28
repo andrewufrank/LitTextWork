@@ -46,23 +46,25 @@ import           Text.Printf         (printf)
 ----            , result1A_textstate, result2A_textstate,result3A_textstate
 --            )
 --import           Uniform.Error           (errorT)
---import           Uniform.Strings         hiding ((<|>))
+import           Uniform.FileIO         hiding ((<|>))
 --import Uniform.FileIO (LegalPathname (..))  -- for test
+import Uniform.TestHarness
 
-litURItext =  gerastreeURI </> "lit_2014" :: PartURI
+
+litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 
 produceLitTriples ::  TextState2 -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main entry point
 produceLitTriples textstate = concatMap (convOneTextZeile2triple textstate)
 
-test_1_C_H = assertEqual result1H_tripleResult1
-    (produceLitTriples result1A result1BAE)
-test_2_C_H = assertEqual result2H_tripleResult1
-    (produceLitTriples result2A result2BAE)
---test_3_C_H = assertEqual result3H_tripleResult1
---    (produceLitTriples result3A result3BAE)
-test_6_C_H = assertEqual result6H
-    (produceLitTriples result6A result6BAE)
+--test_1_C_H = assertEqual result1H_tripleResult1
+--    (produceLitTriples result1A result1BAE)
+--test_2_C_H = assertEqual result2H_tripleResult1
+--    (produceLitTriples result2A result2BAE)
+----test_3_C_H = assertEqual result3H_tripleResult1
+----    (produceLitTriples result3A result3BAE)
+--test_6_C_H = assertEqual result6H
+--    (produceLitTriples result6A result6BAE)
 
 buchURIx textstate = RDFsubj $ gerastreeURI
             <#> authorText textstate <-> buchnameText textstate
@@ -204,6 +206,33 @@ paraTriple textstate tz =
         sigl = paraSigl textstate tz
         lang = tz2lang tz
 
+test_1BAE_H = testFile3File result1A "resultBAE1" "resultH1" produceLitTriples
+test_2BAE_H = testFile3File result2A "resultBAE2" "resultH2" produceLitTriples
+test_3BAE_H = testFile3File result3A "resultBAE3" "resultH3" produceLitTriples
+test_4BAE_H = testFile3File result4A "resultBAE4" "resultH4" produceLitTriples
+test_5BAE_H = testFile3File result5A "resultBAE5" "resultH5" produceLitTriples
+test_6BAE_H = testFile3File result6A "resultBAE6" "resultH6" produceLitTriples
+
+--testFile3File :: (Read a, Eq b, Show b, Read b, Zeros b) =>
+--        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
+---- ^ a text harness for the transformation of data in a file to another file
+---- test of purecode
+--testFile3File   startfile resfile op = do
+----    putIOwords ["read text for ", s2t . show $  textstate0]
+--    let fn0 =  testDataDir1   </> startfile :: Path Abs File
+--    f0 <- readFile (toFilePath fn0)
+--
+--    let tt1 =  op base (readNote startfile f0)
+--    let fn = testDataDir1 </> resfile  :: Path Abs File
+--    let fnx = testDataDir </> ("x" ++ resfile ) :: Path Abs File
+--    fnexist <- doesFileExist fn
+--    f1 <- if fnexist then readFile  (toFilePath fn)
+--                else return zero
+--    let testres =  (readDef zero f1) == tt1
+--    unless testres $
+--            writeFile (toFilePath fnx )  (show tt1)
+--    assertBool testres
+
 --test_1_C_H_TZ_litTriples_1 =   do
 ----    putIOwords ["test_ProduceLit: read text for "] -- tzResult]
 --    let t1 = produceLitTriples result1A result1BAE
@@ -221,6 +250,6 @@ paraTriple textstate tz =
 ----    let t1 = produceLitTriples result3A  result3BAE
 ----    assertEqual result3H_tripleResult1 t1
 
-#include "ProduceLit.res"
+-- #include "ProduceLit.res"
 
 

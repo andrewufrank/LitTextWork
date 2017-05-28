@@ -30,7 +30,7 @@ import           Data.List.Split
 -- TODO string s
 --import Data.List (nub)
 import           Test.Framework
-
+import Uniform.TestHarness
 
 
 paragraphs2TZsimple :: [TZ] -> [TZ]  -- test BA -> C

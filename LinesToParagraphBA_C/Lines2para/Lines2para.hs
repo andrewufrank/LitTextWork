@@ -37,6 +37,7 @@ import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)
 import           Test.Framework
+import Uniform.TestHarness
 
 newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
 -- just to avoid confusions

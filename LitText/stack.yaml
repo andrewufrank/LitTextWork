@@ -15,6 +15,8 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
+- location: /home/frank/Workspace8/rdf4h
+  extra-dep: true
 - ../LitFoundation
 - ../coreNLP
 - ../buchCode
@@ -22,11 +24,9 @@ packages:
 - ../rdf4hextension
 - '.'
 - ../LinesToParagraphBA_C
-# - ../rdf4store
 extra-deps:
 - chatter-0.8.0.1
 - fullstop-0.1.4
 - parsec-extra-0.2.0.0
-- rdf4h-3.0.1
 - tokenize-0.3.0
 resolver: lts-8.15

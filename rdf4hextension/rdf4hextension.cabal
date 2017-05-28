@@ -1,5 +1,5 @@
 name: rdf4hextension
-version: 0.0.9
+version: 0.0.9.1
 cabal-version: >=1.24
 build-type: Simple
 license: BSD3
@@ -27,7 +27,7 @@ library
         ,uniform-algebras
         ,uniform-http
         ,uniform-convenience
-        ,rdf4h
+        ,rdf4h >=3.0.1.1
 --        ,network-uri
         ,text
         -- directory

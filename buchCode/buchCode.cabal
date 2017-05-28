@@ -1,5 +1,5 @@
 name: buchCode
-version: 0.1.8
+version: 0.1.8.1
 cabal-version: >=1.24
 build-type: Simple
 license: AllRightsReserved
@@ -16,6 +16,7 @@ library
 --        , uniform-strings
         , uniform-error
         , uniform-fileio
+        , uniform-convenience
        , rdf4hextension
         , litFoundation
         , readMarkup

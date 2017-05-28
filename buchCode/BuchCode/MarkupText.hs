@@ -55,7 +55,7 @@ import           Uniform.Error hiding (try, (<|>))
 import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB
-
+import Uniform.TestHarness hiding (try)
 
 class Zeilen z where
 -- ^ ops on zeilen
@@ -107,6 +107,7 @@ parseMarkup  =  markShortLines
 -- result1A, .. result6A is exported form ReadMarkupAB.
 
 --test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
+test_1B_BA :: IO ()
 test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
 test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
 test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
@@ -121,26 +122,26 @@ test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
 --test_5B_BA = assertEqual result5BA (parseMarkup result5B)
 --test_6B_BA = assertEqual result6BA (parseMarkup result6B)
 
-testDataDir1 = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
+--testDataDir1 = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
 
-testFile2File :: (Read a, Eq b, Show b, Read b, Zeros b) => FilePath -> FilePath -> (a->   b) -> IO ()
--- ^ a text harness for the transformation of data in a file to another file
--- test of purecode
-testFile2File  startfile resfile op = do
---    putIOwords ["read text for ", s2t . show $  textstate0]
-    let fn0 =  testDataDir1   </> startfile :: Path Abs File
-    f0 <- readFile (toFilePath fn0)
-
-    let tt1 =  op (readNote startfile f0)
-    let fn = testDataDir1 </> resfile  :: Path Abs File
-    let fnx = testDataDir </> ("x" ++ resfile ) :: Path Abs File
-    fnexist <- doesFileExist fn
-    f1 <- if fnexist then readFile  (toFilePath fn)
-                else return zero
-    let testres =  (readDef zero f1) == tt1
-    unless testres $
-            writeFile (toFilePath fnx )  (show tt1)
-    assertBool testres
+--testFile2File :: (Read a, Eq b, Show b, Read b, Zeros b) => FilePath -> FilePath -> (a->   b) -> IO ()
+---- ^ a text harness for the transformation of data in a file to another file
+---- test of purecode
+--testFile2File  startfile resfile op = do
+----    putIOwords ["read text for ", s2t . show $  textstate0]
+--    let fn0 =  testDataDir1   </> startfile :: Path Abs File
+--    f0 <- readFile (toFilePath fn0)
+--
+--    let tt1 =  op (readNote startfile f0)
+--    let fn = testDataDir1 </> resfile  :: Path Abs File
+--    let fnx = testDataDir </> ("x" ++ resfile ) :: Path Abs File
+--    fnexist <- doesFileExist fn
+--    f1 <- if fnexist then readFile  (toFilePath fn)
+--                else return zero
+--    let testres =  (readDef zero f1) == tt1
+--    unless testres $
+--            writeFile (toFilePath fnx )  (show tt1)
+--    assertBool testres
 
 renderETTs :: [TextZeilen] -> Text
 -- renders the lines

@@ -16,8 +16,7 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/uniform-http
   extra-dep: true
-#- location: ../rdf4store
-#  extra-dep: true
-extra-deps:
-- rdf4h-3.0.1
+- location: /home/frank/Workspace8/rdf4h
+  extra-dep: true
+extra-deps: []
 resolver: lts-8.15

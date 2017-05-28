@@ -31,7 +31,7 @@ import Uniform.Zero
 -- TODO string s
 --import Data.List (nub)
 --import           Text.Printf         (printf)
-
+import Uniform.TestHarness
 
 data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Read, Show, Eq)
 -- ^ the place of a line in the full text
