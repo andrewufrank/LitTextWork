@@ -24,7 +24,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP
 import   {-@ HTF_TESTS @-} Parser.ProduceNLP
 import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
 --import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput
---import   {-@ HTF_TESTS @-} Parser.CompleteSentence
+import   {-@ HTF_TESTS @-} Parser.CompleteSentence
 ------ calls 17701
 ------ no test for NLPvocabulary
 --

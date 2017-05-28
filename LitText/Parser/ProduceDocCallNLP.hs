@@ -19,16 +19,18 @@
 module Parser.ProduceDocCallNLP
     (module Parser.ProduceDocCallNLP
     , module CoreNLP.Defs0
+    , module Lines2para.Lines2para
+    , module Producer.Servers
     ) where
 
 import           Test.Framework
 import Data.Maybe -- todo
 import Lines2para.Lines2para
-import Lines2para.HandleLayout
-import Parser.ReadMarkupAB  -- todo
+--import Lines2para.HandleLayout
+import Parser.ReadMarkupAB  -- todo  -- for test
 import Producer.Servers
 import           CoreNLP.Defs0
-import CoreNLP.CoreNLPxml
+import CoreNLP.CoreNLPxml (readDocString)
 
 
 data NLPtext = NLPtext { tz3loc :: TextLoc
