@@ -36,7 +36,7 @@ data BuchTokenized a = BuchTokenized { btokenType:: a
                                     , btokenText  :: Text
                                     , btokenID    :: Int
                                     , btokenLang  :: LanguageCode
-                                    }  deriving (Eq, Show)
+                                    }  deriving (Show, Read, Eq )
 
 mkBuchTKwithoutnum :: BuchToken -> Text -> MarkupElement
 mkBuchTKwithoutnum mk t = BuchTokenized {btokenType = mk, btokenText = t
@@ -90,7 +90,7 @@ data BuchToken =   -- just the markers
         | BuchLeer
         | BuchPropBuch    -- fuer turtle code (prefix Buchsigl)
         | BuchPropText    -- fuer turtle code (prefix TextSigl)
-                 deriving (Enum, Eq, Show)
+                 deriving (Enum, Eq, Show, Read)
 
 
 tokenNLPanalysed = [BuchHL1, BuchHL2, BuchHL3, BuchGedicht, BuchParagraph]

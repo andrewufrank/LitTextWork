@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------
 --
--- Module      :  Main2sub
+-- Module      :  Main2sub  - not used
 -- Copyright   :  andrew u frank -
 --
 -- |  the test for the big stept
@@ -17,7 +17,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.Main2subTest (htf_thisModulesTests
+module xxxParser.Main2subTest (htf_thisModulesTests
         ) where
 
 import           Test.Framework

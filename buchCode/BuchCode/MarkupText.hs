@@ -46,13 +46,13 @@ module BuchCode.MarkupText
 --        , result5B, result5BA
 --    ) where
 
-import           BuchCode.BuchToken hiding (try, (<|>))
+import           BuchCode.BuchToken hiding (try, (<|>), (</>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
 import           Uniform.Error hiding (try, (<|>))
 --import Parser.Foundation  hiding (try, (<|>))
---import           Uniform.Strings   hiding ((<|>))
+import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB
 
@@ -76,10 +76,10 @@ type TextParsecBuch = Parsec Text () [MarkupElement]
 
 -- the type of the line
 data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0 | AllCaps0
-        deriving (Show, Eq )
+        deriving (Show, Read, Eq )
 
 data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
-        deriving (Show, Eq )
+        deriving (Show, Read, Eq )
 -- the text is without markers, the markers are a list
 -- of offset of the marker from start of line resp. previous marker
 -- and the marker as text
@@ -91,7 +91,7 @@ data TextZeilen =
         | MarkupZeile {ttok:: BuchToken, ttx:: TextWithMarks}
         | LeerZeile
         | NeueSeite
-        deriving (Show, Eq )
+        deriving (Show, Read, Eq )
 
 
 parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
@@ -102,12 +102,42 @@ parseMarkup  =  markShortLines
 -- TODO filter for char
 
 test_0B_BA = assertEqual result0BA (parseMarkup result0B)
-test_1B_BA = assertEqual result1BA (parseMarkup result1B)
-test_2B_BA = assertEqual result2BA (parseMarkup result2B)
-test_3B_BA = assertEqual result3BA (parseMarkup result3B)
-test_4B_BA = assertEqual result4BA (parseMarkup result4B)
-test_5B_BA = assertEqual result5BA (parseMarkup result5B)
-test_6B_BA = assertEqual result6BA (parseMarkup result6B)
+-- local test
+
+-- result1A, .. result6A is exported form ReadMarkupAB.
+
+test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
+test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
+test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
+test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
+test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
+test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
+
+--test_1B_BA = assertEqual result1BA (parseMarkup result1B)
+--test_2B_BA = assertEqual result2BA (parseMarkup result2B)
+--test_3B_BA = assertEqual result3BA (parseMarkup result3B)
+--test_4B_BA = assertEqual result4BA (parseMarkup result4B)
+--test_5B_BA = assertEqual result5BA (parseMarkup result5B)
+--test_6B_BA = assertEqual result6BA (parseMarkup result6B)
+
+testDataDir1 = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
+
+testFile2File :: (Read a, Eq b, Show b, Read b, Zeros b) => FilePath -> FilePath -> (a->   b) -> IO ()
+-- ^ a text harness for the transformation of data in a file to another file
+-- test of purecode
+testFile2File  startfile resfile op = do
+--    putIOwords ["read text for ", s2t . show $  textstate0]
+    let fn0 =  testDataDir1   </> startfile :: Path Abs File
+    f0 <- readFile (toFilePath fn0)
+
+    let tt1 =  op (readNote startfile f0)
+    let fn = testDataDir1 </> resfile  :: Path Abs File
+    let fnx = testDataDir </> ("x" ++ resfile) :: Path Abs File
+    writeFile (toFilePath fnx )  (show tt1)
+    fnexist <- doesFileExist fn
+    f1 <- if fnexist then readFile  (toFilePath fn)
+                else return zero
+    assertEqual (readDef zero f1) tt1
 
 renderETTs :: [TextZeilen] -> Text
 -- renders the lines
@@ -363,4 +393,80 @@ averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
         maxChars = maximum lengthLs
 
 --------------------
-#include "MarkupText.res"
+result0B = unlines'  ["wort1;langeswort2"
+            ,"55"
+            ,""
+            ,"1960 is a good"
+            ,"eine kurze [vielleicht wichtige] zeile"
+            ,"66"
+            , "als\n\f\n[54/0002]\nda\223 man ihm erstens,"
+            , "als\r\n\f\r\n[54/0002]\r\nda\223 man[2] ihm [1] mit Fussnoten,"
+            ,""
+            ,".titel TIT [3]"
+            ,"zweite,[4] [5][6] kurze zeile[3]"
+            ,"II.--THE COUNCIL HELD BY THE RATS [4]"
+            ,"   Old Rodilard,[5] a certain cat,"
+            ,"II - ALL CAPS TEST"
+            , "[44]"  -- seitenzahl
+            , "[1] eine Fussnote"
+            ,"77"] ::  Text
+
+result0BA =
+
+
+    [TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
+     TextZeile{ttt = Zahl0,
+               ttx = TextWithMarks{twm = "55", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "eine kurze [vielleicht wichtige] zeile",
+                               twmMarks = []}},
+     TextZeile{ttt = Zahl0,
+               ttx = TextWithMarks{twm = "66", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "als", twmMarks = []}},
+     NeueSeite,
+     TextZeile{ttt = Zahl0,
+               ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "da\223 man ihm erstens,", twmMarks = []}},
+     TextZeile{ttt = Kurz0,
+               ttx = TextWithMarks{twm = "als", twmMarks = []}},
+     NeueSeite,
+     TextZeile{ttt = Zahl0,
+               ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
+                               twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]}},
+     LeerZeile,
+     MarkupZeile{ttok = BuchTitel,
+                 ttx =
+                   TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]"), (0, "")]}},
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "zweite,  kurze zeile",
+                               twmMarks =
+                                 [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]}},
+     TextZeile{ttt = AllCaps0,
+               ttx =
+                 TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
+                               twmMarks = [(34, "[4]"), (0, "")]}},
+
+     TextZeile{ttt = Text0,
+               ttx =
+                 TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                               twmMarks = [(16, "[5]"), (15, "")]}},
+     TextZeile{ttt = AllCaps0,
+               ttx = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
+     TextZeile{ttt = Zahl0,
+               ttx = TextWithMarks{twm = "[44]", twmMarks = []}},
+     TextZeile{ttt = Fussnote0,
+               ttx =
+                 TextWithMarks{twm = "[1]eine Fussnote", twmMarks = [(0, "[1]")]}},
+     TextZeile{ttt = Zahl0,
+               ttx = TextWithMarks{twm = "77", twmMarks = []}}]

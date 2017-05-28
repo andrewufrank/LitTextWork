@@ -105,38 +105,72 @@ test_CR = assertEqual (filterChar (`notElem` ['\r']) ins) outs
 test_1_A_B_textstate_text_1 :: IO ()
 -- ^ test for the conversion from textstate to text (including markup, but not decoded)
 -- the textResult is in LinesToParagraphs
---
-test_1_A_B_textstate_text_1 = do
+
+testDataDir = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
+        :: Path Abs Dir
+
+test_1_A_B_textstate_text_1 =   testVar2File result1A "resultB1" textstate2Text
+----    putIOwords ["read text for ", s2t . show $  textstate0]
+--    t1 <- runErr $  textstate2Text result1A
+--    let fn = testDataDir </> ("result1B"::FilePath) :: Path Abs File
+--    let fnx = testDataDir </> ("result1Bx" ::FilePath) :: Path Abs File
+--    writeFile (toFilePath fnx )  (show t1)
+--    f1 <- readFile  (toFilePath fn)
+--    assertEqual (read f1) t1
+test_2_A_B_textstate_text_2 =   testVar2File result2A "resultB2" textstate2Text
+test_3_A_B_textstate_text_3 =   testVar2File result3A "resultB3" textstate2Text
+test_4_A_B_textstate_text_4 =   testVar2File result4A "resultB4" textstate2Text
+test_5_A_B_textstate_text_5 =   testVar2File result5A "resultB5" textstate2Text
+test_6_A_B_textstate_text_6 =   testVar2File result6A "resultB6" textstate2Text
+
+testVar2File :: (Eq b, Show b, Read b) => a -> FilePath -> (a-> ErrIO b) -> IO ()
+-- ^ a text harness for the case that the start is a value (not a file)
+testVar2File  a resfile op = do
 --    putIOwords ["read text for ", s2t . show $  textstate0]
-    t1 <- runErr $  textstate2Text result1A
+    t1 <- runErr $  op a
     case t1 of
         Left msg -> do
-                    putIOwords ["test_textstate_text failed", msg]
+                    putIOwords ["test testVar2File", s2t resfile]
                     assertBool False
         Right tt1 -> do
 --                    putIOwords ["the text result (for next) \n", showT tt1]
 --                    putIOwords ["the text result   \n",   tt1]
-                    assertEqual result1B tt1
-
-test_2_A_B_textstate_text_1 :: IO ()
--- ^ test for the conversion from textstate to text (including markup, but not decoded)
--- the textResult is in LinesToParagraphs
---  this test is specific for very long lines which are paragraphs
-test_2_A_B_textstate_text_1 = do
-    t1 <- runErr $  textstate2Text result2A
-    assertEqual (Right result2B)  t1
-test_3_A_B_textstate_text_1 = do
-    t1 <- runErr $  textstate2Text result3A
-    assertEqual (Right result3B)  t1
-test_4_A_B_textstate_text_1 = do
-    t1 <- runErr $  textstate2Text result4A
-    assertEqual (Right result4B)  t1
-test_5_A_B_textstate_text_1 = do
-    t1 <- runErr $  textstate2Text result5A
-    assertEqual (Right result5B)  t1
-test_6_A_B_textstate_text_1 = do
-    t1 <- runErr $  textstate2Text result6A
-    assertEqual (Right result6B)  t1
+--                    assertEqual result1B tt1
+                let fn = testDataDir </> (resfile) :: Path Abs File
+                let fnx = testDataDir </> ("x" ++ resfile  ) :: Path Abs File
+                fnexist <- doesFileExist fn
+                f1 <- if fnexist then readFile  (toFilePath fn)
+                            else return zero
+                writeFile (toFilePath fnx )  (show tt1)
+                assertEqual (readNote zero  f1) tt1
+--    case t1 of
+--        Left msg -> do
+--                    putIOwords ["test_textstate_text failed", msg]
+--                    assertBool False
+--        Right tt1 -> do
+----                    putIOwords ["the text result (for next) \n", showT tt1]
+----                    putIOwords ["the text result   \n",   tt1]
+--                    assertEqual result1B tt1
+--
+--test_2_A_B_textstate_text_1 :: IO ()
+---- ^ test for the conversion from textstate to text (including markup, but not decoded)
+---- the textResult is in LinesToParagraphs
+----  this test is specific for very long lines which are paragraphs
+--test_2_A_B_textstate_text_1 = do
+--    t1 <- runErr $  textstate2Text result2A
+--    assertEqual (Right result2B)  t1
+--test_3_A_B_textstate_text_1 = do
+--    t1 <- runErr $  textstate2Text result3A
+--    assertEqual (Right result3B)  t1
+--test_4_A_B_textstate_text_1 = do
+--    t1 <- runErr $  textstate2Text result4A
+--    assertEqual (Right result4B)  t1
+--test_5_A_B_textstate_text_1 = do
+--    t1 <- runErr $  textstate2Text result5A
+--    assertEqual (Right result5B)  t1
+--test_6_A_B_textstate_text_1 = do
+--    t1 <- runErr $  textstate2Text result6A
+--    assertEqual (Right result6B)  t1
 
 litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
 sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}
