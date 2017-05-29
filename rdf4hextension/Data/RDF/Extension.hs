@@ -20,6 +20,7 @@ module Data.RDF.Extension (
     , module Data.RDF
     , module Data.RDF.Prefs
     , module Uniform.Convenience.LitTypes
+    , (</>)
     )     where
 
 
