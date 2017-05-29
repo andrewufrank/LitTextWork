@@ -35,11 +35,12 @@ import CoreNLP.CoreNLPxml (readDocString)
 
 
 data NLPtext = NLPtext { tz3loc :: TextLoc
-                    , tz3text:: Text
+                        , tz3para :: ParaNum
+                        , tz3text:: Text
                     , tz3lang :: LanguageCode }
             deriving (Read, Show, Eq )
 
-instance Zeros NLPtext where zero = NLPtext zero zero zero
+instance Zeros NLPtext where zero = NLPtext zero zero zero zero
 instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 -- todo algebra
 
@@ -66,13 +67,17 @@ condNLPtext tz  = case tz of
 
 formatParaText :: TZ2 -> NLPtext
 -- convert the headers to a tztext
-formatParaText tz@TZ2para{} = NLPtext {tz3loc = tz2loc tz, tz3lang = tz2lang tz
-        , tz3text = foldl1 combine2linesWithHyphenation
+formatParaText tz@TZ2para{} = NLPtext {
+                tz3loc = tz2loc tz
+                , tz3para = tz2para tz
+                , tz3lang = tz2lang tz
+                , tz3text = foldl1 combine2linesWithHyphenation
             . map (twm . tztext) $ (tz2tzs tz)
         }
 
 formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
         , tz3lang = tz2lang tz
+        , tz3para = tz2para tz
         , tz3text =  twm . tz2text $ tz}
 
 

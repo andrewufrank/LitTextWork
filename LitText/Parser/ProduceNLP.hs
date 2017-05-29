@@ -70,7 +70,7 @@ testOP_E_F textstate ms = mapM (testOne textstate) . catMaybes $ ms
         testOne texstate (tz, doc0) = do
                     let lang = tz3lang tz
                     let nlpserver = serverLoc textstate
-                    doc0' <- completeSentencesInDoc debugNLP1 lang nlpserver doc0
+                    doc0' <- completeSentencesInDoc debugNLP1 textstate (tz, doc0)
                     return doc0'
 
 test_1_E_F :: IO ()
@@ -82,10 +82,30 @@ test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
 test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
 --    (\b a -> map (completeSenteces InDoc False b ) a)
 
+--data NLPtext = NLPtext { tz3loc :: TextLoc
+--                    , tz3text:: Text
+--                    , tz3lang :: LanguageCode }
+--            deriving (Read, Show, Eq )
 
-completeSentencesInDoc :: Bool -> LanguageCode  -> URI ->  Doc0 -> ErrIO Doc0
+----testOP_E_F :: Bool ->  URI ->  Doc0 -> Doc0
+--testOP_F_G :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [Doc0]
+--testOP_F_G textstate ms = mapM (testOne textstate) . catMaybes $ ms
+--    where
+--        testOne texstate (ntz, doc0) = do
+----                    let lang = tz3lang tz
+----                    let nlpserver = serverLoc textstate
+--                    doc0' <- processDoc0toTriples2 debugNLP1 textstate (ntz, doc0)
+--                    return doc0'
+--
+--test_1_F_G :: IO ()
+--test_1_F_G = testVar3FileIO result1A "resultF1" "resultG1" testOP_F_G
+
+
+completeSentencesInDoc :: Bool -> TextState2 -> (NLPtext, Doc0) -> ErrIO Doc0
 -- complete the german sentences in the Doc (with lemmas
-completeSentencesInDoc debugFlag lang nlpserver doc0 = do
+completeSentencesInDoc debugFlag textstate (ntz, doc0) = do
+    let lang = tz3lang ntz
+    let nlpserver = serverLoc textstate
     if lang == German
         then do
             let sents1 = docSents doc0
@@ -100,10 +120,8 @@ produceOneParaNLP showXML textstate tzp = do
     m1 <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
     case m1 of
         Nothing -> return ()
-        Just (tz, doc0)  -> do  -- tz is NLPtext
-            let lang = tz3lang tz
-            let nlpserver = serverLoc textstate
-            doc0' <- completeSentencesInDoc debugNLP1 lang nlpserver doc0
+        Just (ntz, doc0)  -> do  -- tz is NLPtext
+            doc0' <- completeSentencesInDoc debugNLP1 textstate (ntz, doc0)
 --            let sents1 = docSents doc0
 --
 --            sents2 <- if lang == German
