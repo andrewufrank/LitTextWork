@@ -32,13 +32,15 @@ module Parser.ProduceNLP
     ) where
 
 import           Test.Framework
+import Uniform.TestHarness
 import Parser.ProduceDocCallNLP
-import Parser.ProduceNLPtriples
+import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
 import          Data.RDF.FileTypes (ntFileTriples)
 
 -- for tests:
 import Parser.ReadMarkupAB
+import Uniform.FileIO
 
 debugNLP1 = False
 
@@ -51,12 +53,16 @@ produceNLP textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
 
         -- prepareTZ4nlp is in ProduceDocCallNLP and converts tz2 to nlptext
 
-test_1_D_XproduceNLPtriples =  do   -- test C -> H
-    putIOwords ["produceNLP:  C=BAE -> H  "] -- , showT tzResult]
-    t1 <-   runErr $ produceNLP  result1A result1BAE
---    putIOwords ["produceNLP: result (for next) ", s2t $ show t1]
---    putIOwords ["produceNLP:  result ", showT t1]
-    assertEqual (Right ())  t1
+test_1_D_XproduceNLPtriples :: IO ()
+test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLP
+test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLP
+test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLP
+test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLP
+test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLP
+test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLP
+-- no result file is necessary, because result is zero
+--
+
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
@@ -111,14 +117,10 @@ writeTriples2file textstate tris = do
 --    insertTriplesIntoGraph fusekiServer (endpoint textstate)
 --            tris  (Just (gerastreeURI </> graph textstate ))
 
---test_completeSentence = do  -- F -> G
---    putIOwordsT ["completeSentence F -> G ", showT resutl1F_readDocStringResult]
---    s2 <- runErr $ mapM (completeOneDoc serverBrest German) (rightNote "isNotRight" resutl1F_readDocStringResult)
---    assertEqual result1_G_readDocCompleted s2
 
-rightNote :: Text ->  ErrOrVal a -> a
-rightNote msg (Right a) = a
-rightNote msg (Left t) = errorT [ msg, t]
+--rightNote :: Text ->  ErrOrVal a -> a
+--rightNote msg (Right a) = a
+--rightNote msg (Left t) = errorT [ msg, t]
 
 completeOneDoc :: URI -> LanguageCode -> Doc0  -> ErrIO Doc0  -- F -> G
 completeOneDoc serverloc lang doc = do
@@ -127,20 +129,3 @@ completeOneDoc serverloc lang doc = do
     return (doc {docSents = s2})
 
 
-
---right :: Either Text a -> a
---right (Left a) = errorT ["not a right",   a]
---right (Right a) = a
-
---test_1_E_F_readDocString = do   -- E -> F
---    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
---    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
---    t1 <- runErr $ mapM (readDocString False) in1
---    putIOwords ["test_readDocString: result  ) ", showT  t1]
-----    putIOwords ["test_parseToTZ:  result ", show' t1]
---    assertEqual resutl1F_readDocStringResult t1
---
---
---
--- #include "ProduceNLP.res"
--- result1X_CD, resutl1F_readDocStringResult, result1_G_readDocCompleted, nlpTriplesResult
