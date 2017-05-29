@@ -56,7 +56,8 @@ processDoc0toTriples2 textstate tz  doc0  =       t2  :  concat [sents]
  --        corefs = concat $ map (mkCorefTriple2 lang   snipid ) (docCorefs doc0)
 -- currently not producing the not yet used corefs
 
-
+--test_1_E_I :: IO ()
+---- test processDoc0toTriples2, but starting with E
 ----------------------
 mkSentenceTriple2 :: LanguageCode ->   DocSigl  ->    Sentence0 ->  ( [Triple])
 -- ^ produce the   triples for a sentence

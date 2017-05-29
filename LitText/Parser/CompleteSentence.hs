@@ -3,7 +3,7 @@
 -- Module      :  complete the sentence in Defs0 mit lemma and a second PoS
 -- Copyright   : af
 --
---move this code out of TT to make TT a simple server to run all the time
+-- conversin F -> G
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}

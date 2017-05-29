@@ -37,7 +37,7 @@ import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
 import          Data.RDF.FileTypes (ntFileTriples)
-
+import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
 import Uniform.FileIO
@@ -63,27 +63,59 @@ test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" pr
 -- no result file is necessary, because result is zero
 --
 
+--testOP_E_F :: Bool ->  URI ->  Doc0 -> Doc0
+testOP_E_F :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [Doc0]
+testOP_E_F textstate ms = mapM (testOne textstate) . catMaybes $ ms
+    where
+        testOne texstate (tz, doc0) = do
+                    let lang = tz3lang tz
+                    let nlpserver = serverLoc textstate
+                    doc0' <- completeSentencesInDoc debugNLP1 lang nlpserver doc0
+                    return doc0'
+
+test_1_E_F :: IO ()
+test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
+test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" testOP_E_F
+test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
+test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
+test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
+test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
+--    (\b a -> map (completeSenteces InDoc False b ) a)
+
+
+completeSentencesInDoc :: Bool -> LanguageCode  -> URI ->  Doc0 -> ErrIO Doc0
+-- complete the german sentences in the Doc (with lemmas
+completeSentencesInDoc debugFlag lang nlpserver doc0 = do
+    if lang == German
+        then do
+            let sents1 = docSents doc0
+            sents2 <- mapM (completeSentence False nlpserver lang) sents1
+            let doc0' = doc0{docSents = sents2}
+            return doc0'
+        else return doc0
+
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
     m1 <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
     case m1 of
         Nothing -> return ()
-        Just (tz, doc0)  -> do
-            let lang = tz2lang tzp
-            let sents1 = docSents doc0
+        Just (tz, doc0)  -> do  -- tz is NLPtext
+            let lang = tz3lang tz
             let nlpserver = serverLoc textstate
-
-            sents2 <- if lang == German
-                    then mapM (completeSentence False nlpserver lang) sents1  -- F -> G
-                    else return sents1
-
-            let doc0' = doc0{docSents = sents2}
+            doc0' <- completeSentencesInDoc debugNLP1 lang nlpserver doc0
+--            let sents1 = docSents doc0
+--
+--            sents2 <- if lang == German
+--                    then mapM (completeSentence False nlpserver lang) sents1  -- E -> F
+--                    else return sents1
+--
+--            let doc0' = doc0{docSents = sents2}
 
             when debugNLP1 $
                     putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
         --    let buchuri = buchURIx textstate :: RDFsubj
-            let triples  = processDoc0toTriples2 textstate tzp doc0'  -- G -> H
+            let triples  = processDoc0toTriples2 textstate tzp doc0'  -- F -> G
 
             when debugNLP1 $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples "

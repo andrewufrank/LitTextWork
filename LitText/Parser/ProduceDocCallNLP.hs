@@ -1,9 +1,9 @@
  -----------------------------------------------------------------------------
 --
--- Module      :  Parser . Produce NLP  - betteer useNLPprocessors
+-- Module      :  Parser . ProduceDocCallNLP  -- BAE=C -> D
 -- Copyright   :  andrew u frank -
 --
--- | analyzes one paragraph
+-- | convert the whole text to the selection which will be NLP analyzed
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
