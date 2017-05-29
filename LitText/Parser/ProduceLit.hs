@@ -79,15 +79,15 @@ formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 --formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
 ---- format to 3 digits
 
-paraSigl :: TextState2 -> TZ2 -> ParaSigl
-paraSigl textstate tz = ParaSigl ( extendSlashRDFsubj
-                (formatParaID . unparaNum . tz2para   $ tz)
+paraSigl :: TextState2 -> ParaNum -> ParaSigl
+paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
+                (formatParaID . unparaNum $ pn)
                       ( buchURIx $ textstate)
                       )
 
-inParaSigl :: TextState2 -> TZ2 -> ParaSigl
-inParaSigl  textstate tz = ParaSigl $ (extendSlashRDFsubj
-          (formatParaID .unparaNum . tz2InPart $ tz)
+inParaSigl :: TextState2 -> ParaNum -> ParaSigl
+inParaSigl  textstate pn = ParaSigl $ (extendSlashRDFsubj
+          (formatParaID .unparaNum $ pn)
         (  buchURIx $ textstate))
 -- ^ convert the inpart id into an uri
 
@@ -114,7 +114,7 @@ otherTriple :: TextState2 -> TZ2 -> [Triple]
 otherTriple textstate tz =
     [mkTripleLang (tz2lang tz) (unParaSigl sigl) (mkRDFproperty mk) (twm $ tz2text tz)]
     where
-        sigl = paraSigl textstate tz
+        sigl = paraSigl textstate . tz2para $ tz
         mk = tz2tok tz
 
 titleTriple :: TextState2 -> TZ2 -> [Triple]
@@ -127,7 +127,7 @@ titleTriple textstate  tz =
     , mkTripleType (unParaSigl sigl) (mkRDFtype BuchTitel)
     ]
     where
-        sigl = paraSigl textstate tz
+        sigl = paraSigl textstate . tz2para $ tz
 
 startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
 -- ^ the triple for the page on which a paragraph starts
@@ -147,13 +147,13 @@ hlTriple textstate mk tz =
         (twm $ tz2text tz)
     , inBuchTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                (unParaSigl $ inParaSigl textstate tz)
+                (unParaSigl $ inParaSigl textstate . tz2para $ tz)
     , mkTripleType (unParaSigl sigl) (mkRDFtype mk)
     ]
     ++  startSeiteTriple sigl tz
 
     where
-        sigl = paraSigl textstate tz
+        sigl = paraSigl textstate . tz2para $  tz
         lang = tz2lang tz
 
 
@@ -171,13 +171,13 @@ paraTriple textstate tz =
                     -- was BuchParagraphLayout
     , inBuchTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                        (unParaSigl $ inParaSigl textstate tz)
+                        (unParaSigl $ inParaSigl textstate . tz2para $ tz)
     , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
      ++ startSeiteTriple sigl tz
      -- page is text, not a number?
 
     where
-        sigl = paraSigl textstate tz
+        sigl = paraSigl textstate . tz2para $  tz
         lang = tz2lang tz
 
 test_1BAE_H = testVar3File result1A "resultBAE1" "resultH1" produceLitTriples

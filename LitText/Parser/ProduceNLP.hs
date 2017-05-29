@@ -133,7 +133,7 @@ produceOneParaNLP showXML textstate tzp = do
             when debugNLP1 $
                     putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
         --    let buchuri = buchURIx textstate :: RDFsubj
-            let triples  = processDoc0toTriples2 textstate tzp doc0'  -- F -> G
+            let triples  = processDoc0toTriples2 textstate ntz doc0'  -- F -> G
 
             when debugNLP1 $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples "

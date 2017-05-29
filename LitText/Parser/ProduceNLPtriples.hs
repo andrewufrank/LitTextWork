@@ -40,15 +40,16 @@ import CoreNLP.Defs0
 import Parser.NLPvocabulary
 --import CoreNLP.CoreNLPxml (readDocString)
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
+import Parser.ProduceDocCallNLP
 
 
-processDoc0toTriples2 :: TextState2 -> TZ2 ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: TextState2 -> NLPtext ->  Doc0 -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
-processDoc0toTriples2 textstate tz  doc0  =       t2  :  concat [sents]
+processDoc0toTriples2 textstate ntz  doc0  =       t2  :  concat [sents]
                     -- , corefs] corefs not produced
     where
-        lang = tz2lang tz
-        paraid = paraSigl textstate tz
+        lang = tz3lang ntz
+        paraid = paraSigl textstate . tz3para $ ntz
         snipid = paraid
         t2 = mkTripleText (unParaSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
         sents :: [Triple]
