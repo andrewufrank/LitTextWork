@@ -157,7 +157,7 @@ test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
 test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
 test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
 test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
---test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
+test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
 test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
 
 

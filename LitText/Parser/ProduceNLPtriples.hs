@@ -247,13 +247,14 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
 ----        TODO
 
 
-
-----right :: Either Text a -> a
-----right (Left a) = errorT ["not a right",   a]
-----right (Right a) = a
---testOP_E_F :: Bool -> [Either Text (NLPtext, Text)] -> ErrIO [Doc0]
+-- not relevant test -- Doc0 is already in E
+------right :: Either Text a -> a
+------right (Left a) = errorT ["not a right",   a]
+--
+------right (Right a) = a
+--testOP_E_F :: Bool -> [Maybe (NLPtext,Doc0)] -> ErrIO [Doc0]
 --testOP_E_F bool result1e = do
---    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
+--    let in1 :: [Text] = map (snd) . catMaybes $  result1E
 --    mapM (readDocString False) in1
 --
 --test_1_E_F =
