@@ -35,8 +35,10 @@ module Parser.ProduceNLPtriples
     ) where
 
 import           Test.Framework
+import Uniform.TestHarness (testVar3FileIO)
 import CoreNLP.Defs0
 import Parser.NLPvocabulary
+--import CoreNLP.CoreNLPxml (readDocString)
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 
 
@@ -246,17 +248,23 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
 
 
 
---right :: Either Text a -> a
---right (Left a) = errorT ["not a right",   a]
---right (Right a) = a
-
---test_1_E_F_readDocString = do   -- E -> F
---    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
+----right :: Either Text a -> a
+----right (Left a) = errorT ["not a right",   a]
+----right (Right a) = a
+--testOP_E_F :: Bool -> [Either Text (NLPtext, Text)] -> ErrIO [Doc0]
+--testOP_E_F bool result1e = do
 --    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
---    t1 <- runErr $ mapM (readDocString False) in1
---    putIOwords ["test_readDocString: result  ) ", showT  t1]
-----    putIOwords ["test_parseToTZ:  result ", show' t1]
---    assertEqual resutl1F_readDocStringResult t1
+--    mapM (readDocString False) in1
+--
+--test_1_E_F =
+--        testVar3FileIO False "resultE1" "resultF1"  testOP_E_F
+----test_1_E_F_readDocString = do   -- E -> F
+----    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
+----    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
+----    t1 <- runErr $ mapM (readDocString False) in1
+----    putIOwords ["test_readDocString: result  ) ", showT  t1]
+------    putIOwords ["test_parseToTZ:  result ", show' t1]
+----    assertEqual resutl1F_readDocStringResult t1
 --
 --
 --

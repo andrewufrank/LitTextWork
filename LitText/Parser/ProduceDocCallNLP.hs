@@ -146,7 +146,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
 
             return . Just $ (tz,doc0)
 
-testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [(Maybe (NLPtext,Doc0))]
+testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [Maybe (NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
     let sloc = serverLoc  result1A
 
@@ -157,7 +157,31 @@ test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
 test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
 test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
 test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
-test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
+--test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
 test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
 
+
+-- unnecessary, inclued in C_E test
+----right :: Either Text a -> a
+----right (Left a) = errorT ["not a right",   a]
+----right (Right a) = a
+--testOP_E_F :: Bool -> [Maybe (NLPtext, Text)] -> ErrIO [Doc0]
+--testOP_E_F bool result1e = do
+--    let in1 :: [Text] = map (snd) . catMaybes $ result1e
+----                    (result1e ::[Either Text (NLPtext, Text)])
+--    mapM (readDocString False) in1
+--
+--test_1_E_F =
+--        testVar3FileIO False "resultE1" "resultF1"  testOP_E_F
+----test_1_E_F_readDocString = do   -- E -> F
+----    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
+----    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
+----    t1 <- runErr $ mapM (readDocString False) in1
+----    putIOwords ["test_readDocString: result  ) ", showT  t1]
+------    putIOwords ["test_parseToTZ:  result ", show' t1]
+----    assertEqual resutl1F_readDocStringResult t1
+--
+--right :: Either Text a -> a
+--right (Left a) = errorT ["not a right",   a]
+--right (Right a) = a
 
