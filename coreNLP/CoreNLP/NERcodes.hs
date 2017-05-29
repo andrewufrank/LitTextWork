@@ -69,7 +69,7 @@ data NERTag = PER
 instance Zeros NERTag where zero = NERunk
 
 data SpeakerTag = PER0 | PER1 | PER2 | Speaker Text
-    deriving (Show,  Ord, Eq)
+    deriving (Read, Show,  Ord, Eq)
     -- to encode the speaker tag -- any others? PER5 or 5 is seen
 
 -- readSpeakerTag :: Text -> SpeakerTag

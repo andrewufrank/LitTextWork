@@ -67,7 +67,7 @@ mkSentID s = SentID0 $ readNoteT "mkSentID" s
 
 data Doc0 = Doc0 {docSents:: [Sentence0]
                  , docCorefs :: [Coref0]
-                       } deriving (Show,  Eq, Zeros)
+                       } deriving (Read, Show,  Eq, Zeros)
 -- instance Zeros Doc0 where zero = Doc0 [] []
 
 data Sentence0 = Sentence0 {sid :: SentID0
@@ -75,7 +75,7 @@ data Sentence0 = Sentence0 {sid :: SentID0
                         , stoks :: [Token0]
                         , sdeps :: Maybe DependenceType0
                         -- should be only one of none
-                        } deriving (Show,  Eq)
+                        } deriving (Read, Show,  Eq)
 
 type DepTypeID0 = Text
 
@@ -91,7 +91,7 @@ data Token0 = Token0 { tid :: TokenID0
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [Text] -- String
                     , tspeaker :: [SpeakerTag] -- Text -- String
-                    }   deriving (Show, Eq)
+                    }   deriving (Read, Show, Eq)
 
 data Dependence0 = Dependence0 {dtype :: DepCode -- Text -- String
                         , dgov :: DependencePart0

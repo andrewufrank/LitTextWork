@@ -41,7 +41,7 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | SentenceForm
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
-          deriving (Show, Eq, Enum)
+          deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
 
 instance RDFproperties NLPproperty where

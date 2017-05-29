@@ -24,6 +24,7 @@ module Parser.ProduceDocCallNLP
     ) where
 
 import           Test.Framework
+import Uniform.TestHarness
 import Data.Maybe -- todo
 import Lines2para.Lines2para
 --import Lines2para.HandleLayout
@@ -36,7 +37,7 @@ import CoreNLP.CoreNLPxml (readDocString)
 data NLPtext = NLPtext { tz3loc :: TextLoc
                     , tz3text:: Text
                     , tz3lang :: LanguageCode }
-            deriving (Show, Eq )
+            deriving (Read, Show, Eq )
 
 prepareTZ4nlp :: TZ2 -> Maybe NLPtext  -- test C  -> D
 -- selecte the text from TZ and convert to text
@@ -139,6 +140,15 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
             doc0 <- readDocString showXML xml                    -- E -> F
 
             return . Just $ (tz,doc0)
+
+testOP :: TextState2 -> [TZ2] -> ErrIO [(Maybe (NLPtext,Doc0))]
+testOP resultXA resultBAEfile = do
+    let sloc = serverLoc  result1A
+
+    res <- mapM (convertTZ2nlp False False sloc) resultBAEfile
+    return res
+
+test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP
 
 
 --test_1_C_E  ::   IO ()  -- D -> E
