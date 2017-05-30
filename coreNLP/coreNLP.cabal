@@ -1,5 +1,5 @@
 name: coreNLP
-version: 0.1.6.4
+version: 0.1.6.5
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved

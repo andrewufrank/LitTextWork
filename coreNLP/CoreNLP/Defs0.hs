@@ -74,7 +74,7 @@ data Sentence0 = Sentence0 {sid :: SentID0
                         , sparse :: Text  -- could be the parse tree
                         , stoks :: [Token0]
                         , sdeps :: Maybe DependenceType0
-                        -- should be only one of none
+                        -- should be only one or none
                         } deriving (Read, Show,  Eq)
 
 type DepTypeID0 = Text

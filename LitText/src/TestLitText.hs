@@ -20,11 +20,11 @@ import                   Test.Framework
 --import   {-@ HTF_TESTS @-} Parser.ProduceLitt
 --import {-@ HTF_TESTS @-} Processor.CheckServers
 --
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP
+--import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP
 import   {-@ HTF_TESTS @-} Parser.ProduceNLP
-import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
-import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput
-import   {-@ HTF_TESTS @-} Parser.CompleteSentence
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
+--import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput
+--import   {-@ HTF_TESTS @-} Parser.CompleteSentence
 ------ calls 17701
 ------ no test for NLPvocabulary
 --
@@ -38,6 +38,7 @@ main =  do
     putStrLn "Lit Text Test.hs:\n"
 --    r <- htfMainWithArgs ["--colors=True", "--fail-fast"] htf_importedTests
     r <- htfMain htf_importedTests
+    putStrLn "Lit Text Test.hs end ------------- \n"
     return ()
 
 

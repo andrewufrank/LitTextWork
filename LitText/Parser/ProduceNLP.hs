@@ -45,41 +45,34 @@ import Uniform.FileIO
 debugNLP1 = False
 
 -- main export
-produceNLP :: TextState2 -> [TZ2] -> ErrIO () -- test C -> D -> X
+produceNLP :: TextState2 -> [TZ2] -> ErrIO () -- test C  -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
 produceNLP textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
 
-        -- prepareTZ4nlp is in ProduceDocCallNLP and converts tz2 to nlptext
-
-test_1_D_XproduceNLPtriples :: IO ()
-test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLP
-test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLP
-test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLP
-test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLP
-test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLP
+--test_1_D_XproduceNLPtriples :: IO ()
+--test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLP
+--test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLP
+--test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLP
+--test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLP
+--test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLP
 test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLP
 -- no result file is necessary, because result is zero
+-- but results are found in LitTest/test
 --
 
---testOP_E_F :: Bool ->  URI ->  Doc0 -> Doc0
-testOP_E_F :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [Doc0]
-testOP_E_F textstate ms = mapM (testOne textstate) . catMaybes $ ms
-    where
-        testOne texstate (tz, doc0) = do
-                    let lang = tz3lang tz
-                    let nlpserver = serverLoc textstate
-                    doc0' <- completeSentencesInDoc debugNLP1 textstate (tz, doc0)
-                    return doc0'
+testOP_E_F :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [(NLPtext,Doc0)]
+testOP_E_F textstate  =  mapM  (completeSentencesInDoc debugNLP1 textstate) . catMaybes
 
-test_1_E_F :: IO ()
-test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
-test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" testOP_E_F
-test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
-test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
-test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
+--test_1_E_F :: IO ()
+--test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
+--test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" testOP_E_F
+--test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
+--test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
+----test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
 test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
+test_7_E_F = testVar3FileIO result6A "resultE7" "resultF7" testOP_E_F
 --    (\b a -> map (completeSenteces InDoc False b ) a)
 
 --data NLPtext = NLPtext { tz3loc :: TextLoc
@@ -88,20 +81,24 @@ test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
 --            deriving (Read, Show, Eq )
 
 ----testOP_E_F :: Bool ->  URI ->  Doc0 -> Doc0
---testOP_F_G :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [Doc0]
---testOP_F_G textstate ms = mapM (testOne textstate) . catMaybes $ ms
---    where
---        testOne texstate (ntz, doc0) = do
-----                    let lang = tz3lang tz
-----                    let nlpserver = serverLoc textstate
---                    doc0' <- processDoc0toTriples2 debugNLP1 textstate (ntz, doc0)
---                    return doc0'
+testOP_F_G :: TextState2 -> [ (NLPtext,Doc0)] ->  [Triple]
+testOP_F_G textstate  = concat . map (processDoc0toTriples2 textstate)
 --
 --test_1_F_G :: IO ()
---test_1_F_G = testVar3FileIO result1A "resultF1" "resultG1" testOP_F_G
+--test_1_F_G = do
+--    putIOwords ["test_1_F_G", "start"]
+--    testVar3File result1A "resultF1" "resultG1" testOP_F_G
+test_6_F_G :: IO ()
+test_6_F_G = do
+    putIOwords ["test_6_F_G", "start"]
+    testVar3File result6A "resultF6" "resultG6" testOP_F_G
+test_7_F_G :: IO ()
+test_7_F_G = do
+    putIOwords ["test_7_F_G", "start"]
+    testVar3File result6A "resultF7" "resultG7" testOP_F_G
 
 
-completeSentencesInDoc :: Bool -> TextState2 -> (NLPtext, Doc0) -> ErrIO Doc0
+completeSentencesInDoc :: Bool -> TextState2 -> (NLPtext, Doc0) -> ErrIO (NLPtext, Doc0)
 -- complete the german sentences in the Doc (with lemmas
 completeSentencesInDoc debugFlag textstate (ntz, doc0) = do
     let lang = tz3lang ntz
@@ -111,8 +108,8 @@ completeSentencesInDoc debugFlag textstate (ntz, doc0) = do
             let sents1 = docSents doc0
             sents2 <- mapM (completeSentence False nlpserver lang) sents1
             let doc0' = doc0{docSents = sents2}
-            return doc0'
-        else return doc0
+            return (ntz, doc0')
+        else return (ntz, doc0)
 
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
@@ -121,19 +118,13 @@ produceOneParaNLP showXML textstate tzp = do
     case m1 of
         Nothing -> return ()
         Just (ntz, doc0)  -> do  -- tz is NLPtext
-            doc0' <- completeSentencesInDoc debugNLP1 textstate (ntz, doc0)
---            let sents1 = docSents doc0
---
---            sents2 <- if lang == German
---                    then mapM (completeSentence False nlpserver lang) sents1  -- E -> F
---                    else return sents1
---
---            let doc0' = doc0{docSents = sents2}
+            (ntz, doc0') <- completeSentencesInDoc debugNLP1 textstate (ntz, doc0)
 
             when debugNLP1 $
                     putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
         --    let buchuri = buchURIx textstate :: RDFsubj
-            let triples  = processDoc0toTriples2 textstate ntz doc0'  -- F -> G
+
+            let triples  = processDoc0toTriples2 textstate (ntz, doc0')  -- F -> G
 
             when debugNLP1 $
                 putIOwords ["\n\nproduceOneParaNLP nlp triples "
@@ -158,24 +149,6 @@ writeTriples2file textstate tris = do
     append6 (textfilename textstate)  ntFileTriples tris
     -- file must be deleted first!
 
-    -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
---    insertTriplesIntoGraph fusekiServer (endpoint textstate)
---            tris  (Just (gerastreeURI </> graph textstate ))
 
---storeTriplesFuseki textstate tris = do
---    -- putIOwords ["storeTriplesFuseki", "endpoint", endpoint textstate]
---    insertTriplesIntoGraph fusekiServer (endpoint textstate)
---            tris  (Just (gerastreeURI </> graph textstate ))
-
-
---rightNote :: Text ->  ErrOrVal a -> a
---rightNote msg (Right a) = a
---rightNote msg (Left t) = errorT [ msg, t]
-
-completeOneDoc :: URI -> LanguageCode -> Doc0  -> ErrIO Doc0  -- F -> G
-completeOneDoc serverloc lang doc = do
-    let s1 = docSents doc
-    s2 <- mapM (completeSentence False serverloc lang) s1
-    return (doc {docSents = s2})
 
 
