@@ -100,7 +100,7 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
 ----------------------------------
 
 mkDependenceTypeTriples2 :: LanguageCode -> SentSigl ->    DependenceType0 -> [Triple]
-mkDependenceTypeTriples2 lang sentid  d   = t1 : ts
+mkDependenceTypeTriples2 lang sentid  d   =  t1 : ts
 -- the selection is already in coreNLPxml, which takes the last of the dep analysis
 
 --    if  dtt d == "enhanced-plus-plus-dependencies"
@@ -115,7 +115,7 @@ mkDependenceTypeTriples2 lang sentid  d   = t1 : ts
                 -- passes sentid to construct the tokenid later
 
 mkDependenceTriple2 :: LanguageCode -> SentSigl -> DepTypeSigl -> Dependence0 -> [Triple]
-mkDependenceTriple2 lang sentid depTid dep   = []  -- t4 : (t5 ++ t6)
+mkDependenceTriple2 lang sentid depTid dep   =   t4 : (t5 ++ t6)
 -- dependence construction produces incorrect (white space, " etc in depSigl
     where
         depid = mkDepSigl depTid (dtype dep)

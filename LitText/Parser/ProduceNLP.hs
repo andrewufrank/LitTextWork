@@ -51,12 +51,12 @@ produceNLP :: TextState2 -> [TZ2] -> ErrIO () -- test C  -> X
 -- repeated for each paragraph
 produceNLP textstate = mapM_ (produceOneParaNLP debugNLP1 textstate)
 
---test_1_D_XproduceNLPtriples :: IO ()
---test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLP
---test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLP
---test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLP
---test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLP
---test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLP
+test_1_D_XproduceNLPtriples :: IO ()
+test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLP
+test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLP
+test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLP
+test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLP
+test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLP
 test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLP
 -- no result file is necessary, because result is zero
 -- but results are found in LitTest/test
@@ -65,12 +65,12 @@ test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" pr
 testOP_E_F :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [(NLPtext,Doc0)]
 testOP_E_F textstate  =  mapM  (completeSentencesInDoc debugNLP1 textstate) . catMaybes
 
---test_1_E_F :: IO ()
---test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
---test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" testOP_E_F
---test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
---test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
-----test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
+test_1_E_F :: IO ()
+test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
+test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" testOP_E_F
+test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
+test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
+--test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
 test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
 test_7_E_F = testVar3FileIO result6A "resultE7" "resultF7" testOP_E_F
 --    (\b a -> map (completeSenteces InDoc False b ) a)
@@ -84,10 +84,12 @@ test_7_E_F = testVar3FileIO result6A "resultE7" "resultF7" testOP_E_F
 testOP_F_G :: TextState2 -> [ (NLPtext,Doc0)] ->  [Triple]
 testOP_F_G textstate  = concat . map (processDoc0toTriples2 textstate)
 --
---test_1_F_G :: IO ()
---test_1_F_G = do
---    putIOwords ["test_1_F_G", "start"]
---    testVar3File result1A "resultF1" "resultG1" testOP_F_G
+test_1_F_G :: IO ()
+test_1_F_G =  testVar3File result1A "resultF1" "resultG1" testOP_F_G
+test_2_F_G =  testVar3File result2A "resultF2" "resultG2" testOP_F_G
+test_3_F_G =  testVar3File result3A "resultF3" "resultG3" testOP_F_G
+test_4_F_G =  testVar3File result4A "resultF4" "resultG4" testOP_F_G
+--test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
 test_6_F_G :: IO ()
 test_6_F_G = do
     putIOwords ["test_6_F_G", "start"]
