@@ -70,15 +70,9 @@ test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
 test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" testOP_E_F
 test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
 test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
---test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
+test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
 test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
 test_7_E_F = testVar3FileIO result6A "resultE7" "resultF7" testOP_E_F
---    (\b a -> map (completeSenteces InDoc False b ) a)
-
---data NLPtext = NLPtext { tz3loc :: TextLoc
---                    , tz3text:: Text
---                    , tz3lang :: LanguageCode }
---            deriving (Read, Show, Eq )
 
 ----testOP_E_F :: Bool ->  URI ->  Doc0 -> Doc0
 testOP_F_G :: TextState2 -> [ (NLPtext,Doc0)] ->  [Triple]
@@ -89,15 +83,9 @@ test_1_F_G =  testVar3File result1A "resultF1" "resultG1" testOP_F_G
 test_2_F_G =  testVar3File result2A "resultF2" "resultG2" testOP_F_G
 test_3_F_G =  testVar3File result3A "resultF3" "resultG3" testOP_F_G
 test_4_F_G =  testVar3File result4A "resultF4" "resultG4" testOP_F_G
---test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
-test_6_F_G :: IO ()
-test_6_F_G = do
-    putIOwords ["test_6_F_G", "start"]
-    testVar3File result6A "resultF6" "resultG6" testOP_F_G
-test_7_F_G :: IO ()
-test_7_F_G = do
-    putIOwords ["test_7_F_G", "start"]
-    testVar3File result6A "resultF7" "resultG7" testOP_F_G
+test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
+test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
+test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
 
 
 completeSentencesInDoc :: Bool -> TextState2 -> (NLPtext, Doc0) -> ErrIO (NLPtext, Doc0)
