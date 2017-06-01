@@ -96,11 +96,13 @@ mkDepTypeSigl sentsigl  did =  DepTypeSigl
 newtype DepSigl = DepSigl RDFsubj deriving (Show, Eq)
 unDepSigl (DepSigl a) = a
 
-mkDepSigl :: DepTypeSigl -> DepCode -> DepSigl
--- make the token sigl from sentence id
-mkDepSigl deptsigl  did =  DepSigl
-      . extendSlashRDFsubj (showT did)   -- is a Text
+mkDepSigl :: DepTypeSigl -> Int -> DepSigl
+-- make the dependency sigl (these must be numbered)
+mkDepSigl deptsigl  i =  DepSigl
+      . extendSlashRDFsubj (formatDepID i)   -- is a Text
       . unDepTypeSigl $ deptsigl
+    where
+        formatDepID  = ("Dep" <>) .s2t . printf ('%' : '0' : '2' : 'd' :[])
 
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
 

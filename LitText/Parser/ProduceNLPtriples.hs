@@ -109,17 +109,20 @@ mkDependenceTypeTriples2 lang sentid  d   =  t1 : ts
 --            then t1 : ts
 --            else []
     where
-        depTid = mkDepTypeSigl sentid  (dtt d)
+        depTid = mkDepTypeSigl sentid  "dependency" -- (dtt d)
+        -- only one selected in corenlpxml
         t1 = mkTripleType (unDepTypeSigl depTid) (mkRDFtype DepType)
-        ts = concat $ map (mkDependenceTriple2 lang sentid depTid ) ( dtd d) :: [Triple]
+        ts = concat $ zipWith (mkDependenceTriple2 lang sentid depTid ) ( dtd d)  [1..]
                 -- passes sentid to construct the tokenid later
 
-mkDependenceTriple2 :: LanguageCode -> SentSigl -> DepTypeSigl -> Dependence0 -> [Triple]
-mkDependenceTriple2 lang sentid depTid dep   =   t4 : (t5 ++ t6)
+mkDependenceTriple2 :: LanguageCode -> SentSigl -> DepTypeSigl -> Dependence0 -> Int -> [Triple]
+mkDependenceTriple2 lang sentid depTid dep i  =   t4 : (t5 ++ t6)
 -- dependence construction produces incorrect (white space, " etc in depSigl
     where
-        depid = mkDepSigl depTid (dtype dep)
-        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency)  (showT $ dtype dep)
+        depid = mkDepSigl depTid i
+                -- must be numbered - the same code may appear twice (dtype dep)
+        dependencyCode = shownice . dtype $ dep
+        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency)(shownice $ dtype dep)
         t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
         t6 = mkDependencePart2 lang sentid  depid  GDdep  (ddep dep)
 

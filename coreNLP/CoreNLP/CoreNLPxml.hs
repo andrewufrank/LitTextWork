@@ -150,8 +150,7 @@ getDependence = atTag "dep" >>>
         t <- getAttrValue "type" -<  x
         g <- getGov1 -< x
         d <- getDep1 -< x
-        returnA -< Dependence0 (readDepCodes . s2t $ t)
-                         g d
+        returnA -< Dependence0 (readDepCodes . s2t $ t) g d
 
 --getDependencies = atTag "dependencies" >>>
 --    proc x -> do
@@ -163,8 +162,6 @@ getDependencyType = atTag "dependencies" >>>
         t <- getAttrValueT "type" -< x
         ds <- listA getDependence -< x
         returnA -< DependenceType0 t ds
-
-
 
 
 --getDoc0 :: _ ->  Doc0

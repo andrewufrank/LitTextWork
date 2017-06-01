@@ -138,6 +138,7 @@ instance CharChains2 DepCode Text where
     show' = s2t . show
 
 instance NiceStrings DepCode where
+        shownice (DepCode {d1=v, d2=DepZero}) = showT v
         shownice dc = (showT . d1 $ dc) <+> (showT . d2 $ dc)
 
 isROOT = (ROOT==) . d1

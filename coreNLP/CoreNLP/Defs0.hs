@@ -80,6 +80,7 @@ data Sentence0 = Sentence0 {sid :: SentID0
 type DepTypeID0 = Text
 
 data DependenceType0 = DependenceType0 { dtt :: DepTypeID0
+                -- replaced with "dependency" (simplified?)in ProduceNLPtriples
             , dtd :: [Dependence0]
             } deriving (Show, Read, Eq, Zeros)
 
