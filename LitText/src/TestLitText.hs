@@ -18,7 +18,7 @@ import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
 import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore
 import   {-@ HTF_TESTS @-} Lines2para.Lines2para
 import   {-@ HTF_TESTS @-} Parser.ProduceLit
-import {-@ HTF_TESTS @-} Processor.CheckServers
+--import {-@ HTF_TESTS @-} Processor.CheckServers
 
 import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP
 import   {-@ HTF_TESTS @-} Parser.ProduceNLP

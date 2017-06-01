@@ -99,6 +99,7 @@ test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
 test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
 test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
 test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
+test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
 
 -------------------------------------------------D -> E
 
@@ -123,7 +124,9 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
                             NoLanguage -> nlpServerNone sloc
                             _ -> errorT ["convertTZ2nlp", showT language, "language has no server"]
 
-            let varsEng =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse,dcoref")
+            let varsEng =  [("annotators","tokenize,ssplit,pos\
+                                    \,lemma,ner,depparse,dcoref")
+--            removed ,dcoref
 --                        tokenize,ssplit,pos,lemma,ner")
         --                    -- removed ,coref, ,depparse,, coref
         -- changed to depparse, coref  instead of parse
@@ -164,6 +167,7 @@ test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
 test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
 test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
 test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
+test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
 
 -- no test to use resultE1 and produce resultE1
 

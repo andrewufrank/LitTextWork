@@ -102,6 +102,8 @@ test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphs2TZpara
 test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphs2TZpara
 test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphs2TZpara
 
+test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
+
 -- #include "Lines2paraTestResults.res"
 
 

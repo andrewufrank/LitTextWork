@@ -267,26 +267,27 @@ getSpeaker = atTag "Speaker" >>>
 
 readDocString :: Bool -> Text  -> ErrIO  Doc0
 readDocString showXML text = do
-  docs  :: [Doc0] <-callIO $ do
+    docs  :: [Doc0] <-callIO $ do
         d1 :: [Doc0] <-  runX (readString [withValidate no]  (t2s text)
                                 >>> getDoc0)
+--        putIOwords ["readDocString - d1 extracted \n", showT d1]
         return d1
-  when showXML $ do
-      putIOwords ["the xml formated"]
-      res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
-                                        >>> indentDoc
-      putIOwords  $ map s2t res
-      putIOwords ["the xml formated ---------------------"]
+    when showXML $ do
+          putIOwords ["the xml formated"]
+          res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
+                                            >>> indentDoc
+          putIOwords  $ map s2t res
+          putIOwords ["the xml formated ---------------------"]
 
---  let toks2 = filter ((0 /=). sid) toks
-  -- seems to add a lot of empty sentences
+    --  let toks2 = filter ((0 /=). sid) toks
+    -- seems to add a lot of empty sentences
 
-  if (length docs) > 1
+    docs' <- if (length docs) > 1
         then error "multiple document tags"
-        else  do
---            putIOwords ["readDocString - the xml read"]
-            return (headNote "no document found" docs)
+        else   return (headNote "no document found" docs)
             -- error in case of 0
+--    putIOwords ["readDocString - the docs' returned \n", showT docs']
+    return docs'
 
 -- readDocumentT args lfp = readDocument args (toFilePath lfp)
 --             -- (t2fp . filepath2text lpX $ lfp)
