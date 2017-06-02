@@ -35,7 +35,8 @@ module Parser.ProduceNLPtriples
     ) where
 
 import           Test.Framework
-import Uniform.TestHarness (testVar3FileIO)
+import Uniform.TestHarness (testVar3File)
+import Parser.ReadMarkupAB  -- for resultA1 etc.
 import CoreNLP.Defs0
 import Parser.NLPvocabulary
 --import CoreNLP.CoreNLPxml (readDocString)
@@ -100,7 +101,7 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
 ----------------------------------
 
 mkDependenceTypeTriples2 :: LanguageCode -> SentSigl ->    DependenceType0 -> [Triple]
-mkDependenceTypeTriples2 lang sentid  d   =  t1 : ts
+mkDependenceTypeTriples2 lang sentSigl  d   =  t1 : t2 : ts
 -- the selection is already in coreNLPxml, which takes the last of the dep analysis
 
 --    if  dtt d == "enhanced-plus-plus-dependencies"
@@ -109,19 +110,21 @@ mkDependenceTypeTriples2 lang sentid  d   =  t1 : ts
 --            then t1 : ts
 --            else []
     where
-        depTid = mkDepTypeSigl sentid  "dependency" -- (dtt d)
+        depTid = mkDepTypeSigl sentSigl  "dependency" -- (dtt d)
         -- only one selected in corenlpxml
         t1 = mkTripleType (unDepTypeSigl depTid) (mkRDFtype DepType)
-        ts = concat $ zipWith (mkDependenceTriple2 lang sentid depTid ) ( dtd d)  [1..]
-                -- passes sentid to construct the tokenid later
+        t2 = mkTriplePartOf (unDepTypeSigl depTid)     (unSentSigl sentSigl)
+        ts = concat $ zipWith (mkDependenceTriple2 lang sentSigl depTid ) ( dtd d)  [1..]
+                -- passes sentSigl to construct the tokenid later
 
 mkDependenceTriple2 :: LanguageCode -> SentSigl -> DepTypeSigl -> Dependence0 -> Int -> [Triple]
-mkDependenceTriple2 lang sentid depTid dep i  =   t4 : (t5 ++ t6)
+mkDependenceTriple2 lang sentid depTid dep i  =   t2 : t4 : (t5 ++ t6)
 -- dependence construction produces incorrect (white space, " etc in depSigl
     where
         depid = mkDepSigl depTid i
                 -- must be numbered - the same code may appear twice (dtype dep)
         dependencyCode = shownice . dtype $ dep
+        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
         t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency)(shownice $ dtype dep)
         t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
         t6 = mkDependencePart2 lang sentid  depid  GDdep  (ddep dep)
@@ -139,3 +142,15 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
        t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
        wf = word0 . dword  $ depp
 
+testOP_F_G :: TextState2 -> [ (NLPtext,Doc0)] ->  [Triple]
+testOP_F_G textstate  = concat . map (processDoc0toTriples2 textstate)
+--
+test_1_F_G :: IO ()
+test_1_F_G =  testVar3File result1A "resultF1" "resultG1" testOP_F_G
+test_2_F_G =  testVar3File result2A "resultF2" "resultG2" testOP_F_G
+test_3_F_G =  testVar3File result3A "resultF3" "resultG3" testOP_F_G
+test_4_F_G =  testVar3File result4A "resultF4" "resultG4" testOP_F_G
+test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
+test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
+test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
+test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
