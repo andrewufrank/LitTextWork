@@ -14,18 +14,9 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
--- the http://hackage.haskell.org/package/optparse-applicative package
 import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
-
---import           Main2sub                     (mainLitAndNLPproduction)
---import           Parser.Foundation
---import           Lines2para.Lines2para   hiding ((<>) , (</>), (<.>))
 import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
---import           Uniform.FileIO          hiding ((<>))
---import Producer.Servers
-----import           Uniform.Strings              hiding ((<>), (</>), (<.>))
--- for the command line parser:
 import           Options.Applicative
 import Processor.ProcessAll -- for the destination and source
 

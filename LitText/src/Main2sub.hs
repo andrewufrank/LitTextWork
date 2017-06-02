@@ -21,17 +21,11 @@ module Main2sub (mainLitAndNLPproduction
         ) where
 
 import           Test.Framework
-
---import Parser.Main2subTest
--- immediate under this, imports everything here imported
 import Parser.ReadMarkupAB
 import           BuchCode.MarkupText
---import           Parser.Foundation        hiding ((</>))
 import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
---import           Parser.ProduceDocCallNLP
 import           Parser.ProduceNLP
---import           Store.Fuseki
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
 -- (parseMarkup, result1B, result2B, result3B, result4B)
@@ -44,9 +38,6 @@ mainLitAndNLPproduction debugLitonly textstate = do
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
     let tzpara = paragraphs2TZ  ttzeilen     -- test BA -> C  in LinesToParagraph
---    let tzpara = (paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout) ttzeilen     -- test BA -> C  in LinesToParagraph
-
---    tzpara <- textstate2TZ textstate  -- test A -> C
 
     when debugLit $ putIOwords ["TZ available to produce trips \n", unlines' . map showT $ tzpara]
 
@@ -55,11 +46,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ trips]
 
     writeTriples2file textstate trips
---    response <- storeTriplesFuseki  textstate trips  -- test H -> Z
-
     when debugLit $ putIOwords ["lit: triples stored with fuseki in graph "
---                    , showT . graph $  textstate
---                    , " \n", showT response
                     ]
 
     when debugLitonly $  errorT [ "MainLit stopped because debugLitOnly true - set to lit only!"
