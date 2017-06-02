@@ -85,10 +85,10 @@ paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
                       ( buchURIx $ textstate)
                       )
 
-inParaSigl :: TextState2 -> ParaNum -> ParaSigl
-inParaSigl  textstate pn = ParaSigl $ (extendSlashRDFsubj
-          (formatParaID .unparaNum $ pn)
-        (  buchURIx $ textstate))
+--inParaSigl :: TextState2 -> ParaNum -> ParaSigl
+--inParaSigl  textstate pn = ParaSigl $ (extendSlashRDFsubj
+--          (formatParaID .unparaNum $ pn)
+--        (  buchURIx $ textstate))
 -- ^ convert the inpart id into an uri
 
 debugTurtle = True
@@ -147,13 +147,14 @@ hlTriple textstate mk tz =
         (twm $ tz2text tz)
     , inBuchTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                (unParaSigl $ inParaSigl textstate . tz2para $ tz)
+                (unParaSigl inSigl)
     , mkTripleType (unParaSigl sigl) (mkRDFtype mk)
     ]
     ++  startSeiteTriple sigl tz
 
     where
         sigl = paraSigl textstate . tz2para $  tz
+        inSigl = paraSigl textstate . tz2inPart $ tz
         lang = tz2lang tz
 
 
@@ -171,13 +172,14 @@ paraTriple textstate tz =
                     -- was BuchParagraphLayout
     , inBuchTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                        (unParaSigl $ inParaSigl textstate . tz2para $ tz)
+                        (unParaSigl inSigl)
     , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
      ++ startSeiteTriple sigl tz
      -- page is text, not a number?
 
     where
         sigl = paraSigl textstate . tz2para $  tz
+        inSigl = paraSigl textstate . tz2inPart $ tz
         lang = tz2lang tz
 
 test_1BAE_H = testVar3File result1A "resultBAE1" "resultH1" produceLitTriples

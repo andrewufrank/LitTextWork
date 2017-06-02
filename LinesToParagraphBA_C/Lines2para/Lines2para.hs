@@ -49,11 +49,11 @@ instance Zeros ParaNum where zero =  ParaNum zero
 data TZ2 =
      TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
             , tz2para :: ParaNum
-            , tz2InPart :: ParaNum}
+            , tz2inPart :: ParaNum}
     | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
                     , tz2tok :: BuchToken, tz2lang :: LanguageCode
                     , tz2para :: ParaNum
-                    , tz2InPart :: ParaNum
+                    , tz2inPart :: ParaNum
                     }
             deriving (Read, Show, Eq )
 
@@ -76,23 +76,7 @@ paragraphs2TZpara =
     formParagraphs
         -- test BAD -> BAE ...   -> C
 
----- test the first (expected ok) part of the chain
---test_1_BAD_BAE =do
---        putIOwords ["test_1_BAD_BAE", "BAD to result1BAE"]
---        assertEqual result1BAE
---            (paragraphs2TZpara  result1BAD)
---test_2_BAD_BAE =do
---        putIOwords ["test_2_BAD_BAE", "BAD to result2BAD"]
---        assertEqual result2BAE
---                (paragraphs2TZpara result2BAD)
---test_5_BAD_BAE =do
---        putIOwords ["test_5_BAD_BAE", "BAD to result5BAD"]
---        assertEqual result5BAE
---                (paragraphs2TZpara result5BAD)
---test_6_BAD_BAE =do
---        putIOwords ["test_6_BAD_BAE", "BAD to result6BAD"]
---        assertEqual result6BAE
---                (paragraphs2TZpara result6BAD)
+
 
 --test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
 test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphs2TZpara
@@ -103,8 +87,6 @@ test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphs2TZpara
 test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphs2TZpara
 
 test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
-
--- #include "Lines2paraTestResults.res"
 
 
 ----------- PARA
@@ -120,7 +102,7 @@ formParagraphs (t:ts) = case t of
 
     TZmarkup {..} -> TZ2markup {tz2loc=tzloc, tz2text=tztext
                     , tz2tok=tztok, tz2lang=tzlang
-                    , tz2para = zero, tz2InPart=zero} : formParagraphs ts
+                    , tz2para = zero, tz2inPart=zero} : formParagraphs ts
 
     TZtext {tzt=Zahl0}  -> errorT ["formParagraphs","should not have TZzahl left", showT t]
 
@@ -166,7 +148,7 @@ collectInParagrah tzs =
            , tz2para = zero
            , tz2lang = tzlang . headNote "collectInParagrah3" $ tzs
            -- could check that all have the same langauges
-           , tz2InPart = zero  -- this is the id of the title? check that the titel has this
+           , tz2inPart = zero  -- this is the id of the title? check that the titel has this
         }
 
 collectKurz :: [TZ] -> (TZ2, [TZ])
@@ -246,10 +228,11 @@ markTZsWithHeader p []           = [] -- errorT ["markTZsWithHeader", "empty lis
 markTZsWithHeader headerPara tzs = map  (markoneheader headerPara) tzs
 --markTZsWithHeader p t = errorT ["markTZsWithHeader", "should not occur2", showT p]
 
-markoneheader headerPara tz@TZ2para{} = tz {tz2InPart = headerPara}
-markoneheader headerPara tz@TZ2markup{} = tz {tz2InPart = headerPara}
---markoneheader headerPara tz = errorT ["markoneheader", showT headerPara, showT tz,
---        "at this stage in the transformation, only para, markup and leer should occur"]
+markoneheader headerPara tz@TZ2para{} =   tz {tz2inPart = headerPara}
+markoneheader headerPara tz@TZ2markup{} = tz {tz2inPart = headerPara}
+
+markoneheader a b = errorT ["markoneheader", showT a, showT b,
+        "at this stage in the transformation, only para, markup and leer should occur"]
 
 lowerHeader BuchTitel = Just BuchHL1
 lowerHeader BuchHL1   = Just BuchHL2
@@ -270,8 +253,7 @@ t1_res =
      "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
 
 
-t11 =
-    [TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
+t11 =    [TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
              tz2tzs =
                [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
                        tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
@@ -285,14 +267,14 @@ t11 =
                 TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 53},
                        tztext = TextWithMarks{twm = "house.", twmMarks = []},
                        tzlang = English}],
-             tz2lang = English, tz2para = ParaNum 9, tz2InPart = ParaNum 4},
+             tz2lang = English, tz2para = ParaNum 9, tz2inPart = ParaNum 4},
     TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
                tz2text =
                  TextWithMarks{twm =
                                  "CHAPTER IV. The Rabbit Sends in a Little Bill",
                                twmMarks = []},
                tz2tok = BuchHL1, tz2lang = English, tz2para = ParaNum 10,
-               tz2InPart = ParaNum 1},
+               tz2inPart = ParaNum 1},
      TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 57},
              tz2tzs =
                [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 57},
@@ -307,6 +289,6 @@ t11 =
                                          "anxiously about as it went, as if it had lost something .",
                                        twmMarks = []},
                        tzlang = English}],
-             tz2lang = English, tz2para = ParaNum 11, tz2InPart = ParaNum 10}]
+             tz2lang = English, tz2para = ParaNum 11, tz2inPart = ParaNum 10}]
 
 
