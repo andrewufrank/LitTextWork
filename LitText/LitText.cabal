@@ -1,11 +1,12 @@
 name: LitText
-version: 0.0.3.3
+version: 0.0.4
 cabal-version: 1.12
 build-type: Simple
 license: AllRightsReserved
 synopsis: convert literary text to RDF
 description:
     main driver for the conversion of literary texts to rdf/semantic web format
+    0.0.4 layout is separately converted to RDF
 library
     build-depends:
        base -any
