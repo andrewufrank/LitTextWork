@@ -57,12 +57,19 @@ data TZ2 =
                     }
             deriving (Read, Show, Eq )
 
-paragraphs2TZ :: [TextZeilen] -> [TZ2]  -- test BA -> C
+--paragraphs2TZ :: [TextZeilen] -> [TZ2]  -- test BA -> C
+---- ^ produce the text files (ignores removed, language marked)
+---- paragraphs formed etc.  (all together in LinesToParagraph)
+---- page number and line numbers are in layout
+--paragraphs2TZ =
+--    paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout
+
+paragraphsTZ2TZ2 :: [TZ] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
 -- paragraphs formed etc.  (all together in LinesToParagraph)
 -- page number and line numbers are in layout
-paragraphs2TZ =
-    paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout
+paragraphsTZ2TZ2 =
+    paragraphs2TZpara . paragraphs2TZsimple
 
 paragraphs2TZpara :: [TZ] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
@@ -79,14 +86,14 @@ paragraphs2TZpara =
 
 
 --test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
-test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphs2TZpara
-test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphs2TZpara
-test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphs2TZpara
-test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphs2TZpara
-test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphs2TZpara
-test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphs2TZpara
+test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphsTZ2TZ2
+test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphsTZ2TZ2
+test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphsTZ2TZ2
+test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphsTZ2TZ2
+test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
+test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
 
-test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
+--test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
 
 
 ----------- PARA

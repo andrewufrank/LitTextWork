@@ -34,6 +34,7 @@ library
     exposed-modules:
         -- in order of inclusion
         Parser.ProduceLit
+        Parser.ProduceLayout
         Parser.ProduceNLP
         Parser.ProduceDocCallNLP
         Parser.ProduceNLPtriples

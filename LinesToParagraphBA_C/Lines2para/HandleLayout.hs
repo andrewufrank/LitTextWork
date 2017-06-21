@@ -4,6 +4,10 @@
 -- Copyright   :  andrew u frank -
 --
 -- |  encode the layout on pages (lines, pages)
+-- should pages become items (for rdf)?
+-- line numbers are not including page number lines
+-- should ignore lines not be put in rdf (yes - avoid pre and post stuff from gutenberg)
+
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -69,7 +73,7 @@ paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
 paragraphs2TZlayout =
     removeSeitenZahlen .
     distributePageNrs
-    . etts2tzs
+    . etts2tzs  --  maps lines and numbers the  lines from start
     -- test BA -> BAA ... BAG -> C
 
 
@@ -92,7 +96,7 @@ ett2tz (NeueSeite) = TZneueSeite {tzloc = zero}
 ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]
 
 etts2tzs :: [TextZeilen] -> [TZ]
--- gives line numbers
+-- maps the text zeilen and numbers the lines from 1 to end
 etts2tzs = zipWith line2tz [1..] . map ett2tz
 
 line2tz :: Int -> TZ -> TZ
@@ -192,28 +196,6 @@ instance Zeilen TZ where
 --                <> "\n" <> (concat' . map renderZeile  . tztzs $ tz) <> "\n"
 
 
---filterZeilen :: [TZ] -> [TZ]
----- ^ remove some lines - here the neueSeite, where i have no idea what to do with
---filterZeilen = id -- filter (not.isNeueSeite)
-
-
----- test the first (expected ok) part of the chain
---test_0_BA_BAC =do
---        putIOwords ["test_0_BA_BAC", "from result0BA_tz_markupResult1 to result0BAC"]
---        assertEqual result0BAC (paragraphs2TZlayout result0BA)
---test_1_BA_BAC =do
---        putIOwords ["test_1_BA_BAC", "from result1BA_tz_markupResult1 to result1BAC"]
---        assertEqual result1BAC (paragraphs2TZlayout result1BA)
---test_2_BA_BAC =do
---        putIOwords ["test_2_BA_BAC", "from result2BA_tz_markupResult1 to result2BAC"]
---        assertEqual result2BAC (paragraphs2TZlayout result2BA)
---test_5_BA_BAC =do
---        putIOwords ["test_5_BA_BAC", "from result5BA_tz_markupResult1 to result5BAC"]
---        assertEqual result5BAC (paragraphs2TZlayout result5BA)
---test_6_BA_BAC =do
---        putIOwords ["test_6_BA_BAC", "from result6BA_tz_markupResult1 to result6BAC"]
---        assertEqual result6BAC (paragraphs2TZlayout result6BA)
------------ test results
 
 --test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZlayout
 test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
@@ -223,6 +205,4 @@ test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
 test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
 test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
 
-
--- #include "LayoutResults.res"
 

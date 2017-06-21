@@ -27,6 +27,7 @@ import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 import           Parser.Foundation  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB
+import Parser.ProduceLayout
 import Lines2para.Lines2para -- hiding ((</>))
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
@@ -40,9 +41,9 @@ produceLitTriples ::  TextState2 -> [TZ2] -> [Triple]  -- test C=BAE -> H
 produceLitTriples textstate = concatMap (convOneTextZeile2triple textstate)
 
 
-buchURIx textstate = RDFsubj $ gerastreeURI
-            <#> authorText textstate <-> buchnameText textstate
--- id of buch, part and sentence or page is attached
+--buchURIx textstate = RDFsubj $ gerastreeURI
+--            <#> authorText textstate <-> buchnameText textstate
+---- id of buch, part and sentence or page is attached
 
 data LitProperty = IsBuch | HasTitle | InBuch | InPart
         | AufSeite  -- ^ text starts on this page

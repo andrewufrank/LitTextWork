@@ -37,7 +37,9 @@ mainLitAndNLPproduction debugLitonly textstate = do
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
-    let tzpara = paragraphs2TZ  ttzeilen     -- test BA -> C  in LinesToParagraph
+    let tzlayout = paragraphs2TZlayout ttzeilen
+
+    let tzpara = paragraphsTZ2TZ2  tzlayout     -- test BA -> C  in LinesToParagraph
 
     when debugLit $ putIOwords ["TZ available to produce trips \n", unlines' . map showT $ tzpara]
 
