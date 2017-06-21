@@ -35,7 +35,7 @@ import Uniform.TestHarness
 
 layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
 
-produceLayoutTriples ::  TextState2 -> [TZ] -> [Triple]  -- test C=BAE -> H
+produceLayoutTriples ::  TextState2 -> [TZ] -> [Triple]  -- test BAD -> J
 -- put lines and pages into rdf
 produceLayoutTriples textstate = concatMap (convOneTZ2triple textstate)
 
@@ -114,6 +114,8 @@ convOneTZ2triple textstate tz  = case tz of
     TZleer {} -> [] -- where not elliminated?
 ------         errorT ["formParagraphs","should not leer", showT tz]
     TZtext {} -> lineTriple textstate tz
+    TZignore {} -> []
+    _  -> errorT [showT tz]
 
 --otherTriple :: TextState2 -> TZ2 -> [Triple]
 ---- make triples for other markup (author etc.)
@@ -188,14 +190,14 @@ lineTriple textstate  tz =
 --        inSigl = paraSigl textstate . tz2inPart $ tz
 --        lang = tz2lang tz
 
-test_1BAE_J = testVar3File result1A "resultBAE1" "resultJ1" produceLayoutTriples
-test_2BAE_J = testVar3File result2A "resultBAE2" "resultJ2" produceLayoutTriples
-test_3BAE_J = testVar3File result3A "resultBAE3" "resultJ3" produceLayoutTriples
-test_4BAE_J = testVar3File result4A "resultBAE4" "resultJ4" produceLayoutTriples
-test_5BAE_J = testVar3File result5A "resultBAE5" "resultJ5" produceLayoutTriples
-test_6BAE_J = testVar3File result6A "resultBAE6" "resultJ6" produceLayoutTriples
---test_7BAE_J = testVar3File result7A "resultBAE7" "resultJ7" produceLayoutTriples
-test_8BAE_J = testVar3File result8A "resultBAE8" "resultJ8" produceLayoutTriples
+test_1BAD_J = testVar3File result1A "resultBAD1" "resultJ1" produceLayoutTriples
+test_2BAD_J = testVar3File result2A "resultBAD2" "resultJ2" produceLayoutTriples
+test_3BAD_J = testVar3File result3A "resultBAD3" "resultJ3" produceLayoutTriples
+test_4BAD_J = testVar3File result4A "resultBAD4" "resultJ4" produceLayoutTriples
+test_5BAD_J = testVar3File result5A "resultBAD5" "resultJ5" produceLayoutTriples
+test_6BAD_J = testVar3File result6A "resultBAD6" "resultJ6" produceLayoutTriples
+--test_7BAD_J = testVar3File result7A "resultBAD7" "resultJ7" produceLayoutTriples
+--test_8BAD_J = testVar3File result8A "resultBAD8" "resultJ8" produceLayoutTriples
 
 
 
