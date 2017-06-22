@@ -168,7 +168,7 @@ testOP_C_E resultXA resultBAEfile = do
 --test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
 --test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
 --test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
-test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
+--test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
 
 -- no test to use resultE1 and produce resultE1
 
