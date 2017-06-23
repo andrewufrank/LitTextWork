@@ -115,7 +115,7 @@ produceOneParaNLP showXML textstate tzp = do
             filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
                                (newFileName::FilePath)
             let textstate2 = textstate{textfilename=filenameRes}
-            writeTriples2file textstate2 triples
+            appendTriples2file textstate2 triples
 --            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
 --                        , showT . textfilename $ textstate, " \n", showT response ]
 --            let response2 = response <>
@@ -123,12 +123,17 @@ produceOneParaNLP showXML textstate tzp = do
 --                        (showT . tlpage . tzloc $ tzp)
             return ()
 
-writeTriples2file :: TextState2 -> [Triple] -> ErrIO ()
-writeTriples2file textstate tris = do
+appendTriples2file :: TextState2 -> [Triple] -> ErrIO ()
+appendTriples2file textstate tris = do
 --    write6 (textfilename textstate)  ntFileTriples tris
     append6 (textfilename textstate)  ntFileTriples tris
     -- file must be deleted first!
 
 
+writeTriples2file :: TextState2 -> [Triple] -> ErrIO ()
+writeTriples2file textstate tris = do
+--    write6 (textfilename textstate)  ntFileTriples tris
+    write6 (textfilename textstate)  ntFileTriples tris
+    -- file must be deleted first!
 
 

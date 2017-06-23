@@ -23,6 +23,7 @@ module Main2sub (mainLitAndNLPproduction
 import           Test.Framework
 import Parser.ReadMarkupAB
 import           BuchCode.MarkupText
+import Parser.ProduceLayout
 import           Lines2para.Lines2para hiding ((</>))
 import           Parser.ProduceLit
 import           Parser.ProduceNLP
@@ -30,25 +31,28 @@ import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 
-debugNLP = False
-debugLit = False
+debugNLP = True -- False
+debugLit = True -- False
 mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO ()
 mainLitAndNLPproduction debugLitonly textstate = do
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
-    let tzlayout = paragraphs2TZlayout ttzeilen
+    let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
+    let layoutTriples = produceLayoutTriples textstate tzlayout  -- BAD -> J
+    when debugLit $ putIOwords ["layout triples done \n", unlines' . map showT $ layoutTriples]
 
     let tzpara = paragraphsTZ2TZ2  tzlayout     -- test BA -> C  in LinesToParagraph
 
-    when debugLit $ putIOwords ["TZ available to produce trips \n", unlines' . map showT $ tzpara]
+    when debugLit $ putIOwords ["TZ available to produce litTriples \n", unlines' . map showT $ tzpara]
 
-    let trips = produceLitTriples textstate   tzpara  -- test C -> H
+    let litTriples = produceLitTriples textstate   tzpara  -- test C -> H
 
-    when debugLit $  putIOwords ["triples \n", unlines' . map showT $ trips]
+    when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    writeTriples2file textstate trips
-    when debugLit $ putIOwords ["lit: triples stored with fuseki in graph "
+    writeTriples2file textstate (layoutTriples ++ litTriples)
+    when debugLit $ putIOwords ["lit: triples stored in file \n",
+             unlines' . map showT $ (layoutTriples ++ litTriples)
                     ]
 
     when debugLitonly $  errorT [ "MainLit stopped because debugLitOnly true - set to lit only!"
@@ -58,7 +62,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
     -- putIOwords ["NLP conversion", "start" ]
 --    let tzparaText = prepareTZ4nlp tzpara
 
-    responses <- produceNLP textstate tzpara -- test D ->
+--    responses <- produceNLP textstate tzpara -- test D ->
 
     putIOwords ["npl: triples stored with fuseki in graph (responses and para/seite) "
 --           , showT . graph $ textstate, " \n"
