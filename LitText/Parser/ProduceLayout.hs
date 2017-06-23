@@ -53,7 +53,8 @@ data LayoutType = Line | Page
 instance RDFtypes LayoutType where
     mkRDFtype p =  RDFtype $ layoutURItext <#> (toTitle . showT $ p)
 
-data LayoutProperty = TomeNumber | LineNumber | PageNumber | LineText  -- could be label?
+data LayoutProperty = TomeNumber | LineNumber | PageNumber | LineText
+            | InLineMarker | InLineMarkerPos  -- could be label for text?
     deriving (Show, Eq, Enum)
 
 instance RDFproperties LayoutProperty where
@@ -72,16 +73,30 @@ lineSigl textstate pn = LineSigl ( extendSlashRDFsubj
                 (formatLineID  $ pn)
                       ( buchURIx $ textstate)
                       )
-newtype PageSigl = PageSigl RDFsubj
-unPageSigl (PageSigl t) = t
 
-formatPageID :: Text -> Text
-formatPageID nrtext =   "P" <> nrtext
+--newtype PageSigl = PageSigl RDFsubj
+--unPageSigl (PageSigl t) = t
+--
+--formatPageID :: Text -> Text
+--formatPageID nrtext =   "P" <> nrtext
+---- format to 5 digits
+----
+--pageSigl :: TextState2 -> Text -> PageSigl
+--pageSigl textstate pn = PageSigl ( extendSlashRDFsubj
+--                (formatPageID  $ pn)
+--                      ( buchURIx $ textstate)
+--                      )
+
+newtype InLineMarkerSigl = InLineMarkerSigl RDFsubj
+unInLineMarkerSigl (InLineMarkerSigl t) = t
+
+formatInLineMarker :: Int -> Text
+formatInLineMarker nr  =   "ILM" <> (s2t . printf  ('%' : '0' : '2' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
-pageSigl :: TextState2 -> Text -> PageSigl
-pageSigl textstate pn = PageSigl ( extendSlashRDFsubj
-                (formatPageID  $ pn)
+inLineMarkerSigl :: TextState2 -> Int -> InLineMarkerSigl
+inLineMarkerSigl textstate pn = InLineMarkerSigl ( extendSlashRDFsubj
+                (formatInLineMarker  $ pn)
                       ( buchURIx $ textstate)
                       )
 
@@ -111,12 +126,32 @@ lineTriple textstate  tz =
     -- requires a page as an object
     , mkTripleText (unLineSigl sigl) (mkRDFproperty PageNumber)  (tlpage . tzloc $ tz)
     -- gives the page number/text as it was parsed
+    -- could be avoided if null
     , mkTripleLang (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)  (twm . tztext $ tz)
     -- gives the text of a TZtext line
-        ]
+        ] ++ (concat . map (oneMarkerTriple textstate sigl) $ (twmMarks . tztext $ tz))
     where
         sigl = lineSigl textstate .  tlline . tzloc $ tz
-        pSigl = pageSigl textstate . tlpage . tzloc $ tz
+--        pSigl = pageSigl textstate . tlpage . tzloc $ tz
+
+--footnoteTriples :: TextState2 -> (Int,Text) -> [Triple]
+---- make the extra triples for the marker
+--footnoteTriples linesigl intText = if hasNoMarkers then []
+--        else
+--
+--    where
+--        hasNoMarkers =  null . twmMarks . tztext $ tz
+
+
+oneMarkerTriple :: TextState2 -> LineSigl -> (Int,Text) -> [Triple]
+oneMarkerTriple textstate lineSigl intText =
+    [ mkTripleText (unInLineMarkerSigl mSigl) (mkRDFproperty InLineMarker) (snd intText)
+        , mkTripleInt (unInLineMarkerSigl mSigl) (mkRDFproperty InLineMarkerPos) (fst intText)
+       , mkTriplePartOf (unInLineMarkerSigl mSigl) (unLineSigl lineSigl)
+            ]
+    where
+        mSigl = inLineMarkerSigl textstate . fst $ intText
+
 
 layoutTriples ::  TextState2 -> [TZ] -> Text  -- test BAD -> J
 
