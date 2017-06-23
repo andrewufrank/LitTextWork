@@ -19,7 +19,7 @@ module Data.RDF.Extension (
     module Data.RDF.Extension
     , module Data.RDF
     , module Data.RDF.Prefs
-    , module Uniform.Convenience.LitTypes
+--    , module Uniform.Convenience.LitTypes
     , (</>)
     )     where
 
@@ -36,9 +36,9 @@ import qualified Data.RDF.Types      as RDF (RDF (..), RdfSerializer (..))
 import           Uniform.Error
 -- import           Uniform.FileIO      (thd3)
 -- import           Uniform.StringInfix ((</>))
--- import           Uniform.Strings
--- import           Uniform.Zero
-import           Uniform.Convenience.LitTypes
+import           Uniform.Strings
+import           Uniform.Zero
+----import           Uniform.Convenience.LitTypes
 type PartURI = Text
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type...
@@ -79,11 +79,16 @@ class RDFtypes p where
     mkRDFtype :: p -> RDFtype
 
 
--- newtype CorpusRoot = CorpusRoot {croot::Text} deriving (Eq, Ord, Show, Read)
--- newtype CorpusName = CorpusName {cname::Text} deriving (Eq, Ord, Show, Read)
--- newtype TextName = Textname {tname :: Text}  deriving (Eq, Ord, Show, Read)
---types to separate the corpus root (e.g. Data/Corpus from the corpusName (e.g. an author) from a text
+data LanguageCode = NoLanguage | German | USenglish | English    deriving (Eq, Ord, Show, Read)
+instance Zeros LanguageCode where zero = NoLanguage
 
+parseLanguageCode :: Text -> LanguageCode
+parseLanguageCode "de" = German
+parseLanguageCode "deu" = German
+parseLanguageCode "en" = English
+parseLanguageCode "xx" = NoLanguage
+parseLanguageCode "xxx" = NoLanguage
+parseLanguageCode c = errorT ["Extension.hs = parseLanguageCode ", c, "not found"]
 
 giveCode :: LanguageCode -> Text
 -- produce the 2 character language code w3c
