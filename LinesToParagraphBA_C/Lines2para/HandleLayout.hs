@@ -51,7 +51,7 @@ instance Zeros TextLoc where zero = TextLoc zero zero
 -- only tzpara and tzmarkup in final result
 data TZ =
          TZtext {tzt:: TextType, tzloc :: TextLoc
-                    , tztext:: TextWithMarks
+                    , tztext:: TextWithMarks   -- is this appropriate here?
                     , tzlang :: LanguageCode }
 --        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
 --                , tlpara :: ParaNum

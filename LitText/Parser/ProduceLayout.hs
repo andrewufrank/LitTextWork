@@ -51,7 +51,7 @@ data LayoutType = Line | Page
 instance RDFtypes LayoutType where
     mkRDFtype p =  RDFtype $ layoutURItext <#> (toTitle . showT $ p)
 
-data LayoutProperty = TomeNumber | LineNumber | PageNumber
+data LayoutProperty = TomeNumber | LineNumber | PageNumber | LineText  -- could be label?
     deriving (Show, Eq, Enum)
 
 instance RDFproperties LayoutProperty where
@@ -109,6 +109,8 @@ lineTriple textstate  tz =
     -- requires a page as an object
     , mkTripleText (unLineSigl sigl) (mkRDFproperty PageNumber)  (tlpage . tzloc $ tz)
     -- gives the page number/text as it was parsed
+    , mkTripleLang (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)  (twm . tztext $ tz)
+    -- gives the text of a TZtext line
         ]
     where
         sigl = lineSigl textstate .  tlline . tzloc $ tz
