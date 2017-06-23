@@ -24,11 +24,12 @@
 
 module Lines2para.Lines2para
     (module Lines2para.Lines2para
-    , module Lines2para.Lines2ignore
+--    , module Lines2para.Lines2ignore
 --    , module Lines2para.HandleLayout
         ) where
 
-import Lines2para.Lines2ignore
+--import Lines2para.Lines2ignore
+import  Lines2para.HandleLayout -- TZ
 
 import           Data.List.Split
 import           Uniform.Error
@@ -69,7 +70,8 @@ paragraphsTZ2TZ2 :: [TZ] -> [TZ2]  -- test BA -> C
 -- paragraphs formed etc.  (all together in LinesToParagraph)
 -- page number and line numbers are in layout
 paragraphsTZ2TZ2 =
-    paragraphs2TZpara . paragraphs2TZsimple
+    paragraphs2TZpara
+--            . paragraphs2TZsimple -- now in layout
 
 paragraphs2TZpara :: [TZ] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)

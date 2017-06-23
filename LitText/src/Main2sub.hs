@@ -39,7 +39,9 @@ mainLitAndNLPproduction debugLitonly textstate = do
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
     let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
-    let layoutTriples = produceLayoutTriples textstate tzlayout  -- BAD -> J
+    let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ]  -- ignore line, allCaps, language
+    -- missing footnotes?
+    let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
     when debugLit $ putIOwords ["layout triples done \n", unlines' . map showT $ layoutTriples]
 
     let tzpara = paragraphsTZ2TZ2  tzlayout     -- test BA -> C  in LinesToParagraph

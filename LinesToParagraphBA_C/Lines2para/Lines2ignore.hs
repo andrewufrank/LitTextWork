@@ -170,4 +170,5 @@ markTZsWithIgnore  = map  markoneWithIgnore
 
 -- #include "Lines2ignoreTestResults.res"
 
-
+test_german1 = assertEqual German (readLanguageCode "test_german1" "Deutsch")
+test_german2 = assertEqual German (readLanguageCode "test_german1" "German")
