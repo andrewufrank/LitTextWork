@@ -23,35 +23,14 @@
 module BuchCode.MarkupText
     (module BuchCode.MarkupText
     , module BuchCode.BuchToken
---    , module Parser.Foundation
---    , module Uniform.Error
     ) where
---( TextZeilen (..)
---    , TextType (..)
---    , TextWithMarks (..)
---    , Zeilen (..)
---    , BuchToken (..)
---    , parseMarkup
---    , countSeiten
---    , countLeerzeilen
---    , readSeitenzahl, checkSeitenzahlen
---    , averageLengthTextLines
---    , combine2linesWithHyphenation
---        , htf_thisModulesTests   -- for tests
---        , result0B, result0BA
---        , result1B, result1BA
---        , result2B, result2BA
---        , result3B, result3BA
---        , result4B, result4BA
---        , result5B, result5BA
---    ) where
+
 
 import           BuchCode.BuchToken hiding (try, (<|>), (</>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
 import           Uniform.Error hiding (try, (<|>))
---import Parser.Foundation  hiding (try, (<|>))
 import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB
@@ -101,7 +80,7 @@ parseMarkup  =  markShortLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 -- TODO filter for char
 
---test_0B_BA = assertEqual result0BA (parseMarkup result0B)
+test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- local test
 
 -- result1A, .. result6A is exported form ReadMarkupAB.
@@ -116,33 +95,7 @@ test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
 test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
 test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup
 
---test_1B_BA = assertEqual result1BA (parseMarkup result1B)
---test_2B_BA = assertEqual result2BA (parseMarkup result2B)
---test_3B_BA = assertEqual result3BA (parseMarkup result3B)
---test_4B_BA = assertEqual result4BA (parseMarkup result4B)
---test_5B_BA = assertEqual result5BA (parseMarkup result5B)
---test_6B_BA = assertEqual result6BA (parseMarkup result6B)
 
---testDataDir1 = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
-
---testFile2File :: (Read a, Eq b, Show b, Read b, Zeros b) => FilePath -> FilePath -> (a->   b) -> IO ()
----- ^ a text harness for the transformation of data in a file to another file
----- test of purecode
---testFile2File  startfile resfile op = do
-----    putIOwords ["read text for ", s2t . show $  textstate0]
---    let fn0 =  testDataDir1   </> startfile :: Path Abs File
---    f0 <- readFile (toFilePath fn0)
---
---    let tt1 =  op (readNote startfile f0)
---    let fn = testDataDir1 </> resfile  :: Path Abs File
---    let fnx = testDataDir </> ("x" ++ resfile ) :: Path Abs File
---    fnexist <- doesFileExist fn
---    f1 <- if fnexist then readFile  (toFilePath fn)
---                else return zero
---    let testres =  (readDef zero f1) == tt1
---    unless testres $
---            writeFile (toFilePath fnx )  (show tt1)
---    assertBool testres
 
 renderETTs :: [TextZeilen] -> Text
 -- renders the lines
@@ -400,6 +353,7 @@ averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
 --------------------
 result0B = unlines'  ["wort1;langeswort2"
             ,"55"
+            ,".sprache German"
             ,""
             ,"1960 is a good"
             ,"eine kurze [vielleicht wichtige] zeile"
@@ -418,11 +372,13 @@ result0B = unlines'  ["wort1;langeswort2"
 
 result0BA =
 
-
     [TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "wort1;langeswort2", twmMarks = []}},
      TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "55", twmMarks = []}},
+     MarkupZeile{ttok = BuchSprache,
+                 ttx = TextWithMarks{twm = "German", twmMarks = []}},
+     LeerZeile,
      TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "1960 is a good", twmMarks = []}},
      TextZeile{ttt = Text0,
@@ -461,7 +417,6 @@ result0BA =
                ttx =
                  TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
                                twmMarks = [(34, "[4]"), (0, "")]}},
-
      TextZeile{ttt = Text0,
                ttx =
                  TextWithMarks{twm = "Old Rodilard, a certain cat,",
