@@ -22,13 +22,16 @@ module Parser.ProduceLit (module Parser.ProduceLit
 import           Test.Framework
 import           Data.Char               (toLower)
 import           Data.RDF
---import           Data.RDF.Extension
+import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 import           Parser.Foundation  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB
 import Parser.ProduceLayout
+import BuchCode.BuchToken
+import BuchCode.MarkupText
 import Lines2para.Lines2para -- hiding ((</>))
+import Lines2para.HandleLayout
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 import Uniform.TestHarness

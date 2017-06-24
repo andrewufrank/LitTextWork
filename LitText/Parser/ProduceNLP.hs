@@ -40,6 +40,7 @@ import          Data.RDF.FileTypes (ntFileTriples)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
+import Parser.Foundation
 import Uniform.FileIO
 
 debugNLP1 = False

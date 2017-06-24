@@ -42,7 +42,7 @@ import Parser.NLPvocabulary
 --import CoreNLP.CoreNLPxml (readDocString)
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 import Parser.ProduceDocCallNLP
-
+import Parser.Foundation
 
 processDoc0toTriples2 :: TextState2 -> (NLPtext,  Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples

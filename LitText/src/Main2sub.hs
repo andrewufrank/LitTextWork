@@ -25,10 +25,12 @@ import Parser.ReadMarkupAB
 import           BuchCode.MarkupText
 import Parser.ProduceLayout
 import           Lines2para.Lines2para hiding ((</>))
+import           Lines2para.Lines2ignore
 import           Parser.ProduceLit
 import           Parser.ProduceNLP
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
+import Lines2para.HandleLayout
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 
 debugNLP = True -- False
