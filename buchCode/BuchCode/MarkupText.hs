@@ -190,8 +190,8 @@ parseTextWithMarkers = do
                     let resx1 = [(res1, fn)]
                     resx3 <- optionMaybe (try annotherFootnoteMarker)
                     res4 <- many (noneOf "\n")
-                    let resx4 = [(res4, "")]
-                    let ress = concat [resx1, fromMaybe [] resx3, resx4]
+--                    let resx4 = [(res4, "")]
+                    let ress = concat [resx1, fromMaybe [] resx3] -- , resx4]
                     newline
                     let res14 = trim' . s2t .concat . map fst $ ress
                     let list = map (pair (lengthChar, s2t)) ress
@@ -210,6 +210,8 @@ annotherFootnoteMarker = do
         fn2 <-  fussnoteMarker
         xres <- optionMaybe $ try annotherFootnoteMarker
         return $ [(res3,  fn2)] ++ fromMaybe [] xres
+
+
 
 leerzeile :: TextParsec TextZeilen
 leerzeile = do
@@ -400,27 +402,24 @@ result0BA =
      NeueSeite,
      TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
-     TextZeile{ttt = Text0,
+     TextZeile{ttt = Kurz0,
                ttx =
-                 TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
-                               twmMarks = [(7, "[2]"), (5, "[1]"), (15, "")]}},
+                 TextWithMarks{twm = "da\223 man ihm",
+                               twmMarks = [(7, "[2]"), (5, "[1]")]}},
      LeerZeile,
      MarkupZeile{ttok = BuchTitel,
-                 ttx =
-                   TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]"), (0, "")]}},
+                 ttx = TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]")]}},
      TextZeile{ttt = Text0,
                ttx =
                  TextWithMarks{twm = "zweite,  kurze zeile",
-                               twmMarks =
-                                 [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]"), (0, "")]}},
+                               twmMarks = [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]")]}},
      TextZeile{ttt = AllCaps0,
                ttx =
                  TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
-                               twmMarks = [(34, "[4]"), (0, "")]}},
-     TextZeile{ttt = Text0,
+                               twmMarks = [(34, "[4]")]}},
+     TextZeile{ttt = Kurz0,
                ttx =
-                 TextWithMarks{twm = "Old Rodilard, a certain cat,",
-                               twmMarks = [(16, "[5]"), (15, "")]}},
+                 TextWithMarks{twm = "Old Rodilard,", twmMarks = [(16, "[5]")]}},
      TextZeile{ttt = AllCaps0,
                ttx = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
      TextZeile{ttt = Zahl0,
