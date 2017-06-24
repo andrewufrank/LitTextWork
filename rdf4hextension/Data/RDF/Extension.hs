@@ -4,6 +4,7 @@
 -- and not the prefix stuff, which goes to prefs
 --
 -- the URI are always open at end and connecting must add separator
+{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# OPTIONS_GHC -fno-warn-missing-methods  #-}
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns  #-}
@@ -24,6 +25,8 @@ module Data.RDF.Extension (
     )     where
 
 
+import           Test.Framework
+import Text.Printf
 import           Data.Map            as Map (fromList)
 import           Data.RDF            (Node, Triple (..), lnode, objectOf,
                                       plainL, plainLL, triple, typedL, unode)
@@ -116,6 +119,8 @@ ex1 = Triple (UNode "http://gerastree.at/kurz#kurz-005")
     (LNode (PlainLL "und mehr text in deutsch. test2 erfuellt?" "de"))
 
 t1 = getTripleLanguage ex1
+s1 = RDFsubj "http://gerastree.at/kurz#kurz-005"
+r1 = RDFproperty "testint"
 
 getLangCode :: Node -> LanguageCode
 getLangCode (RDF.LNode (RDF.PlainLL _ l)) = parseLanguageCode l
@@ -170,6 +175,10 @@ mkTripleRef s p o = triple subj pred obj
         pred = unode (unRDFproperty p)
         obj = unode . unRDFsubj $ o
 
+integerUri =  "http://www.w3.org/2001/XMLSchema#integer"
+decimalUri =  "http://www.w3.org/2001/XMLSchema#decimal"
+doubleUri  =  "http://www.w3.org/2001/XMLSchema#double"
+
 mkTripleInt :: RDFsubj -> RDFproperty -> Int -> Triple
 -- ^ a triple with an int value
 mkTripleInt s p o = mkTripleInteger s p (toInteger o)
@@ -180,7 +189,26 @@ mkTripleInteger s p o = triple subj pred obj
     where
         subj = unode . unRDFsubj $ s
         pred = unode (unRDFproperty p)
-        obj = lnode (typedL (s2t . show $ o) "http://www.w3.org/2001/XMLSchema#integer")
+        obj = lnode (TypedL (s2t . printf  ['%', '0','1','d'] $ o) integerUri)
+
+zo :: Integer -> Triple
+zo n =
+    Triple (UNode "http://gerastree.at/kurz#kurz-005")
+      (UNode "testint")
+      (LNode (TypedL (showT n) integerUri))
+
+-- to demonstrate error i rdf4h
+--test_typed = assertEqual (TypedL "0" integerUri)
+--            (typedL "0" integerUri)
+
+test_typed0 = assertEqual (zo 0)
+            (mkTripleInteger s1 r1 0 )
+test_typed100 = assertEqual (zo 100)
+            (mkTripleInteger s1 r1 100 )
+test_typedneg1 = assertEqual (zo (-1))
+            (mkTripleInteger s1 r1 (-1) )
+test_typedneg20 = assertEqual (zo (-20))
+            (mkTripleInteger s1 r1 (-20) )
 
 rdfsURI =  "http://www.w3.org/2000/01/rdf-schema#"
 
