@@ -46,7 +46,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
     let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
     when debugLit $ putIOwords ["layout triples done \n", unlines' . map showT $ layoutTriples]
 
-    let tzpara = paragraphsTZ2TZ2  tzlayout     -- test BA -> C  in LinesToParagraph
+    let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BA -> C  in LinesToParagraph
 
     when debugLit $ putIOwords ["TZ available to produce litTriples \n", unlines' . map showT $ tzpara]
 
