@@ -42,16 +42,25 @@ litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 
 produceLitTriples ::  TextState2 -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main entry point
-produceLitTriples textstate = concatMap (convOneTextZeile2triple textstate)
+produceLitTriples textstate tz2s = (werkTriple textstate)
+                    ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
 
+werkTriple :: TextState2 ->   [Triple]
+-- ^ produce a werk, has the properties in markup
+werkTriple textstate   =
+    [ mkTripleType buchUri (mkRDFtype (RDFtype "Werk"))
+    ]
+    where
+        buchUri = buchURIx textstate
 
 --buchURIx textstate = RDFsubj $ gerastreeURI
 --            <#> authorText textstate <-> buchnameText textstate
 ---- id of buch, part and sentence or page is attached
 
-data LitProperty = IsBuch | HasTitle | InWerk | InBuch | InPart
+data LitProperty =  HasTitle | InWerk | InBuch | InPart
         | AufSeite  -- ^ text starts on this page
-        -- | Titel | HL1 | HL2 | HL3 | Paragraph  -- ^ the text for this textual unit
+        -- IsBuch || Titel | HL1 | HL2 | HL3 | Paragraph
+        --  the text for this textual unit
         deriving (Show, Eq, Enum)
 
 instance RDFproperties LitProperty where
@@ -129,7 +138,7 @@ titleTriple :: TextState2 -> TZ2 -> [Triple]
 titleTriple textstate  tz =
     [mkTripleLang (tz2lang tz)  (unParaSigl sigl)
                     (mkRDFproperty BuchTitel) (twm $ tz2text tz)
-    , mkTripleRef (unParaSigl sigl) (mkRDFproperty IsBuch) (buchURIx textstate)
+--    , mkTripleRef (unParaSigl sigl) (mkRDFproperty IsBuch) (buchURIx textstate)
     , mkTripleType (unParaSigl sigl) (mkRDFtype BuchTitel)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InWerk) buchUri
     ]
@@ -145,8 +154,8 @@ startSeiteTriple sigl tz =  if isNothing seite then []
         where
                 seite = tlpage . tz2loc $ tz
 
-inBuchTriple :: TextState2 -> RDFsubj -> Triple
-inBuchTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InBuch)  (buchURIx textstate)
+inWerkTriple :: TextState2 -> RDFsubj -> Triple
+inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)  (buchURIx textstate)
 -- probably not needed
 
 hlTriple :: TextState2 -> BuchToken -> TZ2 -> [Triple]
@@ -154,7 +163,7 @@ hlTriple :: TextState2 -> BuchToken -> TZ2 -> [Triple]
 hlTriple textstate mk tz =
     [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty mk)
         (twm $ tz2text tz)
-    , inBuchTriple textstate (unParaSigl sigl)
+    , inWerkTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
                 (unParaSigl inSigl)
     , mkTripleType (unParaSigl sigl) (mkRDFtype mk)
@@ -179,7 +188,7 @@ paraTriple textstate tz =
 --    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ( zeilenText tz)
                     -- do not remove hyphens and text breaks, exactly as in buch
                     -- was BuchParagraphLayout
-    , inBuchTriple textstate (unParaSigl sigl)
+    , inWerkTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
                         (unParaSigl inSigl)
     , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
