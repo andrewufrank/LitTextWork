@@ -21,6 +21,7 @@ module Parser.ProduceLit (module Parser.ProduceLit
 
 import           Test.Framework
 import           Data.Char               (toLower)
+import           Data.Maybe               (isNothing)
 import           Data.RDF
 import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
@@ -135,8 +136,9 @@ titleTriple textstate  tz =
 
 startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
 -- ^ the triple for the page on which a paragraph starts
-startSeiteTriple sigl tz =  if null' seite then []
-            else [mkTripleText (unParaSigl sigl) (mkRDFproperty AufSeite)  seite]
+startSeiteTriple sigl tz =  if isNothing seite then []
+            else [mkTripleText (unParaSigl sigl) (mkRDFproperty AufSeite)
+                (fromJustNote "startSeiteTriple produceLit" seite)]
         where
                 seite = tlpage . tz2loc $ tz
 

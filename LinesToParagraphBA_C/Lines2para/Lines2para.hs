@@ -262,42 +262,45 @@ t1_res =
      "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
 
 
-t11 =    [TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
-             tz2tzs =
-               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
-                       tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
-                       tzlang = English},
-                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 51},
-                       tztext = TextWithMarks{twm = "mouse, That he", twmMarks = []},
-                       tzlang = English},
-                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 52},
-                       tztext = TextWithMarks{twm = "met in the", twmMarks = []},
-                       tzlang = English},
-                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 53},
-                       tztext = TextWithMarks{twm = "house.", twmMarks = []},
-                       tzlang = English}],
-             tz2lang = English, tz2para = ParaNum 9, tz2inPart = ParaNum 4},
-    TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
-               tz2text =
-                 TextWithMarks{twm =
-                                 "CHAPTER IV. The Rabbit Sends in a Little Bill",
-                               twmMarks = []},
-               tz2tok = BuchHL1, tz2lang = English, tz2para = ParaNum 10,
-               tz2inPart = ParaNum 1},
-     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 57},
-             tz2tzs =
-               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 57},
-                       tztext =
-                         TextWithMarks{twm =
-                                         "It was the White Rabbit, trotting slowly back again, and looking",
-                                       twmMarks = []},
-                       tzlang = English},
-                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 58},
-                       tztext =
-                         TextWithMarks{twm =
-                                         "anxiously about as it went, as if it had lost something .",
-                                       twmMarks = []},
-                       tzlang = English}],
-             tz2lang = English, tz2para = ParaNum 11, tz2inPart = ParaNum 10}]
+t11 :: [TZ2]
+t11 =   []
+
+--[TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
+--             tz2tzs =
+--               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
+--                       tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
+--                       tzlang = English},
+--                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 51},
+--                       tztext = TextWithMarks{twm = "mouse, That he", twmMarks = []},
+--                       tzlang = English},
+--                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 52},
+--                       tztext = TextWithMarks{twm = "met in the", twmMarks = []},
+--                       tzlang = English},
+--                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 53},
+--                       tztext = TextWithMarks{twm = "house.", twmMarks = []},
+--                       tzlang = English}],
+--             tz2lang = English, tz2para = ParaNum 9, tz2inPart = ParaNum 4},
+--    TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
+--               tz2text =
+--                 TextWithMarks{twm =
+--                                 "CHAPTER IV. The Rabbit Sends in a Little Bill",
+--                               twmMarks = []},
+--               tz2tok = BuchHL1, tz2lang = English, tz2para = ParaNum 10,
+--               tz2inPart = ParaNum 1},
+--     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 57},
+--             tz2tzs =
+--               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 57},
+--                       tztext =
+--                         TextWithMarks{twm =
+--                                         "It was the White Rabbit, trotting slowly back again, and looking",
+--                                       twmMarks = []},
+--                       tzlang = English},
+--                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 58},
+--                       tztext =
+--                         TextWithMarks{twm =
+--                                         "anxiously about as it went, as if it had lost something .",
+--                                       twmMarks = []},
+--                       tzlang = English}],
+--             tz2lang = English, tz2para = ParaNum 11, tz2inPart = ParaNum 10}]
 
 

@@ -41,7 +41,7 @@ data NLPtext = NLPtext { tz3loc :: TextLoc
             deriving (Read, Show, Eq )
 
 instance Zeros NLPtext where zero = NLPtext zero zero zero zero
-instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
+--instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 -- todo algebra
 
 prepareTZ4nlp :: TZ2 -> Maybe NLPtext  -- test C  -> D

@@ -37,7 +37,9 @@ import Uniform.Zero
 --import           Text.Printf         (printf)
 import Uniform.TestHarness
 
-data TextLoc = TextLoc {tlpage :: Text, tlline :: Int} deriving (Read, Show, Eq)
+instance Zeros (Maybe a) where zero = Nothing
+
+data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int} deriving (Read, Show, Eq)
 -- ^ the place of a line in the full text
 -- for simplification, all counts are from the start of the text
 -- not relative to the page or paragraph (can be computed, if desired)
@@ -116,8 +118,9 @@ removeSeitenZahlen = filter (not . isSeitenzahl) . filter (not . isNeueSeite)
 
 distributePageNrs :: [TZ] -> [TZ]
 -- mark the zeilen with the page number
--- no pagenumber left
+-- no pagenumber left in TZ afterwards
 -- page numbers are asumed at he bottom of the page!
+    -- if no pagenumbers found then all content is in the first sublist
 distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
     where
         pages :: [TZ] -> [[TZ]]
@@ -126,8 +129,10 @@ distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
         -- to start with a page 0  -- break after page number
         -- appends the page to the sublist
         pageNrOfSublist :: [TZ] -> Maybe Text
-        pageNrOfSublist tzs = if isSeitenzahl lasttz then Just . zeilenText  $ lasttz -- isSeitenzahl
-                                            else Nothing
+        pageNrOfSublist tzs =
+            if isSeitenzahl lasttz
+                    then Just . zeilenText  $ lasttz -- isSeitenzahl
+                    else Nothing
             where
                 lasttz = last tzs
 
@@ -138,16 +143,20 @@ distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
 --the last sublist contains just the end mark
         markSublist2 :: [TZ] -> [TZ]
         markSublist2 [] = []
-        markSublist2 sl = markTZsWithPage (fromJustNote "distributePageNrs" $ pageNrOfSublist sl)
+        markSublist2 sl = markTZsWithPage
+--                    (fromJustNote "distributePageNrs" $
+                        ( pageNrOfSublist sl)
                                     (init sl)
 
-markTZsWithPage :: Text -> [TZ] -> [TZ]
+markTZsWithPage :: Maybe Text -> [TZ] -> [TZ]
 -- put the page number into the list
 markTZsWithPage i  = map  (\tz -> tz {tzloc = (tzloc tz) {tlpage = i} } )
 
 checkSeitenzahl [] = []
-checkSeitenzahl (t:ts) = if isSeitenzahl t then errorT ["checkSeitenzahl found one ", showT t]
-                                else t : checkSeitenzahl ts
+checkSeitenzahl (t:ts) =
+    if isSeitenzahl t
+            then errorT ["checkSeitenzahl found one ", showT t]
+            else t : checkSeitenzahl ts
 
 instance Zeilen TZ where
     isLeerzeile TZleer  {} = True

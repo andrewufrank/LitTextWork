@@ -124,15 +124,23 @@ lineTriple textstate  tz =
     , mkTriplePartOf (unLineSigl sigl)   (buchURIx textstate)
 --    , mkTriplePartOf (unLineSigl sigl)   (unPageSigl pSigl)
     -- requires a page as an object
-    , mkTripleText (unLineSigl sigl) (mkRDFproperty PageNumber)  (tlpage . tzloc $ tz)
     -- gives the page number/text as it was parsed
     -- could be avoided if null
-    , mkTripleLang (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)  (twm . tztext $ tz)
+    , mkTripleLang (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)
+                    (twm . tztext $ tz)
     -- gives the text of a TZtext line
-        ] ++ (concat . map (oneMarkerTriple sigl) $ (twmMarks . tztext $ tz))
+        ]
+            ++ (concat . map (oneMarkerTriple sigl) $ (twmMarks . tztext $ tz))
+            ++ pageNumberTriple
     where
         sigl = lineSigl textstate .  tlline . tzloc $ tz
 --        pSigl = pageSigl textstate . tlpage . tzloc $ tz
+        pageNumberTriple = case tlpage . tzloc $ tz of
+            Nothing -> []
+            Just pgnr -> [  mkTripleText (unLineSigl sigl)
+                    (mkRDFproperty PageNumber)
+                    pgnr ]
+
 
 --footnoteTriples :: TextState2 -> (Int,Text) -> [Triple]
 ---- make the extra triples for the marker
