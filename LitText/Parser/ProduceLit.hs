@@ -49,7 +49,7 @@ produceLitTriples textstate = concatMap (convOneTextZeile2triple textstate)
 --            <#> authorText textstate <-> buchnameText textstate
 ---- id of buch, part and sentence or page is attached
 
-data LitProperty = IsBuch | HasTitle | InBuch | InPart
+data LitProperty = IsBuch | HasTitle | InWerk | InBuch | InPart
         | AufSeite  -- ^ text starts on this page
         -- | Titel | HL1 | HL2 | HL3 | Paragraph  -- ^ the text for this textual unit
         deriving (Show, Eq, Enum)
@@ -127,14 +127,15 @@ titleTriple :: TextState2 -> TZ2 -> [Triple]
 -- ^ initialize a text with a title
 -- linked
 titleTriple textstate  tz =
-    [mkTripleLang (tz2lang tz)  buchUri
+    [mkTripleLang (tz2lang tz)  (unParaSigl sigl)
                     (mkRDFproperty BuchTitel) (twm $ tz2text tz)
-    , mkTripleRef buchUri (mkRDFproperty IsBuch) (buchURIx textstate)
-    , mkTripleType buchUri (mkRDFtype BuchTitel)
+    , mkTripleRef (unParaSigl sigl) (mkRDFproperty IsBuch) (buchURIx textstate)
+    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchTitel)
+    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InWerk) buchUri
     ]
     where
-            buchUri = buchURIx textstate
---        sigl = paraSigl textstate . tz2para $ tz
+        buchUri = buchURIx textstate
+        sigl = paraSigl textstate . tz2para $ tz
 
 startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
 -- ^ the triple for the page on which a paragraph starts

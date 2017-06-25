@@ -225,10 +225,11 @@ distributeHeader2  tok tzs = concat  .  markSublistHeader . chapters $ tzs
 
         markSublistHeaderLower [] = []
         markSublistHeaderLower sl1 = getHeader sl1 : (
-                         (\sl3 -> maybe sl3 (\tok2 -> distributeHeader2 tok2 sl3) (lowerHeader tok)) .
-                         markTZsWithHeader (tz2para .  getHeader $ sl1 )
-                         )
-                        (tail sl1)
+                 (\sl3 -> maybe sl3 (\tok2 -> distributeHeader2 tok2 sl3)
+                                                (lowerHeader tok))
+                .   markTZsWithHeader (tz2para .  getHeader $ sl1 )
+                 )
+                (tail sl1)
 
         getHeader = headNote "distributeHeaders2"
 
