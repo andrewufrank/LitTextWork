@@ -16,18 +16,18 @@ import {-@ HTF_TESTS @-} Parser.ReadMarkupAB
 import {-@ HTF_TESTS @-} BuchCode.MarkupText
 import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
 import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore
---import   {-@ HTF_TESTS @-} Parser.ProduceLayou  -- not enough memory on oporto
+--import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- not enough memory on oporto
 import   {-@ HTF_TESTS @-} Lines2para.Lines2para
 import   {-@ HTF_TESTS @-} Parser.ProduceLit
 ------
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
-    -- makes result D
---                -- tests only the production of the doc files
-import   {-@ HTF_TESTS @-} Parser.CompleteSentence
--------- calls 17701
-import   {-@ HTF_TESTS @-} Parser.ProduceNLP
--- not enough memory on oporto and issues with
-import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
+--import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
+--    -- makes result D
+----                -- tests only the production of the doc files
+--import   {-@ HTF_TESTS @-} Parser.CompleteSentence
+---------- calls 17701
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLP
+---- not enough memory on oporto and issues with
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples
 --
 ---- old
 ------import {-@ HTF_TESTS @-} Processor.CheckServers
