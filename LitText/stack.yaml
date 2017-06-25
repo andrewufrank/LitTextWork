@@ -23,7 +23,6 @@ packages:
 - ../readMarkup
 - ../rdf4hextension
 - '.'
-- ../LinesToParagraphBA_C
 extra-deps:
 - chatter-0.8.0.1
 - fullstop-0.1.4

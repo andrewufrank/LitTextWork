@@ -24,7 +24,7 @@ library
  --       , rdf4store
         , text
         , buchCode
-        , lines2para
+--        , lines2para
         , coreNLP
         , chatter
         , HTF
@@ -44,6 +44,9 @@ library
         Processor.ProcessAll
         Processor.CheckServers
 --        Parser.Main2subTest
+        Lines2para.Lines2para
+        Lines2para.Lines2ignore
+        Lines2para.HandleLayout
         Main2sub
 
     exposed: True
@@ -63,7 +66,7 @@ Test-Suite nlpTestAuto
         , litFoundation
         , readMarkup
         , buchCode
-        , lines2para
+--        , lines2para
         , LitText
         , coreNLP
  --       , rdf4store
@@ -101,7 +104,7 @@ executable produce3
         , litFoundation
         , buchCode
         , readMarkup
-        , lines2para
+--        , lines2para
  --       , rdf4store
         , optparse-applicative
 

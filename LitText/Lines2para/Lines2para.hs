@@ -252,19 +252,18 @@ lowerHeader l         = errorT ["lowerHeader", "for ", showT l]
 
 -- test text combinatioin zeilenText
 
-test_zeilenText = do
-    let res = map zeilenText t11
-    assertEqual t1_res res
+--test_zeilenText = do
+--    let res = map zeilenText t11
+--    assertEqual t1_res res
 
-t1_res =
-    ["'Fury said to a mouse, That he met in the house. ",
-     "CHAPTER IV. The Rabbit Sends in a Little Bill",
-     "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
-
-
-t11 :: [TZ2]
-t11 =   []
-
+--t1_res =
+--    ["'Fury said to a mouse, That he met in the house. ",
+--     "CHAPTER IV. The Rabbit Sends in a Little Bill",
+--     "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
+--
+--
+--t11 :: [TZ2]
+--t11 =
 --[TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
 --             tz2tzs =
 --               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
