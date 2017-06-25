@@ -59,7 +59,7 @@ test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" pr
 test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLP
 test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLP
 test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLP
-test_8_D_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLP
+--test_8_D_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLP
 ---- no result file is necessary, because result is zero
 ---- but results are found in LitTest/test
 --
@@ -74,8 +74,8 @@ test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" testOP_E_F
 test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" testOP_E_F
 test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" testOP_E_F
 test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" testOP_E_F
-test_7_E_F = testVar3FileIO result7A "resultE7" "resultF7" testOP_E_F
-test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" testOP_E_F
+--test_7_E_F = testVar3FileIO result7A "resultE7" "resultF7" testOP_E_F
+--test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" testOP_E_F
 
 
 
