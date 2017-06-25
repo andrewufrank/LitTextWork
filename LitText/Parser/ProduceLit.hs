@@ -107,32 +107,34 @@ convOneTextZeile2triple textstate tz  = case tz of
             BuchHL1   -> hlTriple textstate BuchHL1 tz
             BuchHL2   -> hlTriple textstate BuchHL2 tz
             BuchHL3   -> hlTriple textstate BuchHL3 tz
-            _         -> otherTriple textstate tz
+            _         -> otherBuchTriple textstate tz
 --    TZleer {} -> [] -- where not elliminated?
 ----         errorT ["formParagraphs","should not leer", showT tz]
 --    TZtext {} -> errorT ["formParagraphs","should not have single text", showT tz]
 --    TZkurz {} -> errorT ["formParagraphs","should not have single kurz", showT tz]
     TZ2para {} -> paraTriple textstate tz
 
-otherTriple :: TextState2 -> TZ2 -> [Triple]
--- make triples for other markup (author etc.)
-otherTriple textstate tz =
-    [mkTripleLang (tz2lang tz) (unParaSigl sigl) (mkRDFproperty mk) (twm $ tz2text tz)]
+otherBuchTriple :: TextState2 -> TZ2 -> [Triple]
+-- make triples for other markup (author etc.), which apply to the buch as a whole
+otherBuchTriple textstate tz =
+    [mkTripleLang (tz2lang tz) buchUri (mkRDFproperty mk) (twm $ tz2text tz)]
     where
-        sigl = paraSigl textstate . tz2para $ tz
-        mk = tz2tok tz
+            buchUri = buchURIx textstate
+--        sigl = paraSigl textstate . tz2para $ tz
+            mk = tz2tok tz
 
 titleTriple :: TextState2 -> TZ2 -> [Triple]
 -- ^ initialize a text with a title
 -- linked
 titleTriple textstate  tz =
-    [mkTripleLang (tz2lang tz)  (unParaSigl sigl)
+    [mkTripleLang (tz2lang tz)  buchUri
                     (mkRDFproperty BuchTitel) (twm $ tz2text tz)
-    , mkTripleRef (unParaSigl sigl) (mkRDFproperty IsBuch) (buchURIx textstate)
-    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchTitel)
+    , mkTripleRef buchUri (mkRDFproperty IsBuch) (buchURIx textstate)
+    , mkTripleType buchUri (mkRDFtype BuchTitel)
     ]
     where
-        sigl = paraSigl textstate . tz2para $ tz
+            buchUri = buchURIx textstate
+--        sigl = paraSigl textstate . tz2para $ tz
 
 startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
 -- ^ the triple for the page on which a paragraph starts
