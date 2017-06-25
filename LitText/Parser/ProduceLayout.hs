@@ -94,10 +94,10 @@ formatInLineMarker :: Int -> Text
 formatInLineMarker nr  =   "ILM" <> (s2t . printf  ('%' : '0' : '2' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
-inLineMarkerSigl :: TextState2 -> Int -> InLineMarkerSigl
-inLineMarkerSigl textstate pn = InLineMarkerSigl ( extendSlashRDFsubj
+inLineMarkerSigl :: LineSigl -> Int -> InLineMarkerSigl
+inLineMarkerSigl linesigl pn = InLineMarkerSigl ( extendSlashRDFsubj
                 (formatInLineMarker  $ pn)
-                      ( buchURIx $ textstate)
+                      (unLineSigl linesigl)
                       )
 
 
@@ -129,7 +129,7 @@ lineTriple textstate  tz =
     -- could be avoided if null
     , mkTripleLang (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)  (twm . tztext $ tz)
     -- gives the text of a TZtext line
-        ] ++ (concat . map (oneMarkerTriple textstate sigl) $ (twmMarks . tztext $ tz))
+        ] ++ (concat . map (oneMarkerTriple sigl) $ (twmMarks . tztext $ tz))
     where
         sigl = lineSigl textstate .  tlline . tzloc $ tz
 --        pSigl = pageSigl textstate . tlpage . tzloc $ tz
@@ -143,14 +143,14 @@ lineTriple textstate  tz =
 --        hasNoMarkers =  null . twmMarks . tztext $ tz
 
 
-oneMarkerTriple :: TextState2 -> LineSigl -> (Int,Text) -> [Triple]
-oneMarkerTriple textstate lineSigl intText =
+oneMarkerTriple ::  LineSigl -> (Int,Text) -> [Triple]
+oneMarkerTriple lineSigl intText =
     [ mkTripleText (unInLineMarkerSigl mSigl) (mkRDFproperty InLineMarker) (snd intText)
         , mkTripleInt (unInLineMarkerSigl mSigl) (mkRDFproperty InLineMarkerPos) (fst intText)
        , mkTriplePartOf (unInLineMarkerSigl mSigl) (unLineSigl lineSigl)
             ]
     where
-        mSigl = inLineMarkerSigl textstate . fst $ intText
+        mSigl = inLineMarkerSigl lineSigl . fst $ intText
 
 
 layoutTriples ::  TextState2 -> [TZ] -> Text  -- test BAD -> J
