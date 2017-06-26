@@ -18,7 +18,7 @@ packages:
 - location: /home/frank/Workspace8/rdf4h
   extra-dep: true
 - ../LitFoundation
-- ../coreNLP
+# - ../coreNLP
 - ../buchCode
 - ../readMarkup
 - ../rdf4hextension

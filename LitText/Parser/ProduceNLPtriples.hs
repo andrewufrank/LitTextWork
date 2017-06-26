@@ -154,3 +154,28 @@ test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
 test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
 --test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
 --test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
+
+------------ coreferences ---------------------
+mkCorefTriple :: LanguageCode -> PartURI ->  PartURI ->  Coref0 ->  [Triple]
+-- ^ produce the   triples for a token  --- german only!
+mkCorefTriple lang docid snipid coref = t0 : t1 : concat  coreftrips
+    where
+        corefid = docid -- ?? TODO
+        coreftrips = map (mkMention lang docid snipid corefid) (corefMents coref)
+        t0 = mkTripleType corefid corefType
+        t1 = mkTriplePartOf corefid docid
+
+mkMention :: LanguageCode -> PartURI -> PartURI -> PartURI ->  Mention0  -> [Triple]
+mkMention lang docid snipid corefid m = [t0, t00, t1, t2, t3, t4, t5]
+    where
+        mentionid = corefid -- ?? mkMentionSigl . ment1id $ m
+        sentid = mkSentSigl  snipid (mentSent m)
+        t0 = mkTripleType mentionid mentionType
+        t00 = mkTriplePartOf mentionid corefid
+        t1 = mkTripleRef mentionid (nlpURI <#> "mentionSentence") sentid
+        t2 = mkTripleRef mentionid (nlpURI <#> "mentionSentenceStart") (mkTokenSigl sentid (mentStart $ m))
+        t3 = mkTripleRef mentionid (nlpURI <#> "mentionSentenceEnd") (mkTokenSigl sentid . mentEnd $ m)
+        t4 = mkTripleRef mentionid (nlpURI <#> "mentionSentenceHead") (mkTokenSigl  sentid . mentHead $ m)
+        t5 = mkTripleLang lang mentionid (nlpURI <#> "mentionText") ( mentText $ m)
+--        TODO
+

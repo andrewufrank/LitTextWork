@@ -25,11 +25,12 @@ library
         , text
         , buchCode
 --        , lines2para
-        , coreNLP
+--        , coreNLP
         , chatter
         , HTF
         , safe
         , pipes
+        , hxt
 
     exposed-modules:
         -- in order of inclusion
@@ -47,6 +48,11 @@ library
         Lines2para.Lines2para
         Lines2para.Lines2ignore
         Lines2para.HandleLayout
+        CoreNLP.Defs0
+        CoreNLP.CoreNLPxml
+        CoreNLP.POScodes
+        CoreNLP.NERcodes
+        CoreNLP.DEPcodes
         Main2sub
 
     exposed: True
@@ -68,7 +74,7 @@ Test-Suite nlpTestAuto
         , buchCode
 --        , lines2para
         , LitText
-        , coreNLP
+--        , coreNLP
  --       , rdf4store
     default-language: Haskell2010
     hs-source-dirs: src
