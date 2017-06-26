@@ -117,6 +117,8 @@ convOneTZ2triple textstate tz  = case tz of
 
 lineTriple :: TextState2 -> TZ  -> [Triple]
 -- ^ enter a line triple
+-- processes markup as well - perhaps this is not necessary?
+-- title and author in gutenberg does not have a language code
 lineTriple textstate  tz =
     [ mkTripleInt (unLineSigl sigl) (mkRDFproperty LineNumber)  (tlline . tzloc $ tz)
     , mkTripleType (unLineSigl sigl) (mkRDFtype Line)

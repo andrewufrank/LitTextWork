@@ -48,10 +48,13 @@ produceLitTriples textstate tz2s = (werkTriple textstate)
 werkTriple :: TextState2 ->   [Triple]
 -- ^ produce a werk, has the properties in markup
 werkTriple textstate   =
-    [ mkTripleType buchUri (mkRDFtype (RDFtype "Werk"))
+    [ mkTripleType buchUri (mkRDFtype ("Werk" :: Text))
     ]
     where
         buchUri = buchURIx textstate
+
+test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
+                (mkRDFtype ( "Werk"::Text ))
 
 --buchURIx textstate = RDFsubj $ gerastreeURI
 --            <#> authorText textstate <-> buchnameText textstate
@@ -72,6 +75,8 @@ instance RDFproperties BuchToken where
 -- -- convert the first character to lowercase
 -- toLowerStart t = (toLower . T.head $ t ) `cons` (T.tail t)
 
+instance RDFtypes Text where
+    mkRDFtype p =  RDFtype $ litURItext <#> (toTitle p)
 instance RDFtypes RDFtype where
     mkRDFtype p =  RDFtype $ litURItext <#> (toTitle . showT $ p)
 instance RDFtypes BuchToken where
