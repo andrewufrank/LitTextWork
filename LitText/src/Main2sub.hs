@@ -66,7 +66,8 @@ mainLitAndNLPproduction debugLitonly textstate = do
     -- putIOwords ["NLP conversion", "start" ]
 --    let tzparaText = prepareTZ4nlp tzpara
 
-    responses <- produceNLP textstate tzpara -- test D ->
+    responses <- produceNLP False textstate tzpara -- test D ->
+        -- argument is to show the xml
 
     putIOwords ["npl: triples stored with fuseki in graph (responses and para/seite) "
 --           , showT . graph $ textstate, " \n"

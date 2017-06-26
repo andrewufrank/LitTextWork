@@ -46,7 +46,7 @@ import Parser.Foundation
 
 processDoc0toTriples2 :: TextState2 -> (NLPtext,  Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
-processDoc0toTriples2 textstate (ntz, doc0)  =       t2  :  sents
+processDoc0toTriples2 textstate (ntz, doc0)  =       t2  :  sents ++ corefs
                     -- , corefs] corefs not produced
     where
         lang = tz3lang ntz
@@ -176,7 +176,7 @@ mkMention2 lang snipid corefsigl m i = [t0, t00, t10, t1, t2, t3, t4, t5]
         t0 = mkTripleType mentionid (mkRDFtype Mention)
         t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
         t10 = mkTripleText  mentionid (mkRDFproperty MentionRepresenatative)
-                    (showT $ mentRep $ m)
+                    ( mentRep $ m)
                     -- true for the representative mention - i.e. not a pronoun
         t1 = mkTripleRef mentionid (mkRDFproperty MentionSentence) (unSentSigl sentid)
         t2 = mkTripleRef mentionid (mkRDFproperty MentionSentenceStart)

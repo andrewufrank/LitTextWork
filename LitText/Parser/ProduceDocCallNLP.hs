@@ -151,6 +151,8 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
             when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]
 
             doc0 <- readDocString showXML xml                    -- E -> F
+            when debugNLP  $
+                putIOwords ["readDocString doc0 \n", showT doc0]
 
             return . Just $ (tz,doc0)
 

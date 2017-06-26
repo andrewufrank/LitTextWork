@@ -76,23 +76,24 @@ import Data.Maybe
             <dependent idx="1">Bills</dependent>
           </dep>
 
-??    <coreference>
+    <coreference>  -- occurs twice
       <coreference>
         <mention representative="true">
-          <sentence>2</sentence>
-          <start>24</start>
-          <end>27</end>
-          <head>24</head>
-          <text>thousands of people</text>
+          <sentence>1</sentence>
+          <start>1</start>
+          <end>2</end>
+          <head>1</head>
+          <text>Alice</text>
         </mention>
         <mention>
-          <sentence>2</sentence>
-          <start>30</start>
-          <end>31</end>
-          <head>30</head>
-          <text>their</text>
+          <sentence>1</sentence>
+          <start>11</start>
+          <end>12</end>
+          <head>11</head>
+          <text>her</text>
         </mention>
       </coreference>
+    </coreference>
 -}
 
 --atTag :: String ->  XmlTree -> XmlTree
