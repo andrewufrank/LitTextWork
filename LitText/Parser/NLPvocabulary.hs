@@ -41,6 +41,9 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | SentenceForm
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
+          | MentionRepresenatative | MentionSentence
+          | MentionSentenceStart | MentionSentenceEnd
+          | MentionSentenceHead  | MentionSentenceText
           deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
 
@@ -105,12 +108,37 @@ mkDepSigl deptsigl  i =  DepSigl
         formatDepID  = ("Dep" <>) .s2t . printf ('%' : '0' : '2' : 'd' :[])
 
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
+type CorefNr = Int
+newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Eq)
+unCorefSigl (CorefSigl a) = a
 
---mkCorefID :: CorefID -> Text
---mkCorefID c =  t2oURI <#>  "Coref"<> (coref2text c)
---
---
---
+mkCorefsigl :: DocSigl -> CorefNr -> CorefSigl
+-- given a snip id produce a corefid with the number given
+mkCorefsigl snip c =   CorefSigl
+      . extendSlashRDFsubj  (formatCorefID     c)
+      . unParaSigl $ snip
+  where
+    formatCorefID ::Int -> Text
+    -- format an Int to 3 decimals for tokens in sentence
+    formatCorefID  = ("Coref" <>) . s2t . printf ('%' : '0' : '3' : 'd' :[])
+
+--      t2oURI <#>  "Coref"<> (coref2text c)
+
+type MentionNr = Int
+newtype MentionSigl = MentionSigl RDFsubj deriving (Show, Eq)
+unMentionSigl (MentionSigl a) = a
+
+mkMentionsigl :: CorefSigl -> MentionNr -> MentionSigl
+-- given a snip id produce a Mentionid with the number given
+mkMentionsigl corefsigl c =   MentionSigl
+      . extendSlashRDFsubj  (formatMentionID c)
+      . unCorefSigl $ corefsigl
+  where
+    formatMentionID ::Int -> Text
+    -- format an Int to 3 decimals for tokens in sentence
+    formatMentionID  = ("Mention" <>) . s2t . printf ('%' : '0' : '3' : 'd' :[])
+
+
 --mkMentionID :: MentionID -> Text
 --mkMentionID   c =  t2oURI <#>  "M"<> (coref2text . mid1doc $ c)  <-> (show' . mid1int $ c)
 

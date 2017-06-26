@@ -55,7 +55,8 @@ processDoc0toTriples2 textstate (ntz, doc0)  =       t2  :  sents
         t2 = mkTripleText (unParaSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
         sents :: [Triple]
         sents =   concat $ map (mkSentenceTriple2 lang  snipid) (docSents doc0)
- --        corefs = concat $ map (mkCorefTriple2 lang   snipid ) (docCorefs doc0)
+        corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )
+                            (docCorefs doc0) [1 .. ]
 -- currently not producing the not yet used corefs
 
 ----------------------
@@ -156,26 +157,35 @@ test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
 --test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
 
 ------------ coreferences ---------------------
-mkCorefTriple :: LanguageCode -> PartURI ->  PartURI ->  Coref0 ->  [Triple]
--- ^ produce the   triples for a token  --- german only!
-mkCorefTriple lang docid snipid coref = t0 : t1 : concat  coreftrips
-    where
-        corefid = docid -- ?? TODO
-        coreftrips = map (mkMention lang docid snipid corefid) (corefMents coref)
-        t0 = mkTripleType corefid corefType
-        t1 = mkTriplePartOf corefid docid
+-- call         corefs = concat $ map (mkCorefTriple2 lang   snipid ) (docCorefs doc0)
 
-mkMention :: LanguageCode -> PartURI -> PartURI -> PartURI ->  Mention0  -> [Triple]
-mkMention lang docid snipid corefid m = [t0, t00, t1, t2, t3, t4, t5]
+mkCorefTriple2 :: LanguageCode -> DocSigl ->     Coref0 -> CorefNr ->  [Triple]
+-- ^ gives a single set of coreferences  - int is to produce id
+mkCorefTriple2 lang snip coref i  = t0 : t1 : concat  coreftrips
     where
-        mentionid = corefid -- ?? mkMentionSigl . ment1id $ m
+        corefid = mkCorefsigl snip i
+        coreftrips = zipWith (mkMention2 lang snip  corefid) (corefMents coref) [1 .. ]
+        t0 = mkTripleType (unCorefSigl corefid) (mkRDFtype Coreference )
+        t1 = mkTriplePartOf (unCorefSigl corefid) (unDocSigl snip)  -- perhaps not necessary
+
+mkMention2 :: LanguageCode -> DocSigl ->   CorefSigl ->  Mention0  -> Int -> [Triple]
+mkMention2 lang snipid corefsigl m i = [t0, t00, t10, t1, t2, t3, t4, t5]
+    where
+        mentionid = unMentionSigl $ mkMentionsigl corefsigl i
         sentid = mkSentSigl  snipid (mentSent m)
-        t0 = mkTripleType mentionid mentionType
-        t00 = mkTriplePartOf mentionid corefid
-        t1 = mkTripleRef mentionid (nlpURI <#> "mentionSentence") sentid
-        t2 = mkTripleRef mentionid (nlpURI <#> "mentionSentenceStart") (mkTokenSigl sentid (mentStart $ m))
-        t3 = mkTripleRef mentionid (nlpURI <#> "mentionSentenceEnd") (mkTokenSigl sentid . mentEnd $ m)
-        t4 = mkTripleRef mentionid (nlpURI <#> "mentionSentenceHead") (mkTokenSigl  sentid . mentHead $ m)
-        t5 = mkTripleLang lang mentionid (nlpURI <#> "mentionText") ( mentText $ m)
+        t0 = mkTripleType mentionid (mkRDFtype Mention)
+        t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
+        t10 = mkTripleText  mentionid (mkRDFproperty MentionRepresenatative)
+                    (showT $ mentRep $ m)
+                    -- true for the representative mention - i.e. not a pronoun
+        t1 = mkTripleRef mentionid (mkRDFproperty MentionSentence) (unSentSigl sentid)
+        t2 = mkTripleRef mentionid (mkRDFproperty MentionSentenceStart)
+                                    (unTokenSigl . mkTokenSigl sentid . mentStart $ m)
+        t3 = mkTripleRef mentionid (mkRDFproperty MentionSentenceEnd)
+                                    (unTokenSigl . mkTokenSigl sentid . mentEnd $ m)
+        t4 = mkTripleRef mentionid (mkRDFproperty MentionSentenceHead)
+                                    (unTokenSigl . mkTokenSigl  sentid . mentHead $ m)
+        t5 = mkTripleLang lang mentionid (mkRDFproperty MentionSentenceText)
+                                    ( mentText $ m)
 --        TODO
 
