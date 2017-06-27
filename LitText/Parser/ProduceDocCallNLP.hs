@@ -82,7 +82,8 @@ formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
 
 
 nlpServerEnglish, nlpServerGerman, nlpServerNone :: URI ->  URI
-nlpServerEnglish  u =  addPort2URI u 9000
+nlpServerEnglish  u =  addPort2URI u 9002
+-- changed to 9002 to avoid clash with live 9000 which is the same for all
 --            relativeTo (makeURI ":9000")     -- from Network-URI
 -- not localhost!
 --nlpServer = "http://nlp.gerastree.at:9000"
