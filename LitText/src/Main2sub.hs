@@ -33,8 +33,8 @@ import           Uniform.Strings
 import Lines2para.HandleLayout
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 
-debugNLP = True -- False
-debugLit = True -- False
+debugNLP = False
+debugLit = False
 mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO ()
 mainLitAndNLPproduction debugLitonly textstate = do
     --- convert to TextZeilen format
@@ -69,7 +69,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
     responses <- produceNLP False textstate tzpara -- test D ->
         -- argument is to show the xml
 
-    putIOwords ["npl: triples stored with fuseki in graph (responses and para/seite) "
+    putIOwords ["npl: triples stored in .nt file "
 --           , showT . graph $ textstate, " \n"
 --            , unlines' . map showT $ responses
             ]
