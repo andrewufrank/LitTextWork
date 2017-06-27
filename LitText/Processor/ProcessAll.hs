@@ -72,12 +72,13 @@ processOneMarkup :: TextSource -> DestGenerality -> Path Abs File -> ErrIO Text
 -- process one markup file, if the nt file does not exist
 processOneMarkup ts dg lfp = do
     let textstate2 = fillTextState ts dg lfp
-    putIOwords ["processOneMarkup", showT textstate2]
+    putIOwords ["\nprocessOneMarkup", showT textstate2]
     ntExist <- exist6 (textfilename textstate2) ntFileTriples
     if not ntExist
         then do mainLitAndNLPproduction litDebugOnly textstate2
                 return (showT textstate2)
-        else return . unlinesT $ ["processMarkup - nt file exist already", showT $ textfilename textstate2]
+        else return . unlinesT $ ["\nprocessMarkup - nt file exist already"
+                    , showT $ textfilename textstate2, "\n"]
 
 
 fillTextState :: TextSource -> DestGenerality -> Path Abs File -> TextState2
