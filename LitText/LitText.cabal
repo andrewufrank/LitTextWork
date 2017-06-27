@@ -10,7 +10,7 @@ description:
 library
     build-depends:
        base -any
-        , uniform-strings >=0.0.10.4
+        , uniform-strings >=0.0.10.5
         , uniform-fileio >=0.0.14
         , uniform-convenience >=0.0.9.24
         , uniform-error >=0.0.10
