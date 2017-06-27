@@ -69,12 +69,13 @@ _readMarkupFile textstate = do
 
             (makeRelFile .  buchname $ textstate) markupFileType5
     bomWarning text   -- the check for BOM is in MainParse only -
-    let nonlats =  nubChar . findNonLatinCharsT $ text
+    let text2 = s2t . convertLatin . t2s $ text
+    let nonlats =  nubChar . findNonLatinCharsT $ text2
     unless (null' nonlats) $
                 putIOwords ["this file contains characters not in the latin1"
                 , " charset which are not yet mapped\n"
                  , nonlats, showT nonlats]
-    return text
+    return text2
 
 bomWarning v = do  -- not required - parser filter it out
     -- putIOwords ["bomWarning - the start of the file "]
