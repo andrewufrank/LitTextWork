@@ -19,8 +19,8 @@ packages:
   extra-dep: true
 - ../LitFoundation
 # - ../coreNLP
-- ../buchCode
-- ../readMarkup
+#- ../buchCode
+# - ../readMarkup
 - ../rdf4hextension
 - '.'
 extra-deps:

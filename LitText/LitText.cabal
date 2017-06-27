@@ -17,13 +17,13 @@ library
         , uniform-algebras >=0.0.9
         , uniform-http >=0.0.2
         , litFoundation
-        , readMarkup
+--        , readMarkup
         , split
         , rdf4hextension
         , rdf4h
  --       , rdf4store
         , text
-        , buchCode
+--        , buchCode
 --        , lines2para
 --        , coreNLP
         , chatter
@@ -31,6 +31,9 @@ library
         , safe
         , pipes
         , hxt
+        , parsec
+        , parsec-extra
+        , split
 
     exposed-modules:
         -- in order of inclusion
@@ -42,6 +45,7 @@ library
         Parser.ConvertTaggerOutput
         Parser.CompleteSentence
         Parser.NLPvocabulary
+        Parser.ReadMarkupAB
         Processor.ProcessAll
         Processor.CheckServers
 --        Parser.Main2subTest
@@ -53,6 +57,8 @@ library
         CoreNLP.POScodes
         CoreNLP.NERcodes
         CoreNLP.DEPcodes
+        BuchCode.BuchToken
+        BuchCode.MarkupText
         Main2sub
 
     exposed: True
@@ -70,8 +76,8 @@ Test-Suite nlpTestAuto
         , uniform-convenience >=0.0.9.12
         , uniform-error >=0.0.10
         , litFoundation
-        , readMarkup
-        , buchCode
+--        , readMarkup
+--        , buchCode
 --        , lines2para
         , LitText
 --        , coreNLP
@@ -108,8 +114,8 @@ executable produce3
         , uniform-convenience
         , LitText
         , litFoundation
-        , buchCode
-        , readMarkup
+--        , buchCode
+--        , readMarkup
 --        , lines2para
  --       , rdf4store
         , optparse-applicative
