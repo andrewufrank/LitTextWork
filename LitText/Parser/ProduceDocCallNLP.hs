@@ -158,7 +158,7 @@ testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [Maybe (NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
     let sloc = serverLoc  result1A
 
-    res <- mapM (convertTZ2nlp False True sloc) resultBAEfile
+    res <- mapM (convertTZ2nlp False False sloc) resultBAEfile
     -- the secnd bool controls the rendering of the xml file
     return res
 
