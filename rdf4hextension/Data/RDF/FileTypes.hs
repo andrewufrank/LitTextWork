@@ -88,6 +88,10 @@ instance TypedFiles5 [RDF.Triple] () where
         closeFile2  hand
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
+    exist6 fp tp = do
+        let fn2 = fromJustNote "typedfile triples write6" . setExtension (tpext5 tp) $ fp
+        doesFileExist'  fn2
+
 --    read6 fp  tp = do
 --        let fn2 = fromJustNote "typedfile triples read6" . setExtension (tpext5 tp) $ fp
 --        raw :: Text <- callIO $ readFile2 fn2

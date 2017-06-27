@@ -24,7 +24,7 @@ import           Uniform.FileIO         hiding ((<>))
 
 
 programName = "may13 = ProduceLit" :: Text
-progTitle = "produce the lit for all markup files " :: Text
+progTitle = "produce the nt for all markup files (if nt does not exist) " :: Text
 
 
 main = do
