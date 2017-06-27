@@ -132,10 +132,8 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
         -- changed to depparse, coref  instead of parse
                             , ("outputFormat","xml")
                             ]
-            let varsGer =  [("annotators","tokenize,ssplit,pos,lemma,ner,parse")
---                        tokenize,ssplit,pos,lemma,ner")
-        --                    -- removed ,coref, ,depparse,, coref
-        -- changed to depparse, coref  instead of parse
+            let varsGer =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse,coref")
+        --                    --  coref, verlangt depparse,
                             , ("outputFormat","xml")
                             ]
             let vars = case language of
