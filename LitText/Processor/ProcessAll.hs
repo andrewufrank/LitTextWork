@@ -77,7 +77,10 @@ processOneMarkup ts dg lfp = do
     if not ntExist
         then do mainLitAndNLPproduction litDebugOnly textstate2
                 return (showT textstate2)
-        else return . unlinesT $ ["\nprocessMarkup - nt file exist already"
+        else do
+            putIOwords  ["\nprocessMarkup - nt file exist already"
+                    , showT $ textfilename textstate2, "\n"]
+            return . unlinesT $ ["\nprocessMarkup - nt file exist already"
                     , showT $ textfilename textstate2, "\n"]
 
 
