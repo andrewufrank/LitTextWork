@@ -127,10 +127,6 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
 
             let varsEng =  [("annotators","tokenize,ssplit,pos\
                                     \,lemma,ner,depparse,dcoref,coref")
---            removed ,dcoref
---                        tokenize,ssplit,pos,lemma,ner")
-        --                    -- removed ,coref, ,depparse,, coref
-        -- changed to depparse, coref  instead of parse
                             , ("outputFormat","xml")
                             ]
             let varsGer =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse,coref")
