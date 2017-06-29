@@ -109,6 +109,7 @@ test_4_A_B_textstate_text_4 =   testVar2File result4A "resultB4" textstate2Text
 test_5_A_B_textstate_text_5 =   testVar2File result5A "resultB5" textstate2Text
 test_6_A_B_textstate_text_6 =   testVar2File result6A "resultB6" textstate2Text
 test_8_A_B_textstate_text_8 =   testVar2File result8A "resultB8" textstate2Text
+test_9_A_B_textstate_text_9 =   testVar2File result9A "resultB9" textstate2Text
 
 
 
@@ -124,4 +125,5 @@ result5A = fillTextState2 sourceTest destinationTest "test" "t5"
 result6A = fillTextState2 sourceTest destinationTest "test" "t6"
 result7A = fillTextState2 sourceTest destinationTest "test" "t6"  --same
 result8A = fillTextState2 sourceTest destinationTest "test" "t8"
+result9A = fillTextState2 sourceTest destinationTest "test" "t9"
 

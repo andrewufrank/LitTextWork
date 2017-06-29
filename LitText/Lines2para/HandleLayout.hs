@@ -73,8 +73,8 @@ instance Zeros TZ where zero = TZleer zero
 paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
 -- ^ produce the paragraphs with the seitenzahlen in each line
 paragraphs2TZlayout =
-    removeSeitenZahlen .
-    distributePageNrs
+    removeSeitenZahlen . mergePara0  -- not yet done
+    . distributePageNrs
     . etts2tzs  --  maps lines and numbers the  lines from start
     -- test BA -> BAA ... BAG -> C
 
@@ -110,6 +110,16 @@ unparseTZs :: [TZ] -> Text
 -- produce a text which can be written to a file and compared with the original
 unparseTZs = concat' . map renderZeile
 
+mergePara0 :: [TZ] -> [TZ]
+-- ^ merge two Para0 broken by page break
+mergePara0 = id
+--mergePara0 (t1:t2:t3:ts) =
+--                if (tzt t1 ==Para0)
+----                 (TZtext {tzt=Zahl0}) : ((TZtext {tzt=Para0})
+--                    then merge2para0 t1 t3 : mergePara0 (t3:ts)
+--                    else t1 : mergePara0 (t2:t3:ts)
+--
+--merge2Para0 t1 t3 =
 
 removeSeitenZahlen :: [TZ] -> [TZ]
 removeSeitenZahlen = filter (not . isSeitenzahl) . filter (not . isNeueSeite)
@@ -118,10 +128,10 @@ removeSeitenZahlen = filter (not . isSeitenzahl) . filter (not . isNeueSeite)
 
 distributePageNrs :: [TZ] -> [TZ]
 -- mark the zeilen with the page number
--- no pagenumber left in TZ afterwards
+-- leave pagenumber to deal with when merging para0 text
 -- page numbers are asumed at he bottom of the page!
     -- if no pagenumbers found then all content is in the first sublist
-distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
+distributePageNrs  =   concat .   markSublist . pages
     where
         pages :: [TZ] -> [[TZ]]
         pages tz = (split .  keepDelimsR . whenElt) isSeitenzahl tz
@@ -138,7 +148,7 @@ distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
 
         markSublist :: [[TZ]] -> [[TZ]]
         markSublist []  = []
-        markSublist sls =  map markSublist2 (init sls) ++ [last sls]
+        markSublist sls =  map markSublist2 ( sls) ++ [last sls]
 --            [markSublist2 $ head sls ] ++ (map markSublist2 . tail $ sls)
 --the last sublist contains just the end mark
         markSublist2 :: [TZ] -> [TZ]
@@ -146,7 +156,7 @@ distributePageNrs  =  checkSeitenzahl . concat .   markSublist . pages
         markSublist2 sl = markTZsWithPage
 --                    (fromJustNote "distributePageNrs" $
                         ( pageNrOfSublist sl)
-                                    (init sl)
+                                    ( sl)
 
 markTZsWithPage :: Maybe Text -> [TZ] -> [TZ]
 -- put the page number into the list
@@ -167,6 +177,10 @@ instance Zeilen TZ where
 
     isTextZeile (TZtext {tzt = tyt}) = tyt `elem` [Text0, Para0, Kurz0]
     isTextZeile _         = False
+
+    isTextZeileIncludeInPara  (TZtext {tzt=Text0}) = True   -- can include footnote text
+    isTextZeileIncludeInPara  (TZtext {tzt=Kurz0}) = True
+    isTextZeileIncludeInPara _             = False
 
     isMarkupZeile TZmarkup {} = True
     isMarkupZeile _           = False
@@ -214,5 +228,6 @@ test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
 test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
 test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
 test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
+test_9BA_BAC = testFile2File "resultBA9" "resultBAC9" paragraphs2TZlayout
 
 

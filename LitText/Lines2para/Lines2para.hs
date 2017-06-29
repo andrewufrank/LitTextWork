@@ -95,6 +95,7 @@ test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphsTZ2TZ2
 test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
 test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
 test_8BAD_BAE = testFile2File "resultBAD8" "resultBAE8" paragraphsTZ2TZ2
+test_9BAD_BAE = testFile2File "resultBAD9" "resultBAE9" paragraphsTZ2TZ2
 
 --test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
 
@@ -134,12 +135,13 @@ formParagraphs (t:ts) = case t of
 collectPara :: [TZ] -> (TZ2, [TZ])
 -- group longest poossible chain
 collectPara  tzs
-    | null rest = (collectInParagrah ts, [])
-    | isKurzeZeile h  =  (collectInParagrah (ts ++ [h]), tail rest)
-    | otherwise = (collectInParagrah ts, rest)  -- how to deal with texts of one line per paragraph
+        | null rest = (collectInParagrah ts, [])
+        | isKurzeZeile h  =  (collectInParagrah (ts ++ [h]), tail rest)
+    --    | isParaZeile h (collectInParagraph ts,
+        | otherwise = (collectInParagrah ts, rest)  -- how to deal with texts of one line per paragraph
 
     where
-        (ts, rest) = span isTextZeile tzs
+        (ts, rest) = span isTextZeileIncludeInPara tzs  -- isTextZeileNotPara does not includes ParaO
         h = headNote "headCollectPara" $ rest
 -- TODO string
 lastChar :: Text -> Maybe Char

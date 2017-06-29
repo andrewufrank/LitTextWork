@@ -41,6 +41,7 @@ class Zeilen z where
     isLeerzeile
         , isSeitenzahl
         , isTextZeile   -- ^ any line containing lit text
+        , isTextZeileIncludeInPara -- ^ only the text lines which can aggregate in paragraph
         , isNeueSeite
         , isMarkupZeile
         , isKurzeZeile  :: z -> Bool
@@ -93,7 +94,8 @@ test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
 test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
 test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
 test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
-test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup
+test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
+test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
 
 
 
@@ -273,6 +275,10 @@ instance Zeilen TextZeilen where
     isTextZeile (TextZeile Para0 _) = True
     isTextZeile (TextZeile AllCaps0 _) = True
     isTextZeile _             = False
+
+    isTextZeileIncludeInPara (TextZeile Text0 _) = True   -- can include footnote text
+    isTextZeileIncludeInPara (TextZeile Kurz0 _) = True
+    isTextZeileIncludeInPara _             = False
 
     isNeueSeite (NeueSeite) = True
     isNeueSeite _ = False
