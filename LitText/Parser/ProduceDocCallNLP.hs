@@ -150,6 +150,11 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
                 putIOwords ["readDocString doc0 \n", showT doc0]
 
             return . Just $ (tz,doc0)
+     `catchError` (\e -> do
+             putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
+             putIOwords ["convertTZ2nlp",  "text:\n",  showT tz2 ] -- " showT msg])
+             throwError e
+                )
 
 testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [Maybe (NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
