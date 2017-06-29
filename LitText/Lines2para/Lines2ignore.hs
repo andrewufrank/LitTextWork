@@ -51,23 +51,7 @@ fixTextAllCaps TZtext {tzt=AllCaps0, ..} = TZmarkup{tzloc = tzloc
 fixTextAllCaps tz = tz
 
 
----- test the first (expected ok) part of the chain
---test_1_BA_BAD =do
---        putIOwords ["test_1_BA_BAD", "from result1BA_tz_markupResult1 to result1BAD"]
---        assertEqual result1BAD
---            (paragraphs2TZsimple  result1BAC)
---test_2_BA_BAD =do
---        putIOwords ["test_2_BA_BAD", "from result2BA_tz_markupResult1 to result2BAD"]
---        assertEqual result2BAD
---                (paragraphs2TZsimple result2BAC)
---test_5_BA_BAD =do
---        putIOwords ["test_5_BA_BAD", "from result5BA_tz_markupResult1 to result5BAD"]
---        assertEqual result5BAD
---                (paragraphs2TZsimple result5BAC)
---test_6_BA_BAD =do
---        putIOwords ["test_6_BA_BAD", "from result6BA_tz_markupResult1 to result6BAD"]
---        assertEqual result6BAD
---                (paragraphs2TZsimple result6BAC)
+
 
 --test_0BAC_BAD = testFile2File "resultBAC0" "resultBAD0" paragraphs2TZsimple
 test_1BAC_BAD = testFile2File "resultBAC1" "resultBAD1" paragraphs2TZsimple
@@ -76,6 +60,7 @@ test_3BAC_BAD = testFile2File "resultBAC3" "resultBAD3" paragraphs2TZsimple
 test_4BAC_BAD = testFile2File "resultBAC4" "resultBAD4" paragraphs2TZsimple
 test_5BAC_BAD = testFile2File "resultBAC5" "resultBAD5" paragraphs2TZsimple
 test_6BAC_BAD = testFile2File "resultBAC6" "resultBAD6" paragraphs2TZsimple
+test_8BAC_BAD = testFile2File "resultBAC8" "resultBAD8" paragraphs2TZsimple
 
 ------------LANGUAGE
 

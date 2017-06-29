@@ -94,6 +94,7 @@ test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphsTZ2TZ2
 test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphsTZ2TZ2
 test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
 test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
+test_8BAD_BAE = testFile2File "resultBAD8" "resultBAE8" paragraphsTZ2TZ2
 
 --test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
 
@@ -117,11 +118,11 @@ formParagraphs (t:ts) = case t of
 
     TZtext {tzt=Text0} -> p : formParagraphs rest
                         where (p,rest) = collectPara (t:ts)
-    TZtext {tzt=Para0} -> p : formParagraphs ts
+    TZtext {tzt=Para0} -> p : formParagraphs ts  -- do not collect, is one line per paragraph
             where p = collectInParagrah [t]
     TZtext {tzt=Kurz0} -> p : formParagraphs rest
                         where (p,rest) = collectKurz (t:ts)
-    TZtext {tzt=Fussnote0} ->  formParagraphs ts
+    TZtext {tzt=Fussnote0} ->  formParagraphs ts   -- is this ok? dropping t
             -- form a paragraph with the footnote text
 
     otherwise -> errorT ["formParagraph - other ", showT t]
@@ -135,7 +136,7 @@ collectPara :: [TZ] -> (TZ2, [TZ])
 collectPara  tzs
     | null rest = (collectInParagrah ts, [])
     | isKurzeZeile h  =  (collectInParagrah (ts ++ [h]), tail rest)
-    | otherwise = (collectInParagrah ts, rest)  -- here the issue
+    | otherwise = (collectInParagrah ts, rest)  -- how to deal with texts of one line per paragraph
 
     where
         (ts, rest) = span isTextZeile tzs
@@ -163,6 +164,8 @@ collectInParagrah tzs =
 collectKurz :: [TZ] -> (TZ2, [TZ])
 -- group longest poossible chain, including merging paragraph
 -- paragraphs broken by seitenzahl is not merged - should go here?
+--   issue: long paragraph lines must not be merged. this is property of the text
+-- possible approach - mark lines as paralines in such texts
 collectKurz  tzs
     | null rest = (collectInParagrah ts, [])
     | isKurzeZeile h  = (collectInParagrah (ts ++ [h]), tail rest)
