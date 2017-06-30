@@ -66,8 +66,9 @@ test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" pr
 ---- but results are found in LitTest/test
 --
 
-testOP_E_F :: TextState2 -> [Maybe (NLPtext,Doc0)] -> ErrIO [(NLPtext,Doc0)]
-testOP_E_F textstate  =  mapM  (completeSentencesInDoc debugNLP1 textstate) . catMaybes
+testOP_E_F :: TextState2 -> [(NLPtext,Doc0)] -> ErrIO [(NLPtext,Doc0)]
+testOP_E_F textstate  =  mapM  (completeSentencesInDoc debugNLP1 textstate)
+
 
 test_1_E_F :: IO ()
 test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" testOP_E_F
