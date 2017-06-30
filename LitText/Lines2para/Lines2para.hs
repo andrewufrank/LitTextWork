@@ -96,6 +96,7 @@ test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
 test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
 test_8BAD_BAE = testFile2File "resultBAD8" "resultBAE8" paragraphsTZ2TZ2
 test_9BAD_BAE = testFile2File "resultBAD9" "resultBAE9" paragraphsTZ2TZ2
+test_10BAD_BAE = testFile2File "resultBAD10" "resultBAE10" paragraphsTZ2TZ2
 
 --test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
 

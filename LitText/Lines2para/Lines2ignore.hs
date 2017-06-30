@@ -62,6 +62,7 @@ test_5BAC_BAD = testFile2File "resultBAC5" "resultBAD5" paragraphs2TZsimple
 test_6BAC_BAD = testFile2File "resultBAC6" "resultBAD6" paragraphs2TZsimple
 test_8BAC_BAD = testFile2File "resultBAC8" "resultBAD8" paragraphs2TZsimple
 test_9BAC_BAD = testFile2File "resultBAC9" "resultBAD9" paragraphs2TZsimple
+test_10BAC_BAD = testFile2File "resultBAC10" "resultBAD10" paragraphs2TZsimple
 
 ------------LANGUAGE
 

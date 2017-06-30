@@ -96,6 +96,7 @@ test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
 test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
 test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
 test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
+test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkup  -- boccaccio
 
 
 
