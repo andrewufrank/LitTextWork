@@ -155,6 +155,10 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
              putIOwords ["convertTZ2nlp",  "text:\n",  showT tz2 ] -- " showT msg])
              throwError e
                 )
+                -- hier die aufteilung des texts mit breakOnAll ". " und
+                -- dann drop wihle (\x -> length' . fst $ x <- lenght' . snd $ x)
+                -- wenn nichts uebrig, dann take last. wenn gleichgross give up
+                -- dann die resultate einzeln bearbeiten!
 
 testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [Maybe (NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
