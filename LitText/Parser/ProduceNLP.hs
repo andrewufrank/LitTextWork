@@ -98,9 +98,10 @@ completeSentencesInDoc debugFlag textstate (ntz, doc0) = do
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
     m1 <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
-    case m1 of
-        Nothing -> return ()
-        Just (ntz, doc0)  -> do  -- tz is NLPtext
+    mapM_  (produceOneOneParaNLP textstate) m1
+
+produceOneOneParaNLP :: TextState2 -> (NLPtext,Doc0) -> ErrIO ()
+produceOneOneParaNLP textstate (ntz,doc0) =   do  -- tz is NLPtext
             (ntz, doc0') <- completeSentencesInDoc debugNLP1 textstate (ntz, doc0)
 
             when debugNLP1 $
@@ -125,6 +126,7 @@ produceOneParaNLP showXML textstate tzp = do
 --                        (showT . tlpara . tzloc $ tzp) <> "on page" <>
 --                        (showT . tlpage . tzloc $ tzp)
             return ()
+
 
 appendTriples2file :: TextState2 -> [Triple] -> ErrIO ()
 appendTriples2file textstate tris = do

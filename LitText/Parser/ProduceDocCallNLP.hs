@@ -106,7 +106,7 @@ test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
 -------------------------------------------------D -> E
 
 -- only entry point !
-convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO (Maybe (NLPtext,Doc0))   -- the xml to analyzse  D -> E
+convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO [(NLPtext,Doc0)]   -- the xml to analyzse  D -> E
 -- send a tz text to coreNLP server
 -- works on individual paragraphs
 convertTZ2nlp debugNLP showXML sloc tz2 = do
@@ -114,7 +114,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
     when debugNLP $ putIOwords ["convertTZ2nlp TZ2", showT tz2]
     let mtz = prepareTZ4nlp tz2
     case mtz of
-        Nothing -> return Nothing
+        Nothing -> return []
         Just tz -> do
             let language = tz3lang tz
             let text = tz3text tz
@@ -150,7 +150,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
             when debugNLP  $
                 putIOwords ["readDocString doc0 \n", showT doc0]
 
-            return . Just $ (tz,doc0)
+            return [(tz,doc0)]
      `catchError` (\e -> do
              putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
              putIOwords ["convertTZ2nlp",  "text:\n",  showT tz2 ] -- " showT msg])
@@ -161,11 +161,11 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
                 -- wenn nichts uebrig, dann take last. wenn gleichgross give up
                 -- dann die resultate einzeln bearbeiten!
 
-testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [Maybe (NLPtext,Doc0)]
+testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [(NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
     let sloc = serverLoc  result1A
 
-    res <- mapM (convertTZ2nlp False False sloc) resultBAEfile
+    res <- fmap concat $ mapM (convertTZ2nlp False False sloc) resultBAEfile
     -- the secnd bool controls the rendering of the xml file
     return res
 
@@ -176,7 +176,7 @@ test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
 test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
 test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
 --test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
-test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
+--test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
 -- no test to use resultE1 and produce resultE1
 
