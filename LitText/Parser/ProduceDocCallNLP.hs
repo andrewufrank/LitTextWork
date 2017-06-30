@@ -154,12 +154,19 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
      `catchError` (\e -> do
              putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
              putIOwords ["convertTZ2nlp",  "text:\n",  showT tz2 ] -- " showT msg])
-             throwError e
+             splitAndTryAgain debugNLP showXML sloc
+                        (fromJustNote "catchError in convertTZ2nlp" mtz)
                 )
                 -- hier die aufteilung des texts mit breakOnAll ". " und
                 -- dann drop wihle (\x -> length' . fst $ x <- lenght' . snd $ x)
                 -- wenn nichts uebrig, dann take last. wenn gleichgross give up
                 -- dann die resultate einzeln bearbeiten!
+
+splitAndTryAgain :: Bool -> Bool -> URI -> NLPtext -> ErrIO [(NLPtext,Doc0)]
+-- split the text in two and try each
+splitAndTryAgain debugNLP showXML sloc tz2 = do
+    when debugNLP $ putIOwords ["splitAndTryAgain start"]
+    return []
 
 testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [(NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
