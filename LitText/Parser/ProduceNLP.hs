@@ -73,13 +73,13 @@ testOP_E_F lang textstate inp =
         -- but is already wrong?
 
 
---test_1_E_F :: IO ()
---test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" (testOP_E_F German)
---test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" (testOP_E_F German)
---test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" (testOP_E_F German)
---test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" (testOP_E_F German)
---test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" (testOP_E_F English)
---test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" (testOP_E_F English)
+test_1_E_F :: IO ()
+test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" (testOP_E_F German)
+test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" (testOP_E_F German)
+test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" (testOP_E_F German)
+test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" (testOP_E_F German)
+test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" (testOP_E_F English)
+test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" (testOP_E_F English)
 --test_7_E_F = testVar3FileIO result7A "resultE7" "resultF7" (testOP_E_F English)
 --test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" (testOP_E_F English)
 -- 9 german

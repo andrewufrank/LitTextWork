@@ -207,27 +207,5 @@ test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
 -- no test to use resultE1 and produce resultE1
 
 
--- unnecessary, inclued in C_E test
-----right :: Either Text a -> a
-----right (Left a) = errorT ["not a right",   a]
-----right (Right a) = a
---testOP_E_F :: Bool -> [Maybe (NLPtext, Text)] -> ErrIO [Doc0]
---testOP_E_F bool result1e = do
---    let in1 :: [Text] = map (snd) . catMaybes $ result1e
-----                    (result1e ::[Either Text (NLPtext, Text)])
---    mapM (readDocString False) in1
---
---test_1_E_F =
---        testVar3FileIO False "resultE1" "resultF1"  testOP_E_F
-----test_1_E_F_readDocString = do   -- E -> F
-----    putIOwords ["test_readDocString E -> F :  "] -- tripleResult]
-----    let in1 :: [Text] = map (snd . right) (result1E ::[Either Text (NLPtext, Text)])
-----    t1 <- runErr $ mapM (readDocString False) in1
-----    putIOwords ["test_readDocString: result  ) ", showT  t1]
-------    putIOwords ["test_parseToTZ:  result ", show' t1]
-----    assertEqual resutl1F_readDocStringResult t1
---
---right :: Either Text a -> a
---right (Left a) = errorT ["not a right",   a]
---right (Right a) = a
+
 
