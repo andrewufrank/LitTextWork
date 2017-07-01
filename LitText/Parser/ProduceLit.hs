@@ -62,7 +62,7 @@ test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
 
 data LitProperty =  HasTitle | InWerk | InBuch | InPart
         | AufSeite  -- ^ text starts on this page
-        -- IsBuch || Titel | HL1 | HL2 | HL3 | Paragraph
+        -- asIsBuch || Titel | HL1 | HL2 | HL3 | Paragraph
         --  the text for this textual unit
         deriving (Show, Eq, Enum)
 

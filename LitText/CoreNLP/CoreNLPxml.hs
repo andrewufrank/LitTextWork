@@ -268,7 +268,7 @@ readDocString showXML text = do
     docs  :: [Doc0] <-callIO $ do
         d1 :: [Doc0] <-  runX (readString [withValidate no]  (t2s text)
                                 >>> getDoc0)
---        putIOwords ["readDocString - d1 extracted \n", showT d1]
+        putIOwords ["readDocString - d1 extracted \n", showT d1]
         return d1
     when showXML $ do
           putIOwords ["the xml formated"]
