@@ -94,14 +94,14 @@ nlpServerNone  = nlpServerEnglish
 -- should be a server just returning the input tokenized etc
 
 
-test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
-test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
-test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
-test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
-test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
-test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
---test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
-test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
+--test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
+--test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
+--test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
+--test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
+--test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
+--test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
+----test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
+--test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
 
 -------------------------------------------------D -> E
 
@@ -115,56 +115,74 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
     let mtz = prepareTZ4nlp tz2
     case mtz of
         Nothing -> return []
-        Just tz -> do
-            let language = tz3lang tz
-            let text = tz3text tz
-            when debugNLP $ putIOwords ["convertTZ2nlp tz", showT tz]
+        Just tz -> convertTZ2nlpPrepareCall debugNLP showXML sloc tz
 
-            let nlpServer = case language of
-                            English -> nlpServerEnglish sloc
-                            German -> nlpServerGerman sloc
-                            NoLanguage -> nlpServerNone sloc
-                            _ -> errorT ["convertTZ2nlp", showT language, "language has no server"]
+convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO [(NLPtext,Doc0)]   -- the xml to analyzse  D -> E
+-- prepare call to send text to nlp server
+-- works on individual paragraphs
+convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
+        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
 
-            let varsEng =  [("annotators","tokenize,ssplit,pos\
-                                    \,lemma,ner,depparse,dcoref,coref")
-                            , ("outputFormat","xml")
-                            ]
-            let varsGer =  [("annotators","tokenize,ssplit,pos,lemma,ner,depparse,coref")
-        --                    --  coref, verlangt depparse,
-                            , ("outputFormat","xml")
-                            ]
-            let vars = case language of
-            -- the different parsers do not deal with all annotators well
-                        German -> varsGer
-                        English -> varsEng
-                        _ -> varsEng
+        let language = tz3lang tz
+        let text = tz3text tz
+        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall tz", showT tz]
 
-            when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
-            xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
--- german parser seems to understand utf8encoded bytestring
+        let nlpServer = case language of
+                        English -> nlpServerEnglish sloc
+                        German -> nlpServerGerman sloc
+                        NoLanguage -> nlpServerNone sloc
+                        _ -> errorT ["convertTZ2nlpPrepareCall", showT language, "language has no server"]
 
-            when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]
+        let varsEng =  [("annotators","tokenize,ssplit,pos\
+                                \,lemma,ner,depparse,dcoref,coref")
+    --                    --  coref, verlangt depparse,
+                        , ("outputFormat","xml")
+                        ]
+        let varsGer =  [("annotators","tokenize,ssplit,pos, ner,depparse ")
+    --
+    -- german only ssplit, pos, ner, depparse
+                        , ("outputFormat","xml")
+                        ]
+--      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
+        let vars = case language of
+        -- the different parsers do not deal with all annotators well
+                    German -> varsGer
+                    English -> varsEng
+                    _ -> varsEng
 
-            doc0 <- readDocString showXML xml                    -- E -> F
-            when debugNLP  $
-                putIOwords ["readDocString doc0 \n", showT doc0]
+        when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
 
-            return [(tz,doc0)]
-     `catchError` (\e -> do
-             putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
-             putIOwords ["convertTZ2nlp",  "text:\n",  showT tz2 ] -- " showT msg])
-             splitAndTryAgain debugNLP showXML sloc
-                        (fromJustNote "catchError in convertTZ2nlp" mtz)
-                )
-                -- hier die aufteilung des texts mit breakOnAll ". " und
-                -- dann drop wihle (\x -> length' . fst $ x <- lenght' . snd $ x)
-                -- wenn nichts uebrig, dann take last. wenn gleichgross give up
-                -- dann die resultate einzeln bearbeiten!
+        [doc0] <- convertTZ2nlpCall debugNLP showXML nlpServer vars text
+        return [(tz,doc0)]
 
-splitAndTryAgain :: Bool -> Bool -> URI -> NLPtext -> ErrIO [(NLPtext,Doc0)]
+convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO [(Doc0)]   -- the xml to analyzse  D -> E
+-- prepare call to send text to nlp server
+-- works on individual paragraphs
+convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
+        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
+        xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
+    -- german parser seems to understand utf8encoded bytestring
+
+        when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]
+
+        doc0 <- readDocString showXML xml                    -- E -> F
+        when debugNLP  $
+            putIOwords ["readDocString doc0 \n", showT doc0]
+
+        return [ doc0 ]
+    `catchError` (\e -> do
+         putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
+         putIOwords ["convertTZ2nlp",  "text:\n",  showT text ] -- " showT msg])
+         splitAndTryAgain debugNLP showXML nlpServer vars text
+            )
+            -- hier die aufteilung des texts mit breakOnAll ". " und
+            -- dann drop wihle (\x -> length' . fst $ x <- lenght' . snd $ x)
+            -- wenn nichts uebrig, dann take last. wenn gleichgross give up
+            -- dann die resultate einzeln bearbeiten!
+
+splitAndTryAgain :: Bool -> Bool -> URI -> [(Text,Text)] -> Text -> ErrIO [(Doc0)]
 -- split the text in two and try each
-splitAndTryAgain debugNLP showXML sloc tz2 = do
+splitAndTryAgain debugNLP showXML nlpServer vars text = do
     when debugNLP $ putIOwords ["splitAndTryAgain start"]
     return []
 
@@ -172,16 +190,16 @@ testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [(NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
     let sloc = serverLoc  result1A
 
-    res <- fmap concat $ mapM (convertTZ2nlp False False sloc) resultBAEfile
+    res <- fmap concat $ mapM (convertTZ2nlp True True sloc) resultBAEfile
     -- the secnd bool controls the rendering of the xml file
     return res
 
 test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
-test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
-test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
-test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
-test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E
-test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
+--test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
+--test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
+--test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
+--test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
+--test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
 --test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
 --test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
