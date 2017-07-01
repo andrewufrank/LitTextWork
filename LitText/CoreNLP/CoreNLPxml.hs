@@ -182,7 +182,8 @@ getSentence = atTag "sentence" >>>
     proc x -> do
         i <- getAttrValueT "id" -< x
         tks <- getTokens -< x
-        ps <- text <<< atTag "parse" -< x
+--        ps <- text <<< atTag "parse" -< x
+        ps <- getParse' -< x
         deps <- listA getDependencyType -< x
         returnA -< Sentence0 {sid = mkSentID  i
                             , sparse = ps
@@ -191,6 +192,7 @@ getSentence = atTag "sentence" >>>
                             -- if dependencies are produced, get the last (best?) one
                            , stoks =  tks
                            }
+      where getParse' = (text <<< atTag "parse")  `orElse` (arr (const ""))
 
 --getLastOrNothing [] = []
 --getLastOrNothing as = singleton . headNoteT ["getLastOrNothing in coreNLPxml getDependencyType", showT as] . reverse $ as

@@ -73,8 +73,8 @@ testOP_E_F lang textstate inp =
         -- but is already wrong?
 
 
-test_1_E_F :: IO ()
-test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" (testOP_E_F German)
+--test_1_E_F :: IO ()
+--test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" (testOP_E_F German)
 --test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" (testOP_E_F German)
 --test_3_E_F = testVar3FileIO result3A "resultE3" "resultF3" (testOP_E_F German)
 --test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" (testOP_E_F German)
