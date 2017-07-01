@@ -32,6 +32,7 @@ import Parser.ReadMarkupAB  -- todo  -- for test
 import Producer.Servers
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
+import Data.List.Split
 
 
 data NLPtext = NLPtext { tz3loc :: TextLoc
@@ -94,14 +95,14 @@ nlpServerNone  = nlpServerEnglish
 -- should be a server just returning the input tokenized etc
 
 
---test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
---test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
---test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
---test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
---test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
---test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
-----test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
---test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
+test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
+test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
+test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
+test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
+test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
+test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
+--test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
+test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
 
 -------------------------------------------------D -> E
 
@@ -153,14 +154,18 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
 
         when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
 
-        [doc0] <- convertTZ2nlpCall debugNLP showXML nlpServer vars text
+        let texts = getPiece . textSplit $ text
+
+        [doc0] <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
         return [(tz,doc0)]
 
-convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO [(Doc0)]   -- the xml to analyzse  D -> E
+convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
-        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
+        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"
+                        , showT . lengthChar $ text
+                        , showT . take' 100 $ text , "\n"]
         xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
     -- german parser seems to understand utf8encoded bytestring
 
@@ -170,11 +175,12 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
         when debugNLP  $
             putIOwords ["readDocString doc0 \n", showT doc0]
 
-        return [ doc0 ]
+        return   doc0
     `catchError` (\e -> do
          putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
          putIOwords ["convertTZ2nlp",  "text:\n",  showT text ] -- " showT msg])
-         splitAndTryAgain debugNLP showXML nlpServer vars text
+--         splitAndTryAgain debugNLP showXML nlpServer vars text
+         return zero
             )
             -- hier die aufteilung des texts mit breakOnAll ". " und
             -- dann drop wihle (\x -> length' . fst $ x <- lenght' . snd $ x)
@@ -185,27 +191,55 @@ splitAndTryAgain :: Bool -> Bool -> URI -> [(Text,Text)] -> Text -> ErrIO [(Doc0
 -- split the text in two and try each
 splitAndTryAgain debugNLP showXML nlpServer vars text = do
     when debugNLP $ putIOwords ["splitAndTryAgain start"]
+    -- this will not be used
     return []
 
 testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [(NLPtext,Doc0)]
 testOP_C_E resultXA resultBAEfile = do
     let sloc = serverLoc  result1A
 
-    res <- fmap concat $ mapM (convertTZ2nlp True True sloc) resultBAEfile
+    res <- fmap concat $ mapM (convertTZ2nlp True False sloc) resultBAEfile
     -- the secnd bool controls the rendering of the xml file
     return res
 
-test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
-test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
-test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
-test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
-test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
-test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
+--test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
+--test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
+--test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
+--test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
+--test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
+--test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
 --test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
---test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
+test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
 -- no test to use resultE1 and produce resultE1
 
+textid :: Text -> Text
+textid = id
 
+
+textSplit :: Text -> [Text]
+--textSplit =  fromJustNote "textSplit" . splitOn' ". "
+textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
+-- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
+
+
+
+getPiece :: [Text] -> [Text]
+-- get a piece of length < 2000
+getPiece ts = chop (takePiece "") ts
+
+--chop :: ([a] -> (b, [a])) -> [a] -> [b]
+
+
+takePiece :: Text  -> [Text] ->   (Text, [Text])
+takePiece b [] = (b,[])
+takePiece b (a:as) = if lengthChar ab > 2000 then (b, a:as)
+                        else takePiece ab as
+                    where ab = append' a b
+
+test_longText1 ::  IO ()
+test_longText1 = testFile2File "longtext.txt" "lt1" textid
+test_split = testFile2File "lt1" "lt2" textSplit
+test_chop = testFile2File "lt2" "lt3" getPiece
 
 
