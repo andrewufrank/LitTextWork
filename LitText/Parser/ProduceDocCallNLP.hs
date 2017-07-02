@@ -95,19 +95,19 @@ nlpServerNone  = nlpServerEnglish
 -- should be a server just returning the input tokenized etc
 
 
-test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
-test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
-test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
-test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
-test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
-test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
---test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
-test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
+--test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
+--test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
+--test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
+--test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
+--test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
+--test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
+----test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
+--test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
 
 -------------------------------------------------D -> E
 
 -- only entry point !
-convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO [(NLPtext,Doc0)]   -- the xml to analyzse  D -> E
+convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
 -- send a tz text to coreNLP server
 -- works on individual paragraphs
 convertTZ2nlp debugNLP showXML sloc tz2 = do
@@ -115,70 +115,79 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
     when debugNLP $ putIOwords ["convertTZ2nlp TZ2", showT tz2]
     let mtz = prepareTZ4nlp tz2
     case mtz of
-        Nothing -> return []
+        Nothing -> do   putIOwords ["convertTZnlp - empty text"]
+                        return (zero,[])
         Just tz -> convertTZ2nlpPrepareCall debugNLP showXML sloc tz
 
-convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO [(NLPtext,Doc0)]   -- the xml to analyzse  D -> E
+convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO  (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
-        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
+    when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
 
-        let language = tz3lang tz
-        let text = tz3text tz
-        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall tz", showT tz]
+    let language = tz3lang tz
+    let text = tz3text tz
+    if null' text then return (tz,[])
+        else do
+            when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall tz", showT tz]
 
-        let nlpServer = case language of
-                        English -> nlpServerEnglish sloc
-                        German -> nlpServerGerman sloc
-                        NoLanguage -> nlpServerNone sloc
-                        _ -> errorT ["convertTZ2nlpPrepareCall", showT language, "language has no server"]
+            let nlpServer = case language of
+                            English -> nlpServerEnglish sloc
+                            German -> nlpServerGerman sloc
+                            NoLanguage -> nlpServerNone sloc
+                            _ -> errorT ["convertTZ2nlpPrepareCall"
+                                , showT language, "language has no server"]
 
-        let varsEng =  [("annotators","tokenize,ssplit,pos\
-                                \,lemma,ner,depparse,dcoref,coref")
-    --                    --  coref, verlangt depparse,
-                        , ("outputFormat","xml")
-                        ]
-        let varsGer =  [("annotators","tokenize,ssplit,pos,ner,depparse")
-    --
-    -- german only ssplit, pos, ner, depparse
-    -- coref and dcoref crash for corenlp
-                        , ("outputFormat","xml")
-                        ]
---      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
-        let vars = case language of
-        -- the different parsers do not deal with all annotators well
-                    German -> varsGer
-                    English -> varsEng
-                    _ -> varsEng
+            let varsEng =  [("annotators","tokenize,ssplit,pos\
+                                    \,lemma,ner,depparse,dcoref,coref")
+        --                    --  coref, verlangt depparse,
+                            , ("outputFormat","xml")
+                            ]
+            let varsGer =  [("annotators","tokenize,ssplit,pos,ner,depparse")
+        --
+        -- german only ssplit, pos, ner, depparse
+        -- coref and dcoref crash for corenlp
+                            , ("outputFormat","xml")
+                            ]
+    --      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
+            let vars = case language of
+            -- the different parsers do not deal with all annotators well
+                        German -> varsGer
+                        English -> varsEng
+                        _ -> varsEng
 
-        when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
+            when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
 
-        let texts = getPiece . textSplit $ text
+            let texts = getPiece . textSplit $ text
 
-        [doc0] <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
-        return [(tz,doc0)]
+            docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
+--            when debugNLP $
+            putIOwords ["convertTZ2nlp end", showT text]
+
+            return (tz, docs)
 
 convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
-        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"
+--        when debugNLP $
+        putIOwords ["\nconvertTZ2nlpCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text , "\n"]
         xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
     -- german parser seems to understand utf8encoded bytestring
 
-        when debugNLP  $ putIOwords ["convertTZ2nlp end \n", showT xml]
+--        when debugNLP  $
+        putIOwords ["convertTZ2nlpCall end \n", showT xml]
 
         doc0 <- readDocString showXML xml                    -- E -> F
-        when debugNLP  $
-            putIOwords ["readDocString doc0 \n", showT doc0]
+--        when debugNLP  $
+        putIOwords ["convertTZ2nlpCall doc0 \n", showT doc0]
 
         return   doc0
     `catchError` (\e -> do
-         putIOwords ["convertTZ2nlp http error caught 7",  e] -- " showT msg])
-         putIOwords ["convertTZ2nlp",  "text:\n",  showT text ] -- " showT msg])
+         putIOwords ["convertTZ2nlpCall http error caught 7",  e] -- " showT msg])
+         putIOwords ["convertTZ2nlpCall",  "text:\n",  showT text ] -- " showT msg])
 --         splitAndTryAgain debugNLP showXML nlpServer vars text
          return zero
             )
@@ -187,19 +196,20 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
             -- wenn nichts uebrig, dann take last. wenn gleichgross give up
             -- dann die resultate einzeln bearbeiten!
 
-splitAndTryAgain :: Bool -> Bool -> URI -> [(Text,Text)] -> Text -> ErrIO [(Doc0)]
--- split the text in two and try each
-splitAndTryAgain debugNLP showXML nlpServer vars text = do
-    when debugNLP $ putIOwords ["splitAndTryAgain start"]
-    -- this will not be used
-    return []
+--splitAndTryAgain :: Bool -> Bool -> URI -> [(Text,Text)] -> Text -> ErrIO [(Doc0)]
+---- split the text in two and try each
+--splitAndTryAgain debugNLP showXML nlpServer vars text = do
+--    when debugNLP $ putIOwords ["splitAndTryAgain start"]
+--    -- this will not be used
+--    return []
 
-testOP_C_E :: TextState2 -> [TZ2] -> ErrIO [(NLPtext,Doc0)]
+testOP_C_E :: TextState2 -> [TZ2] -> ErrIO   [(NLPtext,[Doc0])]
 testOP_C_E resultXA resultBAEfile = do
     let sloc = serverLoc  result1A
 
-    res <- fmap concat $ mapM (convertTZ2nlp True False sloc) resultBAEfile
+    res <-  mapM (convertTZ2nlp False False sloc) resultBAEfile
     -- the secnd bool controls the rendering of the xml file
+    putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
     return res
 
 --test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
@@ -235,11 +245,11 @@ takePiece :: Text  -> [Text] ->   (Text, [Text])
 takePiece b [] = (b,[])
 takePiece b (a:as) = if lengthChar ab > 2000 then (b, a:as)
                         else takePiece ab as
-                    where ab = append' a b
+                    where ab = concat' [b, " ", a]
 
-test_longText1 ::  IO ()
-test_longText1 = testFile2File "longtext.txt" "lt1" textid
-test_split = testFile2File "lt1" "lt2" textSplit
-test_chop = testFile2File "lt2" "lt3" getPiece
+--test_longText1 ::  IO ()
+--test_longText1 = testFile2File "longtext.txt" "lt1" textid
+--test_split = testFile2File "lt1" "lt2" textSplit
+--test_chop = testFile2File "lt2" "lt3" getPiece
 
 

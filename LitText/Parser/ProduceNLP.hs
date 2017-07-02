@@ -103,11 +103,11 @@ completeSentencesInDoc debugFlag textstate lang ( doc0) = do
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
-    m1 <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
-    mapM_  (produceOneOneParaNLP textstate) m1
+    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
+    mapM_  (produceOneOneParaNLP textstate ntz) docs
 
-produceOneOneParaNLP :: TextState2 -> (NLPtext,Doc0) -> ErrIO ()
-produceOneOneParaNLP textstate (ntz,doc0) =   do  -- tz is NLPtext
+produceOneOneParaNLP :: TextState2 -> NLPtext -> Doc0  -> ErrIO ()
+produceOneOneParaNLP textstate  ntz doc0  =   do  -- tz is NLPtext
         let lang = tz3lang ntz
         let paranr = tz3para $ ntz
         ( doc0') <- completeSentencesInDoc debugNLP1 textstate lang ( doc0)
