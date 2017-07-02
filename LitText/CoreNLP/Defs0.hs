@@ -67,8 +67,8 @@ mkSentID s = SentID0 $ readNoteT "mkSentID" s
 
 data Doc0 = Doc0 {docSents:: [Sentence0]
                  , docCorefs :: [Coref0]
-                       } deriving (Read, Show,  Eq, Zeros)
--- instance Zeros Doc0 where zero = Doc0 [] []
+                       } deriving (Read, Show,  Eq)
+instance Zeros Doc0 where zero = Doc0 [] []
 
 data Sentence0 = Sentence0 {sid :: SentID0
                         , sparse :: Text  -- could be the parse tree
