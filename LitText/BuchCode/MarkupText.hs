@@ -193,8 +193,8 @@ parseTextWithMarkers = do
                     let resx1 = [(res1, fn)]
                     resx3 <- optionMaybe (try annotherFootnoteMarker)
                     res4 <- many (noneOf "\n")
---                    let resx4 = [(res4, "")]
-                    let ress = concat [resx1, fromMaybe [] resx3] -- , resx4]
+                    let resx4 = [(res4, "")]
+                    let ress = concat [resx1, fromMaybe [] resx3, resx4]
                     newline
                     let res14 = trim' . s2t .concat . map fst $ ress
                     let list = map (pair (lengthChar, s2t)) ress
@@ -321,7 +321,7 @@ markShortLines :: [TextZeilen] -> [TextZeilen]
 markShortLines tx = map (markOneSL limit1 limit2)  tx
     where
         (av,mx) = averageLengthTextLines tx
-        limit1 =  max 20 $ min  70 (round (0.9 * fromIntegral av))
+        limit1 =  max 20 $ min  55 (round (0.7 * fromIntegral av))
         limit2 = 120
 
 

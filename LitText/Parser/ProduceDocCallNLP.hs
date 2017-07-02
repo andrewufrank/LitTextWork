@@ -170,19 +170,19 @@ convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO (Do
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
---        when debugNLP $
-        putIOwords ["\nconvertTZ2nlpCall start"
+        when debugNLP $
+            putIOwords ["\nconvertTZ2nlpCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text , "\n"]
         xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
     -- german parser seems to understand utf8encoded bytestring
 
---        when debugNLP  $
-        putIOwords ["convertTZ2nlpCall end \n", showT xml]
+        when debugNLP  $
+            putIOwords ["convertTZ2nlpCall end \n", showT xml]
 
         doc0 <- readDocString showXML xml                    -- E -> F
---        when debugNLP  $
-        putIOwords ["convertTZ2nlpCall doc0 \n", showT doc0]
+        when debugNLP  $
+            putIOwords ["convertTZ2nlpCall doc0 \n", showT doc0]
 
         return   doc0
     `catchError` (\e -> do
