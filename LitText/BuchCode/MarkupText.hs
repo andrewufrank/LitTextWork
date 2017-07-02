@@ -76,7 +76,7 @@ data TextZeilen =
 
 parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
 -- parse a text file to TextZeilen form
-parseMarkup  =  markShortLines
+parseMarkup  = fmap removeEmptyMarks . markShortLines
         . markAllCapsLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 -- TODO filter for char
@@ -87,16 +87,16 @@ test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- result1A, .. result6A is exported form ReadMarkupAB.
 
 --test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
-test_1B_BA :: IO ()
-test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
-test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
-test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
-test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
-test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
-test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
-test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
-test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
-test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkup  -- boccaccio
+--test_1B_BA :: IO ()
+--test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
+--test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
+--test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
+--test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
+--test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
+--test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
+--test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
+--test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
+--test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkup  -- boccaccio
 
 
 
@@ -359,6 +359,15 @@ averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
         lengthLs = map (lengthChar . zeilenText) $ txtLs
         maxChars = maximum lengthLs
 
+removeEmptyMarks :: TextZeilen -> TextZeilen
+-- ^ remove the empty (0,"") mark at end of lines mark
+removeEmptyMarks tz@(TextZeile {ttx=t}) = tz {ttx= removeEmptyMarks2 t }
+removeEmptyMarks tz@(MarkupZeile {ttx=t}) = tz {ttx= removeEmptyMarks2 t }
+removeEmptyMarks tz = tz
+
+removeEmptyMarks2 :: TextWithMarks -> TextWithMarks
+removeEmptyMarks2 ttx@(TextWithMarks{twmMarks=twm}) = ttx{twmMarks=twm'}
+    where twm' = filter ((""/=).snd) twm
 --------------------
 result0B = unlines'  ["wort1;langeswort2"
             ,"55"
@@ -409,24 +418,27 @@ result0BA =
      NeueSeite,
      TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[54/0002]", twmMarks = []}},
-     TextZeile{ttt = Kurz0,
+     TextZeile{ttt = Text0,
                ttx =
-                 TextWithMarks{twm = "da\223 man ihm",
+                 TextWithMarks{twm = "da\223 man ihm  mit Fussnoten,",
                                twmMarks = [(7, "[2]"), (5, "[1]")]}},
      LeerZeile,
      MarkupZeile{ttok = BuchTitel,
-                 ttx = TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]")]}},
+                 ttx =
+                   TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]")]}},
      TextZeile{ttt = Text0,
                ttx =
                  TextWithMarks{twm = "zweite,  kurze zeile",
-                               twmMarks = [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]")]}},
+                               twmMarks =
+                                 [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]")]}},
      TextZeile{ttt = AllCaps0,
                ttx =
                  TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
                                twmMarks = [(34, "[4]")]}},
-     TextZeile{ttt = Kurz0,
+     TextZeile{ttt = Text0,
                ttx =
-                 TextWithMarks{twm = "Old Rodilard,", twmMarks = [(16, "[5]")]}},
+                 TextWithMarks{twm = "Old Rodilard, a certain cat,",
+                               twmMarks = [(16, "[5]")]}},
      TextZeile{ttt = AllCaps0,
                ttx = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
      TextZeile{ttt = Zahl0,
