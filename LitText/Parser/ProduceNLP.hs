@@ -50,18 +50,19 @@ produceNLP :: Bool -> TextState2 ->  [TZ2] -> ErrIO () -- test C  -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
-produceNLP showXML textstate  = mapM_ (produceOneParaNLP showXML textstate)
+produceNLP showXML textstate tzs = mapM_ (produceOneParaNLP showXML textstate) tzs
 
 produceNLPnotshow = produceNLP False
 
 test_1_D_XproduceNLPtriples :: IO ()
 test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
---test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
---test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
---test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
---test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
---test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
---test_8_D_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
+test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
+test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
+test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
+test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
+test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
+test_8_D_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
+test_10_D_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
 ---- no result file is necessary, because result is zero
 ---- but results are found in LitTest/test
 --
@@ -105,10 +106,10 @@ completeSentencesInDoc debugFlag textstate lang ( doc0) = do
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
     (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
-    mapM_  (produceOneOneParaNLP textstate ntz) docs
+    mapM_  (produceOneOneParaNLP textstate ntz) (zip [1..] docs )
 
-produceOneOneParaNLP :: TextState2 -> NLPtext -> Doc0  -> ErrIO ()
-produceOneOneParaNLP textstate  ntz doc0  =   do  -- tz is NLPtext
+produceOneOneParaNLP :: TextState2 -> NLPtext -> (Int, Doc0)  -> ErrIO ()
+produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
         let lang = tz3lang ntz
         let paranr = tz3para $ ntz
         ( doc0') <- completeSentencesInDoc debugNLP1 textstate lang ( doc0)
@@ -117,7 +118,7 @@ produceOneOneParaNLP textstate  ntz doc0  =   do  -- tz is NLPtext
                 putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
     --    let buchuri = buchURIx textstate :: RDFsubj
 
-        let triples  = processDoc0toTriples2 textstate lang paranr doc0'   -- F -> G
+        let triples  = processDoc0toTriples2 textstate lang paranr (snipnr, doc0')   -- F -> G
 
         when debugNLP1 $
             putIOwords ["\n\nproduceOneParaNLP nlp triples "

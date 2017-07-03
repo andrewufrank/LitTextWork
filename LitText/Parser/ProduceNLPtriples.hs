@@ -44,11 +44,13 @@ import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 import Parser.ProduceDocCallNLP
 import Parser.Foundation
 
-processDoc0toTriples2 :: TextState2 -> LanguageCode -> ParaNum -> Doc0 -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: TextState2 -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
-processDoc0toTriples2 textstate lang paranr doc0   =       t2  :  sents ++ corefs
+processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =       t2  :  sents ++ corefs
                     -- , corefs] corefs not produced
     where
+        -- unfertig - snipnr is not yet used.
+        -- add a sentence part of para, sentence id made with snip id (paranr - sniptnr)
 --        lang = tz3lang ntz
         paraid = paraSigl textstate $ paranr -- . tz3para $ ntz
         snipid = paraid
@@ -144,8 +146,9 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
        wf = word0 . dword  $ depp
 
 testOP_F_G :: TextState2 -> [Doc0] ->  [Triple]
-testOP_F_G textstate  = concat
+testOP_F_G textstate docs  = concat
         . map (processDoc0toTriples2 textstate English (ParaNum 99))
+        $ (zip [1..] docs)
 -- here missing the values for language and paranr
 -- fake should be ok for test
 --
@@ -157,7 +160,8 @@ test_4_F_G =  testVar3File result4A "resultF4" "resultG4" testOP_F_G
 test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
 test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
 --test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
---test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
+test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
+test_10_F_G = testVar3File result10A "resultF10" "resultG10" testOP_F_G
 
 ------------ coreferences ---------------------
 -- call         corefs = concat $ map (mkCorefTriple2 lang   snipid ) (docCorefs doc0)

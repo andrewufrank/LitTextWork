@@ -86,17 +86,17 @@ test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 
 -- result1A, .. result6A is exported form ReadMarkupAB.
 
---test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
---test_1B_BA :: IO ()
---test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
---test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
---test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
---test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
---test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
---test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
---test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
---test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
---test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkup  -- boccaccio
+----test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
+test_1B_BA :: IO ()
+test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
+test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
+test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
+test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
+test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
+test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
+test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
+test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
+test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkup  -- boccaccio
 
 
 

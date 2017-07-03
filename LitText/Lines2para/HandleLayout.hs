@@ -148,7 +148,7 @@ distributePageNrs  =   concat .   markSublist . pages
 
         markSublist :: [[TZ]] -> [[TZ]]
         markSublist []  = []
-        markSublist sls =  map markSublist2 ( sls) ++ [last sls]
+        markSublist sls =  map markSublist2 (init sls) ++ [last sls]
 --            [markSublist2 $ head sls ] ++ (map markSublist2 . tail $ sls)
 --the last sublist contains just the end mark
         markSublist2 :: [TZ] -> [TZ]
@@ -156,7 +156,7 @@ distributePageNrs  =   concat .   markSublist . pages
         markSublist2 sl = markTZsWithPage
 --                    (fromJustNote "distributePageNrs" $
                         ( pageNrOfSublist sl)
-                                    ( sl)
+                                    (init sl)
 
 markTZsWithPage :: Maybe Text -> [TZ] -> [TZ]
 -- put the page number into the list
@@ -228,7 +228,7 @@ test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
 test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
 test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
 test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
-test_10BA_BAC = testFile2File "resultBA10" "resultBAC10" paragraphs2TZlayout
 test_9BA_BAC = testFile2File "resultBA9" "resultBAC9" paragraphs2TZlayout
+test_10BA_BAC = testFile2File "resultBA10" "resultBAC10" paragraphs2TZlayout
 
 
