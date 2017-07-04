@@ -10,7 +10,7 @@
 -- this produces a list of encoded lines TextZeilen but not yet blocks.
 -- ignore is parsed as a markup
 -- to use automatic hl2 detection - replace in gutenberg ".--" -- not required anymore
-
+-- does not read language
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE OverloadedStrings     #-}

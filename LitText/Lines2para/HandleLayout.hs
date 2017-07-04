@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Parser . MarkupLines
+-- Module      :  Parser . HandleLayout
 -- Copyright   :  andrew u frank -
 --
 -- |  encode the layout on pages (lines, pages)
