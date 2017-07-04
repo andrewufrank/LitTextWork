@@ -16,6 +16,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 
 {-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances      #-}
+--{-# LANGUAGE OverlappingInstances      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
@@ -73,6 +75,12 @@ data TextZeilen =
         | NeueSeite
         deriving (Show, Read, Eq )
 
+--instance Show TextZeilen where
+--    show t  = '\n' : show t
+-- gives loop show -> show
+--instance Show [TextZeilen] where
+--    show ts = unlines [show ts]
+-- is not used
 
 parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
 -- parse a text file to TextZeilen form
