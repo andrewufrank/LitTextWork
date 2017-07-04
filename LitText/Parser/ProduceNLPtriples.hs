@@ -1,3 +1,5 @@
+
+
 -----------------------------------------------------------------------------
 --
 -- Module      :  Parser . Produce NLP triples
@@ -15,6 +17,11 @@
 --
 -- the aggregation of small paragraphs to longer units to snaps will be
 -- done later, which will require a snap unit consisting of serveral paragraphs
+-- changed, but questions:
+    -- why is docsigl = parasigl?
+    -- why goes snipets up to 20+ in t9
+    -- add sentence part of .. sniped - para - doc
+    -- add the redundant info from coref for testing
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -53,8 +60,8 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =       t2  :  sent
         -- add a sentence part of para, sentence id made with snip id (paranr - sniptnr)
 --        lang = tz3lang ntz
         paraid = paraSigl textstate $ paranr -- . tz3para $ ntz
-        snipid = paraid
-        t2 = mkTripleText (unParaSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
+        snipid = mkSnipSigl paraid snipnr
+        t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
         sents :: [Triple]
         sents =   concat $ map (mkSentenceTriple2 lang  snipid) (docSents doc0)
         corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )
@@ -62,7 +69,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =       t2  :  sent
 -- currently not producing the not yet used corefs
 
 ----------------------
-mkSentenceTriple2 :: LanguageCode ->   DocSigl  ->    Sentence0 ->  ( [Triple])
+mkSentenceTriple2 :: LanguageCode ->   SnipSigl  ->    Sentence0 ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang   snipid sent
        =      t0 : t1 : t2 :  senteceForm : (toktrips ++ depsTrips)
@@ -72,7 +79,7 @@ mkSentenceTriple2 lang   snipid sent
         t0 = mkTripleType (unSentSigl sentSigl) (mkRDFtype Sentence)
         t1 = mkTripleText   (unSentSigl sentSigl) (mkRDFproperty Parse)
                                 (sparse sent)
-        t2 = mkTriplePartOf (unSentSigl sentSigl) (unDocSigl snipid)
+        t2 = mkTriplePartOf (unSentSigl sentSigl) (unSnipSigl snipid)
         depsTrips =  maybe [] (mkDependenceTypeTriples2 lang sentSigl )
                                 ( sdeps sent) :: [Triple]
         toktrips =  concatMap (mkTokenTriple2 lang sentSigl)
@@ -152,7 +159,7 @@ testOP_F_G textstate docs  = concat
 -- here missing the values for language and paranr
 -- fake should be ok for test
 --
-test_1_F_G :: IO ()
+--test_1_F_G :: IO ()
 test_1_F_G =  testVar3File result1A "resultF1" "resultG1" testOP_F_G
 test_2_F_G =  testVar3File result2A "resultF2" "resultG2" testOP_F_G
 test_3_F_G =  testVar3File result3A "resultF3" "resultG3" testOP_F_G
@@ -161,21 +168,23 @@ test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
 test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
 --test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
 test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
+test_9_F_G = testVar3File result9A "resultF9" "resultG9" testOP_F_G
 test_10_F_G = testVar3File result10A "resultF10" "resultG10" testOP_F_G
+-- 10 seems too big for oporto (without swap)
 
 ------------ coreferences ---------------------
 -- call         corefs = concat $ map (mkCorefTriple2 lang   snipid ) (docCorefs doc0)
 
-mkCorefTriple2 :: LanguageCode -> DocSigl ->     Coref0 -> CorefNr ->  [Triple]
+mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
 -- ^ gives a single set of coreferences  - int is to produce id
 mkCorefTriple2 lang snip coref i  = t0 : t1 : concat  coreftrips
     where
         corefid = mkCorefsigl snip i
         coreftrips = zipWith (mkMention2 lang snip  corefid) (corefMents coref) [1 .. ]
         t0 = mkTripleType (unCorefSigl corefid) (mkRDFtype Coreference )
-        t1 = mkTriplePartOf (unCorefSigl corefid) (unDocSigl snip)  -- perhaps not necessary
+        t1 = mkTriplePartOf (unCorefSigl corefid) (unSnipSigl snip)  -- perhaps not necessary
 
-mkMention2 :: LanguageCode -> DocSigl ->   CorefSigl ->  Mention0  -> Int -> [Triple]
+mkMention2 :: LanguageCode -> SnipSigl ->   CorefSigl ->  Mention0  -> Int -> [Triple]
 mkMention2 lang snipid corefsigl m i = [t0, t00, t10, t1, t2, t3, t4, t5]
     where
         mentionid = unMentionSigl $ mkMentionsigl corefsigl i

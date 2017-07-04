@@ -58,16 +58,31 @@ instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ nlpURItext <#> (toTitle . showT $ p)
 
 type DocSigl = ParaSigl
-unDocSigl = unParaSigl
+unDocSigl = unParaSigl  -- is this ok?? ?
+
+type SnipID0  = Int
+unSnipID0 = id
+
+newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Eq)
+mkSnipSigl :: ParaSigl   -> SnipID0 -> SnipSigl
+unSnipSigl (SnipSigl a) = a
+mkSnipSigl docsigl snipid =  SnipSigl
+      . extendSlashRDFsubj  (formatSnipID  . unSnipID0 $    snipid)
+      . unDocSigl $ docsigl
+  where
+    formatSnipID ::Int -> Text
+    -- format an Int to 2 decimals for Snis
+    formatSnipID  = ("N" <>) . s2t . printf ('%' : '0' : '2' : 'd' :[])
+
 
 newtype SentSigl = SentSigl RDFsubj deriving (Show, Eq)
-mkSentSigl :: DocSigl  -> SentID0 -> SentSigl
+mkSentSigl :: SnipSigl  -> SentID0 -> SentSigl
 unSentSigl (SentSigl a) = a
 -- make the sentence id from buchsigl (docid) and sentnumber
 -- mkSentSigl docid sentid =  RDFsubj $ docid <+> "S" <> (formatSentenceID  . unSentID0 $    sentid)
 mkSentSigl docsigl sentid =  SentSigl
       . extendSlashRDFsubj  (formatSentenceID  . unSentID0 $    sentid)
-      . unDocSigl $ docsigl
+      . unSnipSigl $ docsigl
   where
     formatSentenceID ::Int -> Text
     -- format an Int to 6 decimals for sentences
@@ -112,11 +127,11 @@ type CorefNr = Int
 newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Eq)
 unCorefSigl (CorefSigl a) = a
 
-mkCorefsigl :: DocSigl -> CorefNr -> CorefSigl
+mkCorefsigl :: SnipSigl -> CorefNr -> CorefSigl
 -- given a snip id produce a corefid with the number given
 mkCorefsigl snip c =   CorefSigl
       . extendSlashRDFsubj  (formatCorefID     c)
-      . unParaSigl $ snip
+      . unSnipSigl $ snip
   where
     formatCorefID ::Int -> Text
     -- format an Int to 3 decimals for tokens in sentence
