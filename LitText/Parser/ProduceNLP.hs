@@ -54,27 +54,27 @@ produceNLP showXML textstate tzs = mapM_ (produceOneParaNLP showXML textstate) t
 
 produceNLPnotshow = produceNLP False
 
-test_1_D_XproduceNLPtriples :: IO ()
-test_1_D_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
-test_2_D_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
-test_3_D_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
-test_4_D_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
-test_5_D_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
-test_6_D_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
-test_8_D_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
-test_10_D_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
----- no result file is necessary, because result is zero
----- but results are found in LitTest/test
+--test_1_BAE_XproduceNLPtriples :: IO ()
+--test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
+--test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
+--test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
+--test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
+--test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
+--test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
+--test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
+--test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
+------ no result file is necessary, because result is zero
+------ but results are found in LitTest/test
 --
 
--- tested in test_1_D_XproduceNLPtriples
---testOP_E_F :: LanguageCode -> TextState2 -> [(NLPtext,[Doc0])] -> ErrIO [ Doc0 ]
---testOP_E_F lang textstate inp =
---        mapM  (completeSentencesInDoc debugNLP1 textstate lang)  (map snd inp)
---        -- does produce empty sets ...
---        -- but is already wrong?
---
---
+---- tested in test_1_D_XproduceNLPtriples
+----testOP_E_F :: LanguageCode -> TextState2 -> [(NLPtext,[Doc0])] -> ErrIO [ Doc0 ]
+----testOP_E_F lang textstate inp =
+----        mapM  (completeSentencesInDoc debugNLP1 textstate lang)  (map snd inp)
+----        -- does produce empty sets ...
+----        -- but is already wrong?
+----
+----
 --test_1_E_F :: IO ()
 --test_1_E_F = testVar3FileIO result1A "resultE1" "resultF1" (testOP_E_F German)
 --test_2_E_F = testVar3FileIO result2A "resultE2" "resultF2" (testOP_E_F German)
@@ -82,10 +82,12 @@ test_10_D_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10
 --test_4_E_F = testVar3FileIO result4A "resultE4" "resultF4" (testOP_E_F German)
 --test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" (testOP_E_F English)
 --test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" (testOP_E_F English)
-----test_7_E_F = testVar3FileIO result7A "resultE7" "resultF7" (testOP_E_F English)
-----test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" (testOP_E_F English)
----- 9 german
----- 10 english
+--test_7_E_F = testVar3FileIO result7A "resultE7" "resultF7" (testOP_E_F English)
+--test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" (testOP_E_F English)
+--test_9_E_F = testVar3FileIO result9A "resultE9" "resultF9" (testOP_E_F German)
+--test_10_E_F = testVar3FileIO result10A "resultE10" "resultF10" (testOP_E_F English)
+------ 9 german
+------ 10 english
 
 
 completeSentencesInDoc :: Bool -> TextState2 -> LanguageCode -> ( Doc0)
