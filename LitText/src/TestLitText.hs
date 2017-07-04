@@ -12,12 +12,14 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Strings
 import                   Test.Framework
-import {-@ HTF_TESTS @-} Parser.ReadMarkupAB
-import {-@ HTF_TESTS @-} BuchCode.MarkupText
-import   {-@ HTF_TESTS @-} Lines2para.HandleLayout
-import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore
+--import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
+--import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
+--import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
 --import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- not enough memory on oporto
---import   {-@ HTF_TESTS @-} Lines2para.Lines2para
+-- if the files are not already correct in .littest
+-- problem is in the comparing when error
+import   {-@ HTF_TESTS @-} Lines2para.Lines2para
 --import   {-@ HTF_TESTS @-} Parser.ProduceLit
 --------
 --import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
