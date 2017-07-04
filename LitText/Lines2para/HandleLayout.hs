@@ -7,7 +7,7 @@
 -- should pages become items (for rdf)?
 -- line numbers are not including page number lines
 -- should ignore lines not be put in rdf (yes - avoid pre and post stuff from gutenberg)
-
+-- does not handle language yet
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}

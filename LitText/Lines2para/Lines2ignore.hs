@@ -108,6 +108,11 @@ readLanguageCode msg l  = readNoteT msg l
 markTZsWithLanguage :: LanguageCode -> [TZ] -> [TZ]
 -- put the page number into the list
 markTZsWithLanguage lg = map  (markoneLanguage lg)
+--                if (lg==NoLanguage)
+--                    then error "no language"
+--                    else
+            -- does not work, because noLang is filled earlier
+
     where
         markoneLanguage lg tz@TZtext {} = tz {tzlang = lg }
         markoneLanguage lg tz@TZmarkup {} = tz {tzlang = lg }
