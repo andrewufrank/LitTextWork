@@ -113,6 +113,7 @@ class Unparser  a where
 
 instance Unparser BuchToken where
     -- longer forms must come first for correct parse
+    -- the comparison is independent of case
     markerPure  = toLower' . fromJustNote "not Buch in marker name" . stripPrefix' "Buch" . showT
     marker  =   ("." <>) . markerPure
     markerPureMult BuchSprache = [ "language:", markerPure BuchSprache, "language"]
@@ -120,6 +121,7 @@ instance Unparser BuchToken where
     markerPureMult BuchUntertitel   = [ "subtitle:", markerPure BuchUntertitel, "subtitle"]
     markerPureMult BuchFussnote   = [ "footnote", markerPure BuchFussnote]
     markerPureMult BuchDedikation   = [ "dedication", markerPure BuchDedikation]
+    markerPureMult BuchAuthorLeben   = [ "author:", "lebenauthor", markerPure BuchAuthor]
     markerPureMult BuchAuthor   = [ "author:", markerPure BuchAuthor]
 
     markerPureMult BuchPublikationDetail = [markerPure BuchPublikationDetail, "publicationDetail"
