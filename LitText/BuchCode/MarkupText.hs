@@ -95,7 +95,7 @@ parseMarkup  = fmap removeEmptyMarks . markShortLines
 
 -- result1A, .. result6A is exported form ReadMarkupAB.
 
-test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
+--test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
 ----test_1B_BA :: IO ()
 test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
 test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup

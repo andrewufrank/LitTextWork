@@ -102,7 +102,7 @@ bomWarning v = do  -- not required - parser filter it out
 testDataDir = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
         :: Path Abs Dir
 
-test_0_A_B_textstate_text_1 =   testVar2File result0A "resultB0" textstate2Text
+--test_0_A_B_textstate_text_1 =   testVar2File result0A "resultB0" textstate2Text
 test_1_A_B_textstate_text_1 =   testVar2File result1A "resultB1" textstate2Text
 test_2_A_B_textstate_text_2 =   testVar2File result2A "resultB2" textstate2Text
 test_3_A_B_textstate_text_3 =   testVar2File result3A "resultB3" textstate2Text

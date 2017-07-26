@@ -87,7 +87,7 @@ paragraphs2TZpara =
 
 
 
-test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
+--test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
 test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphsTZ2TZ2
 test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphsTZ2TZ2
 test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphsTZ2TZ2
