@@ -57,7 +57,8 @@ type TextParsec a = Parsec Text () a
 type TextParsecBuch = Parsec Text () [MarkupElement]
 
 -- the type of the line
-data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0 | AllCaps0
+data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
+        -- | AllCaps0
         deriving (Show, Read, Eq )
 
 data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
@@ -85,11 +86,11 @@ data TextZeilen =
 parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
 -- parse a text file to TextZeilen form
 parseMarkup  = fmap removeEmptyMarks . markShortLines
-        . markAllCapsLines
+--        . markAllCapsLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 -- TODO filter for char
 
-test_0B_BA = assertEqual result0BA (parseMarkup result0B)
+--test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- local test
 
 -- result1A, .. result6A is exported form ReadMarkupAB.
@@ -282,7 +283,7 @@ instance Zeilen TextZeilen where
     isTextZeile (TextZeile Text0 _) = True   -- can include footnote text
     isTextZeile (TextZeile Kurz0 _) = True
     isTextZeile (TextZeile Para0 _) = True
-    isTextZeile (TextZeile AllCaps0 _) = True
+--    isTextZeile (TextZeile AllCaps0 _) = True
     isTextZeile _             = False
 
     isTextZeileIncludeInPara (TextZeile Text0 _) = True   -- can include footnote text
@@ -342,20 +343,20 @@ markOneSL limitshort limitlong (TextZeile Text0 t)
 
 markOneSL _ _ x = x
 
-markAllCapsLines :: [TextZeilen] -> [TextZeilen]
-markAllCapsLines = map markOneAllCaps
-
-markOneAllCaps :: TextZeilen -> TextZeilen
-markOneAllCaps tz @ (TextZeile Zahl0 t) = tz
-markOneAllCaps tx @ (TextZeile _ t)  =
-    if isCapitalizedTitle (twm t) then TextZeile AllCaps0 t else tx
---    if isCapitalizedTitle (twm t) then MarkupZeile BuchHL2 t else tx
-    -- is this a clever idea? hl2 for all caps
-    -- how to allow a switch?
-markOneAllCaps x = x
-
-isCapitalizedTitle ::  Text ->   Bool
-isCapitalizedTitle =  not . any isLower . t2s
+--markAllCapsLines :: [TextZeilen] -> [TextZeilen]
+--markAllCapsLines = map markOneAllCaps
+--
+--markOneAllCaps :: TextZeilen -> TextZeilen
+--markOneAllCaps tz @ (TextZeile Zahl0 t) = tz
+--markOneAllCaps tx @ (TextZeile _ t)  =
+--    if isCapitalizedTitle (twm t) then TextZeile AllCaps0 t else tx
+----    if isCapitalizedTitle (twm t) then MarkupZeile BuchHL2 t else tx
+--    -- is this a clever idea? hl2 for all caps
+--    -- how to allow a switch?
+--markOneAllCaps x = x
+--
+--isCapitalizedTitle ::  Text ->   Bool
+--isCapitalizedTitle =  not . any isLower . t2s
 
 averageLengthTextLines :: [TextZeilen] -> (Int,Int)
 --  compute average and max length of text lines
@@ -432,14 +433,12 @@ result0BA =
                                twmMarks = [(7, "[2]"), (5, "[1]")]}},
      LeerZeile,
      MarkupZeile{ttok = BuchTitel,
-                 ttx =
-                   TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]")]}},
+                 ttx = TextWithMarks{twm = "TIT", twmMarks = [(5, "[3]")]}},
      TextZeile{ttt = Text0,
                ttx =
                  TextWithMarks{twm = "zweite,  kurze zeile",
-                               twmMarks =
-                                 [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]")]}},
-     TextZeile{ttt = AllCaps0,
+                               twmMarks = [(7, "[4]"), (1, "[5]"), (0, "[6]"), (12, "[3]")]}},
+     TextZeile{ttt = Text0,
                ttx =
                  TextWithMarks{twm = "II.--THE COUNCIL HELD BY THE RATS",
                                twmMarks = [(34, "[4]")]}},
@@ -447,7 +446,7 @@ result0BA =
                ttx =
                  TextWithMarks{twm = "Old Rodilard, a certain cat,",
                                twmMarks = [(16, "[5]")]}},
-     TextZeile{ttt = AllCaps0,
+     TextZeile{ttt = Kurz0,
                ttx = TextWithMarks{twm = "II - ALL CAPS TEST", twmMarks = []}},
      TextZeile{ttt = Zahl0,
                ttx = TextWithMarks{twm = "[44]", twmMarks = []}},
