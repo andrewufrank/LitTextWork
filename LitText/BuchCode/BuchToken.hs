@@ -123,7 +123,7 @@ instance Unparser BuchToken where
     markerPureMult BuchUntertitel   = [ "subtitle:", markerPure BuchUntertitel, "subtitle"]
     markerPureMult BuchFussnote   = [ "footnote", markerPure BuchFussnote]
     markerPureMult BuchDedikation   = [ "dedication", markerPure BuchDedikation]
-    markerPureMult BuchAuthorLeben   = [ "author:", "lebenauthor", markerPure BuchAuthor]
+    markerPureMult BuchAuthorLeben   = [ "authorleben", "lebenauthor", markerPure BuchAuthorLeben]
     markerPureMult BuchAuthor   = [ "author:", markerPure BuchAuthor]
 
     markerPureMult BuchPublikationDetail = [markerPure BuchPublikationDetail, "publicationDetail"
