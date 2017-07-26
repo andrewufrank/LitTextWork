@@ -221,13 +221,13 @@ instance Zeilen TZ where
 
 
 --test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZlayout
-test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
-test_2BA_BAC = testFile2File "resultBA2" "resultBAC2" paragraphs2TZlayout
-test_3BA_BAC = testFile2File "resultBA3" "resultBAC3" paragraphs2TZlayout
-test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
-test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
-test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
-test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
+--test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
+--test_2BA_BAC = testFile2File "resultBA2" "resultBAC2" paragraphs2TZlayout
+--test_3BA_BAC = testFile2File "resultBA3" "resultBAC3" paragraphs2TZlayout
+--test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
+--test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
+--test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
+--test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
 test_9BA_BAC = testFile2File "resultBA9" "resultBAC9" paragraphs2TZlayout
 test_10BA_BAC = testFile2File "resultBA10" "resultBAC10" paragraphs2TZlayout
 

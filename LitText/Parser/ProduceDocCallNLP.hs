@@ -101,7 +101,7 @@ test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
 test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
 test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
 test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
---test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
+test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
 test_9_C_D = testFile2File "resultBAE9" "resultD9" (map prepareTZ4nlp)
 test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
 

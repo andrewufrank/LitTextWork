@@ -178,6 +178,8 @@ test_5BAD_J = testVar3File result5A "resultBAD5" "resultJ5" layoutTriples
 test_6BAD_J = testVar3File result6A "resultBAD6" "resultJ6" layoutTriples
 ----test_7BAD_J = testVar3File result7A "resultBAD7" "resultJ7" layoutTriples
 test_8BAD_J = testVar3File result8A "resultBAD8" "resultJ8" layoutTriples
+test_9BAD_J = testVar3File result9A "resultBAD9" "resultJ9" layoutTriples
+test_10BAD_J = testVar3File result10A "resultBAD10" "resultJ10" layoutTriples
 
 
 

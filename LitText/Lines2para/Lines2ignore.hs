@@ -53,7 +53,7 @@ paragraphs2TZsimple =
 
 
 
---test_0BAC_BAD = testFile2File "resultBAC0" "resultBAD0" paragraphs2TZsimple
+test_0BAC_BAD = testFile2File "resultBAC0" "resultBAD0" paragraphs2TZsimple
 test_1BAC_BAD = testFile2File "resultBAC1" "resultBAD1" paragraphs2TZsimple
 test_2BAC_BAD = testFile2File "resultBAC2" "resultBAD2" paragraphs2TZsimple
 test_3BAC_BAD = testFile2File "resultBAC3" "resultBAD3" paragraphs2TZsimple
