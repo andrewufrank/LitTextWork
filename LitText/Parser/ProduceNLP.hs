@@ -107,7 +107,7 @@ completeSentencesInDoc debugFlag textstate lang ( doc0) = do
 
 produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
-    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp debugNLP1 showXML (serverLoc textstate) tzp  -- C -> E
+    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp False showXML (serverLoc textstate) tzp  -- C -> E
     mapM_  (produceOneOneParaNLP textstate ntz) (zip [1..] docs )
 
 produceOneOneParaNLP :: TextState2 -> NLPtext -> (Int, Doc0)  -> ErrIO ()
