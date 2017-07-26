@@ -66,7 +66,7 @@ data BuchToken =   -- just the markers
         | BuchVerlag
         | BuchPublikationDetail
         | BuchEntstehungsDatum
-        | BuchOriginalFile
+        | BuchOriginalFile  -- ^ the original file - an url
         | BuchCheckedBy
         | BuchDedikation
         | BuchFussnote
