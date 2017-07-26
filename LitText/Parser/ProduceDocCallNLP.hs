@@ -162,8 +162,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             let texts = getPiece . textSplit $ text
 
             docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
---            when debugNLP $
-            putIOwords ["convertTZ2nlp end", showT text]
+            when debugNLP $ putIOwords ["convertTZ2nlp end", showT text]
 
             return (tz, docs)
 
