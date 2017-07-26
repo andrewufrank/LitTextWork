@@ -113,7 +113,6 @@ test_8_A_B_textstate_text_8 =   testVar2File result8A "resultB8" textstate2Text
 test_9_A_B_textstate_text_9 =   testVar2File result9A "resultB9" textstate2Text
 test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2Text
 
-instance  ShowTestHarness () where
 
 
 litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
