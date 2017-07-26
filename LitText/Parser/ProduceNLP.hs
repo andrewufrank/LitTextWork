@@ -62,7 +62,8 @@ test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" 
 test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
 test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
 test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
-----test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
+test_9_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE9" "resultX9" produceNLPnotshow
+test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
 ------ no result file is necessary, because result is zero
 ------ but results are found in LitTest/test
 --

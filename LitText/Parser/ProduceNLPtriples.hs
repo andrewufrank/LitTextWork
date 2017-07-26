@@ -168,8 +168,8 @@ test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
 test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
 --test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
 test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
---test_9_F_G = testVar3File result9A "resultF9" "resultG9" testOP_F_G
---test_10_F_G = testVar3File result10A "resultF10" "resultG10" testOP_F_G
+test_9_F_G = testVar3File result9A "resultF9" "resultG9" testOP_F_G
+test_10_F_G = testVar3File result10A "resultF10" "resultG10" testOP_F_G
 -- 10 seems too big for oporto (without swap)
 
 ------------ coreferences ---------------------
