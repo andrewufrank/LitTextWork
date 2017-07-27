@@ -116,7 +116,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
     when debugNLP $ putIOwords ["convertTZ2nlp TZ2", showT tz2]
     let mtz = prepareTZ4nlp tz2
     case mtz of
-        Nothing -> do   putIOwords ["convertTZnlp - empty text"]
+        Nothing -> do   when debugNLP $ putIOwords ["convertTZnlp - empty text"]
                         return (zero,[])
         Just tz -> convertTZ2nlpPrepareCall debugNLP showXML sloc tz
 
@@ -170,10 +170,10 @@ convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO (Do
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
-        when debugNLP $
-            putIOwords ["\nconvertTZ2nlpCall start"
+        when True $
+            putIOwords ["convertTZ2nlpCall start"
                         , showT . lengthChar $ text
-                        , showT . take' 100 $ text , "\n"]
+                        , showT . take' 100 $ text ]
         xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
     -- german parser seems to understand utf8encoded bytestring
 

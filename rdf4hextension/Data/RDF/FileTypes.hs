@@ -55,7 +55,7 @@ ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] ()
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
 instance TypedFiles5 [RDF.Triple] () where
--- ^ files with full triles
+-- ^ files with full triples
     mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
 --      where e = mkExtension lpX "nt"
 
@@ -94,8 +94,10 @@ instance TypedFiles5 [RDF.Triple] () where
 
 --    read6 fp  tp = do
 --        let fn2 = fromJustNote "typedfile triples read6" . setExtension (tpext5 tp) $ fp
---        raw :: Text <- callIO $ readFile2 fn2
---        return (lines' raw)
+--        raw :: String <-  readFile2 fn2
+--        putIOwords ["read6 db raw", s2t $ take 100 raw]
+--        let res = readNote "read6 for triples" raw :: [RDF.Triple]
+--        return res
 
 instance TypedFiles5 RDFgraph () where
 -- ^ files with full triles
