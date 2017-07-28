@@ -35,6 +35,9 @@ serverBrest = makeAbsURI "http://nlp.gerastree.at"
 
 localhost = makeAbsURI "http://127.0.0.1"
 
+rdfBase = makeAbsURI "http://gerastree.at"
+
+t=1
 -- -- todo move to uniform-http
 -- makeAbsURI :: Text -> URI
 -- makeAbsURI u = maybe (errorT ["makeURI in Foundation Servers", u])

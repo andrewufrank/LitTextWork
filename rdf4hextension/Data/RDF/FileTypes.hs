@@ -63,7 +63,7 @@ instance TypedFiles5 [RDF.Triple] () where
 
         when rdfGraphDebug $ putIOwords ["triples append6", showT fp]
 --        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = fromJustNote "typedfile triples append6" . setExtension (tpext5 tp) $ fp
+        let fn2 = setExtension (tpext5 tp) $ fp
 --        when rdfGraphDebug $ putIOwords ["triples append6 fn", showT fn2]
 --        hand <- openFile2handle fn2 WriteMode
 --        when rdfGraphDebug $ putIOwords ["triples append6", showT fn2]
@@ -77,7 +77,7 @@ instance TypedFiles5 [RDF.Triple] () where
 
         when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
 --        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = fromJustNote "typedfile triples write6" . setExtension (tpext5 tp) $ fp
+        let fn2 = setExtension (tpext5 tp) $ fp
         when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
@@ -89,7 +89,7 @@ instance TypedFiles5 [RDF.Triple] () where
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
     exist6 fp tp = do
-        let fn2 = fromJustNote "typedfile triples write6" . setExtension (tpext5 tp) $ fp
+        let fn2 =  setExtension (tpext5 tp) $ fp :: Path Abs File
         doesFileExist'  fn2
 
 --    read6 fp  tp = do
