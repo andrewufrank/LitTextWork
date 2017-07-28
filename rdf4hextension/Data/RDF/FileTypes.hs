@@ -9,7 +9,7 @@
 -- Portability :
 --
 -- | the definition of filetypes for turtle (ttl) and ntriples (nt)
---
+-- but when the triples as text, then read file with readFile2
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
