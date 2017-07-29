@@ -15,7 +15,7 @@ import                   Test.Framework
 
 -- note BAE == C
 
-import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
+--import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
 --import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
 --import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
 --import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
@@ -38,7 +38,7 @@ import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- F -> G
 --
 ---- old
-------import {-@ HTF_TESTS @-} Processor.CheckServers
+import {-@ HTF_TESTS @-} Processor.CheckServers
 ------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput
 -------- no test for NLPvocabulary
 ----

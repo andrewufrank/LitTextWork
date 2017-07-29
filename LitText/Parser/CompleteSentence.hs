@@ -33,7 +33,7 @@ import CoreNLP.Defs0
 import CoreNLP.POScodes
 import BuchCode.BuchToken (LanguageCode(..))
 
-import Uniform.HttpGet
+import Uniform.HttpCallWithConduit
 
 completeSentence :: Bool -> URI ->  LanguageCode -> Sentence0 -> ErrIO Sentence0
 completeSentence debugCS serverloc lang sent1 = do
@@ -55,7 +55,7 @@ ttserver s =  addPort2URI  s 17701
 ttProcess :: URI -> LanguageCode -> [Text] ->ErrIO Text
 -- just the call to the server at 17701 ttscottyServer
 ttProcess serverLoc lang toks = do
-    response <- makeHttpPost7 False (ttserver serverLoc) [] "text/plain" (unlines' toks)
+    response <- makeHttpPost7 False (ttserver serverLoc) "" [] "text/plain" (unlines' toks)
 --
 --    let request = makeHTTPrequest5 POST ttserver "text/plain " (unlines' toks)
 --    putIOwords ["ttprocess request", s2t $ show  request]

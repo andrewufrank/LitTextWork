@@ -22,7 +22,7 @@ module Parser.Foundation (
 import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
 import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
 import System.IO (Handle)  -- todo include in FileIO exports
-
+import Uniform.HttpURI
 import Producer.Servers
 import           Test.Framework
 

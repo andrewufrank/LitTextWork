@@ -14,14 +14,15 @@
 module Producer.Servers (
     module Producer.Servers
     , module Network.URI
-    , module Uniform.HttpGet
+    , module Uniform.HttpCallWithConduit
     ) where
 
 
 -- import           Data.RDF.Extension
 import Uniform.Strings
 import Uniform.Error
-import Uniform.HttpGet
+import Uniform.HttpCallWithConduit
+import Uniform.HttpURI
 import Network.URI
 import           Test.Framework
 

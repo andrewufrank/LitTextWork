@@ -22,22 +22,10 @@ module Processor.CheckServers
 
 import           Test.Framework
 
-import Uniform.HttpGet
+import Uniform.HttpURI
+import Uniform.HttpCallWithConduit
 import Parser.Foundation
 import Producer.Servers
---import Main2sub
----- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
---
---import qualified Pipes as Pipe
---import qualified Pipes.Prelude as Pipe
---import Pipes ((>->), (~>))
----- todo fileio - export for pipes
---
---
---import Uniform.Error
---import Uniform.FileIO
---import Uniform.FileStatus
-----import Uniform.Strings hiding ((</>),(<|>))
 
 
 checkAll :: ErrIO Text
@@ -58,15 +46,15 @@ check9000english :: ErrIO Text
 -- ^ test the NLP server for english
 check9000english = do
     response <- makeHttpPost7 True
-            destTest9000
+            destTest9000 ""
             varsTest9000
             mimetypeTest9000e
             bodyTest9000e
     putIOwords ["response from 9000 english brest \n",showT response]
     if response == okResponse9000e then return "" else return response
 
-destTest9000 = addPort2URI  serverBrest 9000
-varsTest9000 = [("annotators", "tokenize,pos")]
+destTest9000 = addPort2URI  serverBrest 9002  -- moved to 9002 for english
+varsTest9000 = [("annotators", Just "tokenize,pos")]
 mimetypeTest9000e = "test/application"
 bodyTest9000e = "This is."
 okResponse9000e = "{\"sentences\":[{\"index\":0,\"tokens\":[{\"index\":1,\"word\":\"This\",\"originalText\":\"This\",\"characterOffsetBegin\":0,\"characterOffsetEnd\":4,\"pos\":\"DT\",\"before\":\"\",\"after\":\" \"},{\"index\":2,\"word\":\"is\",\"originalText\":\"is\",\"characterOffsetBegin\":5,\"characterOffsetEnd\":7,\"pos\":\"VBZ\",\"before\":\" \",\"after\":\"\"},{\"index\":3,\"word\":\".\",\"originalText\":\".\",\"characterOffsetBegin\":7,\"characterOffsetEnd\":8,\"pos\":\".\",\"before\":\"\",\"after\":\"\"}]}]}"
@@ -75,15 +63,15 @@ check9001german :: ErrIO Text
 -- ^ test the NLP server for german
 check9001german = do
     response <- makeHttpPost7 True
-            destTest9001
+            destTest9001 ""
             varsTest9001
             mimetypeTest9001e
             bodyTest9001e
     putIOwords ["response from 9001 english brest \n",showT response]
-    if response == okResponse9001e then return "" else return response
+    if response == okResponse9001e then return "" else return  response
 
 destTest9001 = addPort2URI  serverBrest 9001
-varsTest9001 = [("annotators", "tokenize,pos")]
+varsTest9001 = [("annotators", Just "tokenize,pos")]
 mimetypeTest9001e = "test/application"
 bodyTest9001e = "Das ist so."
 okResponse9001e = "{\"sentences\":[{\"index\":0,\"tokens\":[{\"index\":1,\"word\":\"Das\",\"originalText\":\"Das\",\"characterOffsetBegin\":0,\"characterOffsetEnd\":3,\"pos\":\"PDS\",\"before\":\"\",\"after\":\" \"},{\"index\":2,\"word\":\"ist\",\"originalText\":\"ist\",\"characterOffsetBegin\":4,\"characterOffsetEnd\":7,\"pos\":\"VAFIN\",\"before\":\" \",\"after\":\" \"},{\"index\":3,\"word\":\"so\",\"originalText\":\"so\",\"characterOffsetBegin\":8,\"characterOffsetEnd\":10,\"pos\":\"ADV\",\"before\":\" \",\"after\":\"\"},{\"index\":4,\"word\":\".\",\"originalText\":\".\",\"characterOffsetBegin\":10,\"characterOffsetEnd\":11,\"pos\":\"$.\",\"before\":\"\",\"after\":\"\"}]}]}"
@@ -93,7 +81,7 @@ check17701tt :: ErrIO Text
 -- ^ check the treetagger for the POS for german
 check17701tt = do
     response <- makeHttpPost7 True
-            destTest17701
+            destTest17701 pathEmpty
             varsTest17701
             mimetypeTest17701e
             bodyTest17701e
@@ -101,6 +89,7 @@ check17701tt = do
     if response == okResponse17701e then return "" else return response
 
 destTest17701 = addPort2URI  serverBrest 17701
+pathEmpty = "" :: Text
 varsTest17701 = []
 mimetypeTest17701e = "test/application"
 bodyTest17701e = "Das\nist\nso\n."

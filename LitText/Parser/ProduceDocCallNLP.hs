@@ -139,16 +139,16 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                             _ -> errorT ["convertTZ2nlpPrepareCall"
                                 , showT language, "language has no server"]
 
-            let varsEng =  [("annotators","tokenize,ssplit,pos\
+            let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
                                     \,lemma,ner,depparse,dcoref,coref")
         --                    --  coref, verlangt depparse,
-                            , ("outputFormat","xml")
+                            , ("outputFormat", Just "xml")
                             ]
-            let varsGer =  [("annotators","tokenize,ssplit,pos,ner,depparse")
+            let varsGer =  [("annotators", Just "tokenize,ssplit,pos,ner,depparse")
         --
         -- german only ssplit, pos, ner, depparse
         -- coref and dcoref crash for corenlp
-                            , ("outputFormat","xml")
+                            , ("outputFormat",Just "xml")
                             ]
     --      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
             let vars = case language of
@@ -166,7 +166,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
 
             return (tz, docs)
 
-convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
+convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
@@ -174,7 +174,7 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
             putIOwords ["convertTZ2nlpCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text ]
-        xml ::  Text  <-   makeHttpPost7 False nlpServer vars "text/plain" text
+        xml ::  Text  <-   makeHttpPost7 False nlpServer "" vars "text/plain" text
     -- german parser seems to understand utf8encoded bytestring
 
         when debugNLP  $
