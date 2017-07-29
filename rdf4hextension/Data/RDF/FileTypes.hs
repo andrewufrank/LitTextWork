@@ -47,10 +47,13 @@ unRDFgraph (RDFgraph tlist) = tlist
 
 rdfGraphDebug = False
 
-ntFile = mkTypedFile5 :: TypedFile5 RDFgraph ()
+--ntFile = mkTypedFile5 :: TypedFile5 RDFgraph ()
 -- result is nt, not turtle!
 
 ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] ()
+data Queries
+-- just a definion, no content
+sparqlQueryFile = mkTypedFile5 :: TypedFile5 [Text] Queries
 
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
@@ -92,35 +95,83 @@ instance TypedFiles5 [RDF.Triple] () where
         let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
         doesFileExist'  fn2
 
---    read6 fp  tp = do
+    read6 fp  tp = error "read for triples is not easy and not required"
+--    do
 --        let fn2 = fromJustNote "typedfile triples read6" . setExtension (tpext5 tp) $ fp
 --        raw :: String <-  readFile2 fn2
 --        putIOwords ["read6 db raw", s2t $ take 100 raw]
 --        let res = readNote "read6 for triples" raw :: [RDF.Triple]
 --        return res
 
-instance TypedFiles5 RDFgraph () where
--- ^ files with full triles
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
+
+instance TypedFiles5 [Text] Queries where
+-- ^ files with sparql queries
+    mkTypedFile5 = TypedFile5 {tpext5 = Extension "query"}
 --      where e = mkExtension lpX "nt"
 
-    write5 fp fn tp (RDFgraph nt) = do
-        when rdfGraphDebug $ putIOwords ["RDFgraph write4", showT fp, showT fn]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
-        when rdfGraphDebug $ putIOwords ["RDFgraph write4 effective fn", showT fn2]
-        hand <- openFile2handle fn2 WriteMode
-        when rdfGraphDebug $ putIOwords ["RDFgraph opened", showT fn2]
-        rdfNTwrite hand nt
-        when rdfGraphDebug $ putIOwords ["RDFgraph written", showT fn2]
-        closeFile2  hand
-        when rdfGraphDebug $ putIOwords ["RDFgraph closed", showT fn2]
+    append6 fp  tp queryText = error "not needed append6 for queries"
+--        do
+--
+--        when rdfGraphDebug $ putIOwords ["sparql queries append6", showT fp]
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        let fn2 = setExtension (tpext5 tp)  fp
+----        when rdfGraphDebug $ putIOwords ["sparql queries append6 fn", showT fn2]
+----        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["sparql queries append6", showT fn2]
+--
+--        appendFile2 fn2 (unlines' $ Prelude.map triple2text queryText)
+--
+----        when rdfGraphDebug $ putIOwords ["sparql queries append6", showT fn2]
+----        closeFile2  hand
 
-    read5 fp fn tp = do
-        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
+    write6 fp  tp queryText = do
+
+        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fp]
 --        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        raw <- readFile2 fn2
-        let ent = RDF.parseString RDF.NTriplesParser raw
-        case ent of
-            Left msg -> throwErrorT ["read4 ntdata", showT msg]
-            Right nt -> return (RDFgraph nt)
+        let fn2 = setExtension (tpext5 tp)  fp
+        when rdfGraphDebug $ putIOwords ["sparql queries write6 fn", showT fn2]
+        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
+
+        write2handle  hand   (unlines' queryText)
+
+--        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
+        closeFile2  hand
+--        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
+
+    exist6 fp tp = do
+        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+        doesFileExist'  fn2
+
+    read6 fp  tp = do
+        let fn2 = setExtension (tpext5 tp)  fp
+        raw :: Text <-  readFile2 fn2
+        let res = lines' raw
+        putIOwords ["read6  query ", unlines' res]
+        return res
+
+--instance TypedFiles5 RDFgraph () where
+---- ^ files with full triles
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
+----      where e = mkExtension lpX "nt"
+--
+--    write5 fp fn tp (RDFgraph nt) = do
+--        when rdfGraphDebug $ putIOwords ["RDFgraph write4", showT fp, showT fn]
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
+--        when rdfGraphDebug $ putIOwords ["RDFgraph write4 effective fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["RDFgraph opened", showT fn2]
+--        rdfNTwrite hand nt
+--        when rdfGraphDebug $ putIOwords ["RDFgraph written", showT fn2]
+--        closeFile2  hand
+--        when rdfGraphDebug $ putIOwords ["RDFgraph closed", showT fn2]
+--
+--    read5 fp fn tp = do
+--        let fn2 = fp </> (fn <.> tpext5 tp) -- :: LegalPathname
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        raw <- readFile2 fn2
+--        let ent = RDF.parseString RDF.NTriplesParser raw
+--        case ent of
+--            Left msg -> throwErrorT ["read4 ntdata", showT msg]
+--            Right nt -> return (RDFgraph nt)

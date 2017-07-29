@@ -10,8 +10,8 @@ module Main     where      -- must have Main (main) or Main where
 
 -- all must have {-@ HTF_TESTS @-}
 
-import Uniform.Strings
-import                   Test.Framework
+import  Uniform.Strings
+import  Test.Framework
 
 -- note BAE == C
 

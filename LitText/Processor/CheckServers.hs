@@ -22,7 +22,7 @@ module Processor.CheckServers
 
 import           Test.Framework
 
-import Uniform.HttpURI
+--import Uniform.HttpURI
 import Uniform.HttpCallWithConduit
 import Parser.Foundation
 import Producer.Servers
