@@ -55,12 +55,15 @@ data Queries
 -- just a definion, no content
 sparqlQueryFile = mkTypedFile5 :: TypedFile5 [Text] Queries
 
+data Updates
+-- just a definion, no content
+sparqlUpdateFile = mkTypedFile5 :: TypedFile5 [Text] Updates
+
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
 instance TypedFiles5 [RDF.Triple] () where
 -- ^ files with full triples
     mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
---      where e = mkExtension lpX "nt"
 
     append6 fp  tp triples = do
 
@@ -110,19 +113,6 @@ instance TypedFiles5 [Text] Queries where
 --      where e = mkExtension lpX "nt"
 
     append6 fp  tp queryText = error "not needed append6 for queries"
---        do
---
---        when rdfGraphDebug $ putIOwords ["sparql queries append6", showT fp]
-----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
---        let fn2 = setExtension (tpext5 tp)  fp
-----        when rdfGraphDebug $ putIOwords ["sparql queries append6 fn", showT fn2]
-----        hand <- openFile2handle fn2 WriteMode
-----        when rdfGraphDebug $ putIOwords ["sparql queries append6", showT fn2]
---
---        appendFile2 fn2 (unlines' $ Prelude.map triple2text queryText)
---
-----        when rdfGraphDebug $ putIOwords ["sparql queries append6", showT fn2]
-----        closeFile2  hand
 
     write6 fp  tp queryText = do
 
@@ -148,6 +138,39 @@ instance TypedFiles5 [Text] Queries where
         raw :: Text <-  readFile2 fn2
         let res = lines' raw
         putIOwords ["read6  query ", unlines' res]
+        return res
+
+instance TypedFiles5 [Text] Updates where
+-- ^ files with sparql queries
+    mkTypedFile5 = TypedFile5 {tpext5 = Extension "update"}
+--      where e = mkExtension lpX "nt"
+
+    append6 fp  tp queryText = error "not needed append6 for Updates"
+
+    write6 fp  tp queryText = do
+
+        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fp]
+--        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+        let fn2 = setExtension (tpext5 tp)  fp
+        when rdfGraphDebug $ putIOwords ["sparql Updates write6 fn", showT fn2]
+        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
+
+        write2handle  hand   (unlines' queryText)
+
+--        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
+        closeFile2  hand
+--        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
+
+    exist6 fp tp = do
+        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+        doesFileExist'  fn2
+
+    read6 fp  tp = do
+        let fn2 = setExtension (tpext5 tp)  fp
+        raw :: Text <-  readFile2 fn2
+        let res = lines' raw
+        putIOwords ["read6  Updates ", unlines' res]
         return res
 
 --instance TypedFiles5 RDFgraph () where
