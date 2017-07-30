@@ -211,15 +211,18 @@ test_typedneg20 = assertEqual (zo (-20))
             (mkTripleInteger s1 r1 (-20) )
 
 rdfsURI =  "http://www.w3.org/2000/01/rdf-schema#"
+rdfURI =  "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 
 mkTripleType :: RDFsubj -> RDFtype -> Triple
+-- ^ make a triple with the rdf type = a
 mkTripleType s  o = triple subj pred obj
     where
         subj = unode . unRDFsubj $ s
-        pred = unode $ rdfsURI <> "type"
+        pred = unode $ rdfURI <> "type"
         obj = unode . unRDFtype $ o
 
 mkTriplePartOf :: RDFsubj -> RDFsubj -> Triple
+-- ^ make a triple with the rdfs partOf predicate
 mkTriplePartOf s  o = triple subj pred obj
     where
         subj = unode . unRDFsubj $ s
