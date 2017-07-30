@@ -21,8 +21,9 @@ module Producer.Servers (
 -- import           Data.RDF.Extension
 import Uniform.Strings
 import Uniform.Error
-import Uniform.HttpCallWithConduit
-import Uniform.HttpURI
+import Uniform.FileIO (makeAbsDir)
+import Uniform.HttpCallWithConduit (makeAbsURI)
+--import Uniform.HttpURI
 import Network.URI
 import           Test.Framework
 
@@ -38,7 +39,8 @@ localhost = makeAbsURI "http://127.0.0.1"
 
 rdfBase = makeAbsURI "http://gerastree.at"
 
-t=1
+dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
+
 -- -- todo move to uniform-http
 -- makeAbsURI :: Text -> URI
 -- makeAbsURI u = maybe (errorT ["makeURI in Foundation Servers", u])
