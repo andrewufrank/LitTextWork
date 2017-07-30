@@ -33,7 +33,7 @@ import Producer.Servers
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
-
+import Uniform.HttpCallWithConduit (makeHttpPost7)
 
 data NLPtext = NLPtext { tz3loc :: TextLoc
                         , tz3para :: ParaNum
