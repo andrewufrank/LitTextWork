@@ -24,7 +24,7 @@ import Processor.ProcessAll hiding ((<>) , (</>), (<.>))
 -- import           Parser.LinesToParagrahs
 --import           Uniform.FileIO         hiding ((<>))
 --import           Uniform.Strings              hiding ((<>), (</>), (<.>))
-import Lines2para.Lines2ignore (LanguageCode, readLanguageCode)
+--import Lines2para.Lines2ignore (LanguageCode, readLanguageCode)
 --            hiding ((<>) , (</>), (<.>))
 
 import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
@@ -43,14 +43,14 @@ main = do
         (parseAndExecute
                (unlinesT ["gets the nt files" ]
                )
-        "orig/test, language"
+        "orig/test"
         )
 resfile  = makeRelFile "resultCollectAll"
 
 --- cmd line parsing
 data LitArgs = LitArgs
   { argOrigTest   :: String   -- ^ orig or test to decide where to take the file
-  , argLanguage :: String -- ^ the languages of the processed files
+--  , argLanguage :: String -- ^ the languages of the processed files
                 -- others will be sidestepped
 --  , argGraph  :: String  -- ^ the graph
   }
@@ -62,11 +62,11 @@ cmdArgs = LitArgs
         --   long "subdir" <>
           metavar "STRING"
          <> help "orig or test" )
-     <*> argument str
-          (
-        --   long "filename" <>
-          metavar "STRING"
-         <> help "language" )
+--     <*> argument str
+--          (
+--        --   long "filename" <>
+--          metavar "STRING"
+--         <> help "language" )
 --     <*> argument str
 --          (
 --        --   long "filename" <>
@@ -79,8 +79,8 @@ parseAndExecute  :: Text -> Text ->  ErrIO ()
 parseAndExecute t1 t2    = do
         args <- callIO $ execParser opts
         let resfile  = makeRelFile "resultCollect"
-        let lang = readLanguageCode "readLangCode in MainCollect"
-                    (s2t $ argLanguage args) :: LanguageCode
+--        let lang = readLanguageCode "readLangCode in MainCollect"
+--                    (s2t $ argLanguage args) :: LanguageCode
 
         let generality  = if isPrefixOf' "o" (argOrigTest args)
                 then generalityOrig4
@@ -88,7 +88,7 @@ parseAndExecute t1 t2    = do
         let source = if isPrefixOf' "o" (argOrigTest args)
                 then sourceOrig4
                 else sourceTest4
-        processAll False lang source  generality  resfile
+        processAll False  source  generality  resfile
 --        processAll False dir (s2t . argDB $ args) (Just . s2t $ argGraph args) resultFile
 --        -- true for debug stores only the first 3 triples...
         return ()
