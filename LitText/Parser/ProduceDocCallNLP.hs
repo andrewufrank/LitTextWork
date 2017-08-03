@@ -34,6 +34,7 @@ import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
 import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
+import Text.Regex (mkRegex, subRegex)
 
 data NLPtext = NLPtext { tz3loc :: TextLoc
                         , tz3para :: ParaNum
@@ -95,15 +96,15 @@ nlpServerNone  = nlpServerEnglish
 -- should be a server just returning the input tokenized etc
 
 
-test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
-test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
-test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
-test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
-test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
-test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
-test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
-test_9_C_D = testFile2File "resultBAE9" "resultD9" (map prepareTZ4nlp)
-test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
+--test_1_C_D = testFile2File "resultBAE1" "resultD1" (map prepareTZ4nlp)
+--test_2_C_D = testFile2File "resultBAE2" "resultD2" (map prepareTZ4nlp)
+--test_3_C_D = testFile2File "resultBAE3" "resultD3" (map prepareTZ4nlp)
+--test_4_C_D = testFile2File "resultBAE4" "resultD4" (map prepareTZ4nlp)
+--test_5_C_D = testFile2File "resultBAE5" "resultD5" (map prepareTZ4nlp)
+--test_6_C_D = testFile2File "resultBAE6" "resultD6" (map prepareTZ4nlp)
+--test_8_C_D = testFile2File "resultBAE8" "resultD8" (map prepareTZ4nlp)
+--test_9_C_D = testFile2File "resultBAE9" "resultD9" (map prepareTZ4nlp)
+--test_10_C_D = testFile2File "resultBAE10" "resultD10" (map prepareTZ4nlp)
 
 -------------------------------------------------D -> E
 
@@ -118,7 +119,35 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
     case mtz of
         Nothing -> do   when debugNLP $ putIOwords ["convertTZnlp - empty text"]
                         return (zero,[])
-        Just tz -> convertTZ2nlpPrepareCall debugNLP showXML sloc tz
+        Just tz -> convertTZ2nlpPrepareCall True showXML sloc tz
+
+cleanText :: Text -> Text
+-- ^ replace some special stuff which causes troubles
+-- eg italics marks, 9s. or 4d. or row-house
+cleanText    = subRegex' "_([a-zA-Z]+)_" "\\1"  -- italics
+            . subRegex' "([0-9])([ds])."  "\\1\\2"   -- shilind/pence
+            . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1\\2"  -- two-words
+
+{-   s2t $  subRegex italics t3 italicsRep
+
+    where
+        t1 = t2s t
+        t2 = subRegex shilling t1 shillingRep
+        t3 = subRegex twoWords t2 twoWordsRep
+
+        italics = mkRegex "_([a-zA-Z]+)_"
+        italicsRep =   "\\1"
+        shilling = mkRegex "([0-9])([ds])."
+        shillingRep =  "\\1\\2"
+        twoWords = mkRegex "([a-zA-Z]+)-([a-zA-Z]+)"
+        twoWordsRep =  "\\1\\2"
+    -}
+subRegex' :: Text -> Text -> Text -> Text
+-- replace the in the t the regex with the replacement
+subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
+
+test_clean1 = assertEqual "The father went to the rowhouse for 2d and got it."
+        (cleanText "The _father_ went to the row-house for 2d. and got it.")
 
 convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO  (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
@@ -128,6 +157,9 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
 
     let language = tz3lang tz
     let text = tz3text tz
+    -- reduce for some special cases _italics_
+    -- should be done before the split, because . of abbreviations are elliminated
+
     if null' text then return (tz,[])
         else do
             when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall tz", showT tz]
@@ -212,15 +244,15 @@ testOP_C_E resultXA resultBAEfile = do
     putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
     return res
 
-test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
-test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
-test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
-test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
-test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
-test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
-test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
-test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
-test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
+--test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
+--test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
+--test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
+--test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
+--test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
+--test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
+--test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
+--test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
+--test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
 -- no test to use resultE1 and produce resultE1
 
