@@ -19,15 +19,18 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
 import Processor.ProcessAll hiding ((<>) , (</>), (<.>))
-import           Parser.Foundation hiding ((<>) , (</>), (<.>))
+--import           Parser.Foundation ()
+--     hiding ((<>) , (</>), (<.>))
 -- import           Parser.LinesToParagrahs
-import           Uniform.FileIO         hiding ((<>))
+--import           Uniform.FileIO         hiding ((<>))
 --import           Uniform.Strings              hiding ((<>), (</>), (<.>))
-import Lines2para.Lines2ignore hiding ((<>) , (</>), (<.>))
+import Lines2para.Lines2ignore (LanguageCode, readLanguageCode)
+--            hiding ((<>) , (</>), (<.>))
+
+import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 
 import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
-import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import           Options.Applicative
 
 
@@ -79,16 +82,13 @@ parseAndExecute t1 t2    = do
         let lang = readLanguageCode "readLangCode in MainCollect"
                     (s2t $ argLanguage args) :: LanguageCode
 
---        let resultFile = makeAbsFile "/home/frank/processAllInt.txt"
---        let dirOrig = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals"
---        let dirTest = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
         let generality  = if isPrefixOf' "o" (argOrigTest args)
                 then generalityOrig4
                 else generalityTest4
         let source = if isPrefixOf' "o" (argOrigTest args)
                 then sourceOrig4
                 else sourceTest4
-        (processAll source  generality  resfile)
+        processAll False lang source  generality  resfile
 --        processAll False dir (s2t . argDB $ args) (Just . s2t $ argGraph args) resultFile
 --        -- true for debug stores only the first 3 triples...
         return ()

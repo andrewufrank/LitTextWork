@@ -27,6 +27,8 @@ import           Test.Framework
 import Parser.Foundation hiding ((<>) , (</>), (<.>))
 import Producer.Servers
 import Main2sub
+import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
+
 -- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
 
 import qualified Pipes as Pipe
@@ -41,22 +43,24 @@ import Uniform.FileStatus
 --import Uniform.Strings hiding ((</>),(<|>))
 import Data.RDF.FileTypes (ntFileTriples)
 
-processAll :: TextSource -> DestGenerality -> Path ar File  -> ErrIO ()
+processAll :: Bool -> LanguageCode -> TextSource -> DestGenerality -> Path ar File  -> ErrIO ()
 -- | get all markup files in the partially filled TextState2
 -- the output goes to the second, not the triples
-processAll ts dg  file  =  do
+-- debug flag is not yet used
+
+processAll debug lang ts dg  file  =  do
   let path = sourceDir ts
   resFile <- makeAbsolute file
   bracketErrIO (openFile2handle resFile WriteMode)
-                (closeFile2)
-                (\hand -> do
-                      Pipe.runEffect $
-                        getRecursiveContents path
-                        >-> Pipe.filter isMarkup --
-                        >-> Pipe.mapM (fmap t2s . processOneMarkup ts dg)
-                    --    >-> P.stdoutLn
-                        >-> Pipe.toHandle hand
-                )
+        (closeFile2)
+        (\hand -> do
+              Pipe.runEffect $
+                getRecursiveContents path
+                >-> Pipe.filter isMarkup --
+                >-> Pipe.mapM (fmap t2s . processOneMarkup debug lang ts dg)
+            --    >-> P.stdoutLn
+                >-> Pipe.toHandle hand
+        )
 
 isMarkup :: Path Abs File -> Bool
 isMarkup  = hasExtension (Extension "markup")
@@ -68,9 +72,10 @@ isMarkup  = hasExtension (Extension "markup")
 --debugNLP = False
 litDebugOnly = False
 
-processOneMarkup :: TextSource -> DestGenerality -> Path Abs File -> ErrIO Text
+processOneMarkup :: Bool -> LanguageCode -> TextSource -> DestGenerality -> Path Abs File -> ErrIO Text
 -- process one markup file, if the nt file does not exist
-processOneMarkup ts dg lfp = do
+-- the language is correct
+processOneMarkup debug lang ts dg lfp = do
     let textstate2 = fillTextState ts dg lfp
     putIOwords ["\nprocessOneMarkup", showT textstate2]
     ntExist <- exist6 (textfilename textstate2) ntFileTriples
@@ -109,7 +114,7 @@ generalityOrig4 = DGoutDir litOrigDir1
 
 test_0 = do
     res0 <- runErr $ do
-        processAll sourceShortTest generalityShortTest resfileN
+        processAll False English sourceShortTest generalityShortTest resfileN
     putIOwords ["test_0 - return:", showT res0]
     resN <- readFile5 resfileN
     res0 <- readFile5 resfile0
