@@ -232,25 +232,40 @@ textSplit :: Text -> [Text]
 --textSplit =  fromJustNote "textSplit" . splitOn' ". "
 textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
 -- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
-
+-- issue: splits for "costs 1s. per year" and similar
+-- could be controled by merging pieces when number "s." is at end of piece
+-- regular expression used in  geany could be used? is this save?
 
 
 getPiece :: [Text] -> [Text]
 -- get a piece of length < 2000
-getPiece ts = chop (takePiece "") ts
+getPiece   = chop (takePiece "")
 
 --chop :: ([a] -> (b, [a])) -> [a] -> [b]
-
+--A useful recursion pattern for processing a list to produce a new list,
+--often used for "chopping" up the input list.
+--Typically chop is called with some function that will
+--consume an initial prefix of the list and produce a value and the rest of the list.
 
 takePiece :: Text  -> [Text] ->   (Text, [Text])
 takePiece b [] = (b,[])
-takePiece b (a:as) = if lengthChar ab > 2000 then (b, a:as)
-                        else takePiece ab as
-                    where ab = concat' [b, " ", a]
+takePiece b (a:as)
+    | null' b && lengthChar a > limit = (a, as)
+    | lengthChar ab > limit = (b, a:as)
+    | otherwise = takePiece ab as  -- accumulate a larger piece
+                    where
+                        ab = concat' [b, " ", a]
+                        limit = 2000
 
 --test_longText1 ::  IO ()
 --test_longText1 = testFile2File "longtext.txt" "lt1" textid
 --test_split = testFile2File "lt1" "lt2" textSplit
 --test_chop = testFile2File "lt2" "lt3" getPiece
 
+-- test with limit 5
+--test_getPiece1 = assertEqual  ["abcdefg", " hik"] (getPiece ["abcdefg", "hik"])
+--test_getPiece2 = assertEqual [" abc", " defg", " hik"] (getPiece ["abc","defg", "hik"])
+--test_getPiece3 = assertEqual  [" AB", "abcdefg", " hik"] (getPiece ["AB","abcdefg", "hik"])
+--test_getPiece4 = assertEqual  [" AB", " abc", " d ef", " g hi", " k"]
+--            (getPiece ["AB","abc", "d", "ef","g", "hi","k"])
 
