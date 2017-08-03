@@ -20,6 +20,7 @@
 {-# LANGUAGE RecordWildCards #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+{-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
 --{-# OPTIONS_GHC -w #-}
 
 module Lines2para.Lines2para

@@ -15,7 +15,7 @@ import  Test.Framework
 
 -- note BAE == C
 
-import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
+--import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
 --import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
 --import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
 --import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
@@ -26,7 +26,7 @@ import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
 --import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- > BAEx
 --import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- > Hx
 ----------
---import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
+import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
 ------    -- makes result D and E
 --------                -- tests only the production of the doc files
 --import   {-@ HTF_TESTS @-} Parser.CompleteSentence
