@@ -4,6 +4,7 @@
 -- Copyright   :  andrew u frank -
 --
 -- |  deal wit ignored lines and language
+-- ignore must ignore lines, even if they have a markup
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts    #-}
@@ -53,7 +54,7 @@ paragraphs2TZsimple =
 
 
 
-test_0BAC_BAD = testFile2File "resultBAC0" "resultBAD0" paragraphs2TZsimple
+----test_0BAC_BAD = testFile2File "resultBAC0" "resultBAD0" paragraphs2TZsimple
 test_1BAC_BAD = testFile2File "resultBAC1" "resultBAD1" paragraphs2TZsimple
 test_2BAC_BAD = testFile2File "resultBAC2" "resultBAD2" paragraphs2TZsimple
 test_3BAC_BAD = testFile2File "resultBAC3" "resultBAD3" paragraphs2TZsimple
@@ -158,8 +159,8 @@ markTZsWithIgnore  = map  markoneWithIgnore
     where
         markoneWithIgnore  tz1@TZtext {} =
                 TZignore {tzloc = tzloc tz1, tztext = tztext tz1 }
---        markoneWithIgnore  tz1@TZmarkup {} =
---                TZignore {tzloc = tzloc tz1, tztext = tztext tz1 }
+        markoneWithIgnore  tz1@TZmarkup {} =
+                TZignore {tzloc = tzloc tz1, tztext = tztext tz1 }
 -- keep the markup codes in the ignore blocks, simplifies markup
 -- possibly automatic from guttenberg texts
         markoneWithIgnore  tz1 = tz1
