@@ -125,8 +125,9 @@ cleanText :: Text -> Text
 -- ^ replace some special stuff which causes troubles
 -- eg italics marks, 9s. or 4d. or row-house
 cleanText    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
-            . subRegex' "([0-9])([ds])."  "\\1 \\2"   -- shilind/pence
-            . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
+                            -- but only within one line
+            . subRegex' "([0-9])([ds])."  "\\1 \\2 "   -- shilind/pence
+            . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2 "
                             -- two-words,split with blank
 
 {-   s2t $  subRegex italics t3 italicsRep
