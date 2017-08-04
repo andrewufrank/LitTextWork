@@ -124,7 +124,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
 cleanText :: Text -> Text
 -- ^ replace some special stuff which causes troubles
 -- eg italics marks, 9s. or 4d. or row-house
-cleanText    = subRegex' "_([a-zA-Z]+)_" "\\1"  -- italics
+cleanText    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
             . subRegex' "([0-9])([ds])."  "\\1\\2"   -- shilind/pence
             . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1\\2"  -- two-words
 
@@ -148,6 +148,12 @@ subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
 
 test_clean1 = assertEqual "The father went to the rowhouse for 2d and got it."
         (cleanText "The _father_ went to the row-house for 2d. and got it.")
+test_clean2 = assertEqual ""
+        (cleanText tx1)
+
+tx1 = "  Knots of idle-men who never seem to \"move on\" stared at the passersby \
+    \on the South Bridge, for 3s. 2d. .  Struggle hung over all.  \
+    \This street named the _Via Dolorosa_."
 
 convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO  (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
@@ -191,7 +197,11 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
 
             when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
 
-            let texts = getPiece . textSplit $ text
+            let text2 = case language of
+                            English -> cleanText text
+                            _ -> text
+
+            let texts = getPiece . textSplit $ text2
 
             docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
             when debugNLP $ putIOwords ["convertTZ2nlp end", showT text]
