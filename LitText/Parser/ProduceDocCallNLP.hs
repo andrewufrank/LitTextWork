@@ -148,11 +148,12 @@ subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
 
 test_clean1 = assertEqual "The father went to the rowhouse for 2d and got it."
         (cleanText "The _father_ went to the row-house for 2d. and got it.")
-test_clean2 = assertEqual ""
-        (cleanText tx1)
+test_clean2 = assertEqual "  Knots of idlemen  on the South Bridge, for 3s 2d . \
+    \  This street named the Via Dolorosa."
+ (cleanText tx1)
 
-tx1 = "  Knots of idle-men who never seem to \"move on\" stared at the passersby \
-    \on the South Bridge, for 3s. 2d. .  Struggle hung over all.  \
+tx1 = "  Knots of idle-men  \
+    \on the South Bridge, for 3s. 2d. .   \
     \This street named the _Via Dolorosa_."
 
 convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO  (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
@@ -204,7 +205,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             let texts = getPiece . textSplit $ text2
 
             docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
-            when debugNLP $ putIOwords ["convertTZ2nlp end", showT text]
+            when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
 
             return (tz, docs)
 
