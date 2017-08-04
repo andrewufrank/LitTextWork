@@ -26,15 +26,15 @@ progTitle = "put file into the store  " :: Text
 
 main = startProg programName progTitle
         (parseAndExecute
-            (unlinesT ["converts a text.markup file in several .nt ntriple files"
-            , "litmain subdirname filename project buch language"])
-        "litmain subdirname filename project buch language"
-        (mainLitAndNLPproduction False) -- implied TextState as argument, returned by parseAndExecute
+            (unlinesT ["converts a text.markup file to .nt ntriple files"
+            , "xx"])
+        "test/origin author buch"
         )
 
 --- cmd line parsing
 data LitArgs = LitArgs
-  { argdir   :: String   -- ^ the subdirectory in originals
+  { argOrigTest   :: String   -- ^ orig or test to decide where to take the file
+  , argdir   :: String   -- ^ the subdirectory in originals
                         -- where the markup file is
                         -- the same dirname is used in convertsDir
   , argbuch  :: String -- ^ the filename in the dir
@@ -45,26 +45,32 @@ cmdArgs :: Parser (LitArgs)
 cmdArgs = LitArgs
      <$> argument str
           (
-        --   long "subdir" <>
-          metavar "STRING"
+--          long "test" <>
+          metavar "(Orig or Test)"
+         <> help "orig or test" )
+     <*> argument str
+          (
+          metavar "Author"
          <> help "subdirectory name in LitOriginal - author" )
      <*> argument str
           (
-        --   long "filename" <>
-          metavar "STRING"
+          metavar "buch"
          <> help "buch - filename " )
- --    <*> argument str
- --         (
---        --   long "filename" <>
- --         metavar "STRING"
---         <> help "graph " )
 
 
-parseAndExecute  :: Text -> Text -> (TextState2  -> ErrIO () ) -> ErrIO ()
-parseAndExecute t1 t2 op  = do
+parseAndExecute  :: Text -> Text ->  ErrIO ()
+parseAndExecute t1 t2   = do
         args <- callIO $ execParser opts
-        let textstate = cmd2textstate args
-        op textstate
+--        let textstate = cmd2textstate args
+        let generality  = if isPrefixOf' "o" (argOrigTest args)
+                then generalityOrig4
+                else generalityTest4
+        let source = if isPrefixOf' "o" (argOrigTest args)
+                then sourceOrig4
+                else sourceTest4
+        let textstate = fillTextState2 source generality
+                 (argdir args) (argbuch args)
+        mainLitAndNLPproduction False  textstate
       where
         opts = info (helper <*> cmdArgs)
           ( fullDesc

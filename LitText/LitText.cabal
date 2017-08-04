@@ -77,17 +77,12 @@ Test-Suite nlpTestAuto
         , uniform-convenience >=0.0.9.12
         , uniform-error >=0.0.10
         , litFoundation
---        , readMarkup
---        , buchCode
---        , lines2para
         , LitText
---        , coreNLP
- --       , rdf4store
     default-language: Haskell2010
     hs-source-dirs: src
     other-modules: Main2sub
 
-executable collect3
+executable ntallmake3
     main-is: MainCollect.hs
     build-depends: base, HTF
         , uniform-fileio
@@ -99,17 +94,7 @@ executable collect3
     hs-source-dirs: src
     other-modules: Main2sub
 
---executable collectTest3
---    main-is: MainCollectTest.hs
---    build-depends: base, HTF
---        , uniform-fileio
---        , uniform-convenience
---        , LitText
---    default-language: Haskell2010
---    hs-source-dirs: src
---    other-modules: Main2sub
-
-executable produce3
+executable ntmake3
     main-is: MainProduction.hs
     build-depends: base, HTF
         , uniform-strings
@@ -117,10 +102,6 @@ executable produce3
         , uniform-convenience
         , LitText
         , litFoundation
---        , buchCode
---        , readMarkup
---        , lines2para
- --       , rdf4store
         , optparse-applicative
 
     default-language: Haskell2010
