@@ -118,7 +118,10 @@ convOneTextZeile2triple textstate tz  = case tz of
 --    TZzahl {}  -> errorT ["formParagraphs","should not have TZzahl left", showT tz]
     TZ2markup {} -> case tz2tok tz of
 --            BuchTitel -> titleTriple textstate tz
-            BuchTitel -> hlTriple textstate BuchTitel tz
+            BuchTitel -> do
+                            hlTriple textstate BuchTitel tz
+                            otherBuchTriple textstate tz
+                            -- create a simple title property for the werk
             BuchHL1   -> hlTriple textstate BuchHL1 tz
             BuchHL2   -> hlTriple textstate BuchHL2 tz
             BuchHL3   -> hlTriple textstate BuchHL3 tz
