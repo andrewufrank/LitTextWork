@@ -62,7 +62,7 @@ test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
 
 data LitProperty =  HasTitle | InWerk | InBuch | InPart
         | AufSeite  -- ^ text starts on this page
-        -- asIsBuch || Titel | HL1 | HL2 | HL3 | Paragraph
+        | Text -- instead of  Titel | HL1 | HL2 | HL3 | Paragraph
         --  the text for this textual unit
         deriving (Show, Eq, Enum)
 
@@ -166,7 +166,7 @@ inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)  (buchU
 hlTriple :: TextState2 -> BuchToken -> TZ2 -> [Triple]
 -- ^ produce the triples for header levels
 hlTriple textstate mk tz =
-    [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty mk)
+    [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
         (twm $ tz2text tz)
     , inWerkTriple textstate (unParaSigl sigl)
     , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
@@ -188,7 +188,7 @@ paraTriple :: TextState2 -> TZ2 -> [Triple]
 paraTriple textstate tz =
     [
 --    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ((decodeLatin1 . encodeUtf8 )  $ zeilenText tz)
-    mkTripleLang lang (unParaSigl sigl) (mkRDFproperty BuchParagraph)
+    mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
                                         (zeilenText tz)
 --    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ( zeilenText tz)
                     -- do not remove hyphens and text breaks, exactly as in buch
