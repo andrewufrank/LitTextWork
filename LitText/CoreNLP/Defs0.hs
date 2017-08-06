@@ -71,7 +71,7 @@ data Doc0 = Doc0 {docSents:: [Sentence0]
 instance Zeros Doc0 where zero = Doc0 [] []
 
 data Sentence0 = Sentence0 {sid :: SentID0
-                        , sparse :: Text  -- could be the parse tree
+                        , sparse :: Text  -- the parse tree
                         , stoks :: [Token0]
                         , sdeps :: Maybe DependenceType0
                         -- should be only one or none

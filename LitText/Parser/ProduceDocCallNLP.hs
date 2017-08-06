@@ -206,6 +206,8 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             let texts = getPiece . textSplit $ text2
 
             docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
+            when False $ putIOwords ["convertTZ2nlp parse"
+                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
             when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
 
             return (tz, docs)
@@ -221,11 +223,11 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
         xml ::  Text  <-   makeHttpPost7 False nlpServer "" vars "text/plain" text
     -- german parser seems to understand utf8encoded bytestring
 
-        when debugNLP  $
+        when False  $
             putIOwords ["convertTZ2nlpCall end \n", showT xml]
 
         doc0 <- readDocString showXML xml                    -- E -> F
-        when debugNLP  $
+        when False  $
             putIOwords ["convertTZ2nlpCall doc0 \n", showT doc0]
 
         return   doc0
