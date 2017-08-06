@@ -147,10 +147,10 @@ subRegex' :: Text -> Text -> Text -> Text
 -- replace the in the t the regex with the replacement
 subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
 
-test_clean1 = assertEqual "The father went to the rowhouse for 2d and got it."
+test_clean1 = assertEqual "The father went to the row house for 2 d  and got it."
         (cleanText "The _father_ went to the row-house for 2d. and got it.")
-test_clean2 = assertEqual "  Knots of idlemen  on the South Bridge, for 3s 2d . \
-    \  This street named the Via Dolorosa."
+test_clean2 = assertEqual "  Knots of idle men  on the South Bridge, for 3 s  2 d  .\
+        \   This street named the Via Dolorosa."
  (cleanText tx1)
 
 tx1 = "  Knots of idle-men  \
