@@ -134,12 +134,13 @@ mkDependenceTypeTriples2 lang sentSigl  d   =  t1 : t2 : ts
                 -- passes sentSigl to construct the tokenid later
 
 mkDependenceTriple2 :: LanguageCode -> SentSigl -> DepTypeSigl -> Dependence0 -> Int -> [Triple]
-mkDependenceTriple2 lang sentid depTid dep i  =   t2 : t4 : (t5 ++ t6)
+mkDependenceTriple2 lang sentid depTid dep i  =  t0: t2 : t4 : (t5 ++ t6)
 -- dependence construction produces incorrect (white space, " etc in depSigl
     where
         depid = mkDepSigl depTid i
                 -- must be numbered - the same code may appear twice (dtype dep)
         dependencyCode = shownice . dtype $ dep
+        t0 = mkTripleType (unDepSigl depid) (mkRDFtype Dependence)
         t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
         t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency)(shownice $ dtype dep)
         t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
