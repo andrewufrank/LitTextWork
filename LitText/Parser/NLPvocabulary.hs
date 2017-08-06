@@ -50,7 +50,7 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
 instance RDFproperties NLPproperty where
     mkRDFproperty p = RDFproperty $ nlpURItext <#> (toLowerStart . showT $ p)
 
-data NLPtype = Doc | Sentence | Token
+data NLPtype = Doc | Snip | Sentence | Token
     | DepType | Dependence | Mention | Coreference
   deriving (Show, Eq, Enum)
 

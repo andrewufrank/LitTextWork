@@ -62,6 +62,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 --        lang = tz3lang ntz
         paraid = paraSigl textstate $ paranr -- . tz3para $ ntz
         snipid = mkSnipSigl paraid snipnr
+        t0 = mkTripleType (unSnipSigl snipid) (mkRDFtype Snip)
         t1 = mkTriplePartOf (unSnipSigl snipid) (unParaSigl paraid)
         t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
 --        t3 = mkTripleType  (unParaSigl paraid) (mkRDFtype Paragraph)
