@@ -115,31 +115,35 @@ debugTurtle = True
 convOneTextZeile2triple :: TextState2 -> TZ2 -> [Triple]
 -- produce all triples necessary for each line item
 convOneTextZeile2triple textstate tz  = case tz of
---    TZzahl {}  -> errorT ["formParagraphs","should not have TZzahl left", showT tz]
     TZ2markup {} -> case tz2tok tz of
---            BuchTitel -> titleTriple textstate tz
-            BuchTitel -> do
-                            hlTriple textstate BuchTitel tz
-                            otherBuchTriple textstate tz
+            BuchTitel -> otherBuchTriple textstate tz
+                            ++ hlTriple textstate BuchTitel tz
                             -- create a simple title property for the werk
             BuchHL1   -> hlTriple textstate BuchHL1 tz
             BuchHL2   -> hlTriple textstate BuchHL2 tz
             BuchHL3   -> hlTriple textstate BuchHL3 tz
-            _         -> otherBuchTriple textstate tz
---    TZleer {} -> [] -- where not elliminated?
-----         errorT ["formParagraphs","should not leer", showT tz]
---    TZtext {} -> errorT ["formParagraphs","should not have single text", showT tz]
---    TZkurz {} -> errorT ["formParagraphs","should not have single kurz", showT tz]
+            otherwise -> otherBuchTriple textstate tz
     TZ2para {} -> paraTriple textstate tz
 
 otherBuchTriple :: TextState2 -> TZ2 -> [Triple]
 -- make triples for other markup (author etc.), which apply to the buch as a whole
 otherBuchTriple textstate tz =
-    [mkTripleLang (tz2lang tz) buchUri (mkRDFproperty mk) (twm $ tz2text tz)]
+    [mkTripleLang (tz2lang tz) buchUri (mkRDFproperty mk)
+                     (twm $ tz2text tz)]
     where
             buchUri = buchURIx textstate
 --        sigl = paraSigl textstate . tz2para $ tz
             mk = tz2tok tz
+
+--otherBuchTriple2 :: TextState2 -> TZ2 -> [Triple]
+---- make triples for other markup (author etc.), which apply to the buch as a whole
+--otherBuchTriple2 textstate tz =
+--    [mkTripleLang (tz2lang tz) buchUri (mkRDFproperty mk)
+--                    ("22" <> (twm $ tz2text tz))]
+--    where
+--            buchUri = buchURIx textstate
+----        sigl = paraSigl textstate . tz2para $ tz
+--            mk = tz2tok tz
 
 --titleTriple :: TextState2 -> TZ2 -> [Triple]
 ---- ^ make a triple for a title line

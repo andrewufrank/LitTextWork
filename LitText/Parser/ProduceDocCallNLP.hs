@@ -258,15 +258,15 @@ testOP_C_E resultXA resultBAEfile = do
     putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
     return res
 
---test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
---test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
---test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
---test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
---test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
---test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
---test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
---test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
---test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
+test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
+test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
+test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
+test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
+test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
+test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
+test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
+test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
+test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
 -- no test to use resultE1 and produce resultE1
 
