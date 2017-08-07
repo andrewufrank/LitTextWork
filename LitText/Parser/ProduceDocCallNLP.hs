@@ -129,20 +129,12 @@ cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
             . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
                             -- two-words,split with blank
 
-{-   s2t $  subRegex italics t3 italicsRep
+cleanTextGerman :: Text -> Text
+-- ^ replace some special stuff which causes troubles
+-- eg italics marks, 9s. or 4d. or row-house
+cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
-    where
-        t1 = t2s t
-        t2 = subRegex shilling t1 shillingRep
-        t3 = subRegex twoWords t2 twoWordsRep
 
-        italics = mkRegex "_([a-zA-Z]+)_"
-        italicsRep =   "\\1"
-        shilling = mkRegex "([0-9])([ds])."
-        shillingRep =  "\\1\\2"
-        twoWords = mkRegex "([a-zA-Z]+)-([a-zA-Z]+)"
-        twoWordsRep =  "\\1\\2"
-    -}
 subRegex' :: Text -> Text -> Text -> Text
 -- replace the in the t the regex with the replacement
 subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
@@ -201,6 +193,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
 
             let text2 = case language of
                             English -> cleanTextEnglish text
+                            German -> cleanTextGerman text
                             _ -> text
 
             let texts = getPiece . textSplit $ text2
