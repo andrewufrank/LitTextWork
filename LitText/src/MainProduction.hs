@@ -7,6 +7,8 @@
 -- Copyright   :  andrew u frank -
 --
 -- | takes cmd line arguments and puts the text into the db
+-- corresponds to main collect for single files
+-- for now keep the two distinct
 -----------------------------------------------------------------------------
 
 {-# LANGUAGE FlexibleContexts    #-}
