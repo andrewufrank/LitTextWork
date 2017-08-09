@@ -1,0 +1,360 @@
+# baseURI: http://gerastree.at/all
+# imports: http://datashapes.org/dash
+
+@prefix : <http://gerastree.at/all#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix layout: <http://gerastree.at/layout_2017#> .
+@prefix lit: <http://gerastree.at/lit_2014#> .
+@prefix nlp: <http://gerastree.at/nlp_2015#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://gerastree.at/all>
+  rdf:type owl:Ontology ;
+  owl:imports <http://datashapes.org/dash> ;
+  owl:versionInfo "Created with TopBraid Composer" ;
+.
+layout:Line
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment " a line of the literary text " ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path layout:lineNumber ;
+      sh:datatype xsd:integer ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "line number" ;
+    ] ;
+  sh:property [
+      sh:path layout:lineText ;
+      sh:description "the content of the line" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "line text" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path rdfs:partOf ;
+      sh:class lit:Werk ;
+      sh:description "line is part of werk" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "part of" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
+lit:GenParagraph
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment " the text" ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path lit:inPart ;
+      sh:class lit:GenParagraph ;
+      sh:description "here only one level..." ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "in part" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+  sh:property [
+      sh:path lit:inWerk ;
+      sh:class lit:Werk ;
+      sh:description "werk" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "in werk" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+  sh:property [
+      sh:path lit:text ;
+      sh:datatype xsd:string ;
+      sh:description "the text" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "paragraph" ;
+      sh:nodeKind sh:Literal ;
+      sh:property lit:language ;
+    ] ;
+.
+lit:HeaderLevel
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment " header level (with titel) " ;
+  rdfs:subClassOf lit:GenParagraph ;
+.
+lit:Hl1
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment "\"a 1.  header level (with titel)\"" ;
+  rdfs:subClassOf lit:HeaderLevel ;
+.
+lit:Paragraph
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment " a text paragraph " ;
+  rdfs:subClassOf lit:GenParagraph ;
+.
+lit:Titel
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment " the title as printed as text paragraph" ;
+  rdfs:subClassOf lit:GenParagraph ;
+.
+lit:Werk
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment " the literary text " ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path lit:author ;
+      sh:description "the author" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "author" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path lit:publikationDetail ;
+      sh:description "description of publication" ;
+      sh:name "publikation detail" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path lit:titel ;
+      sh:description "the title as a text" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "titel" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path lit:untertitel ;
+      sh:description "sub titles if any" ;
+      sh:name "untertitel" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path [
+          sh:inversePath rdfs:partOf ;
+       ] ;
+      sh:class layout:Line ;
+      sh:description "check that at least one line is part of the werk " ;
+      sh:minCount 1 ;
+      sh:name "inverse of part of from layout:line" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+  sh:property [
+      sh:path [
+          sh:inversePath lit:inWerk ;
+       ] ;
+#      sh:class lit:Paragraph ;
+	  sh:qualifiedValueShape [ sh:class lit:Paragraph ] ;
+      sh:description "check that at least one generalized paragraph is in the werk " ;
+#      sh:minCount 1 ;
+      sh:qualifiedMinCount 1 ;
+      sh:name "inverse of lit:inWerk from lit:Paragraph" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
+lit:language
+  rdf:type sh:NodeShape ;
+  rdfs:comment "the language codes acceptable" ;
+  sh:languageIn (
+      "en"
+      "de"
+    ) ;
+.
+lit:language3
+  rdf:type sh:NodeShape ;
+  rdfs:comment "the language codes acceptable" ;
+  sh:languageIn (
+      "eng"
+      "deu"
+    ) ;
+.
+nlp:Dependence
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment "a dependence " ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path nlp:depWordform ;
+      sh:description "the words in the dependency, the dependent first, the governor second " ;
+      sh:maxCount 2 ;
+      sh:minCount 1 ;
+      sh:name "dep wordform" ;
+      sh:nodeKind sh:Literal ;
+      sh:property lit:language ;
+    ] ;
+  sh:property [
+      sh:path nlp:dependency ;
+      sh:description "the type of the dependency, e.g. ROOT, CASE, NMOD+POSS" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "dependency" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path nlp:dependent ;
+      sh:class nlp:Token ;
+      sh:description "the dependent token" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "dependent" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+  sh:property [
+      sh:path nlp:governor ;
+      rdfs:comment "" ;
+      sh:description "the governor token of the dependency - should include: sh:class nlp:Token " ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "governor" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+  sh:property [
+      sh:path rdfs:partOf ;
+      sh:class nlp:Deptype ;
+      sh:description "the depType this is part of (and thus up)" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "part of" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
+nlp:Deptype
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment "the head of the dependencies, typically selected only the best" ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path rdfs:partOf ;
+      sh:class nlp:Sentence ;
+      sh:description "the sentence this dependencies belong" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "part of" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
+nlp:Sentence
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment "the result of the nlp parse of a sentence " ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path nlp:parse ;
+      sh:description "the parse tree, copied from nlp" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "parse" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path nlp:sentenceForm ;
+      sh:description "the text of the sentence - reconstructed (additional blanks around tokens, including ., )" ;
+      sh:minCount 1 ;
+      sh:name "sentence form" ;
+      sh:nodeKind sh:Literal ;
+      sh:property lit:language ;
+    ] ;
+  sh:property [
+      sh:path rdfs:partOf ;
+      sh:class nlp:Snip ;
+      sh:description "link to the snip	" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "part of" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
+nlp:Snip
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment "a part of a paragraph - the constraint to be part of a GenParagraph not yet" ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path nlp:languageTag ;
+      sh:description "the language of the snip (a snip is a piece with a single language)" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "language tag" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path rdfs:partOf ;
+      sh:description "the paragraph it is part of" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "part of" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
+nlp:Token
+  rdf:type rdfs:Class ;
+  rdf:type sh:NodeShape ;
+  rdfs:comment "a nlp token (word, puntuation mark)" ;
+  rdfs:subClassOf rdfs:Resource ;
+  sh:property [
+      sh:path nlp:lemma ;
+      sh:description "the lemma with 2 letter lang code" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "lemma" ;
+      sh:nodeKind sh:Literal ;
+      sh:property lit:language ;
+    ] ;
+  sh:property [
+      sh:path nlp:lemma3 ;
+      sh:description "the lemma with 3 char language code" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "lemma3" ;
+      sh:nodeKind sh:Literal ;
+      sh:property lit:language3 ;
+    ] ;
+  sh:property [
+      sh:path nlp:nertag ;
+      sh:description "the tag from named entity recognition eg. PERSON or 2 NUMBER" ;
+      sh:maxCount 2 ;
+      sh:minCount 1 ;
+      sh:name "nertag" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path nlp:pos ;
+      sh:description "the Part of speech tag (treebank) as given by nlp process (different for german and english ..)" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "pos" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path nlp:speakerTag ;
+      sh:description "the identification of the speaker (nlp)" ;
+      sh:maxCount 1 ;
+      sh:name "speaker tag" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path nlp:wordForm ;
+      sh:description "the word (could be rdf:label)" ;
+      sh:maxCount 1 ;
+      sh:minCount 1 ;
+      sh:name "wordform" ;
+      sh:nodeKind sh:Literal ;
+    ] ;
+  sh:property [
+      sh:path rdfs:partOf ;
+      sh:class nlp:Sentence ;
+      sh:description "link to sentence	" ;
+      sh:minCount 1 ;
+      sh:name "part of" ;
+      sh:nodeKind sh:IRI ;
+    ] ;
+.
