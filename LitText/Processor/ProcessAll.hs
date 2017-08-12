@@ -76,8 +76,11 @@ processOneMarkup debug  ts dg lfp = do
     putIOwords ["\nprocessOneMarkup", showT textstate2]
     ntExist <- exist6 (textfilename textstate2) ntFileTriples
     if not ntExist
-        then do mainLitAndNLPproduction litDebugOnly textstate2
-                return (showT textstate2)
+        then do
+            putIOwords  ["\nprocessMarkup - process"
+                    , showT $ textfilename textstate2, "\n"]
+            mainLitAndNLPproduction litDebugOnly textstate2
+            return (showT textstate2)
         else do
             putIOwords  ["\nprocessMarkup - nt file exist already"
                     , showT $ textfilename textstate2, "\n"]
