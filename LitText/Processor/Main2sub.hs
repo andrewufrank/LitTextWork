@@ -37,6 +37,7 @@ debugNLP = False
 debugLit = False
 mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO ()
 mainLitAndNLPproduction debugLitonly textstate = do
+    when debugLit $ putIOwords ["mainLitAndNLPproduction start",   showT $ textstate]
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
@@ -44,11 +45,11 @@ mainLitAndNLPproduction debugLitonly textstate = do
     let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ]  -- ignore line, allCaps, language
     -- missing footnotes?
     let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
-    when debugLit $ putIOwords ["layout triples done \n", unlines' . map showT $ layoutTriples]
+    when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n", unlines' . map showT $ layoutTriples]
 
     let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BA -> C  in LinesToParagraph
 
-    when debugLit $ putIOwords ["TZ available to produce litTriples \n", unlines' . map showT $ tzpara]
+    when debugLit $ putIOwords ["mainLitAndNLPproductionTZ available to produce litTriples \n", unlines' . map showT $ tzpara]
 
     let litTriples = produceLitTriples textstate   tzpara  -- test C -> H
 
@@ -59,7 +60,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
              unlines' . map showT $ (layoutTriples ++ litTriples)
                     ]
 
-    when debugLitonly $  errorT [ "MainLit stopped because debugLitOnly true - set to lit only!"
+    when debugLitonly $  errorT [ "mainLitAndNLPproduction stopped because debugLitOnly true - set to lit only!"
             , showT textstate]
 
     --------------------------------------NLP  -- processing by paragraphs
@@ -69,7 +70,7 @@ mainLitAndNLPproduction debugLitonly textstate = do
     responses <- produceNLP False textstate tzpara -- test D ->
         -- argument is to show the xml
 
-    putIOwords ["npl: triples stored in .nt file "
+    putIOwords ["mainLitAndNLPproduction: triples stored in .nt file "
 --           , showT . graph $ textstate, " \n"
 --            , unlines' . map showT $ responses
             ]

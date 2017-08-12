@@ -67,7 +67,7 @@ isMarkup  = hasExtension (Extension "markup")
 -- todo include in typedfiles - hasType ...
 
 --debugNLP = False
-litDebugOnly = False
+--litDebugOnly = False
 
 processOneMarkup :: Bool ->  TextSource -> DestGenerality -> Path Abs File -> ErrIO Text
 -- process one markup file, if the nt file does not exist
@@ -79,7 +79,7 @@ processOneMarkup debug  ts dg lfp = do
         then do
             putIOwords  ["\nprocessMarkup - process"
                     , showT $ textfilename textstate2, "\n"]
-            mainLitAndNLPproduction litDebugOnly textstate2
+            mainLitAndNLPproduction True textstate2
             return (showT textstate2)
         else do
             putIOwords  ["\nprocessMarkup - nt file exist already"
