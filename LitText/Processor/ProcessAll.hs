@@ -66,9 +66,6 @@ isMarkup :: Path Abs File -> Bool
 isMarkup  = hasExtension (Extension "markup")
 -- todo include in typedfiles - hasType ...
 
---filterMarkup :: [LegalPathname] -> [LegalPathname]
---filterMarkup   = filter (hasExtension "markup")
-
 --debugNLP = False
 litDebugOnly = False
 
