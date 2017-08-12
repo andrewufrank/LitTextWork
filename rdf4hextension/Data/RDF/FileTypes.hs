@@ -170,7 +170,7 @@ instance TypedFiles5 [Text] Updates where
         let fn2 = setExtension (tpext5 tp)  fp
         raw :: Text <-  readFile2 fn2
         let res = lines' raw
-        putIOwords ["read6  Updates ", unlines' res]
+        when False $ putIOwords ["read6  Updates ", unlines' res]
         return res
 
 --instance TypedFiles5 RDFgraph () where

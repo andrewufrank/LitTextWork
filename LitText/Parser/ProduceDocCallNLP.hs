@@ -39,7 +39,7 @@ import Text.Regex (mkRegex, subRegex)
 data NLPtext = NLPtext { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3text:: Text
-                    , tz3lang :: LanguageCode }
+                        , tz3lang :: LanguageCode }
             deriving (Read, Show, Eq )
 
 instance Zeros NLPtext where zero = NLPtext zero zero zero zero

@@ -83,7 +83,7 @@ Test-Suite nlpTestAuto
     other-modules: Main2sub
 
 executable ntallmake3
-    main-is: MainCollect.hs
+    main-is: ntallmake.hs
     build-depends: base, HTF
         , uniform-fileio
         , uniform-convenience
@@ -95,7 +95,7 @@ executable ntallmake3
     other-modules: Main2sub
 
 executable ntmake3
-    main-is: MainProduction.hs
+    main-is: ntmake.hs
     build-depends: base, HTF
         , uniform-strings
         , uniform-fileio

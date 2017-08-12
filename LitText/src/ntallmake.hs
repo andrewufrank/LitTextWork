@@ -60,7 +60,7 @@ cmdArgs = LitArgs
      <$> argument str
           (
         --   long "subdir" <>
-          metavar "STRING"
+          metavar "orig/test"
          <> help "orig or test" )
 --     <*> argument str
 --          (
