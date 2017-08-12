@@ -114,7 +114,7 @@ convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO (NLPtext,[Doc0])   -- the x
 -- works on individual paragraphs
 convertTZ2nlp debugNLP showXML sloc tz2 = do
     when debugNLP $ putIOwords ["convertTZ2nlp start"]
-    when debugNLP $ putIOwords ["convertTZ2nlp TZ2", showT tz2]
+    when False $ putIOwords ["convertTZ2nlp TZ2", showT tz2]
     let mtz = prepareTZ4nlp tz2
     case mtz of
         Nothing -> do   when debugNLP $ putIOwords ["convertTZnlp - empty text"]
