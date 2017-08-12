@@ -37,7 +37,7 @@ debugNLP = False
 debugLit = False
 mainLitAndNLPproduction :: Bool -> TextState2 -> ErrIO ()
 mainLitAndNLPproduction debugLitonly textstate = do
-    when debugLit $ putIOwords ["mainLitAndNLPproduction start",   showT $ textstate]
+    when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText

@@ -80,6 +80,8 @@ processOneMarkup debug  ts dg lfp = do
             putIOwords  ["\nprocessMarkup - process"
                     , showT $ textfilename textstate2, "\n"]
             mainLitAndNLPproduction True textstate2
+            putIOwords  ["\nprocessMarkup - processed"
+                    , showT $ textfilename textstate2, "\n"]
             return (showT textstate2)
         else do
             putIOwords  ["\nprocessMarkup - nt file exist already"
