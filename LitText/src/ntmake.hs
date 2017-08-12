@@ -1,14 +1,17 @@
- -- #!/usr/bin/env stack
+-- #!/usr/bin/env stack
 -- stack --install-ghc runghc --package turtle
 
 -----------------------------------------------------------------------------
 --
--- Module      :  Main production
+-- Module      :  collect all markup files and process them
 -- Copyright   :  andrew u frank -
 --
--- | takes cmd line arguments and puts the text into the db
--- corresponds to main collect for single files
--- for now keep the two distinct
+-- | takes cmd line arguments and converts markup to nt
+-- takes   cmd line argument: switch -o for original default test
+-- flags -d --author_dir -f --buch_file
+-- later: language (to process the english files first and then the other languages
+-- in turn
+
 -----------------------------------------------------------------------------
 
 {-# LANGUAGE FlexibleContexts    #-}
@@ -16,73 +19,95 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
+import Processor.ProcessAll hiding ((<>) , (</>), (<.>))
+--import           Parser.Foundation ()
+--     hiding ((<>) , (</>), (<.>))
+-- import           Parser.LinesToParagrahs
+--import           Uniform.FileIO         hiding ((<>))
+--import           Uniform.Strings              hiding ((<>), (</>), (<.>))
+--import Lines2para.Lines2ignore (LanguageCode, readLanguageCode)
+--            hiding ((<>) , (</>), (<.>))
+
+import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
+
 import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
-import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import           Options.Applicative
-import Processor.ProcessAll -- for the destination and source
-
-programName = "main production" :: Text
-progTitle = "put file into the store  " :: Text
 
 
-main = startProg programName progTitle
+programName = "may13 = ProduceLit" :: Text
+progTitle = "produce the lit for all markup files " :: Text
+
+main :: IO ()
+main = do
+    startProg programName progTitle
         (parseAndExecute
-            (unlinesT ["converts a text.markup file to .nt ntriple files"
-            , "xx"])
-        "test/origin author buch"
+               (unlinesT ["gets the nt files" ]
+               )
+        "orig/test"
         )
+resfile  = makeRelFile "resultCollectAll"
 
 --- cmd line parsing
 data LitArgs = LitArgs
-  { argOrigTest   :: String   -- ^ orig or test to decide where to take the file
+  {  argOrigTest   :: Bool   -- ^ orig or test to decide where to take the file
   , argdir   :: String   -- ^ the subdirectory in originals
                         -- where the markup file is
                         -- the same dirname is used in convertsDir
   , argbuch  :: String -- ^ the filename in the dir
---  , arggraph :: String   -- ^ is attached to gerstreeURI for graph name
+--  , argLanguage :: String -- ^ the languages of the processed files
+                -- others will be sidestepped
+--  , argGraph  :: String  -- ^ the graph
   }
 
 cmdArgs :: Parser (LitArgs)
 cmdArgs = LitArgs
-     <$> argument str
-          (
---          long "test" <>
-          metavar "(Orig or Test)"
-         <> help "orig or test" )
-     <*> argument str
-          (
-          metavar "Author"
-         <> help "subdirectory name in LitOriginal - author" )
-     <*> argument str
-          (
-          metavar "buch"
-         <> help "buch - filename " )
+     <$> switch
+          ( long "orig" <>
+            short 'o' <>
+--            metavar "orig/test" <>
+            help "orig or test" )
+     <*> strOption
+          ( long "author(dir)" <>
+            short 'd' <>
+            value "" <>
+            metavar "Author"
+            <> help "subdirectory name in LitOriginal - author" )
+     <*> strOption
+          ( long "buch(file)" <>
+            short 'f' <>
+            value "" <>
+            metavar "buch"
+            <> help "buch - filename " )
+
 
 
 parseAndExecute  :: Text -> Text ->  ErrIO ()
-parseAndExecute t1 t2   = do
+parseAndExecute t1 t2    = do
         args <- callIO $ execParser opts
---        let textstate = cmd2textstate args
-        let generality  = if isPrefixOf' "o" (argOrigTest args)
+        let resfile  = makeRelFile "resultCollect"
+--        let lang = readLanguageCode "readLangCode in MainCollect"
+--                    (s2t $ argLanguage args) :: LanguageCode
+
+        let generality  = if argOrigTest args
                 then generalityOrig4
                 else generalityTest4
-        let source = if isPrefixOf' "o" (argOrigTest args)
+        let source = if argOrigTest args
                 then sourceOrig4
                 else sourceTest4
-        let textstate = fillTextState2 source generality
-                 (argdir args) (argbuch args)
-        mainLitAndNLPproduction False  textstate
+        if  null (argdir args)
+            then
+                processAll False  source  generality  resfile
+            else do
+                let textstate = fillTextState2 source generality
+                         (argdir args) (argbuch args)
+                mainLitAndNLPproduction False  textstate
+                return ()
+--        processAll False dir (s2t . argDB $ args) (Just . s2t $ argGraph args) resultFile
+--        -- true for debug stores only the first 3 triples...
+        return ()
       where
         opts = info (helper <*> cmdArgs)
           ( fullDesc
          <> (progDesc . t2s $ t1)
          <> (header . t2s $ t2 ))
-
-
-cmd2textstate :: LitArgs -> TextState2
--- fillst the textstate with directory and filename and proj
--- language is by default english, buchcode is the same as proj
-cmd2textstate args  = fillTextState2 sourceTest4 generalityTest4
-                 (argdir args) (argbuch args)
-

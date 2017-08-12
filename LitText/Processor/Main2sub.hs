@@ -16,7 +16,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Main2sub (mainLitAndNLPproduction
+module Processor.Main2sub (mainLitAndNLPproduction
     , htf_thisModulesTests
         ) where
 

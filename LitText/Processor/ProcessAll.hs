@@ -19,14 +19,14 @@
 module Processor.ProcessAll
     (module Processor.ProcessAll
     , module Parser.Foundation
-    , module Main2sub
+    , module Processor.Main2sub
     ) where
 
 import           Test.Framework
 
 import Parser.Foundation hiding ((<>) , (</>), (<.>))
 import Producer.Servers
-import Main2sub
+import Processor.Main2sub
 import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
 
 -- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
