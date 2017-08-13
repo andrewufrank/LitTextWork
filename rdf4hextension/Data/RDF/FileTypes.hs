@@ -100,7 +100,7 @@ instance TypedFiles5 [RDF.Triple] () where
         when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
 
         hand <- openFile2handle fn2 WriteMode
-        -- should create or truncate the file
+        -- should create or truncate the file, but not when the dir not exist
         --https://hackage.haskell.org/package/base-4.10.0.0/docs/System-IO.html#g:5
         when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
         return hand

@@ -158,21 +158,25 @@ openHandleTriples textstate  = do
     let mhand = destHandle textstate
     case mhand of
         Nothing ->  do
-            hand <- openHandle6 (destNT textstate)  ntFileTriples
-            return textstate{destHandle = Just hand}
+                hand <- openHandle6 (destNT textstate)  ntFileTriples
+                return textstate{destHandle = Just hand}
+            `catchError` \e -> do
+                putIOwords ["writeHandleTriples - error ", e ]
+                let dir = getParentDir (destNT textstate)
+                createDirIfMissing' dir
+--                writeFileOrCreate2 (destNT textstate) (""::Text)
+--                deleteFile (destNT textstate)
+                -- just to create the dir
+                openHandleTriples textstate
+
         Just hand ->  return textstate
 
 writeHandleTriples :: TextDescriptor -> [Triple] -> ErrIO TextDescriptor
 writeHandleTriples textstate tris = do
-    let mhand = destHandle textstate
-    case mhand of
-        Nothing -> do
-            textstate2 <- openHandleTriples textstate
-            writeHandleTriples textstate2 tris
-            return textstate2
-        Just hand -> do
+                textstate2 <- openHandleTriples textstate
+                let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
                 writeHandle6 hand ntFileTriples tris
-                return textstate
+                return textstate2
 
 
 

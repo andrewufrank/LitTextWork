@@ -47,6 +47,7 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
     let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
+    textstate2 <-  writeHandleTriples textstate layoutTriples
 
     let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BA -> C  in LinesToParagraph
 
@@ -58,12 +59,12 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    textstate2 <-  writeHandleTriples textstate litTriples
+    textstate3 <-  writeHandleTriples textstate2 litTriples
 
 --    writeTriples2file textstate (layoutTriples ++ litTriples)
-    when debugLit $ putIOwords ["lit: triples stored in file \n",
-             unlines' . map showT $ (layoutTriples ++ litTriples)
-                    ]
+--    when debugLit $ putIOwords ["lit: triples stored in file \n",
+--             unlines' . map showT $ (layoutTriples ++ litTriples)
+--                    ]
 
     when produceLitOnly $
         throwError . unlines' $  [ "\nmainLitAndNLPproduction stopped"
@@ -73,12 +74,14 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 
     --------------------------------------NLP  -- processing by paragraphs
 
-    responses <- produceNLP False textstate2 tzpara -- test D ->
+    responses <- produceNLP False textstate3 tzpara -- test D ->
         -- argument is to show the xml
 
     putIOwords ["mainLitAndNLPproduction: triples stored in .nt file "
 --           , showT . graph $ textstate, " \n"
 --            , unlines' . map showT $ responses
             ]
-
+    case destHandle textstate3 of
+        Nothing -> return ()
+        Just h -> closeFile2 h
     return ()
