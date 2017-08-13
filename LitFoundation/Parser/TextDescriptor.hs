@@ -54,6 +54,7 @@ data TextDescriptor = TextDescriptor
                 -- add the element number
      sourceMarkup :: Path Abs File -- the markup file
      , destNT :: Path Abs File   -- the nt file
+     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , nlpServer :: URI -- ^ where the nlp server is
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
@@ -67,6 +68,7 @@ fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
 fillTextState3 litdirs server author buch = TextDescriptor {
     sourceMarkup = (source litdirs) </> (author </> buch)
     , destNT = (dest litdirs) </> (author </> buch)
+    , destHandle = Nothing
     , nlpServer = server
     , authorDir = author
     , buchname = buch
@@ -94,6 +96,7 @@ res10 = TextDescriptor {
         , nlpServer = serverBrest
         , authorDir = "may"
         , buchname = "test"
+        , destHandle = Nothing
         }
 
 test_fillTextState12 = assertEqual res11 res
@@ -109,6 +112,7 @@ res11 = TextDescriptor {
         , nlpServer = serverBrest
         , authorDir = "may"
         , buchname = "test"
+        , destHandle = Nothing
         }
 
 --TextState2 {
