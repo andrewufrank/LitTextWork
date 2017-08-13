@@ -51,6 +51,11 @@ instance TypedFiles5 Text Markup  where
     read5 fp fn tp   = do
         let fn2 = fn <.> (tpext5 tp)
         readFile2 (fp </> fn2)
+    read6 fp tp   =  readFile2 (fp <.> tpext5 tp)
+    write6 fp   tp  ct = do
+--        dirx <- ensureDir fp
+        let fp2 = fp <.> tpext5 tp -- :: Path ar File
+        writeFile2 fp2 ct
 
 debugRead = False
 -- main export

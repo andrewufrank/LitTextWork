@@ -127,8 +127,8 @@ produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
             putIOwords ["\n\nproduceOneParaNLP nlp triples "
                 , unlines' . map showT $ triples]
                 -- todo fileio add filepath to dir
-        let newFileName =  (authorDir textstate)
-                           ++ "/" ++ buchname textstate  ++ "." ++ ("nt"::FilePath) ::FilePath
+--        let newFileName =  (authorDir textstate)
+--                           ++ "/" ++ buchname textstate  ++ "." ++ ("nt"::FilePath) ::FilePath
 --        filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
 --                           (newFileName::FilePath)
 --        let textstate2 = textstate{textfilename=filenameRes}
