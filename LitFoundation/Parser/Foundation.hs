@@ -26,89 +26,136 @@ import Uniform.HttpURI
 import Producer.Servers
 import           Test.Framework
 
-buchnameText = s2t . buchname
-authorText = s2t . authorDir
-originalsDir = sourceDir . source
-serverLoc =  server . source
+-- directories:
+litOriginals = makeRelDir "LitOriginals"
+litTests =    makeRelDir "LitTest"
+litDir = makeAbsDir "/home/frank/additionalSpace/DataBig"
+litOrigDir1 = litDir </>litOriginals
+litTestDir1 = litDir </> litTests
+ntDir = makeAbsDir "/home/frank/scratch/NT"
+litNTOrigDir1 = ntDir </> litOriginals
+litNTTestDir1 = ntDir </> litTests
 
--- | the descriptor where the output should go
-data DestDescriptor = OutFile {ddFile:: Path Abs File}
-                    -- ^ the path is where the files should go
-                    -- the filename is - if set the current Filename to append to
-                    | OutHandle Handle
-                    | TripleStoreGraph {ddURI:: URI, ddGraph :: Text}
-                    | NotKnown
-                    deriving (Show, Eq)
+
+--buchnameText = s2t . buchname
+--authorText = s2t . authorDir
+--originalsDir = sourceDir . source
+--serverLoc =  server . source
 
 -- | the description of a file to operate as texts - make legalfilen, when needed
 data TextState2 = TextState2
     {                -- the projp buchcode gives the code for the book,
                 -- add the element number
-     source :: TextSource
---     serverLoc       :: URI  -- where the nlp servers are
---    , originalsDir :: Path Abs Dir -- the directory in which the files are
---                    -- either LitOrig or a test dir
+     sourceMarkup :: Path Abs File -- the markup file
+     , destNT :: Path Abs File   -- the nt file
+     , nlpServer :: URI -- ^ where the nlp server is
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
                                  -- and where the converted data go
-    , buchname     :: FilePath -- filename in directory gives the buch sigl
-    , textfilename :: Path Abs File -- the input path of the file with the triples
-    , tripleOutDesc :: DestDescriptor
-                -- a description where the ouptut goes
+    , buchname     :: FilePath -- ^ filename in directory gives the buch sigl
     } deriving (Show, Eq)
 
--- | the descriptor where the output should go
-data DestGenerality = DGoutDir {dgDir:: Path Abs Dir}
-                    -- ^ the path is where the files should go
-                    -- the filename is - if set the current Filename to append to
+fillTextState3 :: Path Abs Dir -> Path Abs Dir -> FilePath -> FilePath -> TextState2
+-- construct at text state with authorDir and buchFilename as FilePath
+fillTextState3 sourceDir ntDir author buch = TextState2 {
+    sourceMarkup = sourceDir </> (author </> buch)
+    , destNT = ntDir </> (author </> buch)
+    , nlpServer = serverBrest
+    , authorDir = author
+    , buchname = buch
+    }
+
+test_fillTextState11 = assertEqual res10 res
+    where
+        res = fillTextState3 litOrigDir1 litNTOrigDir1 "may" "test"
+res10 = TextState2 {
+        sourceMarkup = makeAbsFile
+            "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
+        , destNT = makeAbsFile
+            "/home/frank/scratch/NT/LitOriginals/may/test"
+        , nlpServer = makeURI "http://nlp.gerastree.at"
+        , authorDir = "may"
+        , buchname = "test"
+        }
+
+--TextState2 {
+--    sourceMarkup = makeDirAbs ""
+--    , destNT = ntDir </> (author </> buch)
+--    , authorDir = author
+--    , buchname = buch
+
+--fillTextState2 :: TextSource -> DestGenerality -> FilePath -> FilePath -> TextState2
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState2 ts dg author buch = TextState2 {
+--    source = ts
+--    , authorDir = author
+--    , buchname = buch
+--    , textfilename = (sourceDir ts) </> (author </> buch)
+--    , tripleOutDesc =  fillDestination dg author buch True
+--    }
+
+---- | the descriptor where the nt output should go
+--data DestDescriptor = OutFile {ddFile:: Path Abs File}
+--                    -- ^ the path is where the files should go
+--                    -- the filename is - if set the current Filename to append to
 --                    | OutHandle Handle
-                    | DGtripleStore {dgURI:: URI }
+--                    | TripleStoreGraph {ddURI:: URI, ddGraph :: Text}
 --                    | NotKnown
-                    deriving (Show, Eq)
+--                    deriving (Show, Eq)
+
+
+---- | the descriptor where the output should go
+--data DestGenerality = DGoutDir {dgDir:: Path Abs Dir}
+--                    -- ^ the path is where the files should go
+--                    -- the filename is - if set the current Filename to append to
+----                    | OutHandle Handle
+--                    | DGtripleStore {dgURI:: URI }
+----                    | NotKnown
+--                    deriving (Show, Eq)
 
 
 -- | the description of where the files are and where the result shuld go
 -- before any particular text is opened
-data TextSource = TextSource
-    {      server       :: URI  -- where the nlp servers are
-    ,sourceDir :: Path Abs Dir -- the directory in which the files are
+--data TextSource = TextSource
+--    {      server       :: URI  -- where the nlp servers are
+--    ,sourceDir :: Path Abs Dir -- the directory in which the files are
+--
+--
+--     }                     deriving (Show, Eq)
 
-
-     }                     deriving (Show, Eq)
-
-litTestDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
-sourceE1 = TextSource {server = serverBrest, sourceDir = litTestDir}
-generalityE1 = DGoutDir litTestDir
-
-fillTextState2 :: TextSource -> DestGenerality -> FilePath -> FilePath -> TextState2
--- construct at text state with authorDir and buchFilename as FilePath
-fillTextState2 ts dg author buch = TextState2 {
-    source = ts
-    , authorDir = author
-    , buchname = buch
-    , textfilename = (sourceDir ts) </> (author </> buch)
-    , tripleOutDesc =  fillDestination dg author buch True
-    }
-
-fillDestination :: DestGenerality -> FilePath -> FilePath -> Bool -> DestDescriptor
--- | build the description of the destination
--- either a file or a uri with grah
--- later add handle with switch - true for file append output
--- false for use a handle
-fillDestination  (DGoutDir dir) author buch True = OutFile (dir </> (author </> buch))
-fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
-
-
-test_fillTextState10 = assertEqual res10 res
-    where
-        res = fillTextState2 sourceE1 generalityE1 "may" "test"
-res10 =  TextState2 {source = TextSource
-                        {server = makeURI "http://nlp.gerastree.at",
-                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
-                authorDir ="may",
-                buchname = "test",
-            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
-            tripleOutDesc = OutFile
-                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
-
+--litTestDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+--sourceE1 = TextSource {server = serverBrest, sourceDir = litTestDir}
+--generalityE1 = DGoutDir litTestDir
+--
+--fillTextState2 :: TextSource -> DestGenerality -> FilePath -> FilePath -> TextState2
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState2 ts dg author buch = TextState2 {
+--    source = ts
+--    , authorDir = author
+--    , buchname = buch
+--    , textfilename = (sourceDir ts) </> (author </> buch)
+--    , tripleOutDesc =  fillDestination dg author buch True
+--    }
+--
+--fillDestination :: DestGenerality -> FilePath -> FilePath -> Bool -> DestDescriptor
+---- | build the description of the destination
+---- either a file or a uri with grah
+---- later add handle with switch - true for file append output
+---- false for use a handle
+--fillDestination  (DGoutDir dir) author buch True = OutFile (dir </> (author </> buch))
+--fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
+--
+--
+--test_fillTextState10 = assertEqual res10 res
+--    where
+--        res = fillTextState2 sourceE1 generalityE1 "may" "test"
+--res10 =  TextState2 {source = TextSource
+--                        {server = makeURI "http://nlp.gerastree.at",
+--                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
+--                authorDir ="may",
+--                buchname = "test",
+--            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
+--            tripleOutDesc = OutFile
+--                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
+--
 
