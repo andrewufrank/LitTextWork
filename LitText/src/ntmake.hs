@@ -55,9 +55,6 @@ data LitArgs = LitArgs
                         -- where the markup file is
                         -- the same dirname is used in convertsDir
   , argbuch  :: String -- ^ the filename in the dir
---  , argLanguage :: String -- ^ the languages of the processed files
-                -- others will be sidestepped
---  , argGraph  :: String  -- ^ the graph
   }
 
 cmdArgs :: Parser (LitArgs)
@@ -101,7 +98,9 @@ parseAndExecute t1 t2    = do
             else do
                 let textstate = fillTextState2 source generality
                          (argdir args) (argbuch args)
-                mainLitAndNLPproduction False  textstate
+                mainLitAndNLPproduction False False textstate
+                -- first bool is debug output
+                -- second stops processing after lit (no nlp calls)
                 return ()
 --        processAll False dir (s2t . argDB $ args) (Just . s2t $ argGraph args) resultFile
 --        -- true for debug stores only the first 3 triples...
