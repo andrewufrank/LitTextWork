@@ -119,7 +119,7 @@ convertTZ2nlp debugNLP showXML sloc tz2 = do
     case mtz of
         Nothing -> do   when debugNLP $ putIOwords ["convertTZnlp - empty text"]
                         return (zero,[])
-        Just tz -> convertTZ2nlpPrepareCall True showXML sloc tz
+        Just tz -> convertTZ2nlpPrepareCall debugNLP showXML sloc tz
 
 cleanText  :: LanguageCode -> Text -> Text
 -- ^ replace some special stuff which causes troubles
