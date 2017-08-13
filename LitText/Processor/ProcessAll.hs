@@ -18,13 +18,14 @@
 
 module Processor.ProcessAll
     (module Processor.ProcessAll
-    , module Parser.Foundation
+    , module Parser.TextDescriptor
     , module Processor.Main2sub
+    , serverBrest
     ) where
 
 import           Test.Framework
 
-import Parser.Foundation hiding ((<>) , (</>), (<.>))
+import Parser.TextDescriptor hiding ((<>) , (</>), (<.>))
 import Producer.Servers
 import Processor.Main2sub
 import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
@@ -43,13 +44,13 @@ import Uniform.FileStatus
 --import Uniform.Strings hiding ((</>),(<|>))
 import Data.RDF.FileTypes (ntFileTriples)
 
-processAll :: Bool ->  TextSource -> DestGenerality -> Path ar File  -> ErrIO ()
+processAll :: Bool ->  LitDirs-> URI -> Path ar File  -> ErrIO ()
 -- | get all markup files in the partially filled TextState2
 -- the output goes to the second, not the triples
 -- debug flag is not yet used
 
-processAll debug ts dg  file  =  do
-  let path = sourceDir ts
+processAll debug litdirs  server file  =  do
+  let path = source litdirs
   resFile <- makeAbsolute file
   bracketErrIO (openFile2handle resFile WriteMode)
         (closeFile2)
@@ -57,7 +58,7 @@ processAll debug ts dg  file  =  do
               Pipe.runEffect $
                 getRecursiveContents path
                 >-> Pipe.filter isMarkup --
-                >-> Pipe.mapM (fmap t2s . processOneMarkup debug ts dg)
+                >-> Pipe.mapM (fmap t2s . processOneMarkup debug litdirs server)
             --    >-> P.stdoutLn
                 >-> Pipe.toHandle hand
         )
@@ -69,28 +70,28 @@ isMarkup  = hasExtension (Extension "markup")
 --debugNLP = False
 --litDebugOnly = False
 
-processOneMarkup :: Bool ->  TextSource -> DestGenerality -> Path Abs File
+processOneMarkup :: Bool ->  LitDirs -> URI -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
-processOneMarkup debug  ts dg lfp = do
-        let textstate2 = fillTextState ts dg lfp
-        putIOwords ["\nprocessOneMarkup", showT textstate2]
-        ntExist <- exist6 (textfilename textstate2) ntFileTriples
+processOneMarkup debug  litDirs server lfp = do
+        let textstate2 = fillTextState4 litDirs server lfp
+        putIOwords ["\nprocessOneMarkup", showT server  ]
+        ntExist <- exist6 (sourceMarkup textstate2) ntFileTriples
         if not ntExist
             then do
                 putIOwords  ["\nprocessMarkup - process"
-                        , showT $ textfilename textstate2, "\n"]
+                        , showT $ sourceMarkup textstate2, "\n"]
                 mainLitAndNLPproduction False False textstate2
                 -- first bool is debug output
                 -- second stops processing after lit (no nlp calls)
                 putIOwords  ["\nprocessMarkup - processed"
-                        , showT $ textfilename textstate2, "\n"]
+                        , showT $ sourceMarkup textstate2, "\n"]
                 return (showT textstate2)
             else do
                 putIOwords  ["\nprocessMarkup - nt file exist already"
-                        , showT $ textfilename textstate2, "\n"]
+                        , showT $ sourceMarkup textstate2, "\n"]
                 return . unlinesT $ ["\nprocessMarkup - nt file exist already"
-                        , showT $ textfilename textstate2, "\n"]
+                        , showT $ sourceMarkup textstate2, "\n"]
 
     `catchError` \e -> do
             putIOwords  ["\nprocessMarkup - error return for "
@@ -101,32 +102,32 @@ processOneMarkup debug  ts dg lfp = do
             return ""
 
 
-fillTextState :: TextSource -> DestGenerality -> Path Abs File -> TextState2
-fillTextState ts dg fp = fillTextState2 ts dg author buch
-    where
-        author = getImmediateParentDir fp
-        buch = getNakedFileName fp
+--fillTextState :: TextSource -> DestGenerality -> Path Abs File -> TextState2
+--fillTextState ts dg fp = fillTextState2 ts dg author buch
+--    where
+--        author = getImmediateParentDir fp
+--        buch = getNakedFileName fp
 
     ----------------- tests
---origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
--- /home/frank/additionalSpace/DataBig/LitTest/carol
---shortTestDir = "/home/frank/additionalSpace/DataBig/LitTestShort"
-shortTestDir2 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTestShort"
-
-litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
-sourceTest4 = TextSource {server = serverBrest, sourceDir = litTestDir1}
-generalityTest4 = DGoutDir litTestDir1
-
-sourceShortTest = TextSource {server = serverBrest, sourceDir=shortTestDir2}
-generalityShortTest = DGoutDir shortTestDir2
-
-litOrigDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals"
-sourceOrig4 = TextSource {server = serverBrest, sourceDir = litOrigDir1}
-generalityOrig4 = DGoutDir litOrigDir1
+----origDirForTest = "/home/frank/additionalSpace/DataBig/LitTest" :: FilePath
+---- /home/frank/additionalSpace/DataBig/LitTest/carol
+----shortTestDir = "/home/frank/additionalSpace/DataBig/LitTestShort"
+--shortTestDir2 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTestShort"
+--
+----litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+--sourceTest4 = TextSource {server = serverBrest, sourceDir = litTestDir1}
+--generalityTest4 = DGoutDir litTestDir1
+--
+--sourceShortTest = TextSource {server = serverBrest, sourceDir=shortTestDir2}
+--generalityShortTest = DGoutDir shortTestDir2
+--
+----litOrigDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitOriginals"
+--sourceOrig4 = TextSource {server = serverBrest, sourceDir = litOrigDir1}
+--generalityOrig4 = DGoutDir litOrigDir1
 
 test_0 = do
     res0 <- runErr $ do
-        processAll False sourceShortTest generalityShortTest resfileN
+        processAll False dirsTest serverBrest resfileN
     putIOwords ["test_0 - return:", showT res0]
     resN <- readFile5 resfileN
     res0 <- readFile5 resfile0

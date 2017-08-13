@@ -26,7 +26,7 @@ module Parser.NLPvocabulary
 import           CoreNLP.Defs0
 --import           CoreNLP.DependencyCodes
 import           Data.RDF.Extension      --(PartURI, RDFproperty)
-import           Parser.Foundation hiding ((</>), (<.>), (<|>))
+--import           Parser.TextDescriptor hiding ((</>), (<.>), (<|>))
 import           Parser.ProduceLit     --  (buchURIx, paraSigl)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))

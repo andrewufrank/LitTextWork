@@ -49,9 +49,9 @@ import Parser.NLPvocabulary
 --import CoreNLP.CoreNLPxml (readDocString)
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 import Parser.ProduceDocCallNLP
-import Parser.Foundation
+import Parser.TextDescriptor
 
-processDoc0toTriples2 :: TextState2 -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
         t0 : t1 : t2 : sents ++ corefs
@@ -159,7 +159,7 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
        t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
        wf = word0 . dword  $ depp
 
-testOP_F_G :: TextState2 -> [Doc0] ->  [Triple]
+testOP_F_G :: TextDescriptor -> [Doc0] ->  [Triple]
 testOP_F_G textstate docs  = concat
         . map (processDoc0toTriples2 textstate English (ParaNum 99))
         $ (zip [1..] docs)

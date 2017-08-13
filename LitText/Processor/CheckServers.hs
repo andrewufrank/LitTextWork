@@ -24,7 +24,7 @@ import           Test.Framework
 
 --import Uniform.HttpURI
 import Uniform.HttpCallWithConduit
-import Parser.Foundation
+import Parser.TextDescriptor
 import Producer.Servers
 
 

@@ -25,7 +25,7 @@ import           Data.RDF
 import Data.RDF.Triple2text (triple2text)
 import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
-import           Parser.Foundation  hiding ((</>))
+--import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB
 import Lines2para.HandleLayout -- TZ
@@ -38,13 +38,13 @@ import Uniform.TestHarness
 
 layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
 
-produceLayoutTriples ::  TextState2 -> [TZ] -> [Triple]  -- test BAD -> J
+produceLayoutTriples ::  TextDescriptor -> [TZ] -> [Triple]  -- test BAD -> J
 -- put lines and pages into rdf
 produceLayoutTriples textstate = concatMap (convOneTZ2triple textstate)
 
 
 buchURIx textstate = RDFsubj $ gerastreeURI
-            <#> authorText textstate <-> buchnameText textstate
+            <#> authorName textstate <-> buchName textstate
 -- id of buch, part and sentence or page is attached
 
 data LayoutType = Line | Page
@@ -68,7 +68,7 @@ formatLineID :: Int -> Text
 formatLineID nr =   "L" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
-lineSigl :: TextState2 -> Int -> LineSigl
+lineSigl :: TextDescriptor -> Int -> LineSigl
 lineSigl textstate pn = LineSigl ( extendSlashRDFsubj
                 (formatLineID  $ pn)
                       ( buchURIx $ textstate)
@@ -103,7 +103,7 @@ inLineMarkerSigl linesigl pn = InLineMarkerSigl ( extendSlashRDFsubj
 
 debugTurtle = True
 
-convOneTZ2triple :: TextState2 -> TZ -> [Triple]
+convOneTZ2triple :: TextDescriptor -> TZ -> [Triple]
 -- produce all triples necessary for each line item
 convOneTZ2triple textstate tz  = case tz of
 --    TZzahl {}  -> errorT ["formParagraphs","should not have TZzahl left", showT tz]
@@ -115,7 +115,7 @@ convOneTZ2triple textstate tz  = case tz of
     _  -> errorT [showT tz]
 
 
-lineTriple :: TextState2 -> TZ  -> [Triple]
+lineTriple :: TextDescriptor -> TZ  -> [Triple]
 -- ^ enter a line triple
 -- processes markup as well - perhaps this is not necessary?
 -- title and author in gutenberg does not have a language code
@@ -163,7 +163,7 @@ oneMarkerTriple lineSigl intText =
         mSigl = inLineMarkerSigl lineSigl . fst $ intText
 
 
-layoutTriples ::  TextState2 -> [TZ] -> Text  -- test BAD -> J
+layoutTriples ::  TextDescriptor -> [TZ] -> Text  -- test BAD -> J
 
 --layoutTriples textstate =  unlines' .  map triple2text . produceLayoutTriples textstate
 -- too expensive to map triple2text (at least on oporto)

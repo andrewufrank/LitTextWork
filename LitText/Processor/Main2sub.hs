@@ -33,7 +33,7 @@ import           Uniform.Strings
 import Lines2para.HandleLayout
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 
-mainLitAndNLPproduction :: Bool -> Bool -> TextState2 -> ErrIO ()
+mainLitAndNLPproduction :: Bool -> Bool -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction debugLit produceLitOnly textstate = do
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
     --- convert to TextZeilen format

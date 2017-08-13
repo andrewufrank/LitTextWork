@@ -40,13 +40,13 @@ import          Data.RDF.FileTypes (ntFileTriples)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
-import Parser.Foundation (TextState2(..), serverLoc, originalsDir)
+import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile)
 
 debugNLP1 = False
 
 -- main export
-produceNLP :: Bool -> TextState2 ->  [TZ2] -> ErrIO () -- test C  -> X
+produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
@@ -69,7 +69,7 @@ test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX
 --
 
 -- production of F to be used later
-testOP_E_F :: LanguageCode -> TextState2 -> [(NLPtext,[Doc0])] -> ErrIO [ Doc0 ]
+testOP_E_F :: LanguageCode -> TextDescriptor -> [(NLPtext,[Doc0])] -> ErrIO [ Doc0 ]
 testOP_E_F lang textstate inp =
         mapM  (completeSentencesInDoc False textstate lang)  (concat $ map snd inp)
         -- does produce empty sets ...
@@ -91,12 +91,12 @@ test_10_E_F = testVar3FileIO result10A "resultE10" "resultF10" (testOP_E_F Engli
 ------ 10 english
 
 
-completeSentencesInDoc :: Bool -> TextState2 -> LanguageCode -> ( Doc0)
+completeSentencesInDoc :: Bool -> TextDescriptor -> LanguageCode -> ( Doc0)
                         -> ErrIO ( Doc0)
 -- complete the german sentences in the Doc (with lemmas
 completeSentencesInDoc debugFlag textstate lang ( doc0) = do
 --    let lang = tz3lang ntz
-    let nlpserver = serverLoc textstate
+    let nlpserver = nlpServer textstate
     if lang == German
         then do
             let sents1 = docSents doc0
@@ -106,12 +106,12 @@ completeSentencesInDoc debugFlag textstate lang ( doc0) = do
         else return (  doc0)
 
 
-produceOneParaNLP :: Bool -> TextState2 -> TZ2 -> ErrIO ()
+produceOneParaNLP :: Bool -> TextDescriptor -> TZ2 -> ErrIO ()
 produceOneParaNLP showXML textstate tzp = do
-    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp False showXML (serverLoc textstate) tzp  -- C -> E
+    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
     mapM_  (produceOneOneParaNLP textstate ntz) (zip [1..] docs )
 
-produceOneOneParaNLP :: TextState2 -> NLPtext -> (Int, Doc0)  -> ErrIO ()
+produceOneOneParaNLP :: TextDescriptor -> NLPtext -> (Int, Doc0)  -> ErrIO ()
 produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
         let lang = tz3lang ntz
         let paranr = tz3para $ ntz
@@ -129,10 +129,10 @@ produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
                 -- todo fileio add filepath to dir
         let newFileName =  (authorDir textstate)
                            ++ "/" ++ buchname textstate  ++ "." ++ ("nt"::FilePath) ::FilePath
-        filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
-                           (newFileName::FilePath)
-        let textstate2 = textstate{textfilename=filenameRes}
-        appendTriples2file textstate2 triples
+--        filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
+--                           (newFileName::FilePath)
+--        let textstate2 = textstate{textfilename=filenameRes}
+        appendTriples2file textstate  triples
 --            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
 --                        , showT . textfilename $ textstate, " \n", showT response ]
 --            let response2 = response <>
@@ -141,17 +141,15 @@ produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
         return ()
 
 
-appendTriples2file :: TextState2 -> [Triple] -> ErrIO ()
+appendTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
 appendTriples2file textstate tris = do
---    write6 (textfilename textstate)  ntFileTriples tris
-    append6 (textfilename textstate)  ntFileTriples tris
+    append6 (destNT textstate)  ntFileTriples tris
     -- file must be deleted first!
 
 
-writeTriples2file :: TextState2 -> [Triple] -> ErrIO ()
+writeTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
 writeTriples2file textstate tris = do
---    write6 (textfilename textstate)  ntFileTriples tris
-    write6 (textfilename textstate)  ntFileTriples tris
-    -- file must be deleted first!
+    write6 (destNT textstate)  ntFileTriples tris
+    -- this deletes previous file
 
 

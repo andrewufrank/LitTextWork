@@ -17,7 +17,7 @@
 module BuchCode.BuchToken (module BuchCode.BuchToken
         , module Uniform.Error
         , module Data.RDF.Extension
-        , module Parser.Foundation
+        , module Parser.TextDescriptor
             --     BuchTokenized(..)
             -- , BuchToken (..), unusedTokens, tokenNLPanalysed
             -- , Unparser (..)
@@ -29,7 +29,7 @@ import           Data.RDF.Extension -- (LanguageCode (..), PartURI)
 import           Uniform.Error hiding ((</>), (<.>))
 --import           Uniform.Strings
 --import Safe  -- is export from Error
-import Parser.Foundation hiding ((</>), (<.>))
+import Parser.TextDescriptor hiding ((</>), (<.>))
 
 
 data BuchTokenized a = BuchTokenized { btokenType:: a

@@ -25,7 +25,7 @@ import           Data.Maybe               (isNothing)
 import           Data.RDF
 import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
-import           Parser.Foundation  hiding ((</>))
+--import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB
 import Parser.ProduceLayout
@@ -40,12 +40,12 @@ import Uniform.TestHarness
 
 litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 
-produceLitTriples ::  TextState2 -> [TZ2] -> [Triple]  -- test C=BAE -> H
+produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main entry point
 produceLitTriples textstate tz2s = (werkTriple textstate)
                     ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
 
-werkTriple :: TextState2 ->   [Triple]
+werkTriple :: TextDescriptor ->   [Triple]
 -- ^ produce a werk, has the properties in markup
 werkTriple textstate   =
     [ mkTripleType buchUri (mkRDFtype ("Werk" :: Text))
@@ -98,7 +98,7 @@ formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 --formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
 ---- format to 3 digits
 
-paraSigl :: TextState2 -> ParaNum -> ParaSigl
+paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
 paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
                 (formatParaID . unparaNum $ pn)
                       ( buchURIx $ textstate)
@@ -112,7 +112,7 @@ paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
 
 debugTurtle = True
 
-convOneTextZeile2triple :: TextState2 -> TZ2 -> [Triple]
+convOneTextZeile2triple :: TextDescriptor -> TZ2 -> [Triple]
 -- produce all triples necessary for each line item
 convOneTextZeile2triple textstate tz  = case tz of
     TZ2markup {} -> case tz2tok tz of
@@ -125,7 +125,7 @@ convOneTextZeile2triple textstate tz  = case tz of
             otherwise -> otherBuchTriple textstate tz
     TZ2para {} -> paraTriple textstate tz
 
-otherBuchTriple :: TextState2 -> TZ2 -> [Triple]
+otherBuchTriple :: TextDescriptor -> TZ2 -> [Triple]
 -- make triples for other markup (author etc.), which apply to the buch as a whole
 otherBuchTriple textstate tz =
     [mkTripleLang (tz2lang tz) buchUri (mkRDFproperty mk)
@@ -166,11 +166,11 @@ startSeiteTriple sigl tz =  if isNothing seite then []
         where
                 seite = tlpage . tz2loc $ tz
 
-inWerkTriple :: TextState2 -> RDFsubj -> Triple
+inWerkTriple :: TextDescriptor -> RDFsubj -> Triple
 inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)  (buchURIx textstate)
 -- probably not needed
 
-hlTriple :: TextState2 -> BuchToken -> TZ2 -> [Triple]
+hlTriple :: TextDescriptor -> BuchToken -> TZ2 -> [Triple]
 -- ^ produce the triples for header levels
 hlTriple textstate mk tz =
     [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
@@ -188,7 +188,7 @@ hlTriple textstate mk tz =
         lang = tz2lang tz
 
 
-paraTriple :: TextState2 -> TZ2 -> [Triple]
+paraTriple :: TextDescriptor -> TZ2 -> [Triple]
 -- | the triples to describe a paragraph, text as BuchParagraph, inPart
 -- todo
 -- with the filename given by the sigl

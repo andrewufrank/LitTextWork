@@ -24,13 +24,13 @@ module Parser.ReadMarkupAB
 import           Test.Framework
 import Uniform.TestHarness
 
-import           Parser.Foundation        hiding ((</>), (<.>))
+import           Parser.TextDescriptor        hiding ((</>), (<.>))
 import          Producer.Servers
 import           Uniform.FileIO
 import Uniform.TestHarnessUtilities.Utils
 
-testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
-serverLocTest = serverBrest --
+--testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
+--serverLocTest = serverBrest --
 
 
 data Markup
@@ -54,7 +54,7 @@ instance TypedFiles5 Text Markup  where
 
 debugRead = False
 -- main export
-textstate2Text :: TextState2 -> ErrIO Text  -- test A -> B
+textstate2Text :: TextDescriptor -> ErrIO Text  -- test A -> B
 -- reads the markup file and converts to coded llines
 textstate2Text textstate = do
     t <- _readMarkupFile textstate -- test A -> B
@@ -63,12 +63,13 @@ textstate2Text textstate = do
     let t2 = filterChar (`notElem` ['\r']) t
     return t2
 
-_readMarkupFile :: TextState2 -> ErrIO Text
+_readMarkupFile :: TextDescriptor -> ErrIO Text
 _readMarkupFile textstate = do
-    text <-  read5 ((originalsDir $ textstate) </>
-                (makeRelDir .  authorDir $ textstate) :: Path Abs Dir)
-
-            (makeRelFile .  buchname $ textstate) markupFileType5
+    text <- read6 (sourceMarkup textstate) markupFileType5
+--    text <-  read5 ((originalsDir $ textstate) </>
+--                (makeRelDir .  authorDir $ textstate) :: Path Abs Dir)
+--
+--            (makeRelFile .  buchname $ textstate) markupFileType5
     bomWarning text   -- the check for BOM is in MainParse only -
     let text2 = s2t . convertLatin . t2s $ text
     let nonlats =  nubChar . findNonLatinCharsT $ text2
@@ -115,18 +116,19 @@ test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2T
 
 
 
-litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
-sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}
-destinationTest = DGoutDir litTestDir1
+--litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
+--sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}
+--destinationTest = DGoutDir litTestDir1
 
-result1A = fillTextState2 sourceTest destinationTest "test" "t1"
-result2A = fillTextState2 sourceTest destinationTest "test" "t2"
-result3A = fillTextState2 sourceTest destinationTest "test" "t3"
-result4A = fillTextState2 sourceTest destinationTest "test" "t4"
-result5A = fillTextState2 sourceTest destinationTest "test" "t5"
-result6A = fillTextState2 sourceTest destinationTest "test" "t6"
-result7A = fillTextState2 sourceTest destinationTest "test" "t6"  --same
-result8A = fillTextState2 sourceTest destinationTest "test" "t8"
-result9A = fillTextState2 sourceTest destinationTest "test" "t9"
-result10A = fillTextState2 sourceTest destinationTest "test" "t10"
+fill_ = fillTextState3 dirsTest serverBrest
+result1A = fill_ "test" "t1"
+result2A = fill_ "test" "t2"
+result3A = fill_ "test" "t3"
+result4A = fill_ "test" "t4"
+result5A = fill_ "test" "t5"
+result6A = fill_ "test" "t6"
+result7A = fill_ "test" "t6"  --same
+result8A = fill_ "test" "t8"
+result9A = fill_ "test" "t9"
+result10A = fill_ "test" "t10"
 

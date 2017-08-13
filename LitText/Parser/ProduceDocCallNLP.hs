@@ -244,9 +244,9 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
 --    -- this will not be used
 --    return []
 
-testOP_C_E :: TextState2 -> [TZ2] -> ErrIO   [(NLPtext,[Doc0])]
+testOP_C_E :: TextDescriptor -> [TZ2] -> ErrIO   [(NLPtext,[Doc0])]
 testOP_C_E resultXA resultBAEfile = do
-    let sloc = serverLoc  result1A
+    let sloc = nlpServer  result1A
 
     res <-  mapM (convertTZ2nlp False   False sloc) resultBAEfile
     -- the secnd bool controls the rendering of the xml file

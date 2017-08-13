@@ -86,17 +86,14 @@ parseAndExecute t1 t2    = do
 --        let lang = readLanguageCode "readLangCode in MainCollect"
 --                    (s2t $ argLanguage args) :: LanguageCode
 
-        let generality  = if argOrigTest args
-                then generalityOrig4
-                else generalityTest4
-        let source = if argOrigTest args
-                then sourceOrig4
-                else sourceTest4
+        let dirs = if argOrigTest args
+                then dirsOrig
+                else dirsTest
         if  null (argdir args)
             then
-                processAll False  source  generality  resfile
+                processAll False  dirs  serverBrest resfile
             else do
-                let textstate = fillTextState2 source generality
+                let textstate = fillTextState3 dirs serverBrest
                          (argdir args) (argbuch args)
                 mainLitAndNLPproduction False False textstate
                 -- first bool is debug output

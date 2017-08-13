@@ -72,6 +72,9 @@ fillTextState3 litdirs server author buch = TextDescriptor {
     , buchname = buch
     }
 
+authorName = s2t . authorDir
+buchName = s2t . buchname
+
 fillTextState4 :: LitDirs -> URI -> Path Abs File
                 -> TextDescriptor
 -- construct at text state with authorDir and buchFilename as FilePath
