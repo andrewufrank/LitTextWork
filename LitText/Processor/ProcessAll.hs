@@ -76,7 +76,7 @@ processOneMarkup :: Bool ->  LitDirs -> URI -> Path Abs File
 processOneMarkup debug  litDirs server lfp = do
         let textstate2 = fillTextState4 litDirs server lfp
         putIOwords ["\nprocessOneMarkup", showT server  ]
-        ntExist <- exist6 (sourceMarkup textstate2) ntFileTriples
+        ntExist <- exist6 (destNT textstate2) ntFileTriples
         if not ntExist
             then do
                 putIOwords  ["\nprocessMarkup - process"

@@ -31,6 +31,7 @@ import           Parser.ProduceNLP
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
 import Lines2para.HandleLayout
+import Data.RDF.FileTypes (ntFileTriples)
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 
 mainLitAndNLPproduction :: Bool -> Bool -> TextDescriptor -> ErrIO ()
@@ -57,7 +58,9 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    writeTriples2file textstate (layoutTriples ++ litTriples)
+    textstate2 <-  writeHandleTriples textstate litTriples
+
+--    writeTriples2file textstate (layoutTriples ++ litTriples)
     when debugLit $ putIOwords ["lit: triples stored in file \n",
              unlines' . map showT $ (layoutTriples ++ litTriples)
                     ]

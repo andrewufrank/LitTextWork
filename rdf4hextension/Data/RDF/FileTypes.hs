@@ -82,7 +82,6 @@ instance TypedFiles5 [RDF.Triple] () where
     write6 fp  tp triples = do
 
         when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
         let fn2 = setExtension (tpext5 tp)  fp
         when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
@@ -93,6 +92,25 @@ instance TypedFiles5 [RDF.Triple] () where
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
         closeFile2  hand
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+
+    openHandle6 fp  tp = do
+
+        when rdfGraphDebug $ putIOwords ["openHandle6 triples"]
+        let fn2 = setExtension (tpext5 tp)  fp
+        when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
+
+        hand <- openFile2handle fn2 WriteMode
+        -- should create or truncate the file
+        --https://hackage.haskell.org/package/base-4.10.0.0/docs/System-IO.html#g:5
+        when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
+        return hand
+
+
+    writeHandle6 hand  tp triples = do
+
+        when rdfGraphDebug $ putIOwords ["writeHandle6 triples"]
+
+        write2handle  hand (unlines' $ Prelude.map triple2text triples)
 
     exist6 fp tp = do
         let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File

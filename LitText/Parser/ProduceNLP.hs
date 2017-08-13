@@ -41,7 +41,7 @@ import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
 import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
-import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile)
+import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
 
 debugNLP1 = False
 
@@ -132,7 +132,8 @@ produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
 --        filenameRes :: Path Abs File <- resolveFile (originalsDir  textstate)
 --                           (newFileName::FilePath)
 --        let textstate2 = textstate{textfilename=filenameRes}
-        appendTriples2file textstate  triples
+        writeHandleTriples textstate triples
+--        appendTriples2file textstate  triples
 --            when debugNLP $ putIOwords ["produceOneParaNLP triples stored   "
 --                        , showT . textfilename $ textstate, " \n", showT response ]
 --            let response2 = response <>
@@ -151,5 +152,30 @@ writeTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
 writeTriples2file textstate tris = do
     write6 (destNT textstate)  ntFileTriples tris
     -- this deletes previous file
+
+openHandleTriples  :: TextDescriptor -> ErrIO TextDescriptor
+openHandleTriples textstate  = do
+    let mhand = destHandle textstate
+    case mhand of
+        Nothing ->  do
+            hand <- openHandle6 (destNT textstate)  ntFileTriples
+            return textstate{destHandle = Just hand}
+        Just hand ->  return textstate
+
+writeHandleTriples :: TextDescriptor -> [Triple] -> ErrIO TextDescriptor
+writeHandleTriples textstate tris = do
+    let mhand = destHandle textstate
+    case mhand of
+        Nothing -> do
+            textstate2 <- openHandleTriples textstate
+            writeHandleTriples textstate2 tris
+            return textstate2
+        Just hand -> do
+                writeHandle6 hand ntFileTriples tris
+                return textstate
+
+
+
+
 
 
