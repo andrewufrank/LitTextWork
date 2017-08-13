@@ -11,7 +11,7 @@ module Main     where      -- must have Main (main) or Main where
 import Uniform.Strings
 import           Test.Framework
 import {-@ HTF_TESTS @-} Producer.Servers
-import {-@ HTF_TESTS @-} Parser.Foundation
+import {-@ HTF_TESTS @-} Parser.TextDescriptor
 
 main =  do
     putStrLn "LitFoundation.hs:\n"

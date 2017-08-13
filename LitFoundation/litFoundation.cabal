@@ -24,7 +24,7 @@ library
         , HTF
 
     exposed-modules:
-        Parser.Foundation
+        Parser.TextDescriptor
         Producer.Servers
 
     exposed: True

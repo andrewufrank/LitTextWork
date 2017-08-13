@@ -1,9 +1,9 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Parser . Foundation
+-- Module      :  Parser . TextDescriptor
 -- Copyright   :  andrew u frank -
 --
--- | the definitions which are at the bottom
+-- | the definitions of the descrption of the text
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
@@ -11,8 +11,8 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Parser.Foundation (
-        module Parser.Foundation
+module Parser.TextDescriptor (
+        module Parser.TextDescriptor
     -- , module Data.RDF.Extension
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
@@ -22,8 +22,8 @@ module Parser.Foundation (
 import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
 import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
 import System.IO (Handle)  -- todo include in FileIO exports
-import Uniform.HttpURI
-import Producer.Servers
+import Uniform.HttpURI (URI)
+import Producer.Servers  (serverBrest)  -- for test
 import           Test.Framework
 
 -- directories:
@@ -36,14 +36,20 @@ ntDir = makeAbsDir "/home/frank/scratch/NT"
 litNTOrigDir1 = ntDir </> litOriginals
 litNTTestDir1 = ntDir </> litTests
 
+data LitDirs = LitDirs {
+        source :: Path Abs Dir
+        , dest :: Path Abs Dir
+        }
 
+dirsTest = LitDirs litTestDir1  litNTTestDir1
+dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 --buchnameText = s2t . buchname
 --authorText = s2t . authorDir
 --originalsDir = sourceDir . source
 --serverLoc =  server . source
 
 -- | the description of a file to operate as texts - make legalfilen, when needed
-data TextState2 = TextState2
+data TextDescriptor = TextDescriptor
     {                -- the projp buchcode gives the code for the book,
                 -- add the element number
      sourceMarkup :: Path Abs File -- the markup file
@@ -55,25 +61,49 @@ data TextState2 = TextState2
     , buchname     :: FilePath -- ^ filename in directory gives the buch sigl
     } deriving (Show, Eq)
 
-fillTextState3 :: Path Abs Dir -> Path Abs Dir -> FilePath -> FilePath -> TextState2
+fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
+                -> TextDescriptor
 -- construct at text state with authorDir and buchFilename as FilePath
-fillTextState3 sourceDir ntDir author buch = TextState2 {
-    sourceMarkup = sourceDir </> (author </> buch)
-    , destNT = ntDir </> (author </> buch)
-    , nlpServer = serverBrest
+fillTextState3 litdirs server author buch = TextDescriptor {
+    sourceMarkup = (source litdirs) </> (author </> buch)
+    , destNT = (dest litdirs) </> (author </> buch)
+    , nlpServer = server
     , authorDir = author
     , buchname = buch
     }
 
+fillTextState4 :: LitDirs -> URI -> Path Abs File
+                -> TextDescriptor
+-- construct at text state with authorDir and buchFilename as FilePath
+fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
+    where
+            author = getImmediateParentDir fp
+            buch = getNakedFileName fp
+
 test_fillTextState11 = assertEqual res10 res
     where
-        res = fillTextState3 litOrigDir1 litNTOrigDir1 "may" "test"
-res10 = TextState2 {
+        res = fillTextState3 dirsOrig serverBrest "may" "test"
+res10 = TextDescriptor {
         sourceMarkup = makeAbsFile
             "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
         , destNT = makeAbsFile
             "/home/frank/scratch/NT/LitOriginals/may/test"
-        , nlpServer = makeURI "http://nlp.gerastree.at"
+        , nlpServer = serverBrest
+        , authorDir = "may"
+        , buchname = "test"
+        }
+
+test_fillTextState12 = assertEqual res11 res
+    where
+        res = fillTextState4 dirsTest serverBrest fp
+        fp = makeAbsFile
+            "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
+res11 = TextDescriptor {
+        sourceMarkup = makeAbsFile
+            "/home/frank/additionalSpace/DataBig/LitTest/may/test"
+        , destNT = makeAbsFile
+            "/home/frank/scratch/NT/LitTest/may/test"
+        , nlpServer = serverBrest
         , authorDir = "may"
         , buchname = "test"
         }
