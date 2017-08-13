@@ -32,7 +32,7 @@ litTests =    makeRelDir "LitTest"
 litDir = makeAbsDir "/home/frank/additionalSpace/DataBig"
 litOrigDir1 = litDir </>litOriginals
 litTestDir1 = litDir </> litTests
-ntDir = makeAbsDir "/home/frank/scratch/NT"
+ntDir = makeAbsDir "/home/frank/Scratch/NT"
 litNTOrigDir1 = ntDir </> litOriginals
 litNTTestDir1 = ntDir </> litTests
 

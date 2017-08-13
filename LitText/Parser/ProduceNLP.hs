@@ -142,16 +142,16 @@ produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
         return ()
 
 
-appendTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
-appendTriples2file textstate tris = do
-    append6 (destNT textstate)  ntFileTriples tris
-    -- file must be deleted first!
-
-
-writeTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
-writeTriples2file textstate tris = do
-    write6 (destNT textstate)  ntFileTriples tris
-    -- this deletes previous file
+--appendTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
+--appendTriples2file textstate tris = do
+--    append6 (destNT textstate)  ntFileTriples tris
+--    -- file must be deleted first!
+--
+--
+--writeTriples2file :: TextDescriptor -> [Triple] -> ErrIO ()
+--writeTriples2file textstate tris = do
+--    write6 (destNT textstate)  ntFileTriples tris
+--    -- this deletes previous file
 
 openHandleTriples  :: TextDescriptor -> ErrIO TextDescriptor
 openHandleTriples textstate  = do
