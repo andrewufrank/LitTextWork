@@ -92,7 +92,7 @@ res10 = TextDescriptor {
         sourceMarkup = makeAbsFile
             "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
         , destNT = makeAbsFile
-            "/home/frank/scratch/NT/LitOriginals/may/test"
+            "/home/frank/Scratch/NT/LitOriginals/may/test"
         , nlpServer = serverBrest
         , authorDir = "may"
         , buchname = "test"
@@ -108,7 +108,7 @@ res11 = TextDescriptor {
         sourceMarkup = makeAbsFile
             "/home/frank/additionalSpace/DataBig/LitTest/may/test"
         , destNT = makeAbsFile
-            "/home/frank/scratch/NT/LitTest/may/test"
+            "/home/frank/Scratch/NT/LitTest/may/test"
         , nlpServer = serverBrest
         , authorDir = "may"
         , buchname = "test"
