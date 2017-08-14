@@ -178,6 +178,12 @@ writeHandleTriples textstate tris = do
                 writeHandle6 hand ntFileTriples tris
                 return textstate2
 
+closeHandleTriples :: TextDescriptor ->  ErrIO TextDescriptor
+closeHandleTriples textstate = do
+                let hand = fromJustNote "writeHandleTriples" (destHandle textstate)
+                closeHandle6 (destNT textstate) ntFileTriples hand
+                let textstate2 = textstate{destHandle=Nothing}
+                return textstate2
 
 
 

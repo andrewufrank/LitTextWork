@@ -81,7 +81,7 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 --           , showT . graph $ textstate, " \n"
 --            , unlines' . map showT $ responses
             ]
-    case destHandle textstate3 of
-        Nothing -> return ()
-        Just h -> closeFile2 h
+    textstate4 <- case destHandle textstate3 of
+        Nothing -> return textstate3
+        Just h -> closeHandleTriples textstate3
     return ()

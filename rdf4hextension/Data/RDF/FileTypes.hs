@@ -68,16 +68,9 @@ instance TypedFiles5 [RDF.Triple] () where
     append6 fp  tp triples = do
 
         when rdfGraphDebug $ putIOwords ["triples append6", showT fp]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
         let fn2 = setExtension (tpext5 tp)  fp
---        when rdfGraphDebug $ putIOwords ["triples append6 fn", showT fn2]
---        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["triples append6", showT fn2]
 
         appendFile2 fn2 (unlines' $ Prelude.map triple2text triples)
-
---        when rdfGraphDebug $ putIOwords ["triples append6", showT fn2]
---        closeFile2  hand
 
     write6 fp  tp triples = do
 
@@ -94,9 +87,10 @@ instance TypedFiles5 [RDF.Triple] () where
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
     openHandle6 fp  tp = do
-
         when rdfGraphDebug $ putIOwords ["openHandle6 triples"]
-        let fn2 = setExtension (tpext5 tp)  fp
+        let ext = unExtension (tpext5 tp)
+        let tmpext = Extension (ext <.> "tmp")
+        let fn2 = setExtension tmpext  fp
         when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
 
         hand <- openFile2handle fn2 WriteMode
@@ -105,11 +99,20 @@ instance TypedFiles5 [RDF.Triple] () where
         when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
         return hand
 
+    closeHandle6  fp tp hand = do
+        when rdfGraphDebug $ putIOwords ["closeHandle6 triples"]
+        let ext = unExtension (tpext5 tp)
+        let tmpext = Extension (ext <.> "tmp")
+        closeFile2 hand
+        let fn2 = setExtension tmpext  fp
+        let fn1 = setExtension (tpext5 tp) fp
+        renameFile fn2 fn1
+        when rdfGraphDebug $ putIOwords ["closeHandle6 triples", showT fn2]
+        return ()
+
 
     writeHandle6 hand  tp triples = do
-
         when rdfGraphDebug $ putIOwords ["writeHandle6 triples"]
-
         write2handle  hand (unlines' $ Prelude.map triple2text triples)
 
     exist6 fp tp = do
@@ -117,12 +120,6 @@ instance TypedFiles5 [RDF.Triple] () where
         doesFileExist'  fn2
 
     read6 fp  tp = error "read for triples is not easy and not required"
---    do
---        let fn2 = fromJustNote "typedfile triples read6" . setExtension (tpext5 tp) $ fp
---        raw :: String <-  readFile2 fn2
---        putIOwords ["read6 db raw", s2t $ take 100 raw]
---        let res = readNote "read6 for triples" raw :: [RDF.Triple]
---        return res
 
 
 instance TypedFiles5 [Text] Queries where
