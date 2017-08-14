@@ -39,14 +39,11 @@ programName = "may13 = ProduceLit" :: Text
 progTitle = "produce the lit for all markup files " :: Text
 
 main :: IO ()
-main = do
-    startProg programName progTitle
-        (parseAndExecute
-               (unlinesT ["gets the nt files" ]
-               )
-        "orig/test"
-        )
-resfile  = makeRelFile "resultCollectAll"
+main = startProg programName progTitle
+            ( parseAndExecute
+               (unlinesT ["gets the nt files" ])
+               "orig/test"
+            )
 
 --- cmd line parsing
 data LitArgs = LitArgs
