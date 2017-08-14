@@ -177,7 +177,8 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                                 , showT language, "language has no server"]
 
             let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
-                                    \,lemma,ner,depparse,dcoref,coref")
+                                    \,lemma,ner,depparse,coref -coref.algorithm neural")
+--                                        dcoref,coref")
         --                    --  coref, verlangt depparse,
                             , ("outputFormat", Just "xml")
                             ]
