@@ -274,6 +274,7 @@ textSplit :: Text -> [Text]
 --textSplit =  fromJustNote "textSplit" . splitOn' ". "
 textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
 -- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
+-- asked on stack overflow how to combine... (coreNLP breaks on ? as well)
 -- issue: splits for "costs 1s. per year" and similar
 -- could be controled by merging pieces when number "s." is at end of piece
 -- regular expression used in  geany could be used? is this save?
