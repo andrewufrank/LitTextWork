@@ -18,5 +18,7 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/rdf4h
   extra-dep: true
-extra-deps: []
-resolver: lts-8.15
+extra-deps:
+- hgal-2.0.0.2
+- test-invariant-0.4.5.0
+resolver: lts-9.1
