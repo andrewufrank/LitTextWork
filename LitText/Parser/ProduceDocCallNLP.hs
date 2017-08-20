@@ -177,7 +177,10 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                                 , showT language, "language has no server"]
 
             let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
-                                    \,lemma,ner,depparse,coref -coref.algorithm neural")
+                            \,lemma,ner,depparse, dcoref,coref")
+--                                    coref -coref.algorithm neural")
+-- perhaps the nerual algorithm is better, but creates problems
+-- with the xml doc received (starts with C?
 --                                        dcoref,coref")
         --                    --  coref, verlangt depparse,
                             , ("outputFormat", Just "xml")
