@@ -76,7 +76,7 @@ data BuchToken =   -- just the markers
         | BuchQuelle  -- woher ist der text (z.b. gutenberg)
         | BuchFilename        -- bei der Quelle URL oder aehnlich, filename..
         | BuchSprache        -- to mark following text with the language
-        | Buchuebesetzer
+        | BuchUebesetzer
         | BuchIV1
         | BuchIV2
         | BuchIV3
@@ -126,6 +126,7 @@ instance Unparser BuchToken where
     markerPureMult BuchDedikation   = [ "dedication", markerPure BuchDedikation]
     markerPureMult BuchAuthorLeben   = [ "authorleben", "lebenauthor", markerPure BuchAuthorLeben]
     markerPureMult BuchAuthor   = [ "author:", markerPure BuchAuthor]
+    markerPureMult BuchUebesetzer   = [ "translator:", "translator", markerPure BuchUebesetzer]
 
     markerPureMult BuchPublikationDetail = [markerPure BuchPublikationDetail, "publicationDetail"
                                 , "publikationsdetail"]
