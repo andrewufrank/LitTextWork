@@ -62,6 +62,7 @@ data BuchToken =   -- just the markers
         | BuchAuthor
         | BuchAuthorLeben
         | BuchDanksagung
+        | BuchGenre
         | BuchUntertitel
         | BuchVerlag
         | BuchPublikationDetail
