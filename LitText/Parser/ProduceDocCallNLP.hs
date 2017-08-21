@@ -202,7 +202,10 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
 
             let text2 = cleanText language text
 
-            let texts = getPiece . textSplit $ text2
+--            let texts = getPiece . textSplit $ text2
+            let texts = if lengthChar text2 < nlpDocSizeLimit
+                            then [ text2]
+                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
             docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
             when False $ putIOwords ["convertTZ2nlp parse"
@@ -210,6 +213,8 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
 
             return (tz, docs)
+
+nlpDocSizeLimit = 5000  -- 18,000 gives timeout for brest
 
 convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
@@ -219,7 +224,8 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
             putIOwords ["convertTZ2nlpCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text ]
-        xml ::  Text  <-   makeHttpPost7 False nlpServer "" vars "text/plain" text
+        xml ::  Text  <-   makeHttpPost7 False nlpServer "" vars
+                    "multipart/form-data" text
     -- german parser seems to understand utf8encoded bytestring
 
         when False  $
@@ -275,6 +281,7 @@ textid = id
 
 textSplit :: Text -> [Text]
 --textSplit =  fromJustNote "textSplit" . splitOn' ". "
+-- append . to end last piece
 textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
 -- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
 -- asked on stack overflow how to combine... (coreNLP breaks on ? as well)
@@ -282,10 +289,15 @@ textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
 -- could be controled by merging pieces when number "s." is at end of piece
 -- regular expression used in  geany could be used? is this save?
 
+textSplit2 :: Text -> [Text]
+-- split on "I" - in joyce is sort of start of a new idea..
+    -- prepend I to start next piece
+textSplit2 = fmap s2t . split (keepDelimsL $ onSublist " I "  ) . t2s
 
-getPiece :: [Text] -> [Text]
+
+getPiece :: Int -> [Text] -> [Text]
 -- get a piece of length < 2000
-getPiece   = chop (takePiece "")
+getPiece limit  = chop (takePiece limit "")
 
 --chop :: ([a] -> (b, [a])) -> [a] -> [b]
 --A useful recursion pattern for processing a list to produce a new list,
@@ -293,15 +305,15 @@ getPiece   = chop (takePiece "")
 --Typically chop is called with some function that will
 --consume an initial prefix of the list and produce a value and the rest of the list.
 
-takePiece :: Text  -> [Text] ->   (Text, [Text])
-takePiece b [] = (b,[])
-takePiece b (a:as)
+takePiece :: Int -> Text  -> [Text] ->   (Text, [Text])
+takePiece _ b [] = (b,[])
+takePiece limit b (a:as)
     | null' b && lengthChar a > limit = (a, as)
     | lengthChar ab > limit = (b, a:as)
-    | otherwise = takePiece ab as  -- accumulate a larger piece
+    | otherwise = takePiece limit ab as  -- accumulate a larger piece
                     where
                         ab = concat' [b, " ", a]
-                        limit = 2000
+--                        limit = 12000
 
 --test_longText1 ::  IO ()
 --test_longText1 = testFile2File "longtext.txt" "lt1" textid
