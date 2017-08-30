@@ -11,6 +11,8 @@
 --  for german - the lemma are determined for each sentence individually
 -- using the tokenization from the coreNLP
 
+-- reduced to a single dependency
+
 -- later - open language changes inside paragraph :
 -- snippets are pieces in one paragraph of one languageBreakCode
 -- therefo~~~~~re the snippet id is paragraph id + count
@@ -67,7 +69,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
         t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
 --        t3 = mkTripleType  (unParaSigl paraid) (mkRDFtype Paragraph)
         -- gives two different lit: and nlp:Paragraph types?
-
+        -- t4 gives se
         sents :: [Triple]
         sents =   concat $ map (mkSentenceTriple2 lang  snipid) (docSents doc0)
         corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )

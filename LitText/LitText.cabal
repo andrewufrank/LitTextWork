@@ -83,7 +83,7 @@ Test-Suite nlpTestAuto
 --    other-modules: Main2sub
 
 
-executable ntmake3
+executable nt2make
     main-is: ntmake.hs
     build-depends: base, HTF
         , uniform-strings
