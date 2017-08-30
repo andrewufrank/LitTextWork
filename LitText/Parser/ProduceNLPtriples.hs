@@ -119,6 +119,7 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
 mkDependenceTypeTriples2 :: LanguageCode -> SentSigl ->    DependenceType0 -> [Triple]
 mkDependenceTypeTriples2 lang sentSigl  d   =  t1 : t2 : ts
 -- the selection is already in coreNLPxml, which takes the last of the dep analysis
+-- this is too complex and too indirect. link directly to sentence
 
 --    if  dtt d == "enhanced-plus-plus-dependencies"
 --    -- use only the best dependency analysis -- could filter out earlier?
