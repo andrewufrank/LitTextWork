@@ -3,7 +3,10 @@
 -- Module      :  Parser . ProduceText
 -- Copyright   :  andrew u frank -
 --
--- |
+-- | producing the triples for representing the literary text
+-- mostly avoided in v2 which does only include what is actually used to classify texts
+-- especially fables
+
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
@@ -25,7 +28,6 @@ import           Data.Maybe               (isNothing)
 import           Data.RDF
 import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
---import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB
 import Parser.ProduceLayout
@@ -43,7 +45,7 @@ litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main entry point
 produceLitTriples textstate tz2s = (werkTriple textstate)
-                    ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
+--                    ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
 
 werkTriple :: TextDescriptor ->   [Triple]
 -- ^ produce a werk, has the properties in markup
@@ -56,9 +58,6 @@ werkTriple textstate   =
 test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
                 (mkRDFtype ( "Werk"::Text ))
 
---buchURIx textstate = RDFsubj $ gerastreeURI
---            <#> authorText textstate <-> buchnameText textstate
----- id of buch, part and sentence or page is attached
 
 data LitProperty =  HasTitle | InWerk | InBuch | InPart
         | AufSeite  -- ^ text starts on this page
@@ -82,10 +81,6 @@ instance RDFtypes RDFtype where
 instance RDFtypes BuchToken where
     mkRDFtype tk = RDFtype $ litURItext <#> (toTitle . markerPure $ tk)
 
---newtype ParaID = ParaID Int deriving (Show, Eq)
----- just to avoid confusions
---unparaID (ParaID t) = t
-----instance Zeros ParaID where zero =  formatParaID zero
 
 newtype ParaSigl = ParaSigl RDFsubj
 unParaSigl (ParaSigl t) = t
@@ -104,26 +99,18 @@ paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
                       ( buchURIx $ textstate)
                       )
 
---inParaSigl :: TextState2 -> ParaNum -> ParaSigl
---inParaSigl  textstate pn = ParaSigl $ (extendSlashRDFsubj
---          (formatParaID .unparaNum $ pn)
---        (  buchURIx $ textstate))
--- ^ convert the inpart id into an uri
-
-debugTurtle = True
-
-convOneTextZeile2triple :: TextDescriptor -> TZ2 -> [Triple]
--- produce all triples necessary for each line item
-convOneTextZeile2triple textstate tz  = case tz of
-    TZ2markup {} -> case tz2tok tz of
-            BuchTitel -> otherBuchTriple textstate tz
-                            ++ hlTriple textstate BuchTitel tz
-                            -- create a simple title property for the werk
-            BuchHL1   -> hlTriple textstate BuchHL1 tz
-            BuchHL2   -> hlTriple textstate BuchHL2 tz
-            BuchHL3   -> hlTriple textstate BuchHL3 tz
-            otherwise -> otherBuchTriple textstate tz
-    TZ2para {} -> paraTriple textstate tz
+--convOneTextZeile2triple :: TextDescriptor -> TZ2 -> [Triple]
+---- produce all triples necessary for each line item
+--convOneTextZeile2triple textstate tz  = case tz of
+--    TZ2markup {} -> case tz2tok tz of
+--            BuchTitel -> otherBuchTriple textstate tz
+--                            ++ hlTriple textstate BuchTitel tz
+--                            -- create a simple title property for the werk
+--            BuchHL1   -> hlTriple textstate BuchHL1 tz
+--            BuchHL2   -> hlTriple textstate BuchHL2 tz
+--            BuchHL3   -> hlTriple textstate BuchHL3 tz
+--            otherwise -> otherBuchTriple textstate tz
+----    TZ2para {} -> paraTriple textstate tz
 
 otherBuchTriple :: TextDescriptor -> TZ2 -> [Triple]
 -- make triples for other markup (author etc.), which apply to the buch as a whole
@@ -136,27 +123,6 @@ otherBuchTriple textstate tz =
             mk = tz2tok tz
 
 --otherBuchTriple2 :: TextState2 -> TZ2 -> [Triple]
----- make triples for other markup (author etc.), which apply to the buch as a whole
---otherBuchTriple2 textstate tz =
---    [mkTripleLang (tz2lang tz) buchUri (mkRDFproperty mk)
---                    ("22" <> (twm $ tz2text tz))]
---    where
---            buchUri = buchURIx textstate
-----        sigl = paraSigl textstate . tz2para $ tz
---            mk = tz2tok tz
-
---titleTriple :: TextState2 -> TZ2 -> [Triple]
----- ^ make a triple for a title line
---titleTriple textstate  tz =
---    [mkTripleLang (tz2lang tz)  (unParaSigl sigl)
---                    (mkRDFproperty BuchTitel) (twm $ tz2text tz)
-----    , mkTripleRef (unParaSigl sigl) (mkRDFproperty IsBuch) (buchURIx textstate)
---    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchTitel)
---    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InWerk) buchUri
---    ]
---    where
---        buchUri = buchURIx textstate
---        sigl = paraSigl textstate . tz2para $ tz
 
 startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
 -- ^ the triple for the page on which a paragraph starts
@@ -168,7 +134,7 @@ startSeiteTriple sigl tz =  if isNothing seite then []
 
 inWerkTriple :: TextDescriptor -> RDFsubj -> Triple
 inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)  (buchURIx textstate)
--- probably not needed
+-- probably not needed ??
 
 hlTriple :: TextDescriptor -> BuchToken -> TZ2 -> [Triple]
 -- ^ produce the triples for header levels
@@ -187,30 +153,31 @@ hlTriple textstate mk tz =
         inSigl = paraSigl textstate . tz2inPart $ tz
         lang = tz2lang tz
 
+-- the paragraph triples are not in v2
 
-paraTriple :: TextDescriptor -> TZ2 -> [Triple]
--- | the triples to describe a paragraph, text as BuchParagraph, inPart
--- todo
--- with the filename given by the sigl
-paraTriple textstate tz =
-    [
---    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ((decodeLatin1 . encodeUtf8 )  $ zeilenText tz)
-    mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
-                                        (zeilenText tz)
---    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ( zeilenText tz)
-                    -- do not remove hyphens and text breaks, exactly as in buch
-                    -- was BuchParagraphLayout
-    , inWerkTriple textstate (unParaSigl sigl)
-    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                        (unParaSigl inSigl)
-    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
-     ++ startSeiteTriple sigl tz
-     -- page is text, not a number?
-
-    where
-        sigl = paraSigl textstate . tz2para $  tz
-        inSigl = paraSigl textstate . tz2inPart $ tz
-        lang = tz2lang tz
+--paraTriple :: TextDescriptor -> TZ2 -> [Triple]
+---- | the triples to describe a paragraph, text as BuchParagraph, inPart
+---- todo
+---- with the filename given by the sigl
+--paraTriple textstate tz =
+--    [
+----    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ((decodeLatin1 . encodeUtf8 )  $ zeilenText tz)
+--    mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
+--                                        (zeilenText tz)
+----    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ( zeilenText tz)
+--                    -- do not remove hyphens and text breaks, exactly as in buch
+--                    -- was BuchParagraphLayout
+--    , inWerkTriple textstate (unParaSigl sigl)
+--    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
+--                        (unParaSigl inSigl)
+--    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
+--     ++ startSeiteTriple sigl tz
+--     -- page is text, not a number?
+--
+--    where
+--        sigl = paraSigl textstate . tz2para $  tz
+--        inSigl = paraSigl textstate . tz2inPart $ tz
+--        lang = tz2lang tz
 
 test_1BAE_H = testVar3File result1A "resultBAE1" "resultH1" produceLitTriples
 test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
