@@ -52,6 +52,7 @@ import Parser.NLPvocabulary
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 import Parser.ProduceDocCallNLP
 import Parser.TextDescriptor
+import Parser.ProduceLayout (buchURIx)
 
 processDoc0toTriples2 :: TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
@@ -65,6 +66,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 --        lang = tz3lang ntz
         paraid = paraSigl textstate $ paranr -- . tz3para $ ntz
         snipid = mkSnipSigl paraid snipnr
+        buchUri = buchURIx textstate
 --        t0 = mkTripleType (unSnipSigl snipid) (mkRDFtype Snip)
 --        t1 = mkTriplePartOf (unSnipSigl snipid) (unParaSigl paraid)
         t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
@@ -72,15 +74,15 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
         -- gives two different lit: and nlp:Paragraph types?
         -- t4 gives se
         sents :: [Triple]
-        sents =   concat $ map (mkSentenceTriple2 lang  snipid) (docSents doc0)
+        sents =   concat $ map (mkSentenceTriple2 lang buchUri snipid) (docSents doc0)
         corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )
                             (docCorefs doc0) [1 .. ]
 -- currently not producing the not yet used corefs
 
 ----------------------
-mkSentenceTriple2 :: LanguageCode ->   SnipSigl  ->    Sentence0 ->  ( [Triple])
+mkSentenceTriple2 :: LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 ->  ( [Triple])
 -- ^ produce the   triples for a sentence
-mkSentenceTriple2 lang   snipid sent
+mkSentenceTriple2 lang buchuri  snipid sent
        =      t0 : t1 : t2 :  senteceForm : (toktrips ++ depsTrips)
        -- here a strange looping occurs? ?
     where
@@ -88,7 +90,8 @@ mkSentenceTriple2 lang   snipid sent
         t0 = mkTripleType (unSentSigl sentSigl) (mkRDFtype Sentence)
         t1 = mkTripleText   (unSentSigl sentSigl) (mkRDFproperty Parse)
                                 (sparse sent)
-        t2 = mkTriplePartOf (unSentSigl sentSigl) (unSnipSigl snipid)
+        t2 = mkTriplePartOf (unSentSigl sentSigl) buchuri
+                            -- (unSnipSigl snipid)
         depsTrips =  maybe [] (mkDependenceTypeTriples2 lang sentSigl )
                                 ( sdeps sent) :: [Triple]
         toktrips =  concatMap (mkTokenTriple2 lang sentSigl)
