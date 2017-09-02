@@ -123,7 +123,9 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
 ----------------------------------
 
 mkDependenceTypeTriples2 :: LanguageCode -> SentSigl ->    DependenceType0 -> [Triple]
-mkDependenceTypeTriples2 lang sentSigl  d   =  t1 : t2 : ts
+mkDependenceTypeTriples2 lang sentSigl  d   =
+--              t1 : t2 :
+                     ts
 -- the selection is already in coreNLPxml, which takes the last of the dep analysis
 -- this is too complex and too indirect. link directly to sentence
 
@@ -133,23 +135,25 @@ mkDependenceTypeTriples2 lang sentSigl  d   =  t1 : t2 : ts
 --            then t1 : ts
 --            else []
     where
-        depTid = mkDepTypeSigl sentSigl  "dependency" -- (dtt d)
+--        depTid = mkDepTypeSigl sentSigl  "dependency" -- (dtt d)
         -- only one selected in corenlpxml
-        t1 = mkTripleType (unDepTypeSigl depTid) (mkRDFtype DepType)
-        t2 = mkTriplePartOf (unDepTypeSigl depTid)     (unSentSigl sentSigl)
-        ts = concat $ zipWith (mkDependenceTriple2 lang sentSigl depTid ) ( dtd d)  [1..]
+--        t1 = mkTripleType (unDepTypeSigl depTid) (mkRDFtype DepType)
+--        t2 = mkTriplePartOf (unDepTypeSigl depTid)     (unSentSigl sentSigl)
+        ts = concat $ zipWith (mkDependenceTriple2 lang sentSigl  ) ( dtd d)  [1..]
                 -- passes sentSigl to construct the tokenid later
 
-mkDependenceTriple2 :: LanguageCode -> SentSigl -> DepTypeSigl -> Dependence0 -> Int -> [Triple]
-mkDependenceTriple2 lang sentid depTid dep i  =  t0: t2 : t4 : (t5 ++ t6)
+mkDependenceTriple2 :: LanguageCode -> SentSigl ->  Dependence0 -> Int -> [Triple]
+mkDependenceTriple2 lang sentid  dep i  =  t0:  t4 : (t5 ++ t6)
 -- dependence construction produces incorrect (white space, " etc in depSigl
     where
-        depid = mkDepSigl depTid i
+--        depid = mkDepSigl depTid i
+        depid = mkDepSigl2 sentid i
                 -- must be numbered - the same code may appear twice (dtype dep)
         dependencyCode = shownice . dtype $ dep
         t0 = mkTripleType (unDepSigl depid) (mkRDFtype Dependence)
-        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
-        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency)(shownice $ dtype dep)
+--        t0 = mkTripleType (unSentSigl sentid) (mkRDFtype Dependence)
+--        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
+        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency) dependencyCode
         t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
         t6 = mkDependencePart2 lang sentid  depid  GDdep  (ddep dep)
 
@@ -199,12 +203,12 @@ mkCorefTriple2 lang snip coref i  = t0 : t1 : concat  coreftrips
         t1 = mkTriplePartOf (unCorefSigl corefid) (unSnipSigl snip)  -- perhaps not necessary
 
 mkMention2 :: LanguageCode -> SnipSigl ->   CorefSigl ->  Mention0  -> Int -> [Triple]
-mkMention2 lang snipid corefsigl m i = [t0, t00, t10, t1, t2, t3, t4, t5]
+mkMention2 lang snipid corefsigl m i = [t0, t10, t1, t2, t3, t4, t5]
     where
         mentionid = unMentionSigl $ mkMentionsigl corefsigl i
         sentid = mkSentSigl  snipid (mentSent m)
         t0 = mkTripleType mentionid (mkRDFtype Mention)
-        t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
+--        t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
         t10 = mkTripleText  mentionid (mkRDFproperty MentionRepresenatative)
                     ( mentRep $ m)
                     -- true for the representative mention - i.e. not a pronoun

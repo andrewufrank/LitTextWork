@@ -114,11 +114,19 @@ mkDepTypeSigl sentsigl  did =  DepTypeSigl
 newtype DepSigl = DepSigl RDFsubj deriving (Show, Eq)
 unDepSigl (DepSigl a) = a
 
-mkDepSigl :: DepTypeSigl -> Int -> DepSigl
+--mkDepSigl :: DepTypeSigl -> Int -> DepSigl
+---- make the dependency sigl (these must be numbered)
+--mkDepSigl deptsigl  i =  DepSigl
+--      . extendSlashRDFsubj (formatDepID i)   -- is a Text
+--      . unDepTypeSigl $ deptsigl
+--    where
+--        formatDepID  = ("Dep" <>) .s2t . printf ('%' : '0' : '2' : 'd' :[])
+
+mkDepSigl2 :: SentSigl -> Int -> DepSigl
 -- make the dependency sigl (these must be numbered)
-mkDepSigl deptsigl  i =  DepSigl
+mkDepSigl2 sentsigl  i =  DepSigl
       . extendSlashRDFsubj (formatDepID i)   -- is a Text
-      . unDepTypeSigl $ deptsigl
+      . unSentSigl $ sentsigl
     where
         formatDepID  = ("Dep" <>) .s2t . printf ('%' : '0' : '2' : 'd' :[])
 
