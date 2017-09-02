@@ -126,13 +126,13 @@ otherBuchTriple textstate tz =
 
 --otherBuchTriple2 :: TextState2 -> TZ2 -> [Triple]
 
-startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
--- ^ the triple for the page on which a paragraph starts
-startSeiteTriple sigl tz =  if isNothing seite then []
-            else [mkTripleText (unParaSigl sigl) (mkRDFproperty AufSeite)
-                (fromJustNote "startSeiteTriple produceLit" seite)]
-        where
-                seite = tlpage . tz2loc $ tz
+--startSeiteTriple :: ParaSigl -> TZ2 -> [Triple]
+---- ^ the triple for the page on which a paragraph starts
+--startSeiteTriple sigl tz =  if isNothing seite then []
+--            else [mkTripleText (unParaSigl sigl) (mkRDFproperty AufSeite)
+--                (fromJustNote "startSeiteTriple produceLit" seite)]
+--        where
+--                seite = tlpage . tz2loc $ tz
 
 inWerkTriple :: TextDescriptor -> RDFsubj -> Triple
 inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)  (buchURIx textstate)
@@ -148,7 +148,7 @@ hlTriple textstate mk tz =
                 (unParaSigl inSigl)
     , mkTripleType (unParaSigl sigl) (mkRDFtype mk)
     ]
-    ++  startSeiteTriple sigl tz
+--    ++  startSeiteTriple sigl tz
 
     where
         sigl = paraSigl textstate . tz2para $  tz

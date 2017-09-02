@@ -44,11 +44,12 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
     let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ]
         -- ignore line, allCaps, language
         -- missing footnotes?
-    let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
-    when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
-                            , unlines' . map showT $ layoutTriples]
-    textstate2 <-  writeHandleTriples textstate layoutTriples
+--    let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
 
+--    when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
+--                            , unlines' . map showT $ layoutTriples]
+--    textstate2 <-  writeHandleTriples textstate layoutTriples
+    let textstate2 = textstate
     let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BA -> C  in LinesToParagraph
 
     when debugLit $ putIOwords
