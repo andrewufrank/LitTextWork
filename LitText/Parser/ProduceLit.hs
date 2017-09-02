@@ -28,7 +28,6 @@ import           Data.Maybe               (isNothing)
 import           Data.RDF
 import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
---import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB
 import Parser.ProduceLayout
