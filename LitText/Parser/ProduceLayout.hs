@@ -105,12 +105,13 @@ debugTurtle = True
 
 convOneTZ2triple :: TextDescriptor -> TZ -> [Triple]
 -- produce all triples necessary for each line item
+-- keeps only markup in v2
 convOneTZ2triple textstate tz  = case tz of
 --    TZzahl {}  -> errorT ["formParagraphs","should not have TZzahl left", showT tz]
     TZmarkup {} -> lineTriple textstate tz
     TZleer {} -> [] -- where not elliminated?
 ------         errorT ["formParagraphs","should not leer", showT tz]
-    TZtext {} -> lineTriple textstate tz
+    TZtext {} -> [] -- lineTriple textstate tz
     TZignore {} -> []
     _  -> errorT [showT tz]
 

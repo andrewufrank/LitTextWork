@@ -91,7 +91,7 @@ instance TypedFiles5 [RDF.Triple] () where
         let ext = unExtension (tpext5 tp)
         let tmpext = Extension (ext <.> "tmp")
         let fn2 = setExtension tmpext  fp
-        when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
+        when True $ putIOwords ["openHandle6 triples", showT fn2]
 
         hand <- openFile2handle fn2 WriteMode
         -- should create or truncate the file, but not when the dir not exist

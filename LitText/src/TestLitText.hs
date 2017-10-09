@@ -16,22 +16,22 @@ import  Test.Framework
 -- note BAE == C
 
 import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
-import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
-import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
-import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
-import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- > BAD -> J
---    -- not enough memory on oporto
--- if the files are not already correct in .littest
--- problem is in the comparing when error
-import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- > BAEx
-import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- > Hx
-----------
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
+--import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
+--import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
+--import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- > BAD -> J
+----    -- not enough memory on oporto
+---- if the files are not already correct in .littest
+---- problem is in the comparing when error
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- > BAEx
+--import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- > Hx
+------------
+--import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
 ------    -- makes result D and E
 --------                -- tests only the production of the doc files
-import   {-@ HTF_TESTS @-} Parser.CompleteSentence
+--import   {-@ HTF_TESTS @-} Parser.CompleteSentence
 -------------- calls 17701
---import   {-@ HTF_TESTS @-} Parser.ProduceNLP -- > BAEx --> F,X
+import   {-@ HTF_TESTS @-} Parser.ProduceNLP -- > BAEx --> F,X
 ----------     and   E -> F
 ------------ first calls the nlp again, takes time, result goes in .nt in test
 --------
