@@ -85,6 +85,23 @@ fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
             author = getImmediateParentDir fp
             buch = getNakedFileName fp
 
+fillTextState4a :: Path Abs File -> URI -> Path Abs Dir
+                -> TextDescriptor
+-- construct at text state for a gutenberg catalog markup file
+fillTextState4a file server ntdir = TextDescriptor {
+        sourceMarkup = file
+        , destNT = (ntdir </> filename) :: Path Abs File
+        , destHandle = Nothing
+        , nlpServer = server
+        , authorDir = ""
+        , buchname = ""
+        }
+--        fillTextState3 litdirs server author buch
+    where
+            filename = getFileName file :: Path Rel File
+--             = getImmediateParentDir fp
+--            buch = getNakedFileName fp
+
 test_fillTextState11 = assertEqual res10 res
     where
         res = fillTextState3 dirsOrig serverBrest "may" "test"
