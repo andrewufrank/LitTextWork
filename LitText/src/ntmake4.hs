@@ -39,7 +39,7 @@ import           Options.Applicative.Builder
 import           Options.Applicative
 import Producer.Servers
 import Parser.TextDescriptor hiding ((<>))
-import          Data.RDF.FileTypes (ntFileTriples)
+import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import Processor.Main2sub (mainLitAndNLPproduction)
 
 
@@ -151,7 +151,9 @@ processOneMarkup4 :: Bool  -> URI -> Path Abs Dir->  Path Abs File
 processOneMarkup4 debug   server ntdir file = do
         let textstate2 = fillTextState4a file server ntdir
         putIOwords ["\nprocessOneMarkup", showT server  ]
-        ntExist <- exist6 (destNT textstate2) ntFileTriples
+        ntExist <- if gzipFlag textstate2
+            then exist6 (destNT textstate2) ntFileTriplesGZip
+            else exist6 (destNT textstate2) ntFileTriples
         if not ntExist
             then do
                 putIOwords  ["\nprocessMarkup - process"
