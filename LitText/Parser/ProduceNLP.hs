@@ -36,7 +36,7 @@ import Uniform.TestHarness
 import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
-import          Data.RDF.FileTypes (ntFileTriples)
+import          Data.RDF.FileTypes (ntFileTriples, ntFileTriplesGZip)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
@@ -115,7 +115,7 @@ produceOneOneParaNLP :: TextDescriptor -> NLPtext -> (Int, Doc0)  -> ErrIO ()
 produceOneOneParaNLP textstate  ntz (snipnr, doc0)  =   do  -- tz is NLPtext
         let lang = tz3lang ntz
         let paranr = tz3para $ ntz
-        ( doc0') <- completeSentencesInDoc debugNLP1 textstate lang ( doc0)
+        doc0' <- completeSentencesInDoc debugNLP1 textstate lang ( doc0)
 
         when debugNLP1 $
                 putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
@@ -158,7 +158,9 @@ openHandleTriples textstate  = do
     let mhand = destHandle textstate
     case mhand of
         Nothing ->  do
-                hand <- openHandle6 (destNT textstate)  ntFileTriples
+                hand <- if gzipFlag textstate
+                    then openHandle6 (destNT textstate) ntFileTriplesGZip
+                    else openHandle6 (destNT textstate)  ntFileTriples
                 return textstate{destHandle = Just hand}
             `catchError` \e -> do
                 putIOwords ["writeHandleTriples - error ", e ]
@@ -172,16 +174,20 @@ openHandleTriples textstate  = do
         Just hand ->  return textstate
 
 writeHandleTriples :: TextDescriptor -> [Triple] -> ErrIO TextDescriptor
-writeHandleTriples textstate tris = do
+writeHandleTriples  textstate tris = do
                 textstate2 <- openHandleTriples textstate
                 let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
-                writeHandle6 hand ntFileTriples tris
+                if gzipFlag textstate
+                    then writeHandle6 hand ntFileTriplesGZip tris
+                    else writeHandle6 hand ntFileTriples tris
                 return textstate2
 
 closeHandleTriples :: TextDescriptor ->  ErrIO TextDescriptor
 closeHandleTriples textstate = do
                 let hand = fromJustNote "writeHandleTriples" (destHandle textstate)
-                closeHandle6 (destNT textstate) ntFileTriples hand
+                if gzipFlag textstate
+                    then closeHandle6 (destNT textstate) ntFileTriplesGZip hand
+                    else closeHandle6 (destNT textstate) ntFileTriples hand
                 let textstate2 = textstate{destHandle=Nothing}
                 return textstate2
 

@@ -31,6 +31,7 @@ library
 --        ,network-uri
         ,text
         , HTF
+        , zlib
         -- directory
         -- not used, only for version
         -- safe -any

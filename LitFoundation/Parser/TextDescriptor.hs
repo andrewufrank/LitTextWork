@@ -54,6 +54,7 @@ data TextDescriptor = TextDescriptor
                 -- add the element number
      sourceMarkup :: Path Abs File -- the markup file
      , destNT :: Path Abs File   -- the nt file
+     , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
      , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , nlpServer :: URI -- ^ where the nlp server is
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
@@ -68,6 +69,7 @@ fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
 fillTextState3 litdirs server author buch = TextDescriptor {
     sourceMarkup = (source litdirs) </> (author </> buch)
     , destNT = (dest litdirs) </> (author </> buch)
+    , gzipFlag = False
     , destHandle = Nothing
     , nlpServer = server
     , authorDir = author
@@ -88,9 +90,11 @@ fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
 fillTextState4a :: Path Abs File -> URI -> Path Abs Dir
                 -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
+-- output is gzip
 fillTextState4a file server ntdir = TextDescriptor {
         sourceMarkup = file
         , destNT = (ntdir </> filename) :: Path Abs File
+        , gzipFlag = True
         , destHandle = Nothing
         , nlpServer = server
         , authorDir = ""
