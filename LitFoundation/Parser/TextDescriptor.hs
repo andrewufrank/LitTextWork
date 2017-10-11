@@ -55,12 +55,16 @@ data TextDescriptor = TextDescriptor
      sourceMarkup :: Path Abs File -- the markup file
      , destNT :: Path Abs File   -- the nt file
      , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
+     -- selects then the type of the ntfile (nt or nt.gz)
      , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , nlpServer :: URI -- ^ where the nlp server is
     , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
                                  -- and where the converted data go
     , buchname     :: FilePath -- ^ filename in directory gives the buch sigl
+    , includeText :: Bool -- ^ full text is included in triples
+--                    (false - only the analysis, sentence can be reconstructed
+--                      but not the remainder of the text)
     } deriving (Show, Eq)
 
 fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
@@ -74,6 +78,7 @@ fillTextState3 litdirs server author buch = TextDescriptor {
     , nlpServer = server
     , authorDir = author
     , buchname = buch
+    , includeText = True
     }
 
 authorName = s2t . authorDir
@@ -90,15 +95,16 @@ fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
 fillTextState4a :: Path Abs File -> URI -> Path Abs Dir
                 -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
--- output is gzip
+-- output is gzip, text is not included
 fillTextState4a file server ntdir = TextDescriptor {
         sourceMarkup = file
         , destNT = (ntdir </> filename) :: Path Abs File
         , gzipFlag = True
-        , destHandle = Nothing
+        , destHandle =  Nothing
         , nlpServer = server
         , authorDir = ""
         , buchname = ""
+        , includeText = False
         }
 --        fillTextState3 litdirs server author buch
     where

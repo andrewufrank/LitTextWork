@@ -111,7 +111,9 @@ convOneTZ2triple textstate tz  = case tz of
     TZmarkup {} -> lineTriple textstate tz
     TZleer {} -> [] -- where not elliminated?
 ------         errorT ["formParagraphs","should not leer", showT tz]
-    TZtext {} -> [] -- lineTriple textstate tz
+    TZtext {} -> if includeText textstate
+                        then lineTriple textstate tz
+                        else []
     TZignore {} -> []
     _  -> errorT [showT tz]
 
