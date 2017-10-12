@@ -125,7 +125,7 @@ test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2T
 --sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}
 --destinationTest = DGoutDir litTestDir1
 
-fill_ = fillTextState3 dirsTest serverBrest
+fill_ = fillTextState3a dirsTest serverBrest  -- 3a not including text
 result1A = fill_ "test" "t1"
 result2A = fill_ "test" "t2"
 result3A = fill_ "test" "t3"

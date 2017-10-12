@@ -78,7 +78,20 @@ fillTextState3 litdirs server author buch = TextDescriptor {
     , nlpServer = server
     , authorDir = s2t author
     , buchName = s2t buch
-    , includeText = False
+    , includeText = True
+}
+fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath
+                -> TextDescriptor
+-- construct at text state with authorDir and buchFilename as FilePath
+fillTextState3a litdirs server author buch = TextDescriptor {
+    sourceMarkup = (source litdirs) </> (author </> buch)
+    , destNT = (dest litdirs) </> (author </> buch)
+    , gzipFlag = False
+    , destHandle = Nothing
+    , nlpServer = server
+    , authorDir = s2t author
+    , buchName = s2t buch
+    , includeText =  False
     }
 
 --authorName = s2t . authorDir
@@ -142,8 +155,8 @@ res11 = TextDescriptor {
         , authorDir = "may"
         , buchName = "test"
         , destHandle = Nothing
-        , gzipFlag = False
-        , includeText = True
+        , gzipFlag = True
+        , includeText = False
         }
 
 --TextState2 {

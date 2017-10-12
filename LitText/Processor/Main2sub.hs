@@ -48,8 +48,10 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
-    textstate2 <-  writeHandleTriples textstate layoutTriples
---    let textstate2 = textstate
+    textstate2 <- if includeText textstate
+                then  writeHandleTriples textstate layoutTriples
+                else return textstate
+
     let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BA -> C  in LinesToParagraph
 
     when debugLit $ putIOwords
@@ -60,7 +62,10 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    textstate3 <-  writeHandleTriples textstate2 litTriples
+    textstate3 <- writeHandleTriples textstate2 litTriples
+--        if includeText textstate
+--                                then writeHandleTriples textstate2 litTriples
+--                                else return textstate2
 
 --    writeTriples2file textstate (layoutTriples ++ litTriples)
 --    when debugLit $ putIOwords ["lit: triples stored in file \n",

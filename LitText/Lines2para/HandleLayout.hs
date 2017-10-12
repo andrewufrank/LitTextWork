@@ -31,7 +31,7 @@ import BuchCode.MarkupText
 import           Data.List.Split
 -- todo strings
 import           Uniform.Error
-import Uniform.Zero
+--import Uniform.Zero
 -- todo include zero  in error and strings
 -- TODO string s
 --import Data.List (nub)
@@ -88,7 +88,7 @@ ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero, tzlang=zero 
 ett2tz (MarkupZeile BuchIgnore t) = TZignore {tztext = t,  tzloc = zero}
 ett2tz (MarkupZeile BuchGedicht t) =
     TZtext {tzt=Kurz0, tztext = t,  tzloc = zero, tzlang=zero}
-ett2tz (MarkupZeile BuchEnde t) = TZleer {tzloc = zero}
+ett2tz (MarkupZeile BuchEnde _) = TZleer {tzloc = zero}
 -- will be filtered out
 ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero
         , tzlang=zero
@@ -193,12 +193,13 @@ instance Zeilen TZ where
     isNeueSeite _ = False
 
     isMarkupX code TZmarkup{tztok=c} =  code == c
-    isMarkupX code _                 = False
+    isMarkupX _ _                 = False
 
     zeilenText TZleer {} = ""
     zeilenText (TZtext {tztext=tx}) =  twm tx
     zeilenText _ = ""
 
+    renderZeile  _ = error "render zeile in HandleLayout not implemented"
 --    renderZeile  tz =  case tz of
 --        TZleer {} -> ""
 --        TZzahl {} -> errorT ["renderZeile seitenzahl", "should not occur", showT tz]

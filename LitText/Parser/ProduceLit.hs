@@ -45,10 +45,10 @@ litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main entry point
 produceLitTriples textstate tz2s = (werkTriple textstate)
-                    ++
-                        if includeText textstate
-                                then (concatMap (convOneTextZeile2triple textstate) tz2s)
-                                else []
+                    ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
+--                        if includeText textstate
+--                                then (concatMap (convOneTextZeile2triple textstate) tz2s)
+--                                else []
 
 werkTriple :: TextDescriptor ->   [Triple]
 -- ^ produce a werk, has the properties in markup
@@ -115,8 +115,11 @@ convOneTextZeile2triple textstate tz  = case tz of
             BuchHL1   -> hlTriple textstate BuchHL1 tz
             BuchHL2   -> hlTriple textstate BuchHL2 tz
             BuchHL3   -> hlTriple textstate BuchHL3 tz
-            otherwise -> otherBuchTriple textstate tz
-    TZ2para {} -> paraTriple textstate tz
+            val ->  []
+--                        otherBuchTriple textstate tz
+    TZ2para {} -> if includeText textstate
+                        then error "tztpera adfasd" -- paraTriple textstate tz
+                        else []
 
 otherBuchTriple :: TextDescriptor -> TZ2 -> [Triple]
 -- make triples for other markup (author etc.), which apply to the buch as a whole
@@ -139,7 +142,7 @@ inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)
 
 hlTriple :: TextDescriptor -> BuchToken -> TZ2 -> [Triple]
 -- ^ produce the triples for header levels
-hlTriple textstate mk tz =
+hlTriple textstate mk tz =  -- if True then error "hltriple xxx" else
     [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
         (twm $ tz2text tz)
     , inWerkTriple textstate (unParaSigl sigl)
@@ -160,7 +163,7 @@ paraTriple :: TextDescriptor -> TZ2 -> [Triple]
 -- todo
 -- with the filename given by the sigl
 -- not used when text is not included
-paraTriple textstate tz =
+paraTriple textstate tz = -- if True then error "paprtriple xxx" else
     [
 --    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ((decodeLatin1 . encodeUtf8 )  $ zeilenText tz)
     mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
