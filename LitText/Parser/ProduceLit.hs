@@ -115,6 +115,8 @@ convOneTextZeile2triple textstate tz  = case tz of
             BuchHL1   -> hlTriple textstate BuchHL1 tz
             BuchHL2   -> hlTriple textstate BuchHL2 tz
             BuchHL3   -> hlTriple textstate BuchHL3 tz
+            BuchAuthor -> otherBuchTriple textstate tz
+                            ++ hlTriple textstate BuchAuthor tz
             val ->  []
 --                        otherBuchTriple textstate tz
     TZ2para {} -> if includeText textstate
@@ -142,15 +144,17 @@ inWerkTriple textstate sigl =   mkTripleRef sigl  (mkRDFproperty InWerk)
 
 hlTriple :: TextDescriptor -> BuchToken -> TZ2 -> [Triple]
 -- ^ produce the triples for header levels
-hlTriple textstate mk tz =  -- if True then error "hltriple xxx" else
-    [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
-        (twm $ tz2text tz)
-    , inWerkTriple textstate (unParaSigl sigl)
-    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                (unParaSigl inSigl)
-    , mkTripleType (unParaSigl sigl) (mkRDFtype mk)
-    ]
---    ++  startSeiteTriple sigl tz
+hlTriple textstate mk tz =   if includeText textstate
+        then
+            [ mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
+                (twm $ tz2text tz)
+            , inWerkTriple textstate (unParaSigl sigl)
+            , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
+                        (unParaSigl inSigl)
+            , mkTripleType (unParaSigl sigl) (mkRDFtype mk)
+            ]
+--      ++  startSeiteTriple sigl tz
+        else []
 
     where
         sigl = paraSigl textstate . tz2para $  tz
