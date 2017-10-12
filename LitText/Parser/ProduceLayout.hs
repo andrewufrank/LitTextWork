@@ -44,7 +44,7 @@ produceLayoutTriples textstate = concatMap (convOneTZ2triple textstate)
 
 
 buchURIx textstate = RDFsubj $ gerastreeURI
-            <#> authorName textstate <-> buchName textstate
+            <#> authorDir textstate <-> buchName textstate
 -- id of buch, part and sentence or page is attached
 
 data LayoutType = Line | Page

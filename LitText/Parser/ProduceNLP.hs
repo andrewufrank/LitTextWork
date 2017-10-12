@@ -36,7 +36,7 @@ import Uniform.TestHarness
 import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
-import          Data.RDF.FileTypes (ntFileTriples)
+import          Data.RDF.FileTypes (ntFileTriples, ntFileTriplesGZip)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
@@ -129,16 +129,15 @@ produceOneOneParaNLP ntz textstate   (snipnr, doc0)  =   do  -- tz is NLPtext
         writeHandleTriples textstate triples
 --        return ()
 
-
 openHandleTriples  :: TextDescriptor -> ErrIO TextDescriptor
 openHandleTriples textstate  = do
     let mhand = destHandle textstate
     case mhand of
         Nothing ->  do
-                putIOwords ["openHandleTriples", "to", showT $ destNT textstate]
---                let dir = getParentDir (destNT textstate)
---                createDirIfMissing' dir
-                hand <- openHandle6 (destNT textstate)  ntFileTriples
+--                putIOwords ["openHandleTriples", "to", showT $ destNT textstate]
+                hand <- if gzipFlag textstate
+                    then openHandle6 (destNT textstate) ntFileTriplesGZip
+                    else openHandle6 (destNT textstate)  ntFileTriples
                 return textstate{destHandle = Just hand}
             `catchError` \e -> do
                 putIOwords ["openHandleTriples - error ", e ]
@@ -150,36 +149,25 @@ openHandleTriples textstate  = do
              return textstate
 
 --openHandleTriples2  :: TextDescriptor -> ErrIO TextDescriptor
----- final stops if openhandle called recursively in error
---openHandleTriples2 textstate  = do
---    let mhand = destHandle textstate
---    case mhand of
---        Nothing ->  do
---                hand <- openHandle6 (destNT textstate)  ntFileTriples
---                return textstate{destHandle = Just hand}
---            `catchError` \e -> do
---                putIOwords ["writeHandleTriples - error ", e ]
---                let dir = getParentDir (destNT textstate)
---                createDirIfMissing' dir
---                return textstate
---
---        Just hand ->  return textstate
+
 
 writeHandleTriples :: TextDescriptor -> [Triple] -> ErrIO TextDescriptor
-writeHandleTriples textstate tris = do
-    putIOwords ["writeHandleTriples", "to", showT $ destNT textstate]
-    textstate2 <- openHandleTriples textstate
-    let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
-    writeHandle6 hand ntFileTriples tris
-    return textstate2
+writeHandleTriples  textstate tris = do
+                textstate2 <- openHandleTriples textstate
+                let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
+                if gzipFlag textstate
+                    then writeHandle6 hand ntFileTriplesGZip tris
+                    else writeHandle6 hand ntFileTriples tris
+                return textstate2
 
 closeHandleTriples :: TextDescriptor ->  ErrIO TextDescriptor
 closeHandleTriples textstate = do
-    putIOwords ["closeHandleTriples", "to", showT $ destNT textstate]
-    let hand = fromJustNote "closeHandleTriples" (destHandle textstate)
-    closeHandle6 (destNT textstate) ntFileTriples hand
-    let textstate2 = textstate{destHandle=Nothing}
-    return textstate2
+                let hand = fromJustNote "writeHandleTriples" (destHandle textstate)
+                if gzipFlag textstate
+                    then closeHandle6 (destNT textstate) ntFileTriplesGZip hand
+                    else closeHandle6 (destNT textstate) ntFileTriples hand
+                let textstate2 = textstate{destHandle=Nothing}
+                return textstate2
 
 
 

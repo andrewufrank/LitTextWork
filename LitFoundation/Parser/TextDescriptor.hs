@@ -58,10 +58,10 @@ data TextDescriptor = TextDescriptor
      -- selects then the type of the ntfile (nt or nt.gz)
      , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , nlpServer :: URI -- ^ where the nlp server is
-    , authorDir    :: FilePath -- ^ the directory where the inputs in the LitOriginal directory are
+    , authorDir    :: Text -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
                                  -- and where the converted data go
-    , buchname     :: FilePath -- ^ filename in directory gives the buch sigl
+    , buchName     :: Text -- ^ filename in directory gives the buch sigl
     , includeText :: Bool -- ^ full text is included in triples
 --                    (false - only the analysis, sentence can be reconstructed
 --                      but not the remainder of the text)
@@ -76,13 +76,13 @@ fillTextState3 litdirs server author buch = TextDescriptor {
     , gzipFlag = False
     , destHandle = Nothing
     , nlpServer = server
-    , authorDir = author
-    , buchname = buch
-    , includeText = True
+    , authorDir = s2t author
+    , buchName = s2t buch
+    , includeText = False
     }
 
-authorName = s2t . authorDir
-buchName = s2t . buchname
+--authorName = s2t . authorDir
+--buchName = s2t . buchName
 
 fillTextState4 :: LitDirs -> URI -> Path Abs File
                 -> TextDescriptor
@@ -92,18 +92,18 @@ fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
             author = getImmediateParentDir fp
             buch = getNakedFileName fp
 
-fillTextState4a :: Path Abs File -> URI -> Path Abs Dir
+fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text
                 -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
 -- output is gzip, text is not included
-fillTextState4a file server ntdir = TextDescriptor {
+fillTextState4a file server ntdir authordir buchname = TextDescriptor {
         sourceMarkup = file
         , destNT = (ntdir </> filename) :: Path Abs File
         , gzipFlag = True
         , destHandle =  Nothing
         , nlpServer = server
-        , authorDir = ""
-        , buchname = ""
+        , authorDir = authordir
+        , buchName = buchname
         , includeText = False
         }
 --        fillTextState3 litdirs server author buch
@@ -122,15 +122,17 @@ res10 = TextDescriptor {
             "/home/frank/Scratch/NT/LitOriginals/may/test"
         , nlpServer = serverBrest
         , authorDir = "may"
-        , buchname = "test"
+        , buchName = "test"
         , destHandle = Nothing
-        }
+         , gzipFlag = False
+        , includeText = True
+       }
 
 test_fillTextState12 = assertEqual res11 res
     where
         res = fillTextState4 dirsTest serverBrest fp
         fp = makeAbsFile
-            "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
+             "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
 res11 = TextDescriptor {
         sourceMarkup = makeAbsFile
             "/home/frank/additionalSpace/DataBig/LitTest/may/test"
@@ -138,8 +140,10 @@ res11 = TextDescriptor {
             "/home/frank/Scratch/NT/LitTest/may/test"
         , nlpServer = serverBrest
         , authorDir = "may"
-        , buchname = "test"
+        , buchName = "test"
         , destHandle = Nothing
+        , gzipFlag = False
+        , includeText = True
         }
 
 --TextState2 {

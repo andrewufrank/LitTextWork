@@ -99,7 +99,8 @@ parseAndExecute t1 t2    = do
         let markupdir = addDir homedir (argSource args :: FilePath) :: Path Abs Dir
         let resfile  = addFileName homedir $ makeRelFile "resultCollect" :: Path Abs File
         let ntdir = addDir homedir ("NT" :: FilePath)  :: Path Abs Dir
-        processAll4 False markupdir serverBrest ntdir resfile
+        let authorReplacement = s2t . getNakedDir . argSource $ args
+        processAll4 False markupdir serverBrest ntdir resfile authorReplacement
 --
 --        let server = if  argLocalhost args
 --                    then serverLocalhost
@@ -123,12 +124,12 @@ parseAndExecute t1 t2    = do
          <> (progDesc . t2s $ t1)
          <> (header . t2s $ t2 ))
 
-processAll4 :: Bool ->  Path Abs Dir-> URI -> Path Abs Dir  -> Path Abs File  -> ErrIO ()
+processAll4 :: Bool ->  Path Abs Dir-> URI -> Path Abs Dir  -> Path Abs File  -> Text -> ErrIO ()
 -- | get all markup files in the partially filled TextState2
 -- the output goes to the second, not the triples
 -- debug flag is not yet used
 
-processAll4 debug path  server ntdir resfile  =
+processAll4 debug path  server ntdir resfile authorReplacement =
 --  let path = source litdirs
   bracketErrIO (openFile2handle resfile WriteMode)
         (closeFile2)
@@ -136,7 +137,7 @@ processAll4 debug path  server ntdir resfile  =
               Pipe.runEffect $
                 getRecursiveContents path
                 >-> Pipe.filter isMarkup --
-                >-> Pipe.mapM (fmap t2s . processOneMarkup4 debug server ntdir)
+                >-> Pipe.mapM (fmap t2s . processOneMarkup4 debug server ntdir authorReplacement)
             --    >-> P.stdoutLn
                 >-> Pipe.toHandle hand
         )
@@ -145,12 +146,13 @@ isMarkup :: Path Abs File -> Bool
 isMarkup  = hasExtension (Extension "markup")
 -- todo include in typedfiles - hasType ...
 
-processOneMarkup4 :: Bool  -> URI -> Path Abs Dir->  Path Abs File
+processOneMarkup4 :: Bool  -> URI -> Path Abs Dir -> Text -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
-processOneMarkup4 debug   server ntdir file = do
-        let textstate2 = fillTextState4a file server ntdir
-        putIOwords ["\nprocessOneMarkup", showT server  ]
+processOneMarkup4 debug   server ntdir  authorReplacement file = do
+        let buchReplacement = s2t $ getNakedFileName file
+        let textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement
+        putIOwords ["\nprocessOneMarkup", showT textstate2  ]
         ntExist <- if gzipFlag textstate2
             then exist6 (destNT textstate2) ntFileTriplesGZip
             else exist6 (destNT textstate2) ntFileTriples
