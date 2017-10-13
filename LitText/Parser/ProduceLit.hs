@@ -46,9 +46,12 @@ produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main entry point
 produceLitTriples textstate tz2s = (werkTriple textstate)
                     ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
---                        if includeText textstate
+--                       ++ ( if includeText textstate
 --                                then (concatMap (convOneTextZeile2triple textstate) tz2s)
 --                                else []
+--                           )
+-- the include is later in the convOneText..
+
 
 werkTriple :: TextDescriptor ->   [Triple]
 -- ^ produce a werk, has the properties in markup
@@ -162,31 +165,31 @@ hlTriple textstate mk tz =   if includeText textstate
         lang = tz2lang tz
 
 
-paraTriple :: TextDescriptor -> TZ2 -> [Triple]
--- | the triples to describe a paragraph, text as BuchParagraph, inPart
--- todo
--- with the filename given by the sigl
--- not used when text is not included
-paraTriple textstate tz = -- if True then error "paprtriple xxx" else
-    [
---    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ((decodeLatin1 . encodeUtf8 )  $ zeilenText tz)
-    mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
-                                        (zeilenText tz)
---    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ( zeilenText tz)
-                    -- do not remove hyphens and text breaks, exactly as in buch
-                    -- was BuchParagraphLayout
-    , inWerkTriple textstate (unParaSigl sigl)
-    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
-                        (unParaSigl inSigl)
-    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
-
---     ++ startSeiteTriple sigl tz  -- needed v2?
-     -- page is text, not a number?
-
-    where
-        sigl = paraSigl textstate . tz2para $  tz
-        inSigl = paraSigl textstate . tz2inPart $ tz
-        lang = tz2lang tz
+--paraTriple :: TextDescriptor -> TZ2 -> [Triple]
+---- | the triples to describe a paragraph, text as BuchParagraph, inPart
+---- todo
+---- with the filename given by the sigl
+---- not used when text is not included
+--paraTriple textstate tz = -- if True then error "paprtriple xxx" else
+--    [
+----    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ((decodeLatin1 . encodeUtf8 )  $ zeilenText tz)
+--    mkTripleLang lang (unParaSigl sigl) (mkRDFproperty Text)
+--                                        (zeilenText tz)
+----    mkTripleLang lang sigl (litURI <> markerPure BuchParagraph) ( zeilenText tz)
+--                    -- do not remove hyphens and text breaks, exactly as in buch
+--                    -- was BuchParagraphLayout
+--    , inWerkTriple textstate (unParaSigl sigl)
+--    , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
+--                        (unParaSigl inSigl)
+--    , mkTripleType (unParaSigl sigl) (mkRDFtype BuchParagraph)]
+--
+----     ++ startSeiteTriple sigl tz  -- needed v2?
+--     -- page is text, not a number?
+--
+--    where
+--        sigl = paraSigl textstate . tz2para $  tz
+--        inSigl = paraSigl textstate . tz2inPart $ tz
+--        lang = tz2lang tz
 
 test_1BAE_H = testVar3File result1A "resultBAE1" "resultH1" produceLitTriples
 test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples

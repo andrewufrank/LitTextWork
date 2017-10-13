@@ -58,7 +58,7 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
             ["mainLitAndNLPproduction TZ available to produce litTriples \n"
             , unlines' . map showT $ tzpara]
 
-    let litTriples = produceLitTriples textstate   tzpara  -- test C -> H
+    let litTriples = produceLitTriples textstate2   tzpara  -- test C -> H
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
