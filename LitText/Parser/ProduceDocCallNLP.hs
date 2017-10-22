@@ -203,7 +203,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             let text2 = cleanText language text
 
 --            let texts = getPiece . textSplit $ text2
-            let texts = if lengthChar text2 < nlpDocSizeLimit
+            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
                             then [ text2]
                             else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
@@ -215,6 +215,8 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             return (tz, docs)
 
 nlpDocSizeLimit = 5000  -- 18,000 gives timeout for brest
+-- there seems to be an issue with texts which are exactly 5000 and the next piece is
+-- then empty, which then loops infinitely calling nlp with input ""
 
 convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
