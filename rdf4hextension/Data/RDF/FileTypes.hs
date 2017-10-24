@@ -124,7 +124,11 @@ instance TypedFiles5 [RDF.Triple] GZip where
 
     read6 fp  tp = error "read for triples is not easy and not required"
 
-
+    modificationTime6 fp tp = do
+        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+        st <- getFileStatus fn2
+        let t = getModificationTimeFromStatus st
+        return t
 
 instance TypedFiles5 [RDF.Triple] ()  where
 -- ^ files with full triples

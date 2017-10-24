@@ -153,9 +153,10 @@ processOneMarkup4 debug   server ntdir  authorReplacement file = do
         let buchReplacement = s2t $ getNakedFileName file
         let textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement
         putIOwords ["\nprocessOneMarkup", showT textstate2  ]
-        ntExist <- if gzipFlag textstate2
-            then exist6 (destNT textstate2) ntFileTriplesGZip
-            else exist6 (destNT textstate2) ntFileTriples
+        ntgzExist <- exist6 (destNT textstate2) ntFileTriplesGZip
+        ntExist <- exist6 (destNT textstate2) ntFileTriples
+        -- gzipFlag textstate2
+
         if not ntExist
             then do
                 putIOwords  ["\nprocessMarkup - process"
