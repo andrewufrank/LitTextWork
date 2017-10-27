@@ -57,6 +57,7 @@ main = startProg programName progTitle
 data LitArgs = LitArgs
   {
     argSource :: String -- ^ the directoy in which the markup files are
+    , argTarget :: String -- ^ the directory for the nt files
 --  , argdir   :: String   -- ^ the subdirectory in originals
 --                        -- where the markup file is
 --                        -- the same dirname is used in convertsDir
@@ -74,12 +75,12 @@ cmdArgs = LitArgs
 --            short 'l' <>
 ----            metavar "orig/test" <>
 --            help "localhost or serverBrest" )
---     <*> strOption
---          ( long "author(dir)" <>
---            short 'd' <>
---            value "" <>
---            metavar "Author"
---            <> help "subdirectory name in LitOriginal - author" )
+     <*> strOption
+          ( long "targetDir" <>
+            short 't' <>
+            value "" <>
+            metavar "Target"
+            <> help "directory for the nt files " )
 --     <*> strOption
 --          ( long "buch(file)" <>
 --            short 'f' <>
@@ -98,7 +99,7 @@ parseAndExecute t1 t2    = do
         let homedir = makeAbsDir "/home/frank" :: Path Abs Dir
         let markupdir = addDir homedir (argSource args :: FilePath) :: Path Abs Dir
         let resfile  = addFileName homedir $ makeRelFile "resultCollect" :: Path Abs File
-        let ntdir = addDir homedir ("NT" :: FilePath)  :: Path Abs Dir
+        let ntdir = addDir homedir (argTarget args) :: Path Abs Dir
         let authorReplacement = s2t . getNakedDir . argSource $ args
         processAll4 False markupdir serverBrest ntdir resfile authorReplacement
 --
@@ -150,31 +151,45 @@ processOneMarkup4 :: Bool  -> URI -> Path Abs Dir -> Text -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
 processOneMarkup4 debug   server ntdir  authorReplacement file = do
-        let buchReplacement = s2t $ getNakedFileName file
-        let textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement
-        putIOwords ["\nprocessOneMarkup", showT textstate2  ]
-        ntgzExist <- exist6 (destNT textstate2) ntFileTriplesGZip
-        ntExist <- exist6 (destNT textstate2) ntFileTriples
-        -- gzipFlag textstate2
+    let buchReplacement = s2t $ getNakedFileName file
+    let textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement
+    -- forces gzip in fillTextState4a
+    putIOwords ["\n processOneMarkup", showT textstate2  ]
+    if  gzipFlag textstate2
+        then do
+            ntgzExist <- exist6 (destNT textstate2) ntFileTriplesGZip
+            processNeeded <-
+                if ntgzExist
+                then do
+                    nttime <- modificationTime6 (destNT textstate2) ntFileTriplesGZip
+                    markuptime <- getFileModificationTime file
+                    return $ nttime < markuptime
+                else
+                    return True
 
-        if not ntExist
-            then do
-                putIOwords  ["\nprocessMarkup - process"
-                        , showT $ sourceMarkup textstate2, "\n"]
-                mainLitAndNLPproduction False False textstate2
-                -- first bool is debug output
-                -- second stops processing after lit (no nlp calls)
-                putIOwords  ["\nprocessMarkup - processed"
-                        , showT $ sourceMarkup textstate2, "\n"]
-                return (showT textstate2)
-            else do
-                putIOwords  ["\nprocessMarkup - nt file exist already"
-                        , showT $ sourceMarkup textstate2, "\n"]
-                return . unlinesT $ ["\nprocessMarkup - nt file exist already"
-                        , showT $ sourceMarkup textstate2, "\n"]
+            if processNeeded
+                then do
+                    putIOwords  ["\n processOneMarkup4 - process"
+                            , showT $ sourceMarkup textstate2, "\n"]
+                    mainLitAndNLPproduction False False textstate2
+                    -- first bool is debug output
+                    -- second stops processing after lit (no nlp calls)
+                    putIOwords  ["\n processOneMarkup4 - processed"
+                            , showT $ sourceMarkup textstate2, "\n"]
+                    return (showT textstate2)
+                else do
+                    putIOwords  ["\n processOneMarkup4 - newer nt file exist already"
+                            , showT $ sourceMarkup textstate2, "\n"]
+                    return . unlinesT $ ["\n processOneMarkup4 - nt file exist already"
+                            , showT $ sourceMarkup textstate2, "\n"]
+
+        else do -- not gzipflag  -- not expected anymore
+            putIOwords  ["\n processOneMarkup4 - not gzip", "\n"]
+            error "not gzip in processOneMarkup4 "
+            return "not gzip"
 
     `catchError` \e -> do
-            putIOwords  ["\nprocessMarkup - error return for "
+            putIOwords  ["\n processOneMarkup4 - error return for "
                     , showT file, "\n"
                     , "error", e
                     , "not raised further to continue processing all"

@@ -29,6 +29,7 @@ import qualified Data.RDF        as RDF
 import Data.RDF.Triple2text (triple2text)
 import qualified          System.IO as S
 import           Uniform.FileIO
+import           Uniform.FileIO (EpochTime, getFileModificationTime)
 --import Uniform.TypedFile (append6) -- should be included in fileio
 import           Uniform.Strings hiding ((<.>), (</>))
 --import Uniform.FilenamesAlgebra
@@ -126,8 +127,9 @@ instance TypedFiles5 [RDF.Triple] GZip where
 
     modificationTime6 fp tp = do
         let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        st <- getFileStatus fn2
-        let t = getModificationTimeFromStatus st
+        t :: EpochTime <- getFileModificationTime fn2
+--        st <- getFileStatus fn2
+--        let t = getModificationTimeFromStatus st
         return t
 
 instance TypedFiles5 [RDF.Triple] ()  where
