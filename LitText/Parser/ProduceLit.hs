@@ -38,12 +38,12 @@ import Lines2para.HandleLayout
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 import Uniform.TestHarness
-
+import Data.RDF.FileTypes
 
 litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
--- convert a text to the triples under lit: main entry point
+-- convert a text to the triples under lit: main function for the conversion
 produceLitTriples textstate tz2s = (werkTriple textstate)
                     ++ (concatMap (convOneTextZeile2triple textstate) tz2s)
 --                       ++ ( if includeText textstate
@@ -203,5 +203,28 @@ test_9BAE_H = testVar3File result9A "resultBAE9" "resultH9" produceLitTriples
 test_10BAE_H = testVar3File result10A "resultBAE10" "resultH10" produceLitTriples
 
 
+writeLitTriples :: FilePath -> FilePath ->  IO ()
+writeLitTriples source dest   = do
+    testDataDir <- getAppUserDataDir "LitTextTest" -- :: Path Abs Dir
+    let source2 =  addFileName testDataDir    source :: Path Abs File
+    let dest2 =  addFileName testDataDir     dest :: Path Abs File
+    runErr $ do
+        tripstext <- readFile2 ( source2)
+        let trips = readNote "writeLitTriples" tripstext :: [Triple]
+        write6 dest2 ntFileTriples trips
+    return ()
+
+
+
+test_1H_k = writeLitTriples   "resultBAE1" "resultH1"
+--test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
+--test_3BAE_H = testVar3File result3A "resultBAE3" "resultH3" produceLitTriples
+--test_4BAE_H = testVar3File result4A "resultBAE4" "resultH4" produceLitTriples
+--test_5BAE_H = testVar3File result5A "resultBAE5" "resultH5" produceLitTriples
+--test_6BAE_H = testVar3File result6A "resultBAE6" "resultH6" produceLitTriples
+----test_7BAE_H = testVar3File result7A "resultBAE7" "resultH7" produceLitTriples
+--test_8BAE_H = testVar3File result8A "resultBAE8" "resultH8" produceLitTriples
+--test_9BAE_H = testVar3File result9A "resultBAE9" "resultH9" produceLitTriples
+--test_10BAE_H = testVar3File result10A "resultBAE10" "resultH10" produceLitTriples
 
 

@@ -117,7 +117,7 @@ fillTextState4a file server ntdir authordir buchname = TextDescriptor {
         , nlpServer = server
         , authorDir = authordir
         , buchName = buchname
-        , includeText = False
+        , includeText = True
         }
 --        fillTextState3 litdirs server author buch
     where
@@ -155,8 +155,8 @@ res11 = TextDescriptor {
         , authorDir = "may"
         , buchName = "test"
         , destHandle = Nothing
-        , gzipFlag = True
-        , includeText = False
+        , gzipFlag = False
+        , includeText = True
         }
 
 --TextState2 {
