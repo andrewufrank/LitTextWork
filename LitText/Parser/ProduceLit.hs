@@ -192,15 +192,15 @@ hlTriple textstate mk tz =   if includeText textstate
 --        lang = tz2lang tz
 
 test_1BAE_H = testVar3File result1A "resultBAE1" "resultH1" produceLitTriples
-test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
-test_3BAE_H = testVar3File result3A "resultBAE3" "resultH3" produceLitTriples
-test_4BAE_H = testVar3File result4A "resultBAE4" "resultH4" produceLitTriples
-test_5BAE_H = testVar3File result5A "resultBAE5" "resultH5" produceLitTriples
-test_6BAE_H = testVar3File result6A "resultBAE6" "resultH6" produceLitTriples
---test_7BAE_H = testVar3File result7A "resultBAE7" "resultH7" produceLitTriples
-test_8BAE_H = testVar3File result8A "resultBAE8" "resultH8" produceLitTriples
-test_9BAE_H = testVar3File result9A "resultBAE9" "resultH9" produceLitTriples
-test_10BAE_H = testVar3File result10A "resultBAE10" "resultH10" produceLitTriples
+--test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
+--test_3BAE_H = testVar3File result3A "resultBAE3" "resultH3" produceLitTriples
+--test_4BAE_H = testVar3File result4A "resultBAE4" "resultH4" produceLitTriples
+--test_5BAE_H = testVar3File result5A "resultBAE5" "resultH5" produceLitTriples
+--test_6BAE_H = testVar3File result6A "resultBAE6" "resultH6" produceLitTriples
+----test_7BAE_H = testVar3File result7A "resultBAE7" "resultH7" produceLitTriples
+--test_8BAE_H = testVar3File result8A "resultBAE8" "resultH8" produceLitTriples
+--test_9BAE_H = testVar3File result9A "resultBAE9" "resultH9" produceLitTriples
+--test_10BAE_H = testVar3File result10A "resultBAE10" "resultH10" produceLitTriples
 
 
 writeLitTriples :: FilePath -> FilePath ->  IO ()
@@ -209,14 +209,15 @@ writeLitTriples source dest   = do
     let source2 =  addFileName testDataDir    source :: Path Abs File
     let dest2 =  addFileName testDataDir     dest :: Path Abs File
     runErr $ do
+        putIOwords ["writeLitTriples", "write the triples as nt"]
         tripstext <- readFile2 ( source2)
         let trips = readNote "writeLitTriples" tripstext :: [Triple]
         write6 dest2 ntFileTriples trips
+    assertBool True
     return ()
 
 
-
-test_1H_k = writeLitTriples   "resultBAE1" "resultH1"
+test_1H_K = writeLitTriples   "resultH1" "resultK1"
 --test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
 --test_3BAE_H = testVar3File result3A "resultBAE3" "resultH3" produceLitTriples
 --test_4BAE_H = testVar3File result4A "resultBAE4" "resultH4" produceLitTriples
