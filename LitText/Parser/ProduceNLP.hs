@@ -33,6 +33,8 @@ module Parser.ProduceNLP
 
 import           Test.Framework
 import Uniform.TestHarness
+import Parser.FormNLPsnips
+import Parser.FilterTextForNLP
 import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
@@ -50,7 +52,13 @@ produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 -- produce the triples and store them in triple store,
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
-produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
+produceNLP showXML textstate tzs = do
+    let     nlpTexts = prepareTZ4nlp tzs
+            nlpTexts2 = formSnips nlpTexts
+
+--    foldM_ (produceOneParaNLP showXML ) textstate tzs
+    return ()
+--produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
 --produceNLPnotshow = produceNLP False
 --
@@ -106,10 +114,10 @@ completeSentencesInDoc debugFlag textstate lang ( doc0) = do
         else return (  doc0)
 
 
-produceOneParaNLP :: Bool -> TextDescriptor -> TZ2 -> ErrIO TextDescriptor
-produceOneParaNLP showXML textstate tzp = do
-    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
-    foldM  (produceOneOneParaNLP  ntz) textstate (zip [1..] docs )
+--produceOneParaNLP :: Bool -> TextDescriptor -> TZ2 -> ErrIO TextDescriptor
+--produceOneParaNLP showXML textstate tzp = do
+--    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
+--    foldM  (produceOneOneParaNLP  ntz) textstate (zip [1..] docs )
 
 produceOneOneParaNLP :: NLPtext -> TextDescriptor ->  (Int, Doc0)  -> ErrIO TextDescriptor
 produceOneOneParaNLP ntz textstate   (snipnr, doc0)  =   do  -- tz is NLPtext

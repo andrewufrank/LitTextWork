@@ -41,6 +41,8 @@ library
         Parser.ProduceLit
         Parser.ProduceLayout
         Parser.ProduceNLP
+        Parser.FilterTextForNLP
+        Parser.FormNLPsnips
         Parser.ProduceDocCallNLP
         Parser.ProduceNLPtriples
         Parser.ConvertTaggerOutput
