@@ -175,7 +175,7 @@ testOP_F_G textstate docs  = concat
         . map (processDoc0toTriples2 textstate English (ParaNum 99))
         $ (zip [1..] docs)
 -- here missing the values for language and paranr
--- fake should be ok for test
+-- fake paranr 99 should be ok for test
 --
 test_1_F_G :: IO ()
 test_1_F_G =  testVar3File result1A "resultF1" "resultG1" testOP_F_G
@@ -186,12 +186,22 @@ test_5_F_G =  testVar3File result5A "resultF5" "resultG5" testOP_F_G
 test_6_F_G = testVar3File result6A "resultF6" "resultG6" testOP_F_G
 --test_7_F_G = testVar3File result6A "resultF7" "resultG7" testOP_F_G
 test_8_F_G = testVar3File result8A "resultF8" "resultG8" testOP_F_G
-test_9_F_G = testVar3File result9A "resultF9" "resultG9" testOP_F_G
-test_10_F_G = testVar3File result10A "resultF10" "resultG10" testOP_F_G
+--test_9_F_G = testVar3File result9A "resultF9" "resultG9" testOP_F_G
+--test_10_F_G = testVar3File result10A "resultF10" "resultG10" testOP_F_G
 -- 10 seems too big for oporto (without swap)
 
+test_1G_L = writeLitTriples   "resultG1" "resultL1"
+test_2G_L = writeLitTriples   "resultG2" "resultL2"
+test_3G_L = writeLitTriples   "resultG3" "resultL3"
+test_4G_L = writeLitTriples   "resultG4" "resultL4"
+test_5G_L = writeLitTriples   "resultG5" "resultL5"
+test_6G_L = writeLitTriples   "resultG6" "resultL6"
+test_7G_L = writeLitTriples   "resultG7" "resultL7"
+test_8G_L = writeLitTriples   "resultG8" "resultL8"
+test_9G_L = writeLitTriples   "resultG9" "resultL9"
+test_10G_L = writeLitTriples   "resultG10" "resultL10"
+
 ------------ coreferences ---------------------
--- call         corefs = concat $ map (mkCorefTriple2 lang   snipid ) (docCorefs doc0)
 
 mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
 -- ^ gives a single set of coreferences  - int is to produce id
@@ -221,5 +231,5 @@ mkMention2 lang snipid corefsigl m i = [t0, t10, t1, t2, t3, t4, t5]
                                     (unTokenSigl . mkTokenSigl  sentid . mentHead $ m)
         t5 = mkTripleLang lang mentionid (mkRDFproperty MentionSentenceText)
                                     ( mentText $ m)
---        TODO
+
 
