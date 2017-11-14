@@ -134,7 +134,7 @@ openHandleTriples textstate  = do
     let mhand = destHandle textstate
     case mhand of
         Nothing ->  do
-                putIOwords ["openHandleTriples", "to", showT $ destNT textstate]
+--                putIOwords ["openHandleTriples", "to", showT $ destNT textstate]
                 hand <- if gzipFlag textstate
                     then openHandle6 (destNT textstate) ntFileTriplesGZip
                     else openHandle6 (destNT textstate)  ntFileTriples
@@ -145,7 +145,7 @@ openHandleTriples textstate  = do
                 return textstate
 
         Just hand -> do
-             putIOwords ["openHandleTriples is open", "to", showT $ destNT textstate]
+--             putIOwords ["openHandleTriples is open", "to", showT $ destNT textstate]
              return textstate
 
 --openHandleTriples2  :: TextDescriptor -> ErrIO TextDescriptor
@@ -153,7 +153,7 @@ openHandleTriples textstate  = do
 
 writeHandleTriples :: TextDescriptor -> [Triple] -> ErrIO TextDescriptor
 writeHandleTriples  textstate tris = do
-                putIOwords ["writeHandleTriples"]
+--                putIOwords ["writeHandleTriples"]
                 textstate2 <- openHandleTriples textstate
                 let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
                 if gzipFlag textstate

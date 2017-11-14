@@ -88,9 +88,8 @@ bomWarning v = do  -- not required - parser filter it out
     -- putIOwords ["bomWarning - the start of the file "]
     -- putIOwords [take' 20 v]
     -- putIOwords [take' 20 $ showT v]
-    if isPrefixOf' "\65279" v
-        then putIOwords ["WARNING -- BOM character present - use ./unbom"]
-        else putIOwords ["file start is ok"]
+    when (isPrefixOf' "\65279" v) $
+        putIOwords ["WARNING -- BOM character present - use ./unbom"]
     return ()
 
 --test_CR :: IO ()

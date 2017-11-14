@@ -222,19 +222,19 @@ convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  Err
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
-        when True $
+        when debugNLP $
             putIOwords ["convertTZ2nlpCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text ]
-        xml ::  Text  <-   makeHttpPost7 False nlpServer "" vars
+        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
                     "multipart/form-data" text
     -- german parser seems to understand utf8encoded bytestring
 
-        when False  $
+        when debugNLP  $
             putIOwords ["convertTZ2nlpCall end \n", showT xml]
 
         doc0 <- readDocString showXML xml                    -- E -> F
-        when False  $
+        when debugNLP  $
             putIOwords ["convertTZ2nlpCall doc0 \n", showT doc0]
 
         return   doc0
