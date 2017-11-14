@@ -172,8 +172,8 @@ layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstat
 
 
 test_1BAD_J = testVar3File result1A "resultBAD1" "resultJ1" layoutTriples
---test_2BAD_J = testVar3File result2A "resultBAD2" "resultJ2" layoutTriples
---test_3BAD_J = testVar3File result3A "resultBAD3" "resultJ3" layoutTriples
+test_2BAD_J = testVar3File result2A "resultBAD2" "resultJ2" layoutTriples
+test_3BAD_J = testVar3File result3A "resultBAD3" "resultJ3" layoutTriples
 --test_4BAD_J = testVar3File result4A "resultBAD4" "resultJ4" layoutTriples
 --test_5BAD_J = testVar3File result5A "resultBAD5" "resultJ5" layoutTriples
 --test_6BAD_J = testVar3File result6A "resultBAD6" "resultJ6" layoutTriples
