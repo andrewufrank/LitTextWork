@@ -219,8 +219,8 @@ writeLitTriples source dest   = do
     let source2 =  addFileName testDataDir    source :: Path Abs File
     let dest2 =  addFileName testDataDir     dest :: Path Abs File
     runErr $ do
-        putIOwords ["writeLitTriples", "write the triples as nt"]
-        tripstext <- readFile2 ( source2)
+--        putIOwords ["writeLitTriples", "write the triples as nt"]
+        tripstext <- readFile2 source2
         let trips = readNote "writeLitTriples" tripstext :: [Triple]
         write6 dest2 ntFileTriples trips
     assertBool True

@@ -52,20 +52,20 @@ produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 -- repeated for each paragraph
 produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
-produceNLPnotshow = produceNLP False
-
-test_1_BAE_XproduceNLPtriples :: IO ()
-test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
-test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
-test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
-test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
-test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
-test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
-test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
-test_9_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE9" "resultX9" produceNLPnotshow
-test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
------- no result file is necessary, because result is zero
------- but results are found in LitTest/test
+--produceNLPnotshow = produceNLP False
+--
+--test_1_BAE_XproduceNLPtriples :: IO ()
+--test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
+--test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
+--test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
+--test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
+--test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
+--test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
+--test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
+--test_9_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE9" "resultX9" produceNLPnotshow
+--test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
+-------- no result file is necessary, because result is zero
+-------- but results are found in LitTest/test
 --
 
 -- production of F to be used later
@@ -85,8 +85,8 @@ test_5_E_F = testVar3FileIO result5A "resultE5" "resultF5" (testOP_E_F English)
 test_6_E_F = testVar3FileIO result6A "resultE6" "resultF6" (testOP_E_F English)
 ----test_7_E_F = testVar3FileIO result7A "resultE7" "resultF7" (testOP_E_F English)
 test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" (testOP_E_F English)
-test_9_E_F = testVar3FileIO result9A "resultE9" "resultF9" (testOP_E_F German)
-test_10_E_F = testVar3FileIO result10A "resultE10" "resultF10" (testOP_E_F English)
+--test_9_E_F = testVar3FileIO result9A "resultE9" "resultF9" (testOP_E_F German)
+--test_10_E_F = testVar3FileIO result10A "resultE10" "resultF10" (testOP_E_F English)
 ------ 9 german
 ------ 10 english
 
