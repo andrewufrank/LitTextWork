@@ -80,10 +80,10 @@ fillTextState3 litdirs server author buch = TextDescriptor {
     , buchName = s2t buch
     , includeText = True
 }
-fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath
+fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
                 -> TextDescriptor
 -- construct at text state with authorDir and buchFilename as FilePath
-fillTextState3a litdirs server author buch = TextDescriptor {
+fillTextState3a litdirs server author buch includeText = TextDescriptor {
     sourceMarkup = (source litdirs) </> (author </> buch)
     , destNT = (dest litdirs) </> (author </> buch)
     , gzipFlag = False
@@ -91,7 +91,7 @@ fillTextState3a litdirs server author buch = TextDescriptor {
     , nlpServer = server
     , authorDir = s2t author
     , buchName = s2t buch
-    , includeText =  False
+    , includeText =  includeText
     }
 
 --authorName = s2t . authorDir
@@ -105,11 +105,11 @@ fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
             author = getImmediateParentDir fp
             buch = getNakedFileName fp
 
-fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text
+fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> Bool
                 -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
 -- output is gzip, text is not included
-fillTextState4a file server ntdir authordir buchname = TextDescriptor {
+fillTextState4a file server ntdir authordir buchname includeText = TextDescriptor {
         sourceMarkup = file
         , destNT = (ntdir </> filename) :: Path Abs File
         , gzipFlag = True
@@ -117,7 +117,7 @@ fillTextState4a file server ntdir authordir buchname = TextDescriptor {
         , nlpServer = server
         , authorDir = authordir
         , buchName = buchname
-        , includeText = True
+        , includeText = includeText
         }
 --        fillTextState3 litdirs server author buch
     where

@@ -63,8 +63,10 @@ test_10_D_DA = testFile2File "resultD10" "resultDA10" formSnips
 
 mergeNLPtext :: NLPtext -> NLPtext -> Maybe NLPtext
 -- merge two text if same language and size less than maxSnipSize
-mergeNLPtext a b = if (sameLang a b && alength + blength < maxSnipSize)
-                        then Just (a{tz3text = tz3text a <> " " <> tz3text b})
+mergeNLPtext a b = if sameLang a b && tz3textLength a + tz3textLength b < maxSnipSize
+                        then Just (a{tz3text = tz3text a <> " " <> tz3text b
+                                , tz3textLength = tz3textLength a + tz3textLength b +1})
+                                    -- there is a spaece added, would a period "." be needed?
                         else Nothing
 
     where
@@ -73,11 +75,11 @@ mergeNLPtext a b = if (sameLang a b && alength + blength < maxSnipSize)
         sameLang a b = tz3lang a == tz3lang b
 
 -- test mergeNLP
-text1 = NLPtext {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
+text1 = tz3fillLength $ NLPtext {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
         tz3text = "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme .", tz3lang = German}
-text2 = NLPtext {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
+text2 = tz3fillLength $ NLPtext {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
         tz3text = "die ich dann mit Schminke korrigierte.", tz3lang = German}
-t12 =  Just
+t12 =  Just . tz3fillLength $
   (NLPtext{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
            tz3para = ParaNum 11,
            tz3text =

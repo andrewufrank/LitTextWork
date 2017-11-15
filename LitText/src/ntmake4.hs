@@ -152,7 +152,8 @@ processOneMarkup4 :: Bool  -> URI -> Path Abs Dir -> Text -> Path Abs File
 -- process one markup file, if the nt file does not exist
 processOneMarkup4 debug   server ntdir  authorReplacement file = do
     let buchReplacement = s2t $ getNakedFileName file
-    let textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement
+        includeText = False
+        textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement includeText
     -- forces gzip in fillTextState4a
     putIOwords ["\n processOneMarkup", showT textstate2  ]
     if  gzipFlag textstate2

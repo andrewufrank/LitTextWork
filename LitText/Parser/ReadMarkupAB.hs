@@ -123,8 +123,9 @@ test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2T
 --litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
 --sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}
 --destinationTest = DGoutDir litTestDir1
+fill_ :: FilePath -> FilePath -> TextDescriptor
 
-fill_ = fillTextState3a dirsTest serverBrest  -- 3a not including text
+fill_ f1 f2 = fillTextState3a dirsTest serverBrest f1 f2 False  -- 3a not including text
 result1A = fill_ "test" "t1"
 result2A = fill_ "test" "t2"
 result3A = fill_ "test" "t3"

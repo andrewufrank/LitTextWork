@@ -45,16 +45,21 @@ import Text.Regex (mkRegex, subRegex)
 data NLPtext = NLPtext { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3text:: Text
+                        , tz3textLength :: Int
                         , tz3lang :: LanguageCode }
             deriving (Read, Show, Eq )
 
-instance Zeros NLPtext where zero = NLPtext zero zero zero zero
+tz3fillLength :: NLPtext -> NLPtext
+-- fill the length field
+tz3fillLength n = n{tz3textLength = lengthChar . tz3text $ n}
+
+instance Zeros NLPtext where zero = NLPtext zero zero zero zero zero
 --instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 -- todo algebra
 
 prepareTZ4nlp :: [TZ2] -> [NLPtext]
 -- convert all TZ2 for a text, selecting only literal text
-prepareTZ4nlp tz2s = catMaybes . map prepareTZ4nlpOne $ tz2s
+prepareTZ4nlp tz2s = map tz3fillLength . catMaybes . map prepareTZ4nlpOne $ tz2s
 
 
 prepareTZ4nlpOne :: TZ2 -> Maybe NLPtext  -- test C  -> D
@@ -91,7 +96,12 @@ formatParaText tz@TZ2para{} = NLPtext {
 formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
         , tz3lang = tz2lang tz
         , tz3para = tz2para tz
-        , tz3text =  twm . tz2text $ tz}
+        , tz3text =  tx <> ". "     -- to make sure these are sentences for NLP
+                                      --    risk of two ..
+        }
+
+    where
+        tx = twm . tz2text $ tz
 
 test_1_C_D = testFile2File "resultBAE1" "resultD1" ( prepareTZ4nlp)
 test_2_C_D = testFile2File "resultBAE2" "resultD2" ( prepareTZ4nlp)
