@@ -54,9 +54,9 @@ produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 -- repeated for each paragraph
 produceNLP showXML textstate tzs = do
     let     nlpTexts = prepareTZ4nlp tzs
-            nlpTexts2 = formSnips nlpTexts
+            nlpTexts2 = formSnips nlpTexts :: [Snip]
 
---    foldM_ (produceOneParaNLP showXML ) textstate tzs
+    foldM_ (produceOneSnip showXML ) textstate nlpTexts2
     return ()
 --produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
@@ -77,7 +77,7 @@ produceNLP showXML textstate tzs = do
 --
 
 -- production of F to be used later
-testOP_E_F :: LanguageCode -> TextDescriptor -> [(NLPtext,[Doc0])] -> ErrIO [ Doc0 ]
+testOP_E_F :: LanguageCode -> TextDescriptor -> [(Snip,[Doc0])] -> ErrIO [ Doc0 ]
 testOP_E_F lang textstate inp =
         mapM  (completeSentencesInDoc False textstate lang)  (concat $ map snd inp)
         -- does produce empty sets ...
@@ -116,20 +116,26 @@ completeSentencesInDoc debugFlag textstate lang ( doc0) = do
 
 --produceOneParaNLP :: Bool -> TextDescriptor -> TZ2 -> ErrIO TextDescriptor
 --produceOneParaNLP showXML textstate tzp = do
---    (ntz,docs) :: (NLPtext,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
+--    (ntz,docs) :: (Snip,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
 --    foldM  (produceOneOneParaNLP  ntz) textstate (zip [1..] docs )
 
-produceOneOneParaNLP :: NLPtext -> TextDescriptor ->  (Int, Doc0)  -> ErrIO TextDescriptor
-produceOneOneParaNLP ntz textstate   (snipnr, doc0)  =   do  -- tz is NLPtext
+produceOneSnip :: Bool -> TextDescriptor -> Snip -> ErrIO TextDescriptor
+produceOneSnip showXML textstate snip = do
+--    (ntz,docs) :: (Snip,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
+    doc :: Doc0 <- snip2doc False showXML (nlpServer textstate) snip
+    produceOneOneParaNLP  snip textstate doc
+
+produceOneOneParaNLP :: Snip -> TextDescriptor ->   Doc0  -> ErrIO TextDescriptor
+produceOneOneParaNLP ntz textstate     doc0   =   do  -- tz is Snip
         let lang = tz3lang ntz
         let paranr = tz3para $ ntz
-        ( doc0') <- completeSentencesInDoc debugNLP1 textstate lang ( doc0)
+        ( doc0') <- completeSentencesInDoc debugNLP1 textstate lang   doc0
 
         when debugNLP1 $
                 putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
     --    let buchuri = buchURIx textstate :: RDFsubj
 
-        let triples  = processDoc0toTriples2 textstate lang paranr (snipnr, doc0')   -- F -> G
+        let triples  = processDoc0toTriples2 textstate lang paranr (1, doc0')   -- F -> G
 
         when debugNLP1 $
             putIOwords ["\n\nproduceOneParaNLP nlp triples "

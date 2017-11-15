@@ -56,6 +56,7 @@ import Parser.ProduceLayout (buchURIx)
 
 processDoc0toTriples2 :: TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
+-- snipnr is not used anymore?
 processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 --        t0 : t1 :
         t2  : sents ++ corefs

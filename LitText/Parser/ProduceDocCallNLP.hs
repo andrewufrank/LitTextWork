@@ -38,6 +38,14 @@ import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 
+snip2doc :: Bool -> Bool -> URI -> Snip -> ErrIO   Doc0     -- the xml to analyzse  D -> E
+---- ^ the entry point for conversionm of tz to Doc0
+snip2doc debugNLP showXML sloc snip = do
+    when debugNLP $ putIOwords ["snip2doc start"]
+    when False $ putIOwords ["snip2doc snip", showT snip]
+    convertTZ2nlpPrepareCall debugNLP showXML sloc snip
+--
+
 --convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
 ---- ^ the entry point for conversionm of tz to Doc0
 --convertTZ2nlp debugNLP showXML sloc tz2 = do
@@ -51,25 +59,25 @@ import Parser.FilterTextForNLP
 --
 --
 ---- | tests which would call NLP
---testOP_C_E :: TextDescriptor -> [TZ2] -> ErrIO   [(NLPtext,[Doc0])]
---testOP_C_E resultXA resultBAEfile = do
---    let sloc = nlpServer  result1A
+testOP_C_E :: TextDescriptor -> [Snip]-> ErrIO [Doc0]  --   [(NLPtext,[Doc0])]
+testOP_C_E resultXA resultDAfile = do
+    let sloc = nlpServer  resultXA
+
+    res <-  mapM (snip2doc False   False sloc) resultDAfile
+    -- the secnd bool controls the rendering of the xml file
+    putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
+    -- leave in to force processing and continous output
+    return res
 --
---    res <-  mapM (convertTZ2nlp False   False sloc) resultBAEfile
---    -- the secnd bool controls the rendering of the xml file
---    putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
---    -- leave in to force processing and continous output
---    return res
---
---test_1_C_E = testVar3FileIO result1A "resultBAE1" "resultE1" testOP_C_E
---test_2_C_E = testVar3FileIO result2A "resultBAE2" "resultE2" testOP_C_E
---test_3_C_E = testVar3FileIO result3A "resultBAE3" "resultE3" testOP_C_E
---test_4_C_E = testVar3FileIO result4A "resultBAE4" "resultE4" testOP_C_E
---test_5_C_E = testVar3FileIO result5A "resultBAE5" "resultE5" testOP_C_E  -- lafayette
---test_6_C_E = testVar3FileIO result6A "resultBAE6" "resultE6" testOP_C_E
---test_8_C_E = testVar3FileIO result8A "resultBAE8" "resultE8" testOP_C_E
-----test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
-----test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
+test_1_C_E = testVar3FileIO result1A "resultDA1" "resultE1" testOP_C_E
+test_2_C_E = testVar3FileIO result2A "resultDA2" "resultE2" testOP_C_E
+test_3_C_E = testVar3FileIO result3A "resultDA3" "resultE3" testOP_C_E
+test_4_C_E = testVar3FileIO result4A "resultDA4" "resultE4" testOP_C_E
+test_5_C_E = testVar3FileIO result5A "resultDA5" "resultE5" testOP_C_E  -- lafayette
+test_6_C_E = testVar3FileIO result6A "resultDA6" "resultE6" testOP_C_E
+test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
+--test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
+--test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
 --------------------------
 
@@ -131,7 +139,7 @@ tx1 = "  Knots of idle-men  \
 
 
 
-convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> NLPtext -> ErrIO  (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
+convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> Snip -> ErrIO Doc0   -- the xml to analyzse  D -> E
 -- prepare call to send text to nlp server
 -- works on individual paragraphs
 convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
@@ -142,7 +150,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
     -- reduce for some special cases _italics_
     -- should be done before the split, because . of abbreviations are elliminated
 
-    if null' text then return (tz,[])
+    if null' text then return zero
         else do
             when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall tz", showT tz]
 
@@ -180,28 +188,28 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             let text2 = cleanText language text
 
 --            let texts = getPiece . textSplit $ text2
-            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
-                            then [ text2]
-                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+--            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+--                            then [ text2]
+--                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-            docs <- mapM (convertTZ2nlpCall debugNLP showXML nlpServer vars) texts
-            when False $ putIOwords ["convertTZ2nlp parse"
-                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+            docs <-  convertTZ2makeNLPCall debugNLP showXML nlpServer vars  text2
+--            when False $ putIOwords ["convertTZ2nlp parse"
+--                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
             when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
 
-            return (tz, docs)
+            return   docs
 
-nlpDocSizeLimit = 5000  -- 18,000 gives timeout for brest
+--nlpDocSizeLimit = 5000  -- 18,000 gives timeout for brest
 -- there seems to be an issue with texts which are exactly 5000 and the next piece is
 -- then empty, which then loops infinitely calling nlp with input ""
 
-convertTZ2nlpCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
+convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
 -- call to send text to nlp server and converts xml to Doc0
 -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
 -- merger
-convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
+convertTZ2makeNLPCall debugNLP showXML nlpServer vars text = do
         when debugNLP $
-            putIOwords ["convertTZ2nlpCall start"
+            putIOwords ["convertTZ2makeNLPCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text ]
         xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
@@ -209,16 +217,16 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
     -- german parser seems to understand utf8encoded bytestring
 
         when debugNLP  $
-            putIOwords ["convertTZ2nlpCall end \n", showT xml]
+            putIOwords ["convertTZ2makeNLPCall end \n", showT xml]
 
         doc0 <- readDocString showXML xml                    -- E -> F
         when debugNLP  $
-            putIOwords ["convertTZ2nlpCall doc0 \n", showT doc0]
+            putIOwords ["convertTZ2makeNLPCall doc0 \n", showT doc0]
 
         return   doc0
     `catchError` (\e -> do
-         putIOwords ["convertTZ2nlpCall http error caught 7",  e] -- " showT msg])
-         putIOwords ["convertTZ2nlpCall",  "text:\n",  showT text ] -- " showT msg])
+         putIOwords ["convertTZ2makeNLPCall http error caught 7",  e] -- " showT msg])
+         putIOwords ["convertTZ2makeNLPCall",  "text:\n",  showT text ] -- " showT msg])
 --         splitAndTryAgain debugNLP showXML nlpServer vars text
          return zero
             )
@@ -234,55 +242,55 @@ convertTZ2nlpCall debugNLP showXML nlpServer vars text = do
 --    -- this will not be used
 --    return []
 
-textid :: Text -> Text
-textid = id
-
-
-textSplit :: Text -> [Text]
---textSplit =  fromJustNote "textSplit" . splitOn' ". "
--- append . to end last piece
-textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
--- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
--- asked on stack overflow how to combine... (coreNLP breaks on ? as well)
--- issue: splits for "costs 1s. per year" and similar
--- could be controled by merging pieces when number "s." is at end of piece
--- regular expression used in  geany could be used? is this save?
-
-textSplit2 :: Text -> [Text]
--- split on "I" - in joyce is sort of start of a new idea..
-    -- prepend I to start next piece
-textSplit2 = fmap s2t . split (keepDelimsL $ onSublist " I "  ) . t2s
-
-
-getPiece :: Int -> [Text] -> [Text]
--- get a piece of length < 2000
-getPiece limit  = chop (takePiece limit "")
-
---chop :: ([a] -> (b, [a])) -> [a] -> [b]
---A useful recursion pattern for processing a list to produce a new list,
---often used for "chopping" up the input list.
---Typically chop is called with some function that will
---consume an initial prefix of the list and produce a value and the rest of the list.
-
-takePiece :: Int -> Text  -> [Text] ->   (Text, [Text])
-takePiece _ b [] = (b,[])
-takePiece limit b (a:as)
-    | null' b && lengthChar a > limit = (a, as)
-    | lengthChar ab > limit = (b, a:as)
-    | otherwise = takePiece limit ab as  -- accumulate a larger piece
-                    where
-                        ab = concat' [b, " ", a]
---                        limit = 12000
-
---test_longText1 ::  IO ()
---test_longText1 = testFile2File "longtext.txt" "lt1" textid
---test_split = testFile2File "lt1" "lt2" textSplit
---test_chop = testFile2File "lt2" "lt3" getPiece
-
--- test with limit 5
---test_getPiece1 = assertEqual  ["abcdefg", " hik"] (getPiece ["abcdefg", "hik"])
---test_getPiece2 = assertEqual [" abc", " defg", " hik"] (getPiece ["abc","defg", "hik"])
---test_getPiece3 = assertEqual  [" AB", "abcdefg", " hik"] (getPiece ["AB","abcdefg", "hik"])
---test_getPiece4 = assertEqual  [" AB", " abc", " d ef", " g hi", " k"]
---            (getPiece ["AB","abc", "d", "ef","g", "hi","k"])
+--textid :: Text -> Text
+--textid = id
+--
+--
+--textSplit :: Text -> [Text]
+----textSplit =  fromJustNote "textSplit" . splitOn' ". "
+---- append . to end last piece
+--textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
+---- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
+---- asked on stack overflow how to combine... (coreNLP breaks on ? as well)
+---- issue: splits for "costs 1s. per year" and similar
+---- could be controled by merging pieces when number "s." is at end of piece
+---- regular expression used in  geany could be used? is this save?
+--
+--textSplit2 :: Text -> [Text]
+---- split on "I" - in joyce is sort of start of a new idea..
+--    -- prepend I to start next piece
+--textSplit2 = fmap s2t . split (keepDelimsL $ onSublist " I "  ) . t2s
+--
+--
+--getPiece :: Int -> [Text] -> [Text]
+---- get a piece of length < 2000
+--getPiece limit  = chop (takePiece limit "")
+--
+----chop :: ([a] -> (b, [a])) -> [a] -> [b]
+----A useful recursion pattern for processing a list to produce a new list,
+----often used for "chopping" up the input list.
+----Typically chop is called with some function that will
+----consume an initial prefix of the list and produce a value and the rest of the list.
+--
+--takePiece :: Int -> Text  -> [Text] ->   (Text, [Text])
+--takePiece _ b [] = (b,[])
+--takePiece limit b (a:as)
+--    | null' b && lengthChar a > limit = (a, as)
+--    | lengthChar ab > limit = (b, a:as)
+--    | otherwise = takePiece limit ab as  -- accumulate a larger piece
+--                    where
+--                        ab = concat' [b, " ", a]
+----                        limit = 12000
+--
+----test_longText1 ::  IO ()
+----test_longText1 = testFile2File "longtext.txt" "lt1" textid
+----test_split = testFile2File "lt1" "lt2" textSplit
+----test_chop = testFile2File "lt2" "lt3" getPiece
+--
+---- test with limit 5
+----test_getPiece1 = assertEqual  ["abcdefg", " hik"] (getPiece ["abcdefg", "hik"])
+----test_getPiece2 = assertEqual [" abc", " defg", " hik"] (getPiece ["abc","defg", "hik"])
+----test_getPiece3 = assertEqual  [" AB", "abcdefg", " hik"] (getPiece ["AB","abcdefg", "hik"])
+----test_getPiece4 = assertEqual  [" AB", " abc", " d ef", " g hi", " k"]
+----            (getPiece ["AB","abc", "d", "ef","g", "hi","k"])
 

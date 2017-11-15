@@ -39,7 +39,7 @@ import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 
-formSnips :: [NLPtext] -> [NLPtext]
+formSnips :: [Snip] -> [Snip]
 -- collect paragraphis in reasonalbe snips for NLP processing
 formSnips [] = []
 formSnips [n] = [n]
@@ -61,7 +61,7 @@ test_8_D_DA = testFile2File "resultD8" "resultDA8" formSnips
 test_9_D_DA = testFile2File "resultD9" "resultDA9" formSnips
 test_10_D_DA = testFile2File "resultD10" "resultDA10" formSnips
 
-mergeNLPtext :: NLPtext -> NLPtext -> Maybe NLPtext
+mergeNLPtext :: Snip -> Snip -> Maybe Snip
 -- merge two text if same language and size less than maxSnipSize
 mergeNLPtext a b = if sameLang a b && tz3textLength a + tz3textLength b < maxSnipSize
                         then Just (a{tz3text = tz3text a <> " " <> tz3text b
@@ -75,12 +75,12 @@ mergeNLPtext a b = if sameLang a b && tz3textLength a + tz3textLength b < maxSni
         sameLang a b = tz3lang a == tz3lang b
 
 -- test mergeNLP
-text1 = tz3fillLength $ NLPtext {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
+text1 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
         tz3text = "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme .", tz3lang = German}
-text2 = tz3fillLength $ NLPtext {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
+text2 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
         tz3text = "die ich dann mit Schminke korrigierte.", tz3lang = German}
 t12 =  Just . tz3fillLength $
-  (NLPtext{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
+  (Snip{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
            tz3para = ParaNum 11,
            tz3text =
              "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme . die ich dann mit Schminke korrigierte.",

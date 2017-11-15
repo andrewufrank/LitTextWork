@@ -28,12 +28,12 @@ import  Test.Framework
 --------------
 
 
-import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
+--import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
 -- filters literal text
-import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
+--import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 -- form snips which go to NLP
 
---import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
+import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
 --------    -- makes result D and E
 ----------                -- tests only the production of the doc files
 ------import   {-@ HTF_TESTS @-} Parser.CompleteSentence
@@ -42,7 +42,7 @@ import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 --                    blocked: BAEx --> F,X because calls nlp
 ----------
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- F -> G  and L (triples)
-
+--
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers
 ------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput

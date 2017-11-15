@@ -42,27 +42,27 @@ import Text.Regex (mkRegex, subRegex)
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 
 
-data NLPtext = NLPtext { tz3loc :: TextLoc
+data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3text:: Text
                         , tz3textLength :: Int
                         , tz3lang :: LanguageCode }
             deriving (Read, Show, Eq )
 
-tz3fillLength :: NLPtext -> NLPtext
+tz3fillLength :: Snip -> Snip
 -- fill the length field
 tz3fillLength n = n{tz3textLength = lengthChar . tz3text $ n}
 
-instance Zeros NLPtext where zero = NLPtext zero zero zero zero zero
+instance Zeros Snip where zero = Snip zero zero zero zero zero
 --instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 -- todo algebra
 
-prepareTZ4nlp :: [TZ2] -> [NLPtext]
+prepareTZ4nlp :: [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
 prepareTZ4nlp tz2s = map tz3fillLength . catMaybes . map prepareTZ4nlpOne $ tz2s
 
 
-prepareTZ4nlpOne :: TZ2 -> Maybe NLPtext  -- test C  -> D
+prepareTZ4nlpOne :: TZ2 -> Maybe Snip  -- test C  -> D
 -- selecte the text from TZ and convert to text
 prepareTZ4nlpOne tz2 = if condNLPtext tz2 then Just $ formatParaText tz2
                     else Nothing
@@ -83,9 +83,9 @@ condNLPtext tz  = case tz of
                 _         ->   False
     TZ2para {} -> True
 
-formatParaText :: TZ2 -> NLPtext
+formatParaText :: TZ2 -> Snip
 -- convert the headers to a tztext
-formatParaText tz@TZ2para{} = NLPtext {
+formatParaText tz@TZ2para{} = Snip {
                 tz3loc = tz2loc tz
                 , tz3para = tz2para tz
                 , tz3lang = tz2lang tz
@@ -93,7 +93,7 @@ formatParaText tz@TZ2para{} = NLPtext {
             . map (twm . tztext) $ (tz2tzs tz)
         }
 
-formatParaText tz@TZ2markup {} = NLPtext {tz3loc = tz2loc tz
+formatParaText tz@TZ2markup {} = Snip {tz3loc = tz2loc tz
         , tz3lang = tz2lang tz
         , tz3para = tz2para tz
         , tz3text =  tx <> ". "     -- to make sure these are sentences for NLP
