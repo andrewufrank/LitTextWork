@@ -33,15 +33,15 @@ import  Test.Framework
 --import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 -- form snips which go to NLP
 
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
---------    -- makes result D and E
+--import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- calls to NLP, takes time
+--------    -- makes result  E
 ----------                -- tests only the production of the doc files
 ------import   {-@ HTF_TESTS @-} Parser.CompleteSentence
 ---------------- calls 17701
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLP -- > E -> F - calls only complete sentence
 --                    blocked: BAEx --> F,X because calls nlp
 ----------
---import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- F -> G  and L (triples)
+import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- F -> G  and L (triples)
 --
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers

@@ -77,9 +77,9 @@ produceNLP showXML textstate tzs = do
 --
 
 -- production of F to be used later
-testOP_E_F :: LanguageCode -> TextDescriptor -> [(Snip,[Doc0])] -> ErrIO [ Doc0 ]
+testOP_E_F :: LanguageCode -> TextDescriptor ->  [Doc0] -> ErrIO [ Doc0 ]
 testOP_E_F lang textstate inp =
-        mapM  (completeSentencesInDoc False textstate lang)  (concat $ map snd inp)
+        mapM  (completeSentencesInDoc False textstate lang)  inp
         -- does produce empty sets ...
         -- but is already wrong?
 ----
@@ -99,8 +99,7 @@ test_8_E_F = testVar3FileIO result8A "resultE8" "resultF8" (testOP_E_F English)
 ------ 10 english
 
 
-completeSentencesInDoc :: Bool -> TextDescriptor -> LanguageCode -> ( Doc0)
-                        -> ErrIO ( Doc0)
+completeSentencesInDoc :: Bool -> TextDescriptor -> LanguageCode ->  Doc0 -> ErrIO  Doc0
 -- complete the german sentences in the Doc (with lemmas
 completeSentencesInDoc debugFlag textstate lang ( doc0) = do
 --    let lang = tz3lang ntz
