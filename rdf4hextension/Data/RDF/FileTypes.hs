@@ -54,8 +54,10 @@ rdfGraphDebug = False
 ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] ()
 ntFileTriplesGZip = mkTypedFile5 :: TypedFile5 [RDF.Triple] GZip
 data Queries
+data Construct
 -- just a definion, no content
 sparqlQueryFile = mkTypedFile5 :: TypedFile5 [Text] Queries
+sparqlConstructFile = mkTypedFile5 :: TypedFile5 [Text] Construct
 
 data Updates
 -- just a definion, no content
@@ -224,6 +226,39 @@ instance TypedFiles5 [Text] Queries where
         let res = lines' raw
         putIOwords ["read6  query ", unlines' res]
         return res
+
+instance TypedFiles5 [Text] Construct where
+-- ^ files with sparql queries
+    mkTypedFile5 = TypedFile5 {tpext5 = Extension "construct"}
+
+    append6 fp  tp queryText = error "not needed append6 for Construct"
+
+    write6 fp  tp queryText = do
+
+        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fp]
+--        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+        let fn2 = setExtension (tpext5 tp)  fp
+        when rdfGraphDebug $ putIOwords ["sparql Construct write6 fn", showT fn2]
+        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
+
+        write2handle  hand   (unlines' queryText)
+
+--        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
+        closeFile2  hand
+--        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
+
+    exist6 fp tp = do
+        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+        doesFileExist'  fn2
+
+    read6 fp  tp = do
+        let fn2 = setExtension (tpext5 tp)  fp
+        raw :: Text <-  readFile2 fn2
+        let res = lines' raw
+        putIOwords ["read6  Construct ", unlines' res]
+        return res
+
 
 instance TypedFiles5 [Text] Updates where
 -- ^ files with sparql queries
