@@ -52,7 +52,12 @@ rdfGraphDebug = False
 -- result is nt, not turtle!
 
 ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] ()
+data GZip  -- just a type, no data
 ntFileTriplesGZip = mkTypedFile5 :: TypedFile5 [RDF.Triple] GZip
+
+data Turtle
+turtleFile = mkTypedFile5 :: TypedFile5 Text Turtle
+
 data Queries
 data Construct
 -- just a definion, no content
@@ -65,7 +70,6 @@ sparqlUpdateFile = mkTypedFile5 :: TypedFile5 [Text] Updates
 
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
-data GZip  -- just a type, no data
 
 instance TypedFiles5 [RDF.Triple] GZip where
 -- ^ files with full triples
@@ -81,7 +85,7 @@ instance TypedFiles5 [RDF.Triple] GZip where
     write6 fp  tp triples = do
 
         when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
-        let fn2 = setExtension (tpext5 tp)  fp
+        let fn2 = setExtension (tpext5 tp)  fp  -- is undone when opening handle
         when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
         hand <- openFile2handle fn2 WriteMode
 --        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
@@ -193,6 +197,42 @@ instance TypedFiles5 [RDF.Triple] ()  where
         doesFileExist'  fn2
 
     read6 fp  tp = error "read for triples is not easy and not required"
+
+instance TypedFiles5  Text  Turtle where
+-- ^ files to contain turtle formated rdf
+    mkTypedFile5 = TypedFile5 {tpext5 = Extension "ttl"}
+--      where e = mkExtension lpX "nt"
+
+    append6 fp  tp queryText = error "not needed append6 for Turtle"
+
+    write6 fp  tp queryText = do
+
+--        when rdfGraphDebug $
+        putIOwords ["sparql Turtle write6", showT fp]
+--        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+        let fn2 = setExtension (tpext5 tp)  fp
+        createDirIfMissing' (getParentDir fp)  -- add everywhere?
+--        when rdfGraphDebug $
+        putIOwords ["sparql Turtle createDIrIfMissing' ", showT (getParentDir fp)]
+        hand <- openFile2handle fn2 WriteMode
+--        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
+
+        write2handle  hand   ( queryText) -- changed for Text not []
+
+--        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
+        closeFile2  hand
+--        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
+
+    exist6 fp tp = do
+        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+        doesFileExist'  fn2
+
+    read6 fp  tp = do
+        let fn2 = setExtension (tpext5 tp)  fp
+        raw :: Text <-  readFile2 fn2
+        let res =  raw  -- changed for Text not []
+        putIOwords ["read6  Turtle ",  res]  -- changed for Text not []
+        return res
 
 instance TypedFiles5 [Text] Queries where
 -- ^ files with sparql queries
