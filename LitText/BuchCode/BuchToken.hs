@@ -66,7 +66,8 @@ data BuchToken =   -- just the markers
         | BuchUntertitel
         | BuchVerlag
         | BuchPublikationDetail
-        | BuchEntstehungsDatum
+        | BuchEntstehungsDatum  -- ^ das datum des schreibens
+        | BuchPublikationsDatum  -- ^ datum der publikation (im buch angegeben, copyright date)
         | BuchOriginalFile  -- ^ the original file - an url
         | BuchCheckedBy
         | BuchDedikation
@@ -127,6 +128,7 @@ instance Unparser BuchToken where
     markerPureMult BuchAuthorLeben   = [ "authorleben", "lebenauthor", markerPure BuchAuthorLeben]
     markerPureMult BuchAuthor   = [ "author:", markerPure BuchAuthor]
     markerPureMult BuchUebesetzer   = [ "translator:", "translator", markerPure BuchUebesetzer]
+    markerPureMult BuchPublikationsDatum   = [ "publicationdata", "publication", markerPure BuchPublikationsDatum]
 
     markerPureMult BuchPublikationDetail = [markerPure BuchPublikationDetail, "publicationDetail"
                                 , "publikationsdetail"]

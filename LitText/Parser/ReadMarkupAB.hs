@@ -36,18 +36,18 @@ import Uniform.TestHarnessUtilities.Utils
 data Markup
 -- just a marking for a file type
 
-markupFileType5 = mkTypedFile5 :: TypedFile5 Text Markup
+markupFileType5 = makeTyped (Extension "markup") :: TypedFile5 Text Markup
 
 instance TypedFiles5 Text Markup  where
     -- files of a single text stream, with a markup extension
-    mkTypedFile5  = TypedFile5 { tpext5 = Extension "markup"
-                    -- , parserF = tparser
-                    -- , writerF = twriter
-            }
-    write5 fp fn tp  ct = do
-        dirx <- ensureDir fp
-        let fn2 = fn <.> tpext5 tp -- :: Path ar File
-        writeFile2 (fp </> fn2 ) ct
+--    mkTypedFile5  = TypedFile5 { tpext5 = Extension "markup"
+--                    -- , parserF = tparser
+--                    -- , writerF = twriter
+--            }
+--    write5 fp fn tp  ct = do
+--        dirx <- ensureDir fp
+--        let fn2 = fn <.> tpext5 tp -- :: Path ar File
+--        writeFile2 (fp </> fn2 ) ct
     read5 fp fn tp   = do
         let fn2 = fn <.> (tpext5 tp)
         readFile2 (fp </> fn2)
