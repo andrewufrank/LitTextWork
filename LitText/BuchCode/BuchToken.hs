@@ -74,9 +74,9 @@ data BuchToken =   -- just the markers
         | BuchFussnote
         | BuchCopyright
         | BuchISBN
-        | BuchQuelle  -- woher ist der text (z.b. gutenberg)
-        | BuchFilename        -- bei der Quelle URL oder aehnlich, filename..
-        | BuchSprache        -- to mark following text with the language
+        | BuchQuelle  -- ^ woher ist der text (z.b. gutenberg)
+        | BuchFilename        -- ^ bei der Quelle URL oder aehnlich, filename..
+        | BuchSprache        -- ^ to mark following text with the language
         | BuchUebesetzer
         | BuchIV1
         | BuchIV2
@@ -85,15 +85,15 @@ data BuchToken =   -- just the markers
         | BuchHL1
         | BuchHL2
         | BuchHL3
-        | BuchGedicht   -- should not be necessary
-                        -- parses as markup, is dropped later
+        | BuchGedicht   -- ^ should not be necessary
+                        --  parses as markup, is dropped later
         | BuchEnde
     -- special parses
         | BuchParagraph
-        | BuchParagraphLayout  -- not input, property only
+        | BuchParagraphLayout  -- ^not input, property only
         | BuchLeer
-        | BuchPropBuch    -- fuer turtle code (prefix Buchsigl)
-        | BuchPropText    -- fuer turtle code (prefix TextSigl)
+        | BuchPropBuch    -- ^ fuer turtle code (prefix Buchsigl)
+        | BuchPropText    -- ^ fuer turtle code (prefix TextSigl)
                  deriving (Enum, Eq, Show, Read)
 
 
