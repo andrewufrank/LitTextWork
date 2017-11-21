@@ -37,6 +37,7 @@ import Uniform.FileStrings
 --import Data.Text.IO (hPutStr)
 -- todo fileio
 import qualified Codec.Compression.GZip as GZip
+import qualified Data.Text.IO           as TIO (hGetLine, hPutStr)
 
 --data TurtleData = TurtleData (RDF.RDF RDF.TList)
 -- TODO - is this necessary? useful?
@@ -46,35 +47,38 @@ data RDFgraph =  RDFgraph (RDF.RDF RDF.TList)
 
 unRDFgraph (RDFgraph tlist) = tlist
 
-rdfGraphDebug = False
+--rdfGraphDebug = False  -- is set in TypedFile (where the class is defined)
 
---ntFile = mkTypedFile5 :: TypedFile5 RDFgraph ()
+--ntFile = makeTyped (Extension "nt") :: TypedFile5 RDFgraph ()
 -- result is nt, not turtle!
 
-ntFileTriples = mkTypedFile5 :: TypedFile5 [RDF.Triple] ()
+ntFileTriples = makeTyped (Extension "nt") :: TypedFile5 [RDF.Triple] ()
 data GZip  -- just a type, no data
-ntFileTriplesGZip = mkTypedFile5 :: TypedFile5 [RDF.Triple] GZip
+ntFileTriplesGZip = makeTyped (Extension "nt.gz") :: TypedFile5 [RDF.Triple] GZip
 
 data Turtle
-turtleFile = mkTypedFile5 :: TypedFile5 Text Turtle
+turtleFile = makeTyped (Extension "ttl") :: TypedFile5 Text Turtle
 
 data Queries
 data Construct
 -- just a definion, no content
-sparqlQueryFile = mkTypedFile5 :: TypedFile5 [Text] Queries
-sparqlConstructFile = mkTypedFile5 :: TypedFile5 [Text] Construct
+sparqlQueryFile = makeTyped (Extension "query") :: TypedFile5 [Text] Queries
+sparqlConstructFile = makeTyped (Extension "construct") :: TypedFile5 [Text] Construct
 
 data Updates
 -- just a definion, no content
-sparqlUpdateFile = mkTypedFile5 :: TypedFile5 [Text] Updates
+sparqlUpdateFile = makeTyped (Extension "update") :: TypedFile5 [Text] Updates
 
 rdfNTwrite hand nt = callIO $ RDF.hWriteRdf RDF.NTriplesSerializer hand nt
 
 
 instance TypedFiles5 [RDF.Triple] GZip where
 -- ^ files with full triples
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt.gz"}
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt.gz"}
 
+--    typedExtension tp = tpext5 tp
+--    isTyped :: Path Abs File -> TypedFile5 a b -> Bool
+--    isTyped fp tp = (getExtension fp) == typedExtension tp
     append6 fp  tp triples = do
 
         when rdfGraphDebug $ putIOwords ["triples append6", showT fp]
@@ -82,19 +86,19 @@ instance TypedFiles5 [RDF.Triple] GZip where
 
         appendFile2 fn2 (GZip.compress . b2bl . t2b . unlines' $ Prelude.map triple2text triples)
 
-    write6 fp  tp triples = do
-
-        when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
-        let fn2 = setExtension (tpext5 tp)  fp  -- is undone when opening handle
-        when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
-        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
-
-        write2handle hand (GZip.compress . b2bl . t2b . unlines' $ Prelude.map triple2text triples)
-
---        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
-        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+--    write6 fp  tp triples = do
+--
+--        when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
+--        let fn2 = setExtension (tpext5 tp)  fp  -- is undone when opening handle
+--        when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+--
+--        write2handle hand (GZip.compress . b2bl . t2b . unlines' $ Prelude.map triple2text triples)
+--
+----        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+--        closeFile2  hand
+----        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
     openHandle6 fp  tp = do
         when rdfGraphDebug $ putIOwords ["openHandle6 triples"]
@@ -125,22 +129,29 @@ instance TypedFiles5 [RDF.Triple] GZip where
         when rdfGraphDebug $ putIOwords ["writeHandle6 triples"]
         write2handle  hand (GZip.compress . b2bl . t2b . unlines' $ Prelude.map triple2text triples)
 
-    exist6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        doesFileExist'  fn2
+--    exist6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        doesFileExist'  fn2
 
     read6 fp  tp = error "read for triples is not easy and not required"
 
-    modificationTime6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        t :: EpochTime <- getFileModificationTime fn2
---        st <- getFileStatus fn2
---        let t = getModificationTimeFromStatus st
-        return t
+--    modificationTime6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        t :: EpochTime <- getFileModificationTime fn2
+----        st <- getFileStatus fn2
+----        let t = getModificationTimeFromStatus st
+--        return t
+instance FileHandles [RDF.Triple] where
+    write2handle h c = callIO $ TIO.hPutStr h (unlines' $ Prelude.map triple2text c)
+    readLine4handle h = error "readLine4handle for RDF.Triple not implemented"
+--        do
+--            res <-  callIO $ TIO.hGetLine h
+--            return . lines' $ res
+
 
 instance TypedFiles5 [RDF.Triple] ()  where
 -- ^ files with full triples
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "nt"}
 
     append6 fp  tp triples = do
 
@@ -149,19 +160,19 @@ instance TypedFiles5 [RDF.Triple] ()  where
 
         appendFile2 fn2 (unlines' $ Prelude.map triple2text triples)
 
-    write6 fp  tp triples = do
-
-        when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
-        let fn2 = setExtension (tpext5 tp)  fp
-        when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
-        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
-
-        write2handle  hand (unlines' $ Prelude.map triple2text triples)
-
---        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
-        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+--    write6 fp  tp triples = do
+--
+--        when rdfGraphDebug $ putIOwords ["triples write6", showT fp]
+--        let fn2 = setExtension (tpext5 tp)  fp
+--        when rdfGraphDebug $ putIOwords ["triples write6 fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+--
+--        write2handle  hand (unlines' $ Prelude.map triple2text triples)
+--
+----        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
+--        closeFile2  hand
+----        when rdfGraphDebug $ putIOwords ["triples write6", showT fn2]
 
     openHandle6 fp  tp = do
         when rdfGraphDebug $ putIOwords ["openHandle6 triples"]
@@ -190,42 +201,41 @@ instance TypedFiles5 [RDF.Triple] ()  where
 
     writeHandle6 hand  tp triples = do
         when rdfGraphDebug $ putIOwords ["writeHandle6 triples"]
-        write2handle  hand (unlines' $ Prelude.map triple2text triples)
+        write2handle  hand (unlines' $ Prelude.map triple2text triples)  -- special !
 
-    exist6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        doesFileExist'  fn2
+--    exist6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        doesFileExist'  fn2
 
     read6 fp  tp = error "read for triples is not easy and not required"
 
 instance TypedFiles5  Text  Turtle where
 -- ^ files to contain turtle formated rdf
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "ttl"}
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "ttl"}
 --      where e = mkExtension lpX "nt"
 
     append6 fp  tp queryText = error "not needed append6 for Turtle"
 
-    write6 fp  tp queryText = do
+--    write6 fp  tp queryText = do
+--
+----        when rdfGraphDebug $
+--        putIOwords ["sparql Turtle write6", showT fp]
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        let fn2 = setExtension (tpext5 tp)  fp
+--        createDirIfMissing' (getParentDir fp)  -- add everywhere?
+--        when rdfGraphDebug $ putIOwords ["sparql Turtle createDIrIfMissing' ", showT (getParentDir fp)]
+--        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
+--
+--        write2handle  hand   ( queryText) -- changed for Text not []
+--
+----        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
+--        closeFile2  hand
+----        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
 
---        when rdfGraphDebug $
-        putIOwords ["sparql Turtle write6", showT fp]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = setExtension (tpext5 tp)  fp
-        createDirIfMissing' (getParentDir fp)  -- add everywhere?
---        when rdfGraphDebug $
-        putIOwords ["sparql Turtle createDIrIfMissing' ", showT (getParentDir fp)]
-        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
-
-        write2handle  hand   ( queryText) -- changed for Text not []
-
---        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
-        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["sparql Turtle write6", showT fn2]
-
-    exist6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        doesFileExist'  fn2
+--    exist6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        doesFileExist'  fn2
 
     read6 fp  tp = do
         let fn2 = setExtension (tpext5 tp)  fp
@@ -236,29 +246,29 @@ instance TypedFiles5  Text  Turtle where
 
 instance TypedFiles5 [Text] Queries where
 -- ^ files with sparql queries
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "query"}
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "query"}
 --      where e = mkExtension lpX "nt"
 
     append6 fp  tp queryText = error "not needed append6 for queries"
 
-    write6 fp  tp queryText = do
-
-        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fp]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = setExtension (tpext5 tp)  fp
-        when rdfGraphDebug $ putIOwords ["sparql queries write6 fn", showT fn2]
-        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
-
-        write2handle  hand   (unlines' queryText)
-
---        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
-        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
-
-    exist6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        doesFileExist'  fn2
+--    write6 fp  tp queryText = do
+--
+--        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fp]
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        let fn2 = setExtension (tpext5 tp)  fp
+--        when rdfGraphDebug $ putIOwords ["sparql queries write6 fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
+--
+--        write2handle  hand   (unlines' queryText)
+--
+----        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
+--        closeFile2  hand
+----        when rdfGraphDebug $ putIOwords ["sparql queries write6", showT fn2]
+--
+--    exist6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        doesFileExist'  fn2
 
     read6 fp  tp = do
         let fn2 = setExtension (tpext5 tp)  fp
@@ -269,28 +279,28 @@ instance TypedFiles5 [Text] Queries where
 
 instance TypedFiles5 [Text] Construct where
 -- ^ files with sparql queries
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "construct"}
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "construct"}
 
     append6 fp  tp queryText = error "not needed append6 for Construct"
 
-    write6 fp  tp queryText = do
+--    write6 fp  tp queryText = do
+--
+--        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fp]
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        let fn2 = setExtension (tpext5 tp)  fp
+--        when rdfGraphDebug $ putIOwords ["sparql Construct write6 fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
+--
+--        write2handle  hand   (unlines' queryText)
+--
+----        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
+--        closeFile2  hand
+----        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
 
-        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fp]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = setExtension (tpext5 tp)  fp
-        when rdfGraphDebug $ putIOwords ["sparql Construct write6 fn", showT fn2]
-        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
-
-        write2handle  hand   (unlines' queryText)
-
---        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
-        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["sparql Construct write6", showT fn2]
-
-    exist6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        doesFileExist'  fn2
+--    exist6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        doesFileExist'  fn2
 
     read6 fp  tp = do
         let fn2 = setExtension (tpext5 tp)  fp
@@ -302,29 +312,29 @@ instance TypedFiles5 [Text] Construct where
 
 instance TypedFiles5 [Text] Updates where
 -- ^ files with sparql queries
-    mkTypedFile5 = TypedFile5 {tpext5 = Extension "update"}
+--    mkTypedFile5 = TypedFile5 {tpext5 = Extension "update"}
 --      where e = mkExtension lpX "nt"
 
     append6 fp  tp queryText = error "not needed append6 for Updates"
 
-    write6 fp  tp queryText = do
-
-        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fp]
---        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
-        let fn2 = setExtension (tpext5 tp)  fp
-        when rdfGraphDebug $ putIOwords ["sparql Updates write6 fn", showT fn2]
-        hand <- openFile2handle fn2 WriteMode
---        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
-
-        write2handle  hand   (unlines' queryText)
-
---        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
-        closeFile2  hand
---        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
-
-    exist6 fp tp = do
-        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
-        doesFileExist'  fn2
+--    write6 fp  tp queryText = do
+--
+--        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fp]
+----        let fn2 = fp </> addExt lpX fn (tpext tp)  -- :: LegalPathname
+--        let fn2 = setExtension (tpext5 tp)  fp
+--        when rdfGraphDebug $ putIOwords ["sparql Updates write6 fn", showT fn2]
+--        hand <- openFile2handle fn2 WriteMode
+----        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
+--
+--        write2handle  hand   (unlines' queryText)
+--
+----        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
+--        closeFile2  hand
+----        when rdfGraphDebug $ putIOwords ["sparql Updates write6", showT fn2]
+--
+--    exist6 fp tp = do
+--        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
+--        doesFileExist'  fn2
 
     read6 fp  tp = do
         let fn2 = setExtension (tpext5 tp)  fp
