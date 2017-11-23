@@ -102,22 +102,24 @@ mkSentenceTriple2 lang buchuri  snipid sent
 
 ----------------------------------------- --
 mkTokenTriple2 :: LanguageCode -> SentSigl-> Token0 -> [Triple]
-mkTokenTriple2 lang sentSigl tok =  [t0, t1, t2, t2a, t3, t5] ++ t6 ++ t7
+mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3, t5] ++ t6 ++ t7
     -- the language code is to pass to the triple maker ! TODO
     where
         tokensigl = mkTokenSigl sentSigl (tid tok)
         t0 = mkTripleType (unTokenSigl tokensigl) (mkRDFtype Token)
         t1 = mkTriplePartOf (unTokenSigl tokensigl)     (unSentSigl sentSigl)
-        t2 = mkTripleLang lang (unTokenSigl tokensigl)
-                    (mkRDFproperty Lemma) (lemma0 $ tlemma tok)
+--        t2 = mkTripleLang lang (unTokenSigl tokensigl)
+--                    (mkRDFproperty Lemma) (lemma0 $ tlemma tok)
         t2a = mkTripleLang3 lang (unTokenSigl tokensigl)
                     (mkRDFproperty Lemma3) (lemma0 $ tlemma tok)
         t3 = mkTripleText (unTokenSigl tokensigl)
                     (mkRDFproperty Pos) (show' . tpos $ tok)  -- use the encoding from Conll
         t5 = mkTripleLang lang (unTokenSigl tokensigl) (mkRDFproperty WordForm)
                 ( word0 . tword $ tok)
-        t6 = map (mkTripleText (unTokenSigl tokensigl)
-                (mkRDFproperty Nertag)) (tner tok)
+        t6 = if (tner tok) ==  ["O"]  -- this is the default, no need to store
+                then []
+                else map (mkTripleText (unTokenSigl tokensigl)
+                        (mkRDFproperty Nertag)) (tner tok)
         t7 = map (mkTripleText (unTokenSigl tokensigl)
                     (mkRDFproperty SpeakerTag) . showT )
                     (tspeaker tok)
