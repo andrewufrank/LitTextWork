@@ -163,15 +163,15 @@ mkDependenceTriple2 lang sentid  dep i  =  t0:  t4 : (t5 ++ t6)
 data GOV_DEP = GDgov | GDdep
 
 mkDependencePart2 :: LanguageCode -> SentSigl -> DepSigl -> GOV_DEP -> DependencePart0 -> [Triple]
-mkDependencePart2 lang sentid depidp gd depp   = [t8, t9]
+mkDependencePart2 lang sentid depidp gd depp   = [t8] -- , t9]
     where
        tokenid = mkTokenSigl sentid (did depp)
        prop = case gd of
                 GDgov -> (mkRDFproperty Governor)
                 GDdep -> (mkRDFproperty Dependent)
        t8 = mkTripleRef (unDepSigl depidp) prop (unTokenSigl tokenid)
-       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
-       wf = word0 . dword  $ depp
+--       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
+--       wf = word0 . dword  $ depp
 
 testOP_F_G :: TextDescriptor -> [Doc0] ->  [Triple]
 testOP_F_G textstate docs  = concat
