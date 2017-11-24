@@ -17,6 +17,8 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/rdf4h
   extra-dep: true
+- location: /home/frank/Workspace8/storeInJena
+  extra-dep: true
 - ../LitFoundation
 - ../rdf4hextension
 - '.'
