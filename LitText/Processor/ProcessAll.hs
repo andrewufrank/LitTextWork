@@ -70,10 +70,10 @@ import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
 ----debugNLP = False
 ----litDebugOnly = False
 
-processOneMarkup4 :: Bool  -> URI -> Text -> Path Abs Dir -> Path Abs File
+processOneMarkup4 :: Bool  -> Bool ->  URI -> Text -> Path Abs Dir -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
-processOneMarkup4 debug   server authorReplacement ntdir   file = do
+processOneMarkup4 debug forceFlag  server authorReplacement ntdir   file = do
     let buchReplacement = s2t $ getNakedFileName file
         includeText = False
         textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement includeText
@@ -91,13 +91,13 @@ processOneMarkup4 debug   server authorReplacement ntdir   file = do
                 else
                     return True
 
-            if processNeeded
+            if processNeeded || forceFlag
                 then do
                     putIOwords  ["\n processOneMarkup4 - process"
                             , showT $ sourceMarkup textstate2, "\n"]
                     mainLitAndNLPproduction False False textstate2
                     -- first bool is debug output
-                    -- second stops processing after lit (no nlp calls)
+                    -- second if true stops processing after lit (no nlp calls)
                     putIOwords  ["\n processOneMarkup4 - processed"
                             , showT $ sourceMarkup textstate2, "\n"]
                     return (showT textstate2)
@@ -120,36 +120,36 @@ processOneMarkup4 debug   server authorReplacement ntdir   file = do
                     ]
             return ""
 
-processOneMarkup :: Bool ->  LitDirs -> URI -> Path Abs File
-            -> ErrIO Text
--- process one markup file, if the nt file does not exist
-processOneMarkup debug  litDirs server lfp = do
-        let textstate2 = fillTextState4 litDirs server lfp
-        putIOwords ["\nprocessOneMarkup", showT server  ]
-        ntExist <- exist6 (destNT textstate2) ntFileTriples
-        if not ntExist
-            then do
-                putIOwords  ["\nprocessMarkup - process"
-                        , showT $ sourceMarkup textstate2, "\n"]
-                mainLitAndNLPproduction False False textstate2
-                -- first bool is debug output
-                -- second stops processing after lit (no nlp calls)
-                putIOwords  ["\nprocessMarkup - processed"
-                        , showT $ sourceMarkup textstate2, "\n"]
-                return (showT textstate2)
-            else do
-                putIOwords  ["\nprocessMarkup - nt file exist already"
-                        , showT $ sourceMarkup textstate2, "\n"]
-                return . unlinesT $ ["\nprocessMarkup - nt file exist already"
-                        , showT $ sourceMarkup textstate2, "\n"]
-
-    `catchError` \e -> do
-            putIOwords  ["\nprocessMarkup - error return for "
-                    , showT lfp, "\n"
-                    , "error", e
-                    , "not raised further to continue processing all"
-                    ]
-            return ""
+--processOneMarkup :: Bool ->  LitDirs -> URI -> Path Abs File
+--            -> ErrIO Text
+---- process one markup file, if the nt file does not exist
+--processOneMarkup debug  litDirs server lfp = do
+--        let textstate2 = fillTextState4 litDirs server lfp
+--        putIOwords ["\nprocessOneMarkup", showT server  ]
+--        ntExist <- exist6 (destNT textstate2) ntFileTriples
+--        if not ntExist
+--            then do
+--                putIOwords  ["\nprocessMarkup - process"
+--                        , showT $ sourceMarkup textstate2, "\n"]
+--                mainLitAndNLPproduction False False textstate2
+--                -- first bool is debug output
+--                -- second stops processing after lit (no nlp calls)
+--                putIOwords  ["\nprocessMarkup - processed"
+--                        , showT $ sourceMarkup textstate2, "\n"]
+--                return (showT textstate2)
+--            else do
+--                putIOwords  ["\nprocessMarkup - nt file exist already"
+--                        , showT $ sourceMarkup textstate2, "\n"]
+--                return . unlinesT $ ["\nprocessMarkup - nt file exist already"
+--                        , showT $ sourceMarkup textstate2, "\n"]
+--
+--    `catchError` \e -> do
+--            putIOwords  ["\nprocessMarkup - error return for "
+--                    , showT lfp, "\n"
+--                    , "error", e
+--                    , "not raised further to continue processing all"
+--                    ]
+--            return ""
 
 
 --fillTextState :: TextSource -> DestGenerality -> Path Abs File -> TextState2

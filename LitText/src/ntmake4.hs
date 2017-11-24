@@ -48,6 +48,7 @@ import Processor.Main2sub (mainLitAndNLPproduction)
 import Process.UtilsProcessing (processAll)
 import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer)
 import Processor.ProcessAll
+import qualified System.Directory as S (getHomeDirectory)
 
 programName = "ntmake" :: Text
 progTitle = "produce the lit for all markup files " :: Text
@@ -62,8 +63,9 @@ main = startProg programName progTitle
 
 parseAndExecute  :: Text -> Text ->  ErrIO ()
 parseAndExecute t1 t2    = do
+        homeDir :: FilePath <- callIO $ S.getHomeDirectory
         args1 <- getArgsParsedNT t1 t2
-        let args = setDefaultOriginDirNT args1 "/home/frank/gutenberg"
+        let args = setDefaultOriginDirNT args1 (addDir homeDir ("gutenberg"::FilePath))
         putIOwords ["parseAndExecute: process all store", showT args]
         let server = selectServerNT args :: URI
 --    args <- callIO $ execParser opts
@@ -76,7 +78,8 @@ parseAndExecute t1 t2    = do
 
 --    putIOwords ["ntstore4 parseAndExecute all files", showT server, " from nt dir", showT ntdir ]
 
-        let resultFile = makeAbsFile "/home/frank/ntstore4.txt" :: Path Abs File  -- adaption from copied from store
+        let resultFile = makeAbsFile "/home/frank/ntstore4.txt" :: Path Abs File
+        writeFileOrCreate2 resultFile ("" :: Text)  -- to make sure it exist
         -- not really interesting
         let forceFlag = argForceFlag args
         let debugFlag = False
@@ -87,19 +90,21 @@ parseAndExecute t1 t2    = do
 --             timeout = getTimeout args
 --             mgraph = Just . s2t $ argGraph args
 --             dbarg = s2t $ argDB args
-             originDir = makeAbsDir . argOrigin $ args :: Path Abs Dir
-             destinationDir = makeAbsDir . argDestination $ args :: Path Abs Dir
+             originDir = makeAbsDir  $  addDir homeDir (argOrigin args) :: Path Abs Dir
+             destinationDir = makeAbsDir $  addDir homeDir ( argDestination args) :: Path Abs Dir
+             authorReplacement = s2t . getNakedDir $ originDir
+        createDirIfMissing' destinationDir
         putIOwords ["parseAndExecute: process store"
                     , "\n\tserver", showT server
                     , "\n\tdestinationDir", showT destinationDir
                     , "\n\tauthorReplacement",   authorReplacement
---                    , "\n\tgraph", showT mgraph
+                    , "\n\tforceFlag", showT forceFlag
 --                    , "\n\tdbarg", showT dbarg
                     , "\n\toriginDir", showT originDir
                     ]
 --        if null . argFn $ args
 --            then
-        processAll (processOneMarkup4 debugFlag server authorReplacement destinationDir)
+        processAll (processOneMarkup4 debugFlag forceFlag server authorReplacement destinationDir)
 --            then processAll (putOneFile2 debugFlag forceFlag server  -- ntdir db
 --                        dbarg mgraph )
                         isMarkup -- (\f -> isNT f || isGZ f)
@@ -143,7 +148,7 @@ data NtmakeArgs = NtmakeArgs
 --  , argbuch  :: String -- ^ the filename in the dir
    , argOrigin :: String -- ^ the directoy in which the markup files are
    , argForceFlag :: Bool -- ^ force processing, even if newer exist
-  }
+  } deriving (Show)
 
 ntcmdArgs :: Parser (NtmakeArgs)
 ntcmdArgs = NtmakeArgs
