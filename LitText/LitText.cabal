@@ -107,7 +107,7 @@ executable ntmake5
         , uniform-strings
         , uniform-fileio
         , uniform-convenience
-        , storeInJena
+        , storeInJena == 0.1.0.1
         , LitText
         , pipes
         , rdf4hextension
