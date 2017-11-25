@@ -57,7 +57,8 @@ werkTriple :: TextDescriptor ->   [Triple]
 -- ^ produce a werk, has the properties in markup
 werkTriple textstate   =
     [ mkTripleType buchUri (mkRDFtype ("Werk" :: Text))
-    , mkTripleText buchUri (mkRDFproperty Version) "V2"
+    , mkTripleText buchUri (mkRDFproperty Version) "3"      -- change for disruptive changes
+    , mkTripleText buchUri (mkRDFproperty MinorVersion) "0"  -- bump for any change in the RDF vocabulary
     ]
     where
         buchUri = buchURIx textstate
