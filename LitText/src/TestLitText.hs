@@ -24,7 +24,7 @@ import  Test.Framework
 -------- if the files are not already correct in .littest
 -------- problem is in the comparing when error
 --import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- > BAEx
---import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- > Hx
+import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- > Hx
 --------------
 
 

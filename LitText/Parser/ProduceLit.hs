@@ -112,7 +112,7 @@ convOneTextZeile2triple :: TextDescriptor -> TZ2 -> [Triple]
 -- not executed when text not included
 convOneTextZeile2triple textstate tz  = case tz of
     TZ2markup {} -> hlTriple textstate  tz
-                      ++ (if tz2tok tz `elem` [BuchKlappenText .. BuchIV3]
+                      ++ (if tz2tok tz `elem` [BuchKlappenText .. BuchTitel]
                             then  otherBuchTriple textstate tz
                             else []
                             )
