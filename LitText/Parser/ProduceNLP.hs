@@ -139,8 +139,12 @@ produceOneOneParaNLP ntz textstate     doc0   =   do  -- tz is Snip
         when debugNLP1 $
             putIOwords ["\n\nproduceOneParaNLP nlp triples "
                 , unlines' . map showT $ triples]
-        writeHandleTriples textstate triples
---        return ()
+        ntz1 <- writeHandleTriples textstate triples
+        putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
+                ,"snip size", showT $ tz3textLength ntz
+                ,"from text", buchName textstate
+                ]
+        return ntz1
 
 openHandleTriples  :: TextDescriptor -> ErrIO TextDescriptor
 openHandleTriples textstate  = do
