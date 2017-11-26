@@ -46,9 +46,9 @@ type PartURI = Text
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type...
 
-gerastreeURI =    "http://gerastree.at"  :: PartURI
+--gerastreeURI =    "http://gerastree.at"  :: PartURI
 -- the base url - with no closing
-baseurl = Just gerastreeURI :: Maybe Text
+--baseurl = Just gerastreeURI :: Maybe Text
 
 newtype RDFproperty = RDFproperty Text deriving (Show, Eq)
 -- ^ a type to identify the RDFproperties

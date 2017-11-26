@@ -21,22 +21,25 @@ module Parser.ProduceLayout (module Parser.ProduceLayout
 
 import           Test.Framework
 import           Data.Char               (toLower)
-import           Data.RDF
+--import           Data.RDF  ()
 import Data.RDF.Triple2text (triple2text)
-import           Data.RDF.Extension
+--import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 --import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
-import Parser.ReadMarkupAB
-import Lines2para.HandleLayout -- TZ
+import Parser.ReadMarkupAB    -- result1A etc.
+import Lines2para.HandleLayout
+    -- (RDFtypes (..), RDFproperties (..), TZ (..), TextDescriptor, PartURI, RDFsubj, Triple) -- TZ
 --import Lines2para.Lines2ignore
 --import Lines2para.Lines2para -- hiding ((</>))
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 import Uniform.TestHarness
+import Producer.Servers (rdfBase)  -- from Foundation
 
-
+gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
 layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
+--layoutURItext =   (showT rdfBase) </>  "layout_2017" :: PartURI
 
 produceLayoutTriples ::  TextDescriptor -> [TZ] -> [Triple]  -- test BAD -> J
 -- put lines and pages into rdf

@@ -31,6 +31,7 @@ import           Parser.ProduceLit     --  (buchURIx, paraSigl)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
 -- import Uniform.StringInfix
+import Parser.ProduceLayout (gerastreeURI)
 
 nlp = "nlp"::Text
 nlpURItext = gerastreeURI </> "nlp_2015" :: PartURI
