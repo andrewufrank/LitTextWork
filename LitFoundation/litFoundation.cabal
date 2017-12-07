@@ -22,10 +22,14 @@ library
         -- not yet required, should replace rdf4hextension for PartURI
         -- , rdf4hextension
         , HTF
+        , optparse-applicative
+        , pipes
 
     exposed-modules:
         Parser.TextDescriptor
         Producer.Servers
+        Process.UtilsParseArgs
+        Process.UtilsProcessing
 
     exposed: True
     buildable: True

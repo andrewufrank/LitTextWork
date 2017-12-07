@@ -10,12 +10,12 @@ description:
 library
     build-depends:
        base -any
-        , uniform-strings >=0.0.10.5
-        , uniform-fileio >=0.0.14
-        , uniform-convenience >=0.0.9.24
-        , uniform-error >=0.0.10
-        , uniform-algebras >=0.0.9
-        , uniform-http >=0.0.2
+        , uniform-strings
+        , uniform-fileio
+        , uniform-convenience
+        , uniform-error
+        , uniform-algebras
+        , uniform-http
         , litFoundation
         , storeInJena
 --        , readMarkup
@@ -76,10 +76,10 @@ Test-Suite nlpTestAuto
     main-is:    TestLitText.hs
     build-depends: base
         , HTF
-        , uniform-strings >=0.0.10.2
-        , uniform-fileio >=0.0.13
-        , uniform-convenience >=0.0.9.12
-        , uniform-error >=0.0.10
+        , uniform-strings
+        , uniform-fileio
+        , uniform-convenience
+        , uniform-error
         , litFoundation
         , LitText
     default-language: Haskell2010
@@ -107,7 +107,7 @@ executable ntmake5
         , uniform-strings
         , uniform-fileio
         , uniform-convenience
-        , storeInJena == 0.1.0.1
+        , storeInJena
         , LitText
         , pipes
         , rdf4hextension
