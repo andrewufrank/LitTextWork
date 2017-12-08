@@ -67,10 +67,10 @@ processAll ops testFile dir file = do  -- debug forceFlag server dir db mgraph  
 --
 --putOneFile2xx debug forceFlag server db mgraph fn = return ""
 
-getServer server  = showT $ addPort2URI  server  3030
+getServer server  = addPort2URI  server  3030 :: URI
 
 
-post2store ::  Bool -> Text -> Text -> Text -> Maybe Text ->  LazyByteString
+post2store ::  Bool -> Text -> URI -> Text -> Maybe Text ->  LazyByteString
             -> HttpQueryString -> Maybe Int ->   ErrIO Text
     -- ^ timeout in sec
 

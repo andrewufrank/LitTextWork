@@ -36,7 +36,7 @@ import           Options.Applicative
 import Producer.Servers (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
 import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI, callHTTP10post, URI)
 
--- should be imported from Foundation
+-- check all filenames by converting to Path format
 
 --- cmd line parsing
 data LitArgs = LitArgs
@@ -48,7 +48,7 @@ data LitArgs = LitArgs
   , argGraph  :: String  -- ^ the graph
   , argAuxGraph  :: String  -- ^ an additional graph
 --  , argDest  :: String  -- ^ the destination graph
-  , argDir  :: String  -- ^ the query dir
+  , argSubDir  :: String  -- ^ the query dir
   , argFn  :: String -- ^ the query filename without extension
 --  , argResultDir :: String -- ^ the result dir
   , argWordnetGraph  :: String -- ^ the name of the wordnet graph without <..>
@@ -161,15 +161,16 @@ selectServer args =  if  argLocalhost args
                     then serverLocalhost
                     else serverBrest  -- default
 
+--getLocalOriginDir
+-- produces the abs dir combined from home origin and subfile dir
 getLocalOriginDir args = if null' subdir then orig
                                         else addDir  orig subdir :: Path Abs Dir
-                where subdir = argDir args
---                      dirQueries1 = if null nonDef
---                                            then (dirQueries :: Path Abs Dir)
---                                            else makeAbsDir nonDef
-                      orig = makeAbsDir $ argOrigin args
+                where subdir = argSubDir args
+                      orig = addDir homeDir $  argOrigin args
 
 getFn args = addFileName (getLocalOriginDir args) (argFn args) :: Path Abs File
+-- get filename (added to the local origin)
+-- may fail or
 
 --test_queryDir = assertEqual "" (addDir
 
