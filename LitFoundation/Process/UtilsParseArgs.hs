@@ -95,7 +95,7 @@ cmdArgs = LitArgs
 --            metavar "Destination Graph" <>
 --            help "destination graph" )
      <*> strOption
-          ( long "subdir" <>
+          ( long "subdir for queries or nt" <>
             short 's' <>
             value "" <>
             metavar "subdir (folder) with the construct queries" <>
@@ -125,7 +125,7 @@ cmdArgs = LitArgs
             metavar "timeout" <>
             help "timeout in minutes " )
      <*>  strOption
-        (long "origin dir" <>
+        (long "origin dir (for queries relative to home, for nt set to NT/ by default)" <>
             short 'o'  <>
             value "" <>
             help "dir in which the nt?, markup or query files are (relative to home)" )
@@ -172,13 +172,62 @@ getFn args = addFileName (getLocalOriginDir args) (argFn args) :: Path Abs File
 -- get filename (added to the local origin)
 -- may fail or
 
---test_queryDir = assertEqual "" (addDir
-
 getTimeout :: LitArgs -> Maybe Int
 getTimeout args = fmap (60 *) t1
     where
 --        t1 = readMay ("30"::String) :: Maybe Int
         t1 = readMay (argTimeout args)  :: Maybe Int
+
+data Inputs = Inputs {inArgs :: LitArgs
+                    , inDebug :: Bool
+                    , inForceFlag :: Bool
+                    , inServer :: URI
+                    , inDB :: Text
+                    , inGraph :: Maybe Text
+                    , inTimeOut :: Maybe Int
+                    , inResultFile :: Path Abs File
+                    , inOriginDir :: Path Abs Dir
+                    , inFilename :: Maybe (Path Abs File)
+                    } deriving (Show)
+
+parseAndStartExecute :: Bool -> Text -> Path Rel Dir -> Text -> Text -> ErrIO Inputs
+-- the common operations to start the store, query and construct
+-- arguments: rel dir (to home) of origin
+-- name for result file
+-- debug flag value
+parseAndStartExecute debugFlag resultFileName originDir t1 t2 = do
+        args1 <- getArgsParsed t1 t2
+        let args = setDefaultOriginDir args1 (toFilePath originDir)
+        putIOwords ["parseAndStartExecute: process to store", showT args]
+        let server = selectServer args :: URI
+        let resultFile = addFileName homeDir (t2s resultFileName ::FilePath) :: Path Abs File
+        -- not really interesting inofrmation
+        let forceFlag = argForceFlag args
+        let debugFlag = True
+--        putIOwords ["parseAndStartExecute: before making args "]
+        let  timeout = getTimeout args
+             mgraph = if null' . argGraph $ args then Nothing
+                            else Just . s2t $  argGraph args  -- nothing if empty
+--        putIOwords ["parseAndStartExecute: before making args 2"]
+        let  dbarg = s2t $ argDB args
+             originDir =  getLocalOriginDir args -- addDir homeDir (argOrigin args) :: Path Abs Dir
+             fn = if null . argFn $ args then Nothing
+                                    else Just . addFileName originDir . argFn $ args :: Maybe (Path Abs File)
+        putIOwords ["parseAndStartExecute:   the arguments always necessary or optional with defaults "
+                    , "\n\tserver", showT server
+                    , "\n\tdbarg", showT dbarg
+                    , "\n\tgraph", showT mgraph
+                    , "\n\toriginDir", showT originDir
+                    , "\n\ttimeout", showT timeout
+--                    , "\n\tqueryFile", showT fn
+                    ]
+        let inp = Inputs {inArgs = args, inDebug = debugFlag, inForceFlag = forceFlag
+                    , inServer = server, inDB = dbarg, inGraph = mgraph
+                    , inTimeOut = timeout, inResultFile = resultFile, inOriginDir = originDir
+                    , inFilename = fn
+                    }
+        putIOwords ["parseAndStartExecute:  inputs ", showT inp]
+        return inp
 
 
 --        D

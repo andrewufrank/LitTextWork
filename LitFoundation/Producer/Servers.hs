@@ -21,7 +21,7 @@ module Producer.Servers (
 -- import           Data.RDF.Extension
 import Uniform.Strings
 import Uniform.Error
-import Uniform.FileIO (makeAbsDir)
+import Uniform.FileIO (makeAbsDir, makeRelDir)
 import Uniform.HttpCallWithConduit (makeAbsURI)
 --import Uniform.HttpURI
 import Network.URI
@@ -40,6 +40,9 @@ localhost = makeAbsURI "http://127.0.0.1"
 rdfBase = makeAbsURI "http://gerastree.at"
 
 dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
+dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"
+
+ntDirsRel = makeRelDir "NT"  -- where it is for testing (can be expanded
 
 -- -- todo move to uniform-http
 -- makeAbsURI :: Text -> URI
