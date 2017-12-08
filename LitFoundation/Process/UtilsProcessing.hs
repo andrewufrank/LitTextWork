@@ -60,12 +60,6 @@ processAll ops testFile dir file = do  -- debug forceFlag server dir db mgraph  
                 )
     return $ unwords' ["processAll", showT dir, showT file , "ok"]
 
---putOneFile2xx :: Bool -> Bool -> URI -> Text -> Maybe Text -> Path Abs File -> ErrIO Text
----- put one file into the db and graph
----- checks for the flag to avoid duplication
----- but does separately check (and possibly duplicate) an nt and a nt.gz file
---
---putOneFile2xx debug forceFlag server db mgraph fn = return ""
 
 getServer server  = addPort2URI  server  3030 :: URI
 
