@@ -81,6 +81,7 @@ cmdArgs = LitArgs
           ( long "graph - required" <>
             short 'g' <>
             metavar "Graph" <>
+            value "" <>
             help "graph - required" )
      <*> strOption
           ( long "auxGraph" <>
@@ -216,7 +217,7 @@ parseAndStartExecute debugFlag resultFileName originDir t1 t2 = do
         putIOwords ["parseAndStartExecute:   the arguments always necessary or optional with defaults "
                     , "\n\tserver", showT server
                     , "\n\tdbarg", showT dbarg
-                    , "\n\tgraph", showT mgraph
+                    , "\n\tgraph", showT mgraph  -- optional for queries with all graphs
                     , "\n\toriginDir", showT originDir
                     , "\n\ttimeout", showT timeout
 --                    , "\n\tqueryFile", showT fn
