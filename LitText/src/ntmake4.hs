@@ -37,7 +37,7 @@ import Processor.Main2sub (mainLitAndNLPproduction)
 import Process.UtilsProcessing (processAll)
 import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer)
 import Processor.ProcessAll
-import qualified System.Directory as S (getHomeDirectory)
+--import qualified System.Directory as S (getHomeDirectory)
 
 programName = "ntmake" :: Text
 progTitle = "produce the lit for all markup files " :: Text
@@ -48,13 +48,13 @@ main = startProg programName progTitle
                (unlinesT ["gets the nt files" ])
                "dir relative to home"
             )
-
+homeDirX = "/home/frank/" :: FilePath -- is now defined in fileio
 
 parseAndExecute  :: Text -> Text ->  ErrIO ()
 parseAndExecute t1 t2    = do
-        homeDir :: FilePath <- callIO $ S.getHomeDirectory
+--        homeDirX :: FilePath <- callIO $ S.getHomeDirectory
         args1 <- getArgsParsedNT t1 t2
-        let args = setDefaultOriginDirNT args1 (addDir homeDir ("gutenberg"::FilePath))
+        let args = setDefaultOriginDirNT args1 (addDir homeDirX ("gutenberg"::FilePath))
         putIOwords ["parseAndExecute: process all store", showT args]
         let server = selectServerNT args :: URI
 
@@ -66,8 +66,8 @@ parseAndExecute t1 t2    = do
         let forceFlag = argForceFlag args
         let debugFlag = False
         let
-             originDir = makeAbsDir  $  addDir homeDir (argOrigin args) :: Path Abs Dir
-             destinationDir = makeAbsDir $  addDir homeDir ( argDestination args) :: Path Abs Dir
+             originDir = makeAbsDir  $  addDir homeDirX (argOrigin args) :: Path Abs Dir
+             destinationDir = makeAbsDir $  addDir homeDirX ( argDestination args) :: Path Abs Dir
              authorReplacement = s2t . getNakedDir $ originDir
         createDirIfMissing' destinationDir
         putIOwords ["parseAndExecute: process store"
