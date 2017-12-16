@@ -27,7 +27,7 @@ import           Uniform.FileIO         hiding ((<>))
 import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 
 import           Data.Semigroup               ((<>))
-import           Options.Applicative.Builder
+--import           Options.Applicative.Builder
 import           Options.Applicative
 import Producer.Servers
 import Parser.TextDescriptor hiding ((<>))

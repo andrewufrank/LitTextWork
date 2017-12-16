@@ -17,7 +17,7 @@ library
         , uniform-algebras
         , uniform-http
         , litFoundation
-        , storeInJena
+--        , storeInJena
 --        , readMarkup
         , split
         , rdf4hextension
@@ -107,13 +107,13 @@ executable ntmake5
         , uniform-strings
         , uniform-fileio
         , uniform-convenience
-        , storeInJena
+--        , storeInJena
         , LitText
         , pipes
         , rdf4hextension
         , litFoundation
         , optparse-applicative
---        , optparse-generic
+        , optparse-generic
         , directory
 
     default-language: Haskell2010
