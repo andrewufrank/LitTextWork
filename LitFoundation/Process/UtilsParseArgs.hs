@@ -166,8 +166,8 @@ selectServer args =  if  argLocalhost args
 -- produces the abs dir combined from home origin and subfile dir
 getLocalOriginDir args = if null' subdir then orig
                                         else addDir  orig subdir :: Path Abs Dir
-                where subdir = argSubDir args
-                      orig = addDir homeDir $  argOrigin args
+                where subdir = argSubDir args :: FilePath
+                      orig = addDir homeDir $  argOrigin args :: Path Abs Dir
 
 getFn args = addFileName (getLocalOriginDir args) (argFn args) :: Path Abs File
 -- get filename (added to the local origin)
