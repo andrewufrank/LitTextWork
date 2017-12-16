@@ -53,9 +53,9 @@ data LitArgs = LitArgs
 --  , argResultDir :: String -- ^ the result dir
   , argWordnetGraph  :: String -- ^ the name of the wordnet graph without <..>
   , argTimeout  :: String -- ^ the timeout (if any) in minutes
-   , argOrigin :: String -- ^ the directoy in which the markup files are
-   , argForceFlag :: Bool -- ^ force processing, even if newer exist
-    , argBookNrFile :: String -- ^ a single book (not a full link)
+  , argOrigin :: String -- ^ the directoy in which the markup files are
+  , argForceFlag :: Bool -- ^ force processing, even if newer exist
+  , argBookNrFile :: String -- ^ a single book (not a full link)
 
   } deriving (Show)
 
