@@ -114,7 +114,7 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3, t5] ++ t6 ++ t7
                     (mkRDFproperty Lemma3) (lemma0 $ tlemma tok)
         t3 = mkTripleText (unTokenSigl tokensigl)
                     (mkRDFproperty Pos) (show' . tpos $ tok)  -- use the encoding from Conll
-        t5 = mkTripleLang lang (unTokenSigl tokensigl) (mkRDFproperty WordForm)
+        t5 = mkTripleLang3 lang (unTokenSigl tokensigl) (mkRDFproperty WordForm)
                 ( word0 . tword $ tok)
         t6 = if (tner tok) ==  ["O"]  -- this is the default, no need to store
                 then []
