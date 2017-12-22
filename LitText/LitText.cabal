@@ -1,5 +1,6 @@
 name: LitText
-version: 0.0.4.1
+version: 0.0.4.2
+ -- changed 0.0.4.1 -> 2 changed language for wordform to 3 letters (same as lemma3)
 cabal-version: 1.12
 build-type: Simple
 license: AllRightsReserved

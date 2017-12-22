@@ -39,7 +39,7 @@ import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer)
 import Processor.ProcessAll
 --import qualified System.Directory as S (getHomeDirectory)
 
-programName = "ntmake" :: Text
+programName = "ntmake5 v 0.0.4.2" :: Text
 progTitle = "produce the lit for all markup files " :: Text
 
 main :: IO ()
