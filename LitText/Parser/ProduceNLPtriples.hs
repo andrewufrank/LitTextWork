@@ -57,6 +57,8 @@ import Parser.ProduceLayout (buchURIx)
 processDoc0toTriples2 :: TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 -- snipnr is not used anymore?
+
+    -- TODO add a version to the NLP produced
 processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 --        t0 : t1 :
         t2  : sents ++ corefs
@@ -84,7 +86,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 mkSentenceTriple2 :: LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang buchuri  snipid sent
-       =      t0 : t1 : t2 :  (toktrips ++ depsTrips)
+       =      t0 : t1 : t2 : sentenceForm : (toktrips ++ depsTrips)
        -- here a strange looping occurs? ?
     where
         sentSigl = mkSentSigl snipid (sid sent)
@@ -97,8 +99,8 @@ mkSentenceTriple2 lang buchuri  snipid sent
                                 ( sdeps sent) :: [Triple]
         toktrips =  concatMap (mkTokenTriple2 lang sentSigl)
                                 $ (stoks sent):: [Triple]
---        senteceForm = mkTripleLang lang (unSentSigl sentSigl) (mkRDFproperty SentenceForm)
---                    (unwords' . map (word0 . tword) . stoks $ sent )
+        sentenceForm = mkTripleLang lang (unSentSigl sentSigl) (mkRDFproperty SentenceForm)
+                    (unwords' . map (word0 . tword) . stoks $ sent )
 
 ----------------------------------------- --
 mkTokenTriple2 :: LanguageCode -> SentSigl-> Token0 -> [Triple]
