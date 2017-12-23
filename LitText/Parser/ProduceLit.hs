@@ -57,7 +57,9 @@ werkTriple :: TextDescriptor ->   [Triple]
 -- ^ produce a werk, has the properties in markup
 werkTriple textstate   =
     [ mkTripleType buchUri (mkRDFtype ("Werk" :: Text))
-    , mkTripleText buchUri (mkRDFproperty Version) "3"      -- change for disruptive changes
+    , mkTripleText buchUri (mkRDFproperty Version) "4"      -- change for disruptive changes
+--            3 was for gerastree prefixes, 4 is using dublin core
+--              and inlcudes sentenceForm again
     , mkTripleText buchUri (mkRDFproperty MinorVersion) "0"  -- bump for any change in the RDF vocabulary
     ]
     where
@@ -88,7 +90,9 @@ instance RDFtypes Text where
 instance RDFtypes RDFtype where
     mkRDFtype p =  RDFtype $ litURItext <#> (toTitle . showT $ p)
 instance RDFtypes BuchToken where
-    mkRDFtype tk = RDFtype $ litURItext <#> (toTitle . markerPure $ tk)
+    mkRDFtype tk =
+        case tk of
+            otherwise -> RDFtype $ litURItext <#> (toTitle . markerPure $ tk)
 
 
 newtype ParaSigl = ParaSigl RDFsubj
