@@ -1,6 +1,7 @@
 name: LitText
 version: 0.0.4.2
  -- changed 0.0.4.1 -> 2 changed language for wordform to 3 letters (same as lemma3)
+--        - new make is ntmake5,
 cabal-version: 1.12
 build-type: Simple
 license: AllRightsReserved
@@ -103,7 +104,7 @@ Test-Suite nlpTestAuto
 ----    other-modules: Main2sub
 
 executable ntmake5
-    main-is: ntmake4.hs
+    main-is: ntmake5.hs
     build-depends: base, HTF
         , uniform-strings
         , uniform-fileio

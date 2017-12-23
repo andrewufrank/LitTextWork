@@ -41,6 +41,8 @@ import Uniform.TestHarness
 import Data.RDF.FileTypes
 
 litURItext =   gerastreeURI </> "lit_2014" :: PartURI
+dcURItext = "http://purl.org/dc/elements/1.1" :: PartURI
+-- no terminating /
 
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main function for the conversion
@@ -79,7 +81,14 @@ data LitProperty =  HasTitle | InWerk | InBuch | InPart
 instance RDFproperties LitProperty where
     mkRDFproperty p = RDFproperty $  litURItext <#> (toLowerStart . showT $ p)
 instance RDFproperties BuchToken where
-    mkRDFproperty t = RDFproperty $  litURItext <#> (toLowerStart . markerPure $ t)
+    mkRDFproperty tk =
+        case tk of
+            BuchAuthor -> RDFproperty $ dcURItext </> "creator"
+            BuchVerlag -> RDFproperty $ dcURItext </> "publisher"
+            BuchSprache -> RDFproperty $ dcURItext </>  "language"
+            BuchTitel -> RDFproperty $ dcURItext </> "title"
+            BuchOriginalFile -> RDFproperty $ dcURItext </> "source"
+            otherwise -> RDFproperty $  litURItext <#> (toLowerStart . markerPure $ tk)
 
 -- toLowerStart :: Text -> Text
 -- -- convert the first character to lowercase
@@ -90,9 +99,7 @@ instance RDFtypes Text where
 instance RDFtypes RDFtype where
     mkRDFtype p =  RDFtype $ litURItext <#> (toTitle . showT $ p)
 instance RDFtypes BuchToken where
-    mkRDFtype tk =
-        case tk of
-            otherwise -> RDFtype $ litURItext <#> (toTitle . markerPure $ tk)
+    mkRDFtype tk = RDFtype $ litURItext <#> (toTitle . markerPure $ tk)
 
 
 newtype ParaSigl = ParaSigl RDFsubj

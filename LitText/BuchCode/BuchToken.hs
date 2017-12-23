@@ -7,6 +7,7 @@
 -- TODO would it be ossible to select lines with all caps as hl1?
 -- recognize the ending of gutenberg to ignore?
 -- uebersetzung und uebersetzer?
+    -- for dublin core see <https://de.wikipedia.org/wiki/Dublin_Core>
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -56,18 +57,21 @@ data BuchToken =   -- just the markers
          BuchIgnore
         |  BuchIgnoreEnd   -- only for mark, no output
 
-        | BuchIgnoreTo
+        | BuchIgnoreTo   -- replace with Text -TextEnd brackets
+        | BuchText
+        | BuchTextEnd
     -- the following codes are automatically parsed with .XX for BuchXX
         | BuchKlappenText
-        | BuchAuthor
+        | BuchAuthor   -- becomes dc:creator
         | BuchAuthorLeben
         | BuchDanksagung
         | BuchGenre
         | BuchUntertitel
-        | BuchVerlag
+        | BuchVerlag   -- dc:publisher
         | BuchPublikationDetail
         | BuchEntstehungsDatum  -- ^ das datum des schreibens
         | BuchPublikationsDatum  -- ^ datum der publikation (im buch angegeben, copyright date)
+                        -- not clear what should be the dublin core
         | BuchOriginalFile  -- ^ the original file - an url
         | BuchCheckedBy
         | BuchDedikation
@@ -77,11 +81,12 @@ data BuchToken =   -- just the markers
         | BuchQuelle  -- ^ woher ist der text (z.b. gutenberg)
         | BuchFilename        -- ^ bei der Quelle URL oder aehnlich, filename..
         | BuchSprache        -- ^ to mark following text with the language
+                        -- dc:language
         | BuchUebesetzer
         | BuchIV1
         | BuchIV2
         | BuchIV3
-        | BuchTitel
+        | BuchTitel -- becomes dc:title  -- TODO insert in gutenparse
         | BuchHL1
         | BuchHL2
         | BuchHL3

@@ -53,7 +53,7 @@ produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 -- first extract only the text TZ lines and convert the hyphenated texts
 -- repeated for each paragraph
 produceNLP showXML textstate tzs = do
-    let     nlpTexts = prepareTZ4nlp tzs
+    let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             nlpTexts2 = formSnips nlpTexts :: [Snip]
 
     foldM_ (produceOneSnip showXML ) textstate nlpTexts2

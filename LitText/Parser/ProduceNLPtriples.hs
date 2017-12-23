@@ -99,7 +99,7 @@ mkSentenceTriple2 lang buchuri  snipid sent
                                 ( sdeps sent) :: [Triple]
         toktrips =  concatMap (mkTokenTriple2 lang sentSigl)
                                 $ (stoks sent):: [Triple]
-        sentenceForm = mkTripleLang lang (unSentSigl sentSigl) (mkRDFproperty SentenceForm)
+        sentenceForm = mkTripleLang3 lang (unSentSigl sentSigl) (mkRDFproperty SentenceForm)
                     (unwords' . map (word0 . tword) . stoks $ sent )
 
 ----------------------------------------- --
