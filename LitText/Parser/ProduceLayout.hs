@@ -37,7 +37,8 @@ import           Uniform.Error           (errorT)
 import Uniform.TestHarness
 import Producer.Servers (rdfBase)  -- from Foundation
 
-gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
+--gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
+gerastreeURI = "http://gerastree.at"
 layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
 --layoutURItext =   (showT rdfBase) </>  "layout_2017" :: PartURI
 
