@@ -133,7 +133,7 @@ lineTriple textstate  tz =
     -- requires a page as an object
     -- gives the page number/text as it was parsed
     -- could be avoided if null
-    , mkTripleLang (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)
+    , mkTripleLang3 (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)
                     (twm . tztext $ tz)
     -- gives the text of a TZtext line
         ]

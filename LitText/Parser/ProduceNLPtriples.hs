@@ -234,7 +234,7 @@ mkMention2 lang snipid corefsigl m i = [t0, t10, t1, t2, t3, t4, t5]
                                     (unTokenSigl . mkTokenSigl sentid . mentEnd $ m)
         t4 = mkTripleRef mentionid (mkRDFproperty MentionSentenceHead)
                                     (unTokenSigl . mkTokenSigl  sentid . mentHead $ m)
-        t5 = mkTripleLang lang mentionid (mkRDFproperty MentionSentenceText)
+        t5 = mkTripleLang3 lang mentionid (mkRDFproperty MentionSentenceText)
                                     ( mentText $ m)
 
 
