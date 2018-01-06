@@ -174,7 +174,7 @@ germanNLP debugNLP showXML sloc text = do
 --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
 --  corenlp does not lemmatize, use lemmatize service
     let sents1 = docSents doc0
-    sents2 <- mapM (completeSentence False sloc German) sents1
+    sents2 <- mapM (completeSentence False (addPort2URI sloc 17701 ) ) sents1
     let doc0' = doc0{docSents = sents2}
 --    return ( doc0')
     when debugNLP $ putIOwords ["germanNLP end", showT text2]
