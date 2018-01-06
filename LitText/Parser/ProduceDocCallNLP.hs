@@ -34,7 +34,7 @@ import Producer.Servers
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
-import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
+import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 
@@ -80,49 +80,6 @@ test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
 --test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
 
 --------------------------
-
-nlpServerEnglish, nlpServerGerman, nlpServerNone :: URI ->  URI
-nlpServerEnglish  u =  addPort2URI u 9002
--- changed to 9002 to avoid clash with live 9000 which is the same for all
---            relativeTo (makeURI ":9000")     -- from Network-URI
--- not localhost!
---nlpServer = "http://nlp.gerastree.at:9000"
-nlpServerGerman u     = addPort2URI u 9001
---    relativeTo (makeURI ":9001")  -- for german
-nlpServerNone  = nlpServerEnglish
--- for no language which can be processed
--- should be a server just returning the input tokenized etc
-
-
-
------------------------------------------------- regroup paragraphs
--- goal - avoid small paragraphs in dialog to have coref work
---      avoid very long paragraphs (problematic - how to split?)
--- splitting is curently switched off
-
-
--- not possible, because only one para available here
-
-                                    -- two-words,split with blank
-
-
---cleanText  :: LanguageCode -> Text -> Text
----- ^ replace some special stuff which causes troubles
----- language specific
----- eg italics marks, 9s. or 4d. or row-house
---cleanText language text = case language of
---                            English -> cleanTextEnglish text
---                            German -> cleanTextGerman text
---                            _ -> text
---    where
---        cleanTextEnglish :: Text -> Text
---        cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
---                    . subRegex' "([0-9])([ds])."  "\\1 \\2 "   -- shiling/pence
---                    . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
---                                    -- two-words,split with blank
---
---        cleanTextGerman :: Text -> Text
---        cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
 
 subRegex' :: Text -> Text -> Text -> Text
@@ -222,54 +179,7 @@ cleanTextGerman :: Text -> Text
 cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
 
---                    let nlpServer = case language of
---                                    English -> nlpServerEnglish sloc
---                                    German -> nlpServerGerman sloc
---                                    NoLanguage -> nlpServerNone sloc
---
---                    let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
---                                    \,lemma,ner,depparse, dcoref,coref")
---        --                                    coref -coref.algorithm neural")
---        -- perhaps the nerual algorithm is better, but creates problems
---        -- with the xml doc received (starts with C?
---        --                                        dcoref,coref")
---                --                    --  coref, verlangt depparse,
---                                    , ("outputFormat", Just "xml")
---                                    ]
---                    let varsGer =  [("annotators", Just "tokenize,ssplit,pos,ner,depparse")
---                --
---                -- german only ssplit, pos, ner, depparse
---                -- coref and dcoref crash for corenlp
---                                    , ("outputFormat",Just "xml")
---                                    ]
---            --      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
---                    let vars = case language of
---                    -- the different parsers do not deal with all annotators well
---                                German -> varsGer
---                                English -> varsEng
---                                _ -> varsEng
---
---                    when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
---
---                    let text2 = cleanText language text
---
---        --            let texts = getPiece . textSplit $ text2
---        --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
---        --                            then [ text2]
---        --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
---
---                    docs <-  convertTZ2makeNLPCall debugNLP showXML nlpServer vars  text2
---        --            when False $ putIOwords ["convertTZ2nlp parse"
---        --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
---                    when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
---
---                    return   docs
-
---nlpDocSizeLimit = 5000  -- 18,000 gives timeout for brest
--- there seems to be an issue with texts which are exactly 5000 and the next piece is
--- then empty, which then loops infinitely calling nlp with input ""
-
-convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0)    -- the xml to analyzse  D -> E
+convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO Doc0    -- the xml to analyzse  D -> E
 -- call to send text to nlp server and converts xml to Doc0
 -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
 -- merger
@@ -278,8 +188,10 @@ convertTZ2makeNLPCall debugNLP showXML nlpServer vars text = do
             putIOwords ["convertTZ2makeNLPCall start"
                         , showT . lengthChar $ text
                         , showT . take' 100 $ text ]
-        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
-                    "multipart/form-data" text
+--        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
+--                    "multipart/form-data" text
+        xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer ""
+                 (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
     -- german parser seems to understand utf8encoded bytestring
 
         when debugNLP  $
