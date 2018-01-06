@@ -37,6 +37,7 @@ import Data.List.Split
 import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
+import Parser.CompleteSentence (completeSentence)
 
 snip2doc :: Bool -> Bool -> URI -> Snip -> ErrIO   Doc0     -- the xml to analyzse  D -> E
 ---- ^ the entry point for conversionm of one snip (piece of text) to Doc0 in the xml format of stanford CoreNLP
@@ -168,12 +169,17 @@ germanNLP debugNLP showXML sloc text = do
 --                            then [ text2]
 --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-    docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9001 ) varsGer  text2
+    doc0 <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9001 ) varsGer  text2
 --            when False $ putIOwords ["germanNLP parse"
 --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+--  corenlp does not lemmatize, use lemmatize service
+    let sents1 = docSents doc0
+    sents2 <- mapM (completeSentence False sloc German) sents1
+    let doc0' = doc0{docSents = sents2}
+--    return ( doc0')
     when debugNLP $ putIOwords ["germanNLP end", showT text2]
 
-    return   docs
+    return   doc0'
 
 cleanTextGerman :: Text -> Text
 cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
