@@ -47,16 +47,6 @@ snip2doc debugNLP showXML sloc snip = do
     convertTZ2nlpPrepareCall debugNLP showXML sloc snip
 --
 
---convertTZ2nlp :: Bool -> Bool -> URI -> TZ2 -> ErrIO (NLPtext,[Doc0])   -- the xml to analyzse  D -> E
----- ^ the entry point for conversionm of tz to Doc0
---convertTZ2nlp debugNLP showXML sloc tz2 = do
---    when debugNLP $ putIOwords ["convertTZ2nlp start"]
---    when False $ putIOwords ["convertTZ2nlp TZ2", showT tz2]
---    let nlptext = prepareTZ4nlp tz2
---    case nlptext of
---        Nothing -> do   when debugNLP $ putIOwords ["convertTZnlp - empty text"]
---                        return (zero,[])
---        Just tz -> convertTZ2nlpPrepareCall debugNLP showXML sloc tz
 --
 --
 ---- | tests which would call NLP
