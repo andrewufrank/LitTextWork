@@ -57,14 +57,11 @@ completeSentence debugCS server   sent1 = do
 
 ttProcess :: URI -> [Text] ->ErrIO Text
 -- just the call to the server at 17701 ttscottyServer
-ttProcess server  toks =  makeHttpPost7 False server "" [] "text/plain" (unlines' toks)
---
---    let request = makeHTTPrequest5 POST ttserver "text/plain " (unlines' toks)
---    putIOwords ["ttprocess request", s2t $ show  request]
---    response <- callHTTP7 True request
---    let response2 = bb2t response
-    -- putIOwords ["ttprocess call response", showT response]
---    return response
+ttProcess server toks  = callHTTP10post False "text/plain" server ""
+                (b2bl . t2b . unlines' $ toks) [] Nothing
+--ttProcess server  toks =  makeHttpPost7 False server "" [] "text/plain" (unlines' toks)
+--makeHttpPost7 debug dest path query appType txt = do
+--    callHTTP10post debug appType ( dest) path (b2bl . t2b $ txt) query (Just 300)
 
 
 
