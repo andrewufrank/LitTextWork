@@ -4,6 +4,8 @@
 -- Copyright   :  andrew u frank -
 --
 -- | convert the whole text to the selection which will be NLP analyzed
+-- each paragraph is in a single snip
+-- snips are merged later
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -42,6 +44,7 @@ import Text.Regex (mkRegex, subRegex)
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 
 
+-- | a single language piece of text with lanuage code, length and start para number
 data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3text:: Text

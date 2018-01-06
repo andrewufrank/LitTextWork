@@ -39,7 +39,7 @@ import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 
 snip2doc :: Bool -> Bool -> URI -> Snip -> ErrIO   Doc0     -- the xml to analyzse  D -> E
----- ^ the entry point for conversionm of tz to Doc0
+---- ^ the entry point for conversionm of one snip (piece of text) to Doc0 in the xml format of stanford CoreNLP
 snip2doc debugNLP showXML sloc snip = do
     when debugNLP $ putIOwords ["snip2doc start"]
     when False $ putIOwords ["snip2doc snip", showT snip]
@@ -103,24 +103,26 @@ nlpServerNone  = nlpServerEnglish
 
 -- not possible, because only one para available here
 
-
-cleanText  :: LanguageCode -> Text -> Text
--- ^ replace some special stuff which causes troubles
--- language specific
--- eg italics marks, 9s. or 4d. or row-house
-cleanText language text = case language of
-                            English -> cleanTextEnglish text
-                            German -> cleanTextGerman text
-                            _ -> text
-    where
-        cleanTextEnglish :: Text -> Text
-        cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
-                    . subRegex' "([0-9])([ds])."  "\\1 \\2 "   -- shiling/pence
-                    . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
                                     -- two-words,split with blank
 
-        cleanTextGerman :: Text -> Text
-        cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+
+--cleanText  :: LanguageCode -> Text -> Text
+---- ^ replace some special stuff which causes troubles
+---- language specific
+---- eg italics marks, 9s. or 4d. or row-house
+--cleanText language text = case language of
+--                            English -> cleanTextEnglish text
+--                            German -> cleanTextGerman text
+--                            _ -> text
+--    where
+--        cleanTextEnglish :: Text -> Text
+--        cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+--                    . subRegex' "([0-9])([ds])."  "\\1 \\2 "   -- shiling/pence
+--                    . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
+--                                    -- two-words,split with blank
+--
+--        cleanTextGerman :: Text -> Text
+--        cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
 
 subRegex' :: Text -> Text -> Text -> Text
@@ -128,10 +130,10 @@ subRegex' :: Text -> Text -> Text -> Text
 subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
 
 test_clean1 = assertEqual "The father went to the row house for 2 d  and got it."
-        (cleanText English "The _father_ went to the row-house for 2d. and got it.")
+        (cleanTextEnglish "The _father_ went to the row-house for 2d. and got it.")
 test_clean2 = assertEqual "  Knots of idle men  on the South Bridge, for 3 s  2 d  .\
         \   This street named the Via Dolorosa."
- (cleanText English tx1)
+ (cleanTextEnglish tx1)
 
 tx1 = "  Knots of idle-men  \
     \on the South Bridge, for 3s. 2d. .   \
@@ -144,60 +146,124 @@ convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> Snip -> ErrIO Doc0   -- the x
 -- works on individual paragraphs
 convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
     when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
-
-    let language = tz3lang tz
     let text = tz3text tz
     -- reduce for some special cases _italics_
     -- should be done before the split, because . of abbreviations are elliminated
-
-    if null' text then return zero
+    if null' text
+        then return zero
         else do
-            when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall tz", showT tz]
 
-            let nlpServer = case language of
-                            English -> nlpServerEnglish sloc
-                            German -> nlpServerGerman sloc
-                            NoLanguage -> nlpServerNone sloc
-                            _ -> errorT ["convertTZ2nlpPrepareCall"
-                                , showT language, "language has no server"]
+            let language = tz3lang tz
 
-            let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
-                            \,lemma,ner,depparse, dcoref,coref")
---                                    coref -coref.algorithm neural")
--- perhaps the nerual algorithm is better, but creates problems
--- with the xml doc received (starts with C?
---                                        dcoref,coref")
-        --                    --  coref, verlangt depparse,
-                            , ("outputFormat", Just "xml")
-                            ]
-            let varsGer =  [("annotators", Just "tokenize,ssplit,pos,ner,depparse")
-        --
-        -- german only ssplit, pos, ner, depparse
-        -- coref and dcoref crash for corenlp
-                            , ("outputFormat",Just "xml")
-                            ]
-    --      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
-            let vars = case language of
-            -- the different parsers do not deal with all annotators well
-                        German -> varsGer
-                        English -> varsEng
-                        _ -> varsEng
+            when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall", "language", showT language, "\n tz", showT tz]
+            case language of
+                English -> englishNLP debugNLP showXML sloc text
+                German -> germanNLP debugNLP showXML sloc text
+                _ -> errorT ["convertTZ2nlpPrepareCall"
+                    , showT language, "language has no server"]
 
-            when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
+englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+-- process an english text snip to a Doc0
+englishNLP debugNLP showXML sloc text = do
+    let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
+                                    \,lemma,ner,depparse, dcoref,coref")
+        --                                    coref -coref.algorithm neural")
+        -- perhaps the nerual algorithm is better, but creates problems
+        -- with the xml doc received (starts with C?
+        --                                        dcoref,coref")
+                --                    --  coref, verlangt depparse,
+                                    , ("outputFormat", Just "xml")
+                                    ]
+    when debugNLP $ putIOwords ["englishNLP text", showT text]
 
-            let text2 = cleanText language text
+    let text2 = cleanTextEnglish  text
 
 --            let texts = getPiece . textSplit $ text2
 --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
 --                            then [ text2]
 --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-            docs <-  convertTZ2makeNLPCall debugNLP showXML nlpServer vars  text2
---            when False $ putIOwords ["convertTZ2nlp parse"
+    docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9002) varsEng  text2
+--            when False $ putIOwords ["englishNLP parse"
 --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
-            when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
+    when debugNLP $ putIOwords ["englishNLP end", showT text2]
 
-            return   docs
+    return   docs
+
+cleanTextEnglish :: Text -> Text
+cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+            . subRegex' "([0-9])([ds])."  "\\1 \\2 "   -- shiling/pence
+            . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
+
+
+germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+-- process an english text snip to a Doc0
+germanNLP debugNLP showXML sloc text = do
+    let varsGer =  [("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                    , ("outputFormat", Just "xml")
+                                    ]
+    when debugNLP $ putIOwords ["germanNLP text", showT text]
+
+    let text2 = cleanTextEnglish  text
+
+--            let texts = getPiece . textSplit $ text2
+--            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+--                            then [ text2]
+--                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+
+    docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9001 ) varsGer  text2
+--            when False $ putIOwords ["germanNLP parse"
+--                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+    when debugNLP $ putIOwords ["germanNLP end", showT text2]
+
+    return   docs
+
+cleanTextGerman :: Text -> Text
+cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+
+
+--                    let nlpServer = case language of
+--                                    English -> nlpServerEnglish sloc
+--                                    German -> nlpServerGerman sloc
+--                                    NoLanguage -> nlpServerNone sloc
+--
+--                    let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
+--                                    \,lemma,ner,depparse, dcoref,coref")
+--        --                                    coref -coref.algorithm neural")
+--        -- perhaps the nerual algorithm is better, but creates problems
+--        -- with the xml doc received (starts with C?
+--        --                                        dcoref,coref")
+--                --                    --  coref, verlangt depparse,
+--                                    , ("outputFormat", Just "xml")
+--                                    ]
+--                    let varsGer =  [("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+--                --
+--                -- german only ssplit, pos, ner, depparse
+--                -- coref and dcoref crash for corenlp
+--                                    , ("outputFormat",Just "xml")
+--                                    ]
+--            --      see https://stanfordnlp.github.io/CoreNLP/human-languages.html
+--                    let vars = case language of
+--                    -- the different parsers do not deal with all annotators well
+--                                German -> varsGer
+--                                English -> varsEng
+--                                _ -> varsEng
+--
+--                    when debugNLP $ putIOwords ["convertTZ2nlp text", showT text]
+--
+--                    let text2 = cleanText language text
+--
+--        --            let texts = getPiece . textSplit $ text2
+--        --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+--        --                            then [ text2]
+--        --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+--
+--                    docs <-  convertTZ2makeNLPCall debugNLP showXML nlpServer vars  text2
+--        --            when False $ putIOwords ["convertTZ2nlp parse"
+--        --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+--                    when debugNLP $ putIOwords ["convertTZ2nlp end", showT text2]
+--
+--                    return   docs
 
 --nlpDocSizeLimit = 5000  -- 18,000 gives timeout for brest
 -- there seems to be an issue with texts which are exactly 5000 and the next piece is
@@ -230,67 +296,4 @@ convertTZ2makeNLPCall debugNLP showXML nlpServer vars text = do
 --         splitAndTryAgain debugNLP showXML nlpServer vars text
          return zero
             )
-            -- hier die aufteilung des texts mit breakOnAll ". " und
-            -- dann drop wihle (\x -> length' . fst $ x <- lenght' . snd $ x)
-            -- wenn nichts uebrig, dann take last. wenn gleichgross give up
-            -- dann die resultate einzeln bearbeiten!
-
---splitAndTryAgain :: Bool -> Bool -> URI -> [(Text,Text)] -> Text -> ErrIO [(Doc0)]
----- split the text in two and try each
---splitAndTryAgain debugNLP showXML nlpServer vars text = do
---    when debugNLP $ putIOwords ["splitAndTryAgain start"]
---    -- this will not be used
---    return []
-
---textid :: Text -> Text
---textid = id
---
---
---textSplit :: Text -> [Text]
-----textSplit =  fromJustNote "textSplit" . splitOn' ". "
----- append . to end last piece
---textSplit = fmap s2t . split (keepDelimsR $ onSublist ". "  ) . t2s
----- statt onSublis elt verwenden, so das "?." oder "!." auch brechen
----- asked on stack overflow how to combine... (coreNLP breaks on ? as well)
----- issue: splits for "costs 1s. per year" and similar
----- could be controled by merging pieces when number "s." is at end of piece
----- regular expression used in  geany could be used? is this save?
---
---textSplit2 :: Text -> [Text]
----- split on "I" - in joyce is sort of start of a new idea..
---    -- prepend I to start next piece
---textSplit2 = fmap s2t . split (keepDelimsL $ onSublist " I "  ) . t2s
---
---
---getPiece :: Int -> [Text] -> [Text]
----- get a piece of length < 2000
---getPiece limit  = chop (takePiece limit "")
---
-----chop :: ([a] -> (b, [a])) -> [a] -> [b]
-----A useful recursion pattern for processing a list to produce a new list,
-----often used for "chopping" up the input list.
-----Typically chop is called with some function that will
-----consume an initial prefix of the list and produce a value and the rest of the list.
---
---takePiece :: Int -> Text  -> [Text] ->   (Text, [Text])
---takePiece _ b [] = (b,[])
---takePiece limit b (a:as)
---    | null' b && lengthChar a > limit = (a, as)
---    | lengthChar ab > limit = (b, a:as)
---    | otherwise = takePiece limit ab as  -- accumulate a larger piece
---                    where
---                        ab = concat' [b, " ", a]
-----                        limit = 12000
---
-----test_longText1 ::  IO ()
-----test_longText1 = testFile2File "longtext.txt" "lt1" textid
-----test_split = testFile2File "lt1" "lt2" textSplit
-----test_chop = testFile2File "lt2" "lt3" getPiece
---
----- test with limit 5
-----test_getPiece1 = assertEqual  ["abcdefg", " hik"] (getPiece ["abcdefg", "hik"])
-----test_getPiece2 = assertEqual [" abc", " defg", " hik"] (getPiece ["abc","defg", "hik"])
-----test_getPiece3 = assertEqual  [" AB", "abcdefg", " hik"] (getPiece ["AB","abcdefg", "hik"])
-----test_getPiece4 = assertEqual  [" AB", " abc", " d ef", " g hi", " k"]
-----            (getPiece ["AB","abc", "d", "ef","g", "hi","k"])
 

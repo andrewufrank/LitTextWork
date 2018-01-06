@@ -52,13 +52,13 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
                 then  writeHandleTriples textstate layoutTriples
                 else return textstate
 
-    let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BA -> C  in LinesToParagraph
+    let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BAD -> BAE   in LinesToParagraph
 
     when debugLit $ putIOwords
             ["mainLitAndNLPproduction TZ available to produce litTriples \n"
             , unlines' . map showT $ tzpara]
 
-    let litTriples = produceLitTriples textstate2   tzpara  -- test C -> H
+    let litTriples = produceLitTriples textstate2   tzpara  -- test BAE=C -> H and K (nt)
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
