@@ -4,6 +4,8 @@
 -- Copyright   : af
 --
 -- conversin F -> G
+-- is calling sentence by sentence for german lemmatization
+-- if other lemmatization are necessary, then select different port
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -52,6 +54,7 @@ completeSentence debugCS server   sent1 = do
 --ttserver s =  addPort2URI  s 17701
 --        --  http://127.0.0.1:17701"
 ----ttserverTest = "http://127.0.0.1:17701/test"  -- expects blank separated tokens
+
 ttProcess :: URI -> [Text] ->ErrIO Text
 -- just the call to the server at 17701 ttscottyServer
 ttProcess server  toks =  makeHttpPost7 False server "" [] "text/plain" (unlines' toks)
