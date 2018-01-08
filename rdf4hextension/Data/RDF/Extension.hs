@@ -82,13 +82,20 @@ class RDFtypes p where
     mkRDFtype :: p -> RDFtype
 
 
-data LanguageCode = NoLanguage | German | USenglish | English    deriving (Eq, Ord, Show, Read)
+data LanguageCode = NoLanguage | German | USenglish | English
+    | French | Spanish | Italian   deriving (Eq, Ord, Show, Read)
 instance Zeros LanguageCode where zero = NoLanguage
 
 parseLanguageCode :: Text -> LanguageCode
 parseLanguageCode "de" = German
 parseLanguageCode "deu" = German
 parseLanguageCode "en" = English
+parseLanguageCode "fr" = French
+parseLanguageCode "fre" = French
+parseLanguageCode "sp" = Spanish
+parseLanguageCode "spa" = Spanish   -- correct?
+parseLanguageCode "it" = Italian
+parseLanguageCode "ita" = Italian  -- correct?
 parseLanguageCode "xx" = NoLanguage
 parseLanguageCode "xxx" = NoLanguage
 parseLanguageCode c = errorT ["Extension.hs = parseLanguageCode ", c, "not found"]
@@ -99,6 +106,9 @@ giveCode NoLanguage = "xx"  -- error "giveCode for zero - nolanguage"
 giveCode German     = "de"
 giveCode USenglish  = "us"
 giveCode English    = "en"
+giveCode French    = "fr"
+giveCode Spanish    = "sp"
+giveCode Italian    = "it"
 giveCode s          = error ("giveCode 2chars to" ++ show s)
 
 giveCode3 :: LanguageCode -> Text
@@ -107,6 +117,9 @@ giveCode3 NoLanguage = "xxx" -- error "giveCode3 for zero - nolanguage"
 giveCode3 German     = "deu"
 -- giveCode3 USenglish  = "us"
 giveCode3 English    = "eng"
+giveCode3 French    = "fre"
+giveCode3 Spanish    = "spa"
+giveCode3 Italian    = "ita"
 giveCode3 s          = error ("giveCode 3 chars to" ++ show s)
 
 
