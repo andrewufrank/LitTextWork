@@ -95,16 +95,16 @@ distributeLanguage tz0 = concat . markSublistLanguage . pages $ tz0
         markSublistLanguage2 sl2 = markTZsWithLanguage
                 (getLangCode sl2 . headNote "distributeLanguage" $ sl2) (tail sl2)
 
-readLanguageCode :: Text -> Text -> LanguageCode
--- ^ read the code for the language German, Deutsch, Englisch
---readLanguageCode  = readNoteT
--- todo move to parser
-readLanguageCode _ "Deutsch" = German
-readLanguageCode _ "deutsch" = German
-readLanguageCode _ "german" = German
-readLanguageCode _ "english" = English
-readLanguageCode _ "Englisch" = English
-readLanguageCode msg l  = readNoteT msg l
+--readLanguageCode :: Text -> Text -> LanguageCode
+---- ^ read the code for the language German, Deutsch, Englisch
+----readLanguageCode  = readNoteT
+---- todo move to parser
+--readLanguageCode _ "Deutsch" = German
+--readLanguageCode _ "deutsch" = German
+--readLanguageCode _ "german" = German
+--readLanguageCode _ "english" = English
+--readLanguageCode _ "Englisch" = English
+--readLanguageCode msg l  = readNoteT msg l
 
 markTZsWithLanguage :: LanguageCode -> [TZ] -> [TZ]
 -- put the page number into the list

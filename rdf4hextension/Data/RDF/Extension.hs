@@ -122,6 +122,19 @@ giveCode3 Spanish    = "spa"
 giveCode3 Italian    = "ita"
 giveCode3 s          = error ("giveCode 3 chars to" ++ show s)
 
+readLanguageCode :: Text -> Text -> LanguageCode
+-- ^ read the code for the language German, Deutsch, Englisch
+--readLanguageCode  = readNoteT
+-- todo change for not case sen
+readLanguageCode _ "Deutsch" = German
+readLanguageCode _ "deutsch" = German
+readLanguageCode _ "german" = German
+readLanguageCode _ "english" = English
+readLanguageCode _ "Englisch" = English
+readLanguageCode _ "french" = French
+readLanguageCode _ "spanish" = Spanish
+readLanguageCode _ "italian" = Italian
+readLanguageCode msg l  = readNoteT msg l
 
 getTripleLanguage :: Triple -> LanguageCode
 -- find the language code in the triple (2 or 3 char)
