@@ -48,63 +48,86 @@ import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle
 debugNLP1 = False
 
 -- main export
-produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
--- produce the triples and store them in triple store,
--- first extract only the text TZ lines and convert the hyphenated texts
--- repeated for each paragraph
-produceNLP showXML textstate tzs = do
+--produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
+---- produce the triples and store them in triple store,
+---- first extract only the text TZ lines and convert the hyphenated texts
+---- repeated for each paragraph
+--produceNLP showXML textstate tzs = do
+--    let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
+--            nlpTexts2 = formSnips nlpTexts :: [Snip]
+--
+--    foldM_ (produceOneSnip showXML ) textstate nlpTexts2
+--    return ()
+----produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
+
+produceNLP ::  Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
+produceNLP showXML textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
-            nlpTexts2 = formSnips nlpTexts :: [Snip]
+            snips = formSnips nlpTexts :: [Snip]
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples showXML textstate) snips
+--    let trips = readNote "writeLitTriples" tripstext :: [Triple]
+--    write6 dest2 ntFileTriples trips
+    ntz1 <- foldM writeHandleTriples textstate triples
+--    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
+--            ,"snip size", showT $ tz3textLength snip
+--            ,"from text", buchName textstate
+--            ]
 
-    foldM_ (produceOneSnip showXML ) textstate nlpTexts2
     return ()
---produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
-produceNLPnotshow = produceNLP False -- overall test
+convertOneSnip2Triples :: Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
+-- calls nlp to convert to doc
+convertOneSnip2Triples showXML textstate snip = do
+    doc :: Doc0 <- snip2doc False showXML (nlpServer textstate) snip
+    let res =  processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (1, doc)
+    return res
 
-test_1_BAE_XproduceNLPtriples :: IO ()
-test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
-test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
-test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
-test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
+
+produceNLPnotshow = produceNLP False
+
+--test_1_BAE_XproduceNLPtriples :: IO ()
+--test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
+--test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
+--test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
+--test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
 test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
-test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
+--test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
 test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
---test_9_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE9" "resultX9" produceNLPnotshow
---test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
+test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPnotshow
+test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
 ------ no result file is necessary, because result is zero
 ------ but results are found in LitTest/test
 --
 
 
 
-produceOneSnip :: Bool -> TextDescriptor -> Snip -> ErrIO TextDescriptor
-produceOneSnip showXML textstate snip = do
---    (ntz,docs) :: (Snip,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
-    doc :: Doc0 <- snip2doc False showXML (nlpServer textstate) snip
-    produceOneOneParaNLP  snip textstate doc
+--produceOneSnip :: Bool -> TextDescriptor -> Snip -> ErrIO TextDescriptor
+--produceOneSnip showXML textstate snip = do
+----    (ntz,docs) :: (Snip,[Doc0]) <- convertTZ2nlp False showXML (nlpServer textstate) tzp  -- C -> E
+--    doc :: Doc0 <- snip2doc False showXML (nlpServer textstate) snip
+--    produceOneOneParaNLP  snip textstate doc
+--
+--produceOneOneParaNLP :: Snip -> TextDescriptor ->   Doc0  -> ErrIO TextDescriptor
+--produceOneOneParaNLP snip textstate     doc0'   =   do  -- tz is Snip
+--    let triples = convertOneSnip2Triples snip textstate doc0'
+--    when debugNLP1 $
+--                putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
+--    --    let buchuri = buchURIx textstate :: RDFsubj
+--    when debugNLP1 $
+--            putIOwords ["\n\nproduceOneParaNLP nlp triples "
+--                , unlines' . map showT $ triples]
+--    ntz1 <- writeHandleTriples textstate triples
+--    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
+--            ,"snip size", showT $ tz3textLength snip
+--            ,"from text", buchName textstate
+--            ]
+--    return ntz1
 
-produceOneOneParaNLP :: Snip -> TextDescriptor ->   Doc0  -> ErrIO TextDescriptor
-produceOneOneParaNLP ntz textstate     doc0'   =   do  -- tz is Snip
-        let lang = tz3lang ntz
-        let paranr = tz3para $ ntz
---        ( doc0') <- completeSentencesInDoc debugNLP1 textstate lang   doc0
+--convertOneSnip_Doc2Triples :: Snip -> TextDescriptor -> Doc0 -> [Triple]
+---- convert a doc with snip to triples
+---- textstate is used for the uid construction only
+--convertOneSnip_Doc2Triples ntz textstate doc0' = processDoc0toTriples2 textstate (tz3lang ntz) (tz3para $ ntz) (1, doc0')
 
-        when debugNLP1 $
-                putIOwords ["\nproduceOneParaNLP read doc0", showT doc0', "\n"]
-    --    let buchuri = buchURIx textstate :: RDFsubj
-
-        let triples  = processDoc0toTriples2 textstate lang paranr (1, doc0')   -- F -> G
-
-        when debugNLP1 $
-            putIOwords ["\n\nproduceOneParaNLP nlp triples "
-                , unlines' . map showT $ triples]
-        ntz1 <- writeHandleTriples textstate triples
-        putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
-                ,"snip size", showT $ tz3textLength ntz
-                ,"from text", buchName textstate
-                ]
-        return ntz1
 
 openHandleTriples  :: TextDescriptor -> ErrIO TextDescriptor
 openHandleTriples textstate  = do
