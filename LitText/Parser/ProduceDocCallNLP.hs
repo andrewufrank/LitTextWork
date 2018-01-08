@@ -60,15 +60,15 @@ testOP_C_E resultXA resultDAfile = do
     -- leave in to force processing and continous output
     return res
 --
-test_1_C_E = testVar3FileIO result1A "resultDA1" "resultE1" testOP_C_E
-test_2_C_E = testVar3FileIO result2A "resultDA2" "resultE2" testOP_C_E
-test_3_C_E = testVar3FileIO result3A "resultDA3" "resultE3" testOP_C_E
-test_4_C_E = testVar3FileIO result4A "resultDA4" "resultE4" testOP_C_E
+--test_1_C_E = testVar3FileIO result1A "resultDA1" "resultE1" testOP_C_E
+--test_2_C_E = testVar3FileIO result2A "resultDA2" "resultE2" testOP_C_E
+--test_3_C_E = testVar3FileIO result3A "resultDA3" "resultE3" testOP_C_E
+--test_4_C_E = testVar3FileIO result4A "resultDA4" "resultE4" testOP_C_E
 test_5_C_E = testVar3FileIO result5A "resultDA5" "resultE5" testOP_C_E  -- lafayette
-test_6_C_E = testVar3FileIO result6A "resultDA6" "resultE6" testOP_C_E
+--test_6_C_E = testVar3FileIO result6A "resultDA6" "resultE6" testOP_C_E
 test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
---test_9_C_E = testVar3FileIO result9A "resultBAE9" "resultE9" testOP_C_E
---test_10_C_E = testVar3FileIO result10A "resultBAE10" "resultE10" testOP_C_E
+test_9_C_E = testVar3FileIO result9A "resultDA9" "resultE9" testOP_C_E
+test_10_C_E = testVar3FileIO result10A "resultDA10" "resultE10" testOP_C_E
 
 --------------------------
 
