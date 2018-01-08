@@ -50,6 +50,7 @@ snip2doc debugNLP showXML sloc snip = do
 --
 --
 ---- | tests which would call NLP
+-- textdescriptor gives server, but lang comes from snip
 testOP_C_E :: TextDescriptor -> [Snip]-> ErrIO [Doc0]  --   [(NLPtext,[Doc0])]
 testOP_C_E resultXA resultDAfile = do
     let sloc = nlpServer  resultXA
@@ -67,8 +68,12 @@ testOP_C_E resultXA resultDAfile = do
 test_5_C_E = testVar3FileIO result5A "resultDA5" "resultE5" testOP_C_E  -- lafayette
 --test_6_C_E = testVar3FileIO result6A "resultDA6" "resultE6" testOP_C_E
 test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
-test_9_C_E = testVar3FileIO result9A "resultDA9" "resultE9" testOP_C_E
+--test_9_C_E = testVar3FileIO result9A "resultDA9" "resultE9" testOP_C_E
 test_10_C_E = testVar3FileIO result10A "resultDA10" "resultE10" testOP_C_E
+
+
+-- the result goes to /home/frank/Scratch/NT/LitTest/test (defined in foundation as testNTdir
+-- setup in readMarkup
 
 --------------------------
 
@@ -107,20 +112,24 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
             case language of
                 English -> englishNLP debugNLP showXML sloc text
                 German -> germanNLP debugNLP showXML sloc text
+                French -> frenchNLP debugNLP showXML sloc text
+                Spanish -> spanishNLP debugNLP showXML sloc text
                 _ -> errorT ["convertTZ2nlpPrepareCall"
                     , showT language, "language has no server"]
 
 englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
 -- process an english text snip to a Doc0
 englishNLP debugNLP showXML sloc text = do
-    let varsEng =  [("annotators", Just "tokenize,ssplit,pos\
-                                    \,lemma,ner,depparse, dcoref,coref")
-        --                                    coref -coref.algorithm neural")
-        -- perhaps the nerual algorithm is better, but creates problems
-        -- with the xml doc received (starts with C?
-        --                                        dcoref,coref")
-                --                    --  coref, verlangt depparse,
-                                    , ("outputFormat", Just "xml")
+    let varsEng =  [
+--            ("annotators", Just "tokenize,ssplit,pos\
+--                                    \,lemma,ner,depparse, dcoref,coref")
+--        --                                    coref -coref.algorithm neural")
+--        -- perhaps the nerual algorithm is better, but creates problems
+--        -- with the xml doc received (starts with C?
+--        --                                        dcoref,coref")
+--                --                    --  coref, verlangt depparse,
+--                                    ,
+                                     ("outputFormat", Just "xml")
                                     ]
     when debugNLP $ putIOwords ["englishNLP text", showT text]
 
@@ -145,14 +154,16 @@ cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 
 
 germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
--- process an english text snip to a Doc0
+-- process an german text snip to a Doc0
 germanNLP debugNLP showXML sloc text = do
-    let varsGer =  [("annotators", Just "tokenize,ssplit,pos,ner,depparse")
-                                    , ("outputFormat", Just "xml")
+    let varsGer =  [
+--        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+--                                    ,
+                                    ("outputFormat", Just "xml")
                                     ]
     when debugNLP $ putIOwords ["germanNLP text", showT text]
 
-    let text2 = cleanTextEnglish  text
+    let text2 = cleanTextGerman  text
 
 --            let texts = getPiece . textSplit $ text2
 --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
@@ -174,6 +185,72 @@ germanNLP debugNLP showXML sloc text = do
 cleanTextGerman :: Text -> Text
 cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
+
+frenchNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+-- process an french text snip to a Doc0
+frenchNLP debugNLP showXML sloc text = do
+    let varsEng =  [
+--            ("annotators", Just "tokenize,ssplit,pos\
+--                                    \,lemma,ner,depparse, dcoref,coref")
+--        --                                    coref -coref.algorithm neural")
+--        -- perhaps the nerual algorithm is better, but creates problems
+--        -- with the xml doc received (starts with C?
+--        --                                        dcoref,coref")
+--                --                    --  coref, verlangt depparse,
+--                                    ,
+                                     ("outputFormat", Just "xml")
+                                    ]
+    when debugNLP $ putIOwords ["frenchNLP text", showT text]
+
+    let text2 = cleanTextFrench  text
+
+--            let texts = getPiece . textSplit $ text2
+--            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+--                            then [ text2]
+--                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+
+    docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9003) varsEng  text2
+--            when False $ putIOwords ["frenchNLP parse"
+--                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+    when debugNLP $ putIOwords ["frenchNLP end", showT text2]
+
+    return   docs
+
+cleanTextFrench :: Text -> Text
+cleanTextFrench    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+
+spanishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+-- process an spanish text snip to a Doc0
+spanishNLP debugNLP showXML sloc text = do
+    let varsEng =  [
+--            ("annotators", Just "tokenize,ssplit,pos\
+--                                    \,lemma,ner,depparse, dcoref,coref")
+--        --                                    coref -coref.algorithm neural")
+--        -- perhaps the nerual algorithm is better, but creates problems
+--        -- with the xml doc received (starts with C?
+--        --                                        dcoref,coref")
+--                --                    --  coref, verlangt depparse,
+--                                    ,
+                                    ("outputFormat", Just "xml")
+                                    ]
+    when debugNLP $ putIOwords ["spanishNLP text", showT text]
+
+    let text2 = cleanTextspanish  text
+
+--            let texts = getPiece . textSplit $ text2
+--            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+--                            then [ text2]
+--                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+
+    docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9004) varsEng  text2
+--            when False $ putIOwords ["spanishNLP parse"
+--                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+    when debugNLP $ putIOwords ["spanishNLP end", showT text2]
+
+    return   docs
+
+cleanTextspanish :: Text -> Text
+cleanTextspanish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
 convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO Doc0    -- the xml to analyzse  D -> E
 -- call to send text to nlp server and converts xml to Doc0
