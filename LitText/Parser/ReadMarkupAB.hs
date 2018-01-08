@@ -83,7 +83,7 @@ _readMarkupFile textstate = do
                 , " charset which are not yet mapped\n"
                  , nonlats, showT nonlats]
     return text2
-
+bomWarning :: Text -> ErrIO ()
 bomWarning v = do  -- not required - parser filter it out
     -- putIOwords ["bomWarning - the start of the file "]
     -- putIOwords [take' 20 v]
@@ -104,8 +104,8 @@ bomWarning v = do  -- not required - parser filter it out
 ---- ^ test for the conversion from textstate to text (including markup, but not decoded)
 ---- the textResult is in LinesToParagraphs
 
-testDataDir = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
-        :: Path Abs Dir
+--testDataDir = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
+--        :: Path Abs Dir
 
 --test_0_A_B_textstate_text_1 =   testVar2File result0A "resultB0" textstate2Text
 test_1_A_B_textstate_text_1 =   testVar2File result1A "resultB1" textstate2Text
@@ -125,7 +125,8 @@ test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2T
 --destinationTest = DGoutDir litTestDir1
 fill_ :: FilePath -> FilePath -> TextDescriptor
 
-fill_ f1 f2 = fillTextState3a dirsTest serverBrest f1 f2 False  -- 3a not including text
+--fill_ f1 f2 = fillTextState3a dirsTest serverBrest f1 f2 False  -- 3a not including text
+fill_ f1 f2 = fillTextState3a dirsTest serverLocalhost f1 f2 False  -- 3a not including text
 result1A = fill_ "test" "t1"
 result2A = fill_ "test" "t2"
 result3A = fill_ "test" "t3"
