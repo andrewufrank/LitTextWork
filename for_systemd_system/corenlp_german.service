@@ -3,6 +3,6 @@ Description=corenlp_german
 [Service] 
 Type=simple
 WorkingDirectory=/home/frank/localInstall/stanford-corenlp
-ExecStart=/usr/bin/java -Xmx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators tokenize,ssplit,pos,depparse,ner -serverProperties StanfordCoreNLP-german.properties -port 9001 -timeout 150000
+ExecStart=/usr/bin/java -Xmx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators tokenize,ssplit,pos,depparse  -serverProperties StanfordCoreNLP-german.properties -port 9001 -timeout 150000
 [Install] 
 WantedBy=multi-user.target
