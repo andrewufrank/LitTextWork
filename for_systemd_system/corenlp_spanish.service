@@ -1,0 +1,8 @@
+[Unit] 
+Description=corenlp_spanish
+[Service] 
+Type=simple
+WorkingDirectory=/home/frank/localInstall/stanford-corenlp
+ExecStart=/usr/bin/java -Xmx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators tokenize,ssplit,pos,depparse,ner -serverProperties StanfordCoreNLP-spanish.properties -port 9004 -timeout 150000
+[Install] 
+WantedBy=multi-user.target

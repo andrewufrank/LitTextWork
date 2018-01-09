@@ -1,0 +1,8 @@
+[Unit] 
+Description=corenlp_english 
+[Service] 
+Type=simple
+WorkingDirectory=/home/frank/localInstall/stanford-corenlp
+ExecStart=/usr/bin/java -mx6g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators tokenize, ssplit, pos, lemma, ner, depparse, coref, natlog, openie -port 9002 -timeout 3000000
+[Install] 
+WantedBy=multi-user.target
