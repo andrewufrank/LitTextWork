@@ -3,6 +3,6 @@ Description=corenlp_italian
 [Service] 
 Type=simple
 WorkingDirectory=/home/frank/localInstall/tint
-ExecStart=/home/frank/localInstall/tint_0_2/tint-server.sh -p 9005 --trace
+ExecStart=/home/frank/localInstall/tint/tint-server.sh -p 9005 --trace
 [Install] 
 WantedBy=multi-user.target
