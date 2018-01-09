@@ -239,15 +239,15 @@ writeLitTriples source dest   = do
     return ()
 
 
-test_1H_K = writeLitTriples   "resultH1" "resultK1"
-test_2H_K = writeLitTriples   "resultH2" "resultK2"
-test_3H_K = writeLitTriples   "resultH3" "resultK3"
-test_4H_K = writeLitTriples   "resultH4" "resultK4"
-test_5H_K = writeLitTriples   "resultH5" "resultK5"
-test_6H_K = writeLitTriples   "resultH6" "resultK6"
-test_7H_K = writeLitTriples   "resultH7" "resultK7"
-test_8H_K = writeLitTriples   "resultH8" "resultK8"
-test_9H_K = writeLitTriples   "resultH9" "resultK9"
+--test_1H_K = writeLitTriples   "resultH1" "resultK1"
+--test_2H_K = writeLitTriples   "resultH2" "resultK2"
+--test_3H_K = writeLitTriples   "resultH3" "resultK3"
+--test_4H_K = writeLitTriples   "resultH4" "resultK4"
+--test_5H_K = writeLitTriples   "resultH5" "resultK5"
+--test_6H_K = writeLitTriples   "resultH6" "resultK6"
+--test_7H_K = writeLitTriples   "resultH7" "resultK7"
+--test_8H_K = writeLitTriples   "resultH8" "resultK8"
+--test_9H_K = writeLitTriples   "resultH9" "resultK9"
 test_10H_K = writeLitTriples   "resultH10" "resultK10"
 
 

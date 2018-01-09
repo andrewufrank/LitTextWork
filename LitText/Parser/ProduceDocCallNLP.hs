@@ -115,23 +115,23 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                 German -> germanNLP debugNLP showXML sloc text
                 French -> frenchNLP debugNLP showXML sloc text
                 Spanish -> spanishNLP debugNLP showXML sloc text
-                Italian -> italianNLP debugNLP showXML sloc text
+                Italian -> return zero -- italianNLP debugNLP showXML sloc text
                 _ -> errorT ["convertTZ2nlpPrepareCall"
                     , showT language, "language has no server"]
 
 englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
 -- process an english text snip to a Doc0
 englishNLP debugNLP showXML sloc text = do
-    let varsEng =  [
---            ("annotators", Just "tokenize,ssplit,pos\
---                                    \,lemma,ner,depparse, dcoref,coref")
---        --                                    coref -coref.algorithm neural")
+    let varsEng =  [("outputFormat", Just "xml")
+            , ("annotators", Just "tokenize,ssplit,pos\
+                                    \,lemma,ner,depparse, dcoref,coref")
+        --                                    coref -coref.algorithm neural")
 --        -- perhaps the nerual algorithm is better, but creates problems
 --        -- with the xml doc received (starts with C?
 --        --                                        dcoref,coref")
 --                --                    --  coref, verlangt depparse,
---                                    ,
-                                     ("outputFormat", Just "xml")
+
+
                                     ]
     when debugNLP $ putIOwords ["englishNLP text", showT text]
 

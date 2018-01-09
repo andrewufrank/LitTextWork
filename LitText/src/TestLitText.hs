@@ -37,10 +37,10 @@ import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
 ------
 import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
 ---------- filters literal text
---import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
+import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 -------- form snips which go to NLP
 ----
---import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, takes time
+import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, takes time
 ------------    -- makes result  E
 ----
 ------------                -- tests only the production of the doc files
