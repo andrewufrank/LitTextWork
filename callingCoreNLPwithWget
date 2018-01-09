@@ -15,3 +15,30 @@ wget --post-data 'El libro es rojo.' 'localhost:9004/?properties={"annotators":"
 -- cannot produce coref (No head rule defined for SENT using class edu.stanford.nlp.trees.SemanticHeadFinder in...) 
 wget --post-data 'El libro es rojo.' 'localhost:9004/?properties={"outputFormat":"xml"}' -O -
 
+wget --post-data 'El libro es rojo.' 'localhost:9004/?properties={"annotators":"tokenize,ssplit,pos,lemma,ner,depparse,coref","outputFormat":"xml"}' -O -
+-- spanish produces  according to what it is started with or at least tokenizatin and syntax diagram 
+-- cannot produce coref (No head rule defined for SENT using class edu.stanford.nlp.trees.SemanticHeadFinder in...) 
+wget --post-data 'El libro es rojo.' 'localhost:9004/?properties={"outputFormat":"xml"}' -O -
+
+
+wget --post-data 'Il libro e de color rosso.' 'localhost:9005/tint?format=xml' -O - works
+wget 'http://localhost:9005/tint?format=xml&text='Il libro e de color rosso.'  -0 - 
+in browser:
+http://localhost:9005/tint?text='Il libro es de color rosso.'   -- works 
+http://localhost:9005/tint?format=xml&text='Il libro e de color rosso.'    -- fails in browser missing stylesheet
+-- error : 
+ java.util.ArrayList.rangeCheck(ArrayList.java:657)
+     2: java.util.ArrayList.get(ArrayList.java:433)
+     3: edu.stanford.nlp.pipeline.XMLOutputter.buildDependencyTreeInfo(XMLOutputter.java:264)
+     4: edu.stanford.nlp.pipeline.XMLOutputter.annotationToDoc(XMLOutputter.java:155)
+     5: edu.stanford.nlp.pipeline.XMLOutputter.print(XMLOutputter.java:56)
+     6: edu.stanford.nlp.pipeline.AnnotationOutputter.print(AnnotationOutputter.java:55)
+     7: edu.stanford.nlp.pipeline.XMLOutputter.xmlPrint(XMLOutputter.java:73)
+     8: eu.fbk.dh.tint.runner.TintPipeline.run(TintPipeline.java:129)
+     9: eu.fbk.dh.tint.runner.TintHandler.service(TintHandler.java:58)
+    10: org.glassfish.grizzly.http.server.HttpHandler$1.run(HttpHandler.java:224)
+    
+wget --post-file=/var/tmp/tint 'http://127.0.0.1:8012/tint?format=xml' -O - -- works with Il libro e de color rosso. (not es or est)
+wget --post-file=/home/frank/italExample.txt 'http://127.0.0.1:8012/tint' -O -
+wget --post-file=/home/frank/italExample.txt 'http://127.0.0.1:9005/tint' -O -
+
