@@ -116,6 +116,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                 French -> frenchNLP debugNLP showXML sloc text
                 Spanish -> spanishNLP debugNLP showXML sloc text
                 Italian -> italianNLP debugNLP showXML sloc text
+                NoLanguage -> return zero
                 _ -> errorT ["convertTZ2nlpPrepareCall"
                     , showT language, "language has no server"]
 
