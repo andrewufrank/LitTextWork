@@ -30,7 +30,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
                 -- and Hx -> Kx  (.nt)
 ----------------
 ------ for nlp:
---import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
+import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
 --
 --------            -- > E -> F - calls only complete sentence
 --------------                    blocked: BAEx --> F,X because calls nlp
@@ -49,7 +49,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, 
 --import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
 -------------------- calls 17701
 --------------
---import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- E (doc) -> G  and L (triples)
+import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- E (doc) -> G  and L (triples)
 --
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers

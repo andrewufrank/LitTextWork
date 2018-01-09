@@ -1,0 +1,17 @@
+"annotators=tokenize,ssplit,pos,lemma,ner,depparse,dcoref,coref"
+
+wget --post-data 'The quick brown fox jumped over the lazy dog.' 'localhost:9002/?properties={"annotators":"tokenize,ssplit,pos,lemma,ner,depparse,dcoref,coref","outputFormat":"xml"}' -O -
+-- english needs annotators in call, otherwise nothing is produced
+wget --post-data 'The quick brown fox jumped over the lazy dog.' 'localhost:9002/?properties={"outputFormat":"xml"}' -O -
+
+
+wget --post-data 'Le livre est rouge.' 'localhost:9003/?properties={"annotators":"tokenize,ssplit,pos,lemma,ner,depparse,coref","outputFormat":"xml"}' -O -
+-- french produces  according to what it is started with or at least tokenizatin and syntax diagram
+-- cannot produce coref (No head rule defined for SENT using class edu.stanford.nlp.trees.SemanticHeadFinder in...) 
+wget --post-data 'Le livre est rouge.' 'localhost:9003/?properties={"outputFormat":"xml"}' -O -
+
+wget --post-data 'El libro es rojo.' 'localhost:9004/?properties={"annotators":"tokenize,ssplit,pos,lemma,ner,depparse,coref","outputFormat":"xml"}' -O -
+-- spanish produces  according to what it is started with or at least tokenizatin and syntax diagram 
+-- cannot produce coref (No head rule defined for SENT using class edu.stanford.nlp.trees.SemanticHeadFinder in...) 
+wget --post-data 'El libro es rojo.' 'localhost:9004/?properties={"outputFormat":"xml"}' -O -
+

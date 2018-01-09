@@ -115,7 +115,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                 German -> germanNLP debugNLP showXML sloc text
                 French -> frenchNLP debugNLP showXML sloc text
                 Spanish -> spanishNLP debugNLP showXML sloc text
-                Italian -> return zero -- italianNLP debugNLP showXML sloc text
+                Italian -> italianNLP debugNLP showXML sloc text
                 _ -> errorT ["convertTZ2nlpPrepareCall"
                     , showT language, "language has no server"]
 
@@ -158,10 +158,8 @@ cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
 -- process an german text snip to a Doc0
 germanNLP debugNLP showXML sloc text = do
-    let varsGer =  [
---        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
---                                    ,
-                                    ("outputFormat", Just "xml")
+    let varsGer =  [("outputFormat", Just "xml"),
+                    ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                     ]
     when debugNLP $ putIOwords ["germanNLP text", showT text]
 
@@ -191,16 +189,15 @@ cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple 
 frenchNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
 -- process an french text snip to a Doc0
 frenchNLP debugNLP showXML sloc text = do
-    let varsEng =  [
---            ("annotators", Just "tokenize,ssplit,pos\
---                                    \,lemma,ner,depparse, dcoref,coref")
+    let varsEng =  [("outputFormat", Just "xml")
+            , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
 --        --                                    coref -coref.algorithm neural")
 --        -- perhaps the nerual algorithm is better, but creates problems
 --        -- with the xml doc received (starts with C?
 --        --                                        dcoref,coref")
 --                --                    --  coref, verlangt depparse,
 --                                    ,
-                                     ("outputFormat", Just "xml")
+
                                     ]
     when debugNLP $ putIOwords ["frenchNLP text", showT text]
 
@@ -224,16 +221,15 @@ cleanTextFrench    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple 
 spanishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
 -- process an spanish text snip to a Doc0
 spanishNLP debugNLP showXML sloc text = do
-    let varsEng =  [
---            ("annotators", Just "tokenize,ssplit,pos\
---                                    \,lemma,ner,depparse, dcoref,coref")
+    let varsEng =  [("outputFormat", Just "xml")
+            , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
 --        --                                    coref -coref.algorithm neural")
 --        -- perhaps the nerual algorithm is better, but creates problems
 --        -- with the xml doc received (starts with C?
 --        --                                        dcoref,coref")
 --                --                    --  coref, verlangt depparse,
 --                                    ,
-                                    ("outputFormat", Just "xml")
+--                                    ("outputFormat", Just "xml")
                                     ]
     when debugNLP $ putIOwords ["spanishNLP text", showT text]
 
@@ -266,7 +262,7 @@ italianNLP debugNLP showXML sloc text = do
 --        --                                        dcoref,coref")
 --                --                    --  coref, verlangt depparse,
 --                                    ,
-                                    ("outputFormat", Just "xml")
+--                                    ("outputFormat", Just "xml")
 
                                     ]
     when debugNLP $ putIOwords ["italianNLP text", showT text]
@@ -289,7 +285,7 @@ italianNLP debugNLP showXML sloc text = do
 --    putIOwords ["italianNLP dest",  dest]
 --    xml <- callHTTP8get True dest
 
-    xml :: Text <- callHTTP10post True  "multipart/form-data"  (addPort2URI sloc 9005) "tint"
+    xml :: Text <- callHTTP10post True  "multipart/form-data"  (addPort2URI sloc 9005) "tint?format=xml"
                  (b2bl . t2b $ text2) vars  (Just 300)   -- timeout in seconds
 
     putIOwords ["italianNLP xml",  xml]
