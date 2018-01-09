@@ -22,34 +22,34 @@ import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
 import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
 import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
 import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- > BADx -> J
-------    -- not enough memory on oporto
------- if the files are not already correct in .littest
------- problem is in the comparing when error
+--    -- not enough memory on oporto
+-- if the files are not already correct in .littest
+-- problem is in the comparing when error
 import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- BADx > BAEx
 import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
                 -- and Hx -> Kx  (.nt)
 ----------------
 ------ for nlp:
-import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
 --
 --------            -- > E -> F - calls only complete sentence
 --------------                    blocked: BAEx --> F,X because calls nlp
 ------
 import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
--------- filters literal text
-import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
------- form snips which go to NLP
---
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, takes time
-----------    -- makes result  E
---
-----------                -- tests only the production of the doc files
-----                      all tests above can be switched off
---
-import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
------------------- calls 17701
-------------
-import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- E (doc) -> G  and L (triples)
+---------- filters literal text
+--import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
+-------- form snips which go to NLP
+----
+--import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, takes time
+------------    -- makes result  E
+----
+------------                -- tests only the production of the doc files
+------                      all tests above can be switched off
+----
+--import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
+-------------------- calls 17701
+--------------
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- E (doc) -> G  and L (triples)
 --
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers

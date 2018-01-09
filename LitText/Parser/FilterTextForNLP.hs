@@ -106,14 +106,14 @@ formatParaText tz@TZ2markup {} = Snip {tz3loc = tz2loc tz
     where
         tx = twm . tz2text $ tz
 
-test_1_C_D = testFile2File "resultBAE1" "resultD1" ( prepareTZ4nlp)
-test_2_C_D = testFile2File "resultBAE2" "resultD2" ( prepareTZ4nlp)
-test_3_C_D = testFile2File "resultBAE3" "resultD3" ( prepareTZ4nlp)
-test_4_C_D = testFile2File "resultBAE4" "resultD4" ( prepareTZ4nlp)
-test_5_C_D = testFile2File "resultBAE5" "resultD5" ( prepareTZ4nlp)
-test_6_C_D = testFile2File "resultBAE6" "resultD6" ( prepareTZ4nlp)
-test_8_C_D = testFile2File "resultBAE8" "resultD8" ( prepareTZ4nlp)
-test_9_C_D = testFile2File "resultBAE9" "resultD9" ( prepareTZ4nlp)
+--test_1_C_D = testFile2File "resultBAE1" "resultD1" ( prepareTZ4nlp)
+--test_2_C_D = testFile2File "resultBAE2" "resultD2" ( prepareTZ4nlp)
+--test_3_C_D = testFile2File "resultBAE3" "resultD3" ( prepareTZ4nlp)
+--test_4_C_D = testFile2File "resultBAE4" "resultD4" ( prepareTZ4nlp)
+--test_5_C_D = testFile2File "resultBAE5" "resultD5" ( prepareTZ4nlp)
+--test_6_C_D = testFile2File "resultBAE6" "resultD6" ( prepareTZ4nlp)
+--test_8_C_D = testFile2File "resultBAE8" "resultD8" ( prepareTZ4nlp)
+--test_9_C_D = testFile2File "resultBAE9" "resultD9" ( prepareTZ4nlp)
 test_10_C_D = testFile2File "resultBAE10" "resultD10" ( prepareTZ4nlp)
 
 

@@ -51,14 +51,14 @@ formSnips (n1:n2:ns) =  case mergeNLPtext n1 n2 of
 minSnipSize = 5000 -- char
 maxSnipSize = 10000
 
-test_1_D_DA = testFile2File "resultD1" "resultDA1" formSnips
-test_2_D_DA = testFile2File "resultD2" "resultDA2" formSnips
-test_3_D_DA = testFile2File "resultD3" "resultDA3" formSnips
-test_4_D_DA = testFile2File "resultD4" "resultDA4" formSnips
-test_5_D_DA = testFile2File "resultD5" "resultDA5" formSnips
-test_6_D_DA = testFile2File "resultD6" "resultDA6" formSnips
-test_8_D_DA = testFile2File "resultD8" "resultDA8" formSnips
-test_9_D_DA = testFile2File "resultD9" "resultDA9" formSnips
+--test_1_D_DA = testFile2File "resultD1" "resultDA1" formSnips
+--test_2_D_DA = testFile2File "resultD2" "resultDA2" formSnips
+--test_3_D_DA = testFile2File "resultD3" "resultDA3" formSnips
+--test_4_D_DA = testFile2File "resultD4" "resultDA4" formSnips
+--test_5_D_DA = testFile2File "resultD5" "resultDA5" formSnips
+--test_6_D_DA = testFile2File "resultD6" "resultDA6" formSnips
+--test_8_D_DA = testFile2File "resultD8" "resultDA8" formSnips
+--test_9_D_DA = testFile2File "resultD9" "resultDA9" formSnips
 test_10_D_DA = testFile2File "resultD10" "resultDA10" formSnips
 
 mergeNLPtext :: Snip -> Snip -> Maybe Snip

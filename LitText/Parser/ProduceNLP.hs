@@ -64,7 +64,7 @@ produceNLP ::  Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 produceNLP showXML textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             snips = formSnips nlpTexts :: [Snip]
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples showXML textstate) snips
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples True textstate) snips
 --    let trips = readNote "writeLitTriples" tripstext :: [Triple]
 --    write6 dest2 ntFileTriples trips
     ntz1 <- foldM writeHandleTriples textstate triples
@@ -90,10 +90,10 @@ produceNLPnotshow = produceNLP False
 --test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
 --test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
 --test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
-test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
+--test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
 --test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
-test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
-test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPnotshow
+--test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
+--test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPnotshow
 test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
 ------ no result file is necessary, because result is zero
 ------ but results are found in LitTest/test

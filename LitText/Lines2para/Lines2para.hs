@@ -89,14 +89,14 @@ paragraphs2TZpara =
 
 
 --test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
-test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphsTZ2TZ2
-test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphsTZ2TZ2
-test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphsTZ2TZ2
-test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphsTZ2TZ2
-test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
-test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
-test_8BAD_BAE = testFile2File "resultBAD8" "resultBAE8" paragraphsTZ2TZ2
-test_9BAD_BAE = testFile2File "resultBAD9" "resultBAE9" paragraphsTZ2TZ2
+--test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphsTZ2TZ2
+--test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphsTZ2TZ2
+--test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphsTZ2TZ2
+--test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphsTZ2TZ2
+--test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
+--test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
+--test_8BAD_BAE = testFile2File "resultBAD8" "resultBAE8" paragraphsTZ2TZ2
+--test_9BAD_BAE = testFile2File "resultBAD9" "resultBAE9" paragraphsTZ2TZ2
 test_10BAD_BAE = testFile2File "resultBAD10" "resultBAE10" paragraphsTZ2TZ2
 
 --test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ

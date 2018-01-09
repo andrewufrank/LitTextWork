@@ -26,6 +26,7 @@ module Parser.ProduceDocCallNLP
 
 import           Test.Framework
 import Uniform.TestHarness
+--import Uniform.StringConversion (b2urlf)
 import Data.Maybe -- todo
 import Lines2para.Lines2para
 import Lines2para.HandleLayout
@@ -34,7 +35,7 @@ import Producer.Servers
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
-import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI)
+import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 import Parser.CompleteSentence (completeSentence)
@@ -65,9 +66,9 @@ testOP_C_E resultXA resultDAfile = do
 --test_2_C_E = testVar3FileIO result2A "resultDA2" "resultE2" testOP_C_E
 --test_3_C_E = testVar3FileIO result3A "resultDA3" "resultE3" testOP_C_E
 --test_4_C_E = testVar3FileIO result4A "resultDA4" "resultE4" testOP_C_E
-test_5_C_E = testVar3FileIO result5A "resultDA5" "resultE5" testOP_C_E  -- lafayette
+--test_5_C_E = testVar3FileIO result5A "resultDA5" "resultE5" testOP_C_E  -- lafayette
 --test_6_C_E = testVar3FileIO result6A "resultDA6" "resultE6" testOP_C_E
-test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
+--test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
 --test_9_C_E = testVar3FileIO result9A "resultDA9" "resultE9" testOP_C_E
 test_10_C_E = testVar3FileIO result10A "resultDA10" "resultE10" testOP_C_E
 
@@ -114,6 +115,7 @@ convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
                 German -> germanNLP debugNLP showXML sloc text
                 French -> frenchNLP debugNLP showXML sloc text
                 Spanish -> spanishNLP debugNLP showXML sloc text
+                Italian -> italianNLP debugNLP showXML sloc text
                 _ -> errorT ["convertTZ2nlpPrepareCall"
                     , showT language, "language has no server"]
 
@@ -252,6 +254,61 @@ spanishNLP debugNLP showXML sloc text = do
 cleanTextspanish :: Text -> Text
 cleanTextspanish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
+italianNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+-- process an italian text snip to a Doc0
+italianNLP debugNLP showXML sloc text = do
+    let vars =  [
+--            ("annotators", Just "tokenize,ssplit,pos\
+--                                    \,lemma,ner,depparse, dcoref,coref")
+--        --                                    coref -coref.algorithm neural")
+--        -- perhaps the nerual algorithm is better, but creates problems
+--        -- with the xml doc received (starts with C?
+--        --                                        dcoref,coref")
+--                --                    --  coref, verlangt depparse,
+--                                    ,
+                                    ("outputFormat", Just "xml")
+
+                                    ]
+    when debugNLP $ putIOwords ["italianNLP text", showT text]
+
+    let text2 = cleanTextitalian  text
+
+--            let texts = getPiece . textSplit $ text2
+--            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+--                            then [ text2]
+--                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+    putIOwords ["italianNLP text2", text2]
+
+------    let text3 = s3latin . t2s $ text2  :: ByteString -- is a bytestring
+------    putIOwords ["italianNLP text3", showT text3]
+------    let text4 = s2t $ show text3
+--------    s2u . fromJustNote "problem with bytestring" . b2s $ text3  -- url encode (but form)
+------    putIOwords ["italianNLP text4",  text4]
+----
+--    let dest = showT (addPort2URI sloc 9005) <> "/tint?text=" <> showT text2 <> "&format=xml"
+--    putIOwords ["italianNLP dest",  dest]
+--    xml <- callHTTP8get True dest
+
+    xml :: Text <- callHTTP10post True  "multipart/form-data"  (addPort2URI sloc 9005) "tint"
+                 (b2bl . t2b $ text2) vars  (Just 300)   -- timeout in seconds
+
+    putIOwords ["italianNLP xml",  xml]
+    doc <- readDocString showXML xml
+    putIOwords ["italianNLP doc", showT doc]
+----
+--    docs <-  convertTZ2makeNLPCall True True (  (addPort2URI sloc 9005)   ) vars  text2
+--    docs <-  convertTZ2makeNLPCall True True (addToURI (addPort2URI sloc 9005)  "tint") vars  text2
+----            when False $ putIOwords ["italianNLP parse"
+----                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+    when debugNLP $ putIOwords ["italianNLP end", showT text2]
+
+    return   doc
+
+--xt2latin :: Text -> Text
+--xt2latin = s2t . s2latin . t2s
+
+cleanTextitalian :: Text -> Text
+cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO Doc0    -- the xml to analyzse  D -> E
 -- call to send text to nlp server and converts xml to Doc0
 -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
