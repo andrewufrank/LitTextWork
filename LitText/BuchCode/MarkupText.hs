@@ -97,14 +97,14 @@ parseMarkup  = fmap removeEmptyMarks . markShortLines
 
 --test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkup
 ----test_1B_BA :: IO ()
-test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
-test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
-test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
-test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
-test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
-test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
-test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
-test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
+--test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkup
+--test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkup
+--test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkup
+--test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkup
+--test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkup
+--test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkup
+--test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkup  -- aesop
+--test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkup  -- tawada
 test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkup  -- boccaccio
 
 
@@ -173,7 +173,7 @@ fussnoteMarker = do
 markupzeile :: TextParsec TextZeilen
 markupzeile = do
     char '.'
-    mk <- choice ( map (\t -> try (tokenElement t)) [BuchIgnoreEnd .. BuchEnde] )
+    mk <- choice ( map (\t -> try (tokenElement t)) [BuchIgnore .. BuchEnde] )
     res <- parseTextWithMarkers
     return $ MarkupZeile mk  res -- $ (TextWithMarks (trim' $ s2t res) [])
 
