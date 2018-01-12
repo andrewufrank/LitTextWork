@@ -54,7 +54,7 @@ type MarkupElement = BuchTokenized BuchToken
 data BuchToken =   -- just the markers
 -- attention: shorter strings must be before longer ones (with same start)
 -- the markup marker are derived from the names (strip Buch, convert to lower)
-         BuchIgnore
+         BuchIgnoreLine    -- was BuchIgnore, but would confuse parser with BuchIgnoreTo
         |  BuchIgnoreEnd   -- only for mark, no output
 
         | BuchIgnoreTo   -- replace with Text -TextEnd brackets
@@ -102,9 +102,9 @@ data BuchToken =   -- just the markers
                  deriving (Enum, Eq, Show, Read)
 
 
-tokenNLPanalysed = [BuchHL1, BuchHL2, BuchHL3, BuchGedicht, BuchParagraph]
-unusedTokens = [BuchLeer, BuchEnde, BuchIgnore, BuchIgnoreTo
-                , BuchCopyright ]
+--tokenNLPanalysed = [BuchHL1, BuchHL2, BuchHL3, BuchGedicht, BuchParagraph]
+--unusedTokens = [BuchLeer, BuchEnde, BuchIgnoreLine, BuchIgnoreTo
+--                , BuchCopyright ]
 
 -- | unparse a sequence of tokens in a sequence of texts
 class Unparser  a where
