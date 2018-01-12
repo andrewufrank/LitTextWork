@@ -110,7 +110,7 @@ s9 = Sentence0{sid = SentID0{unSentID0 = 1},
              Token0{tid = TokenID0{untid0 = 4},
                     tword = Wordform0{word0 = "lebendig"},
                     tlemma = Lemma0{lemma0 = "lebendig"}, tbegin = 20, tend = 28,
-                    tpos = Unk, tpostt = "ADJD", tner = ["O"], tspeaker = []}],
+                    tpos = Unk "test", tpostt = "ADJD", tner = ["O"], tspeaker = []}],
           sdeps = Nothing}
 --test_complete :: IO ()
 test_complete = do

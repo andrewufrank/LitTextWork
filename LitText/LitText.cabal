@@ -29,7 +29,8 @@ library
 --        , buchCode
 --        , lines2para
 --        , coreNLP
-        , chatter
+--        , chatter   -- is support for POS codes (could use haskell-conll)
+                -- decided to copy into POS module
         , HTF
         , safe
         , pipes

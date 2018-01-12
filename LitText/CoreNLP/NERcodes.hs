@@ -40,7 +40,7 @@ import Uniform.Zero
 import Uniform.Strings
 import Uniform.Error
 
-import              NLP.Corpora.Conll  hiding (NERTag (..))
+--import              NLP.Corpora.Conll  hiding (NERTag (..))
 
 
 -- | Named entity categories defined for the Conll 2003 task.

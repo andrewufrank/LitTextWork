@@ -38,7 +38,7 @@ import           Uniform.Error
 --import           Text.Printf         (printf)
 import Uniform.TestHarness
 
-instance Zeros (Maybe a) where zero = Nothing
+--instance Zeros (Maybe a) where zero = Nothing
 
 data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int} deriving (Read, Show, Eq)
 -- ^ the place of a line in the full text
