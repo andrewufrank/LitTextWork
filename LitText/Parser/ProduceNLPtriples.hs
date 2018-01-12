@@ -121,7 +121,7 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3, t5] ++ t6 ++ t7
         t6 = if (tner tok) ==  ["O"]  -- this is the default, no need to store
                 then []
                 else map (mkTripleText (unTokenSigl tokensigl)
-                        (mkRDFproperty Nertag)) (tner tok)
+                        (mkRDFproperty NerTag)) (tner tok)
         t7 = map (mkTripleText (unTokenSigl tokensigl)
                     (mkRDFproperty SpeakerTag) . showT )
                     (tspeaker tok)
