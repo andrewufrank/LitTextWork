@@ -85,7 +85,7 @@ ett2tz :: TextZeilen -> TZ
 -- some markup is converted to lit text
 ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero, tzlang=zero }
 --ett2tz (ZahlZeile t) = TZzahl {tztext = t, tzloc = zero, tzlang=zero}
-ett2tz (MarkupZeile BuchIgnore t) = TZignore {tztext = t,  tzloc = zero}
+ett2tz (MarkupZeile BuchIgnoreLine t) = TZignore {tztext = t,  tzloc = zero}
 ett2tz (MarkupZeile BuchGedicht t) =
     TZtext {tzt=Kurz0, tztext = t,  tzloc = zero, tzlang=zero}
 ett2tz (MarkupZeile BuchEnde _) = TZleer {tzloc = zero}
@@ -223,14 +223,16 @@ instance Zeilen TZ where
 
 
 ----test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZlayout
---test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
---test_2BA_BAC = testFile2File "resultBA2" "resultBAC2" paragraphs2TZlayout
---test_3BA_BAC = testFile2File "resultBA3" "resultBAC3" paragraphs2TZlayout
---test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
---test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
---test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
---test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
---test_9BA_BAC = testFile2File "resultBA9" "resultBAC9" paragraphs2TZlayout
+test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
+test_2BA_BAC = testFile2File "resultBA2" "resultBAC2" paragraphs2TZlayout
+test_3BA_BAC = testFile2File "resultBA3" "resultBAC3" paragraphs2TZlayout
+test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
+test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
+test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
+test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
+test_9BA_BAC = testFile2File "resultBA9" "resultBAC9" paragraphs2TZlayout
 test_10BA_BAC = testFile2File "resultBA10" "resultBAC10" paragraphs2TZlayout
+test_11BA_BAC = testFile2File "resultBA11" "resultBAC11" paragraphs2TZlayout
+test_12BA_BAC = testFile2File "resultBA12" "resultBAC12" paragraphs2TZlayout
 
 
