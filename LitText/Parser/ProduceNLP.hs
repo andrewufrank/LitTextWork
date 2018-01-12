@@ -64,7 +64,7 @@ produceNLP ::  Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 produceNLP showXML textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             snips = formSnips nlpTexts :: [Snip]
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples True textstate) snips
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples showXML textstate) snips
 --    let trips = readNote "writeLitTriples" tripstext :: [Triple]
 --    write6 dest2 ntFileTriples trips
     ntz1 <- foldM writeHandleTriples textstate triples

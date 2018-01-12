@@ -58,7 +58,7 @@ testOP_C_E resultXA resultDAfile = do
 
     res <-  mapM (snip2doc False   False sloc) resultDAfile
     -- the secnd bool controls the rendering of the xml file
-    putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
+--    putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
     -- leave in to force processing and continous output
     return res
 --
@@ -276,7 +276,7 @@ italianNLP debugNLP showXML sloc text = do
     --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
     --                            then [ text2]
     --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
-        putIOwords ["italianNLP text2", text2]
+        when debugNLP $ putIOwords ["italianNLP text2", text2]
 
     ------    let text3 = s3latin . t2s $ text2  :: ByteString -- is a bytestring
     ------    putIOwords ["italianNLP text3", showT text3]
@@ -288,13 +288,13 @@ italianNLP debugNLP showXML sloc text = do
     --    putIOwords ["italianNLP dest",  dest]
     --    xml <- callHTTP8get True dest
 
-        xml :: Text <- callHTTP10post True  "multipart/form-data"  (addPort2URI sloc 9005) "tint?format=xml"
+        xml :: Text <- callHTTP10post debugNLP  "multipart/form-data"  (addPort2URI sloc 9005) "tint?format=xml"
                      (b2bl . t2b $ text2) vars  (Just 300)   -- timeout in seconds
 
-        putIOwords ["italianNLP xml",  xml]
+        when debugNLP $ putIOwords ["italianNLP xml",  xml]
 
         doc <- readDocString showXML xml
-        putIOwords ["italianNLP doc", showT doc]
+        when debugNLP $ putIOwords ["italianNLP doc", showT doc]
     ----
     --    docs <-  convertTZ2makeNLPCall True True (  (addPort2URI sloc 9005)   ) vars  text2
     --    docs <-  convertTZ2makeNLPCall True True (addToURI (addPort2URI sloc 9005)  "tint") vars  text2
@@ -315,6 +315,8 @@ italianNLP debugNLP showXML sloc text = do
 
 cleanTextitalian :: Text -> Text
 cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+
+
 convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO Doc0    -- the xml to analyzse  D -> E
 -- call to send text to nlp server and converts xml to Doc0
 -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)

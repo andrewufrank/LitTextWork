@@ -268,12 +268,15 @@ getSpeaker = atTag "Speaker" >>>
 readDocString :: Bool -> Text  -> ErrIO  Doc0
 readDocString showXML text = do
     docs  :: [Doc0] <-callIO $ do
-        d1 :: [Doc0] <-  runX (readString [withValidate no]  (t2s text)
+--        d1 :: [Doc0] <-
+        runX (readString [withValidate no]  (t2s text)
                                 >>> getDoc0)
 --        putIOwords ["readDocString - d1 extracted \n", showT d1]
-        return d1
+--        return d1
+
     when showXML $ do
           putIOwords ["the xml formated"]
+          error "readDocString with showXLM true"
           res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
                                             >>> indentDoc
           putIOwords  $ map s2t res
@@ -282,7 +285,8 @@ readDocString showXML text = do
     --  let toks2 = filter ((0 /=). sid) toks
     -- seems to add a lot of empty sentences
 
-    docs' <- if (length docs) > 1
+--    docs' <-
+    if length docs > 1
         then error "multiple document tags"
         else   if null docs
                 then throwErrorT ["readDocString", "no document found in readDocString"]
@@ -290,7 +294,7 @@ readDocString showXML text = do
                 else return (headNote "no document found" docs)
             -- error in case of 0
 --    putIOwords ["readDocString - the docs' returned \n", showT docs']
-    return docs'
+--    return docs'
 
 -- readDocumentT args lfp = readDocument args (toFilePath lfp)
 --             -- (t2fp . filepath2text lpX $ lfp)
