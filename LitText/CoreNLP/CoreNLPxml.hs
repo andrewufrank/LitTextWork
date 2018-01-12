@@ -284,7 +284,10 @@ readDocString showXML text = do
 
     docs' <- if (length docs) > 1
         then error "multiple document tags"
-        else   return (headNote "no document found" docs)
+        else   if null docs
+                then throwErrorT ["readDocString", "no document found in readDocString"]
+                 -- return empty doc if call error - issue with italian
+                else return (headNote "no document found" docs)
             -- error in case of 0
 --    putIOwords ["readDocString - the docs' returned \n", showT docs']
     return docs'
