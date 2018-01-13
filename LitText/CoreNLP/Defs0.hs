@@ -65,14 +65,14 @@ mkSentID :: Text -> SentID0
 -- to make a sentence id, consist of coll id and number
 mkSentID s = SentID0 $ readNoteT "mkSentID" s
 
-data Doc0 = Doc0 {docSents:: [Sentence0]
+data Doc0 postag = Doc0 {docSents:: [Sentence0 postag]
                  , docCorefs :: [Coref0]
                        } deriving (Read, Show,  Eq)
-instance Zeros Doc0 where zero = Doc0 [] []
+instance Zeros (Doc0 postag) where zero = Doc0 [] []
 
-data Sentence0 = Sentence0 {sid :: SentID0
+data Sentence0 postag = Sentence0 {sid :: SentID0
                         , sparse :: Text  -- the parse tree
-                        , stoks :: [Token0]
+                        , stoks :: [Token0 postag]
                         , sdeps :: Maybe DependenceType0
                         -- should be only one or none
                         } deriving (Read, Show,  Eq)
@@ -84,11 +84,11 @@ data DependenceType0 = DependenceType0 { dtt :: DepTypeID0
             , dtd :: [Dependence0]
             } deriving (Show, Read, Eq, Zeros)
 
-data Token0 = Token0 { tid :: TokenID0
+data Token0 postag = Token0 { tid :: TokenID0
                     , tword :: Wordform0
                     , tlemma :: Lemma0
                     , tbegin, tend :: Int  -- not used
-                    , tpos :: PosTag -- is Connl.Tag -- Text -- is Conll.Tag defined ind DependencyCodes -- Penn Treebank
+                    , tpos :: postag -- is Connl.Tag -- Text -- is Conll.Tag defined ind DependencyCodes -- Penn Treebank
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [Text] -- String
                     , tspeaker :: [SpeakerTag] -- Text -- String

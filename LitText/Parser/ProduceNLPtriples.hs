@@ -54,7 +54,7 @@ import Parser.ProduceDocCallNLP
 import Parser.TextDescriptor
 import Parser.ProduceLayout (buchURIx)
 
-processDoc0toTriples2 :: TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0) -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: (CharChains2 postag Text) => TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0 postag) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 -- snipnr is not used anymore?
 
@@ -83,7 +83,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 -- currently not producing the not yet used corefs
 
 ----------------------
-mkSentenceTriple2 :: LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 ->  ( [Triple])
+mkSentenceTriple2 :: (CharChains2 postag Text) => LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 postag ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang buchuri  snipid sent
        =      t0 : t1 : t2 : sentenceForm : (toktrips ++ depsTrips)
@@ -103,7 +103,7 @@ mkSentenceTriple2 lang buchuri  snipid sent
                     (unwords' . map (word0 . tword) . stoks $ sent )
 
 ----------------------------------------- --
-mkTokenTriple2 :: LanguageCode -> SentSigl-> Token0 -> [Triple]
+mkTokenTriple2 :: (CharChains2 postag Text) => LanguageCode -> SentSigl-> Token0 postag-> [Triple]
 mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3, t5] ++ t6 ++ t7
     -- the language code is to pass to the triple maker ! TODO
     where
@@ -175,7 +175,7 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8] -- , t9]
 --       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
 --       wf = word0 . dword  $ depp
 
-testOP_E_G :: TextDescriptor -> [Doc0] ->  [Triple]
+testOP_E_G :: (CharChains2 postag Text) => TextDescriptor -> [Doc0 postag] ->  [Triple]
 testOP_E_G textstate docs  = concat
         . map (processDoc0toTriples2 textstate NoLanguage (ParaNum 99))
         $ (zip [1..] docs)
@@ -183,32 +183,32 @@ testOP_E_G textstate docs  = concat
 -- fake paranr 99 should be ok for test
 --
 --test_1_E_G :: IO ()
-test_1_E_G =  testVar3File result1A "resultE1" "resultG1" testOP_E_G
-test_2_E_G =  testVar3File result2A "resultE2" "resultG2" testOP_E_G
-test_3_E_G =  testVar3File result3A "resultE3" "resultG3" testOP_E_G
-test_4_E_G =  testVar3File result4A "resultE4" "resultG4" testOP_E_G
-test_5_E_G =  testVar3File result5A "resultE5" "resultG5" testOP_E_G
-test_6_E_G = testVar3File result6A "resultE6" "resultG6" testOP_E_G
-test_7_E_G = testVar3File result6A "resultE7" "resultG7" testOP_E_G
-test_8_E_G = testVar3File result8A "resultE8" "resultG8" testOP_E_G
-test_9_E_G = testVar3File result9A "resultE9" "resultG9" testOP_E_G
-test_10_E_G = testVar3File result10A "resultE10" "resultG10" testOP_E_G
-test_11_E_G = testVar3File result11A "resultE11" "resultG11" testOP_E_G
-test_12_E_G = testVar3File result12A "resultE12" "resultG12" testOP_E_G
----- 10 seems too big for oporto (without swap)
---
-test_1G_L = writeLitTriples   "resultG1" "resultL1"
-test_2G_L = writeLitTriples   "resultG2" "resultL2"
-test_3G_L = writeLitTriples   "resultG3" "resultL3"
-test_4G_L = writeLitTriples   "resultG4" "resultL4"
-test_5G_L = writeLitTriples   "resultG5" "resultL5"
-test_6G_L = writeLitTriples   "resultG6" "resultL6"
-test_7G_L = writeLitTriples   "resultG7" "resultL7"
-test_8G_L = writeLitTriples   "resultG8" "resultL8"
-test_9G_L = writeLitTriples   "resultG9" "resultL9"
-test_10G_L = writeLitTriples   "resultG10" "resultL10"
-test_11G_L = writeLitTriples   "resultG11" "resultL11"
-test_12G_L = writeLitTriples   "resultG12" "resultL12"
+--test_1_E_G =  testVar3File result1A "resultE1" "resultG1" testOP_E_G
+--test_2_E_G =  testVar3File result2A "resultE2" "resultG2" testOP_E_G
+--test_3_E_G =  testVar3File result3A "resultE3" "resultG3" testOP_E_G
+--test_4_E_G =  testVar3File result4A "resultE4" "resultG4" testOP_E_G
+--test_5_E_G =  testVar3File result5A "resultE5" "resultG5" testOP_E_G
+--test_6_E_G = testVar3File result6A "resultE6" "resultG6" testOP_E_G
+--test_7_E_G = testVar3File result6A "resultE7" "resultG7" testOP_E_G
+--test_8_E_G = testVar3File result8A "resultE8" "resultG8" testOP_E_G
+--test_9_E_G = testVar3File result9A "resultE9" "resultG9" testOP_E_G
+--test_10_E_G = testVar3File result10A "resultE10" "resultG10" testOP_E_G
+--test_11_E_G = testVar3File result11A "resultE11" "resultG11" testOP_E_G
+--test_12_E_G = testVar3File result12A "resultE12" "resultG12" testOP_E_G
+------ 10 seems too big for oporto (without swap)
+----
+--test_1G_L = writeLitTriples   "resultG1" "resultL1"
+--test_2G_L = writeLitTriples   "resultG2" "resultL2"
+--test_3G_L = writeLitTriples   "resultG3" "resultL3"
+--test_4G_L = writeLitTriples   "resultG4" "resultL4"
+--test_5G_L = writeLitTriples   "resultG5" "resultL5"
+--test_6G_L = writeLitTriples   "resultG6" "resultL6"
+--test_7G_L = writeLitTriples   "resultG7" "resultL7"
+--test_8G_L = writeLitTriples   "resultG8" "resultL8"
+--test_9G_L = writeLitTriples   "resultG9" "resultL9"
+--test_10G_L = writeLitTriples   "resultG10" "resultL10"
+--test_11G_L = writeLitTriples   "resultG11" "resultL11"
+--test_12G_L = writeLitTriples   "resultG12" "resultL12"
 ------------ coreferences ---------------------
 
 mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
