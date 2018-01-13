@@ -29,8 +29,10 @@ library
 --        , buchCode
 --        , lines2para
 --        , coreNLP
---        , chatter   -- is support for POS codes (could use haskell-conll)
-                -- decided to copy into POS module
+        , cereal
+        , chatter
+            -- is support for POS codes (could use haskell-conll)
+                -- used in  POS module
         , HTF
         , safe
         , pipes
@@ -61,7 +63,8 @@ library
         Lines2para.HandleLayout
         CoreNLP.Defs0
         CoreNLP.CoreNLPxml
-        CoreNLP.POScodes
+--        CoreNLP.POScodes
+        CoreNLP.POScodesUD
         CoreNLP.NERcodes
         CoreNLP.DEPcodes
         BuchCode.BuchToken
