@@ -30,9 +30,13 @@ import Uniform.Zero
 import Uniform.Strings
 import Uniform.Error
 
+import qualified NLP.Corpora.Conll      as Conll
+
 import qualified NLP.Types.Tags as NLPtypes
 --import      NLP.Corpora.Conll
 --import      NLP.Corpora.Conll   as Conll
+
+type PosTagEng = Conll.Tag   -- renames the ConllTag
 
 data PosTagUD =   -- copied from http://universaldependencies.org/u/pos/
     ADJ | -- adjective
@@ -69,6 +73,8 @@ maybe2errorP Nothing = Left "readTag PosTagUD 34232"
 maybe2errorP (Just a) = Right a
 
 instance Serialize PosTagUD
+
+instance CharChains2 PosTagUD Text
 
 instance Zeros PosTagUD where zero = X
 --type Unk = Conll.Unk
