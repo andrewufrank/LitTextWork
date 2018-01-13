@@ -68,24 +68,39 @@ data NERTag = PER
 
 instance Zeros NERTag where zero = NERunk
 
-data SpeakerTag = PER0 | PER1 | PER2 | Speaker Text
+data SpeakerTag =  -- PER0 | PER1 | PER2 |
+                    Speaker Text
     deriving (Read, Show,  Ord, Eq)
     -- to encode the speaker tag -- any others? PER5 or 5 is seen
+
+readSpeakerTag :: Text -> SpeakerTag
+readSpeakerTag  t = case (take' 3 t) of
+                "PER" -> Speaker (fromJustNote "readSpeakerTag 342u324" $ stripPrefix' "PER" t)
+                _ -> Speaker t
+--                "PER1" -> PER1
+--                "PER2" -> PER2
+--                s     -> Speaker s
+
+instance CharChains2 SpeakerTag Text  where
+--    show' PER0 = "PERO"
+--    show' PER1 = "PER1"
+--    show' PER2 = "PER2"
+    show' (Speaker n) = "Speaker " <> showT n
 
 -- readSpeakerTag :: Text -> SpeakerTag
 -- readSpeakerTag = readNoteT "readSpeakerTag"
 
-readSpeakerTag :: Text -> SpeakerTag
-readSpeakerTag  t = case t of
-                "PER0" -> PER0
-                "PER1" -> PER1
-                "PER2" -> PER2
-                s     -> Speaker s
-
-instance CharChains2 SpeakerTag Text  where
-    show' PER0 = "PERO"
-    show' PER1 = "PER1"
-    show' PER2 = "PER2"
-    show' (Speaker n) = "Speaker " <> showT n
+--readSpeakerTag :: Text -> SpeakerTag
+--readSpeakerTag  t = case t of
+--                "PER0" -> PER0
+--                "PER1" -> PER1
+--                "PER2" -> PER2
+--                s     -> Speaker s
+--
+--instance CharChains2 SpeakerTag Text  where
+--    show' PER0 = "PERO"
+--    show' PER1 = "PER1"
+--    show' PER2 = "PER2"
+--    show' (Speaker n) = "Speaker " <> showT n
 
 
