@@ -2,7 +2,7 @@
 --
 -- Module      :  Dependency and other Codes
 --
--- |
+-- | use what NLP exports ...
 --
 -----------------------------------------------------------------------------}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -44,7 +44,8 @@ import Uniform.Error
 import qualified Data.Text as T   -- for the code copied from haskell-conll
 import Text.Read (readEither)
 
---import qualified    NLP.Corpora.Conll  as Conll
+import qualified    NLP.Corpora.Conll  as NLP
+import qualified NLP.Types.Tags as NLPtypes
 --import      NLP.Corpora.Conll                   -- from chatter package
 --import      NLP.Corpora.Conll   as Conll
 --import              NLP.Corpora.Conll  hiding (NERTag (..))
@@ -56,6 +57,7 @@ instance Zeros PosTag where zero = Unk zero
 --type Unk = Conll.Unk
 
 type Tag = PosTag   -- TODO
+
 
 isVerbCode :: Tag -> Bool
 isVerbCode v = v `elem` [VB, VBD, VBG, VBN, VBZ, VBP]
@@ -148,34 +150,30 @@ isPOSpunctuation p = p >= Hash && p <= Colon
 instance CharChains2 PosTag Text where
     show' = s2t . show
 
--- the following code is copied from haskell-conll
-parseTag :: Text -> PosTag
-parseTag txt = case readTag txt of
-                   Left  _ -> Unk txt
-                   Right t -> t
-
-readTag :: Text -> ErrOrVal Tag
-readTag "#" = Right Hash
-readTag "$" = Right Dollar
-readTag "(" = Right Op_Paren
-readTag ")" = Right Cl_Paren
-readTag "''" = Right CloseDQuote
-readTag "``" = Right OpenDQuote
-readTag "," = Right Comma
-readTag "." = Right Term
-readTag ":" = Right Colon
-readTag txt =
-  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
-  in  eitherString2Text (readEither $ T.unpack normalized)
-
--- | Order matters here: The patterns are replaced in reverse order
--- when generating tags, and in top-to-bottom when generating tags.
-tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "dollar")
-                 ]
-replaceAll :: [(Text, Text)] -> (Text -> Text)
-replaceAll patterns = foldl (.) id (map (uncurry T.replace) patterns)
-
-eitherString2Text :: Either String Tag -> ErrOrVal Tag
-eitherString2Text (Left a) = Left (s2t a)
-eitherString2Text (Right t) = Right t
+---- the following code is copied from haskell-conll
+--
+--readTag :: Text -> ErrOrVal Tag
+--readTag "#" = Right Hash
+--readTag "$" = Right Dollar
+--readTag "(" = Right Op_Paren
+--readTag ")" = Right Cl_Paren
+--readTag "''" = Right CloseDQuote
+--readTag "``" = Right OpenDQuote
+--readTag "," = Right Comma
+--readTag "." = Right Term
+--readTag ":" = Right Colon
+--readTag txt =
+--  let normalized = replaceAll tagTxtPatterns (T.toUpper txt)
+--  in  eitherString2Text (readEither $ T.unpack normalized)
+--
+---- | Order matters here: The patterns are replaced in reverse order
+---- when generating tags, and in top-to-bottom when generating tags.
+--tagTxtPatterns :: [(Text, Text)]
+--tagTxtPatterns = [ ("$", "dollar")
+--                 ]
+--replaceAll :: [(Text, Text)] -> (Text -> Text)
+--replaceAll patterns = foldl (.) id (map (uncurry T.replace) patterns)
+--
+--eitherString2Text :: Either String Tag -> ErrOrVal Tag
+--eitherString2Text (Left a) = Left (s2t a)
+--eitherString2Text (Right t) = Right t

@@ -36,19 +36,22 @@ module CoreNLP.CoreNLPxml (
             -- , module CoreNLP.DependencyCodes
             ) where
 
---import qualified NLP.Corpora.Conll      as Conll
---import qualified NLP.Types.Tags         as NLP (Tag (..))
+import qualified NLP.Corpora.Conll      as Conll
+import qualified NLP.Types.Tags         as NLP (Tag (..))
+import qualified CoreNLP.POScodesUD         as UD
 import           Uniform.Error
 import           Uniform.FileIO
 import           Uniform.Strings
 
 import           Text.XML.HXT.Core hiding (when)
 
-import           CoreNLP.POScodes
+--import           CoreNLP.POScodes
 import           CoreNLP.Defs0
 -- import CoreNLP.ReadDoc0
 -- import           CoreNLP.DependencyCodes
 import Data.Maybe
+
+type PosTag = Conll.Tag
 
 {-<root>
   <document>
@@ -242,7 +245,7 @@ getToken = atTag "token" >>>
         returnA -< Token0 { tid = mkTokenID i
                         , tlemma = Lemma0   l
                         , tword = Wordform0 w
-                        , tpos = parseTag  p
+                        , tpos = NLP.parseTag  p
                         , tpostt = zero
                         , tner = n ++ n2 -- readNoteT "nertag" n
                         , tspeaker = map readSpeakerTag  s
