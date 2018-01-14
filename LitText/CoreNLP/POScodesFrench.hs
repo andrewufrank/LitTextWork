@@ -44,22 +44,53 @@ import qualified NLP.Types.Tags as NLPtypes
 data POStagFrench =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
---    ADJ | -- adjective
---    ADP | -- adposition
---    ADV | -- adverb
---    AUX | -- auxiliary
---    CCONJ | -- coordinating conjunction
-    DET | -- determiner
---    INTJ | -- interjection
---    NOUN | -- noun
---    NUM | -- numeral
---    PART | -- particle
---    PRON | -- pronoun
---    PROPN | -- proper noun
---    PUNCT | -- punctuation
---    SCONJ | -- subordinating conjunction
---    SYM | -- symbol
---    VERB | -- verb
+    Dollar | -- ^ $
+    Comma  | -- ^ ,
+    Point | -- ^ .
+    OpenBracket |   -- [
+    Dollarpoint | --    $. 	    |   --	0
+    DollaropenBracket | --  $[ 	    |   --	 '
+    Dollarcomma 	    |   --	,
+    ADJA 	    |   --	environs
+    ADJD 	    |   --	I.
+    ADV 	    |   --	que
+    APPO 	    |   --	l'épouse
+    APPR 	    |   --	 --
+    APPRART 	    |   --	 --
+    APZR 	    |   --	avoir
+    ART 	    |   --	DES
+    CARD 	    |   --	XI
+    FM 	    |   --	tous
+    ITJ 	    |   --	oui
+    KON 	    |   --	un
+    KOUS 	    |   --	sous
+    NE 	    |   --	XXII
+    NN 	    |   --	CONCLUSION
+    PDAT 	    |   --	d'analyse
+    PDS 	    |   --	une
+    PIAT 	    |   --	ajouta
+    PIDAT 	    |   --	jeune
+    PIS 	    |   --	aller
+    PPER 	    |   --	du
+    PPOSAT 	    |   --	donner
+    PRELS 	    |   --	qui
+    PRF 	    |   --	café
+    PROAV 	    |   --	d'un
+    PTKANT 	    |   --	avec
+    PTKNEG 	    |   --	net
+    PTKVZ 	    |   --	fort
+    PWAV 	    |   --	dit
+    PWS 	    |   --	mon
+    TRUNC 	    |   --	en
+    VAFIN 	    |   --	C'est
+    VAINF 	    |   --	sein
+    VMFIN 	    |   --	démêlés
+    VVFIN 	    |   --	chrétienne
+    VVIMP 	    |   --	j'
+    VVINF 	    |   --	bien
+    VVIZU 	    |   --	hésitation
+    VVPP 	    |   --	maintenant
+    XY 	    |   --	n
     Frenchunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
@@ -77,7 +108,7 @@ instance NLPtypes.Tag POStagFrench where
     startTag = START
     endTag = END
 
-    isDt tag = tag `elem` [DET]
+    isDt tag = tag `elem` []  -- unknown what is a det here?
 
 instance Arbitrary POStagFrench where
   arbitrary = elements [minBound ..]
@@ -85,14 +116,17 @@ instance Serialize POStagFrench
 
 readTag :: Text -> ErrOrVal POStagFrench
 --readTag "#" = Right Hash
---readTag "$" = Right Dollar
+readTag "$" = Right Dollar
 --readTag "(" = Right Op_Paren
 --readTag ")" = Right Cl_Paren
 --readTag "''" = Right CloseDQuote
 --readTag "``" = Right OpenDQuote
---readTag "," = Right Comma
+readTag "," = Right Comma
+readTag "." = Right Point
 --readTag "." = Right Term
 --readTag ":" = Right Colon
+readTag "[" = Right OpenBracket
+
 readTag txt =
   let normalized = replaceAll tagTxtPatterns (toUpper' txt)
   in  (readOrErr  normalized)
@@ -101,6 +135,8 @@ readTag txt =
 -- when generating tags, and in top-to-bottom when generating tags.
 tagTxtPatterns :: [(Text, Text)]
 tagTxtPatterns = [ ("$", "dollar")
+                   , ("[", "bracket")
+                   , (",", "comma")
                  ]
 
 reversePatterns :: [(Text, Text)]
