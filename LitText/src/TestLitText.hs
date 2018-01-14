@@ -53,7 +53,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, 
 ----import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
 ---------------------- calls 17701
 ----------------
---import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
+import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
 --
 import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
 ---- old

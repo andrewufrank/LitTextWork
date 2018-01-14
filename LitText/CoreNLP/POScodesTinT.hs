@@ -18,6 +18,7 @@
 
 module CoreNLP.POScodesTinT (module CoreNLP.POScodesTinT
 --        , module NLP.Corpora.Conll
+--        , ErrOrVal (..)
         )
          where
 
@@ -127,7 +128,6 @@ replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
 --maybe2errorP Nothing = Left "readTag PosTagTinT 34232"
 --maybe2errorP (Just a) = Right a
 
--- @since 4.6.0.0
 readOrErr :: Read a => Text -> Either Text a
 readOrErr    t = case (readEither (t2s t)) of
                         Left msg -> Left (s2t msg)

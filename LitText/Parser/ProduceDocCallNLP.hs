@@ -68,7 +68,7 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
 
                 case language of
                     English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
-                                            (undef "convertOneSnip2Triples postat":: PosTagConll)
+                                            (undef "convertOneSnip2Triples postat":: POStagConll)
                                             debugNLP showXML textstate snip
                 --                    German -> germanNLP debugNLP showXML sloc text
                 --                    French -> frenchNLP debugNLP showXML sloc text
@@ -104,7 +104,7 @@ class (CharChains2 postag Text) =>  LanguageSpecificNLPcall  langPhantom postag 
 --    italianNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
     -- process an english text snip to a Doc0
 
-instance Docs PosTagConll where
+instance Docs POStagConll where
 
 --    ---- | tests which would call NLP
 --    -- textdescriptor gives server, but lang comes from snip
@@ -150,7 +150,7 @@ instance Docs PosTagConll where
              return zero
                 )
 
-instance LanguageSpecificNLPcall EnglishType PosTagConll where
+instance LanguageSpecificNLPcall EnglishType POStagConll where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
 --    englishNLP debugNLP showXML sloc text = do
@@ -336,17 +336,17 @@ cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 
 
 
-----test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
-----test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
-----test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
-----test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
-----test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
-----test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
-----test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
-----test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
+test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
+test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
+test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
+test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
+test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
+test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
+test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
+test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
 test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
-----test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
-----test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
+test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
+test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
 
 
 -- the result goes to /home/frank/Scratch/NT/LitTest/test (defined in foundation as testNTdir

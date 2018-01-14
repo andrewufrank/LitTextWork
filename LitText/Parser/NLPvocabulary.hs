@@ -37,7 +37,7 @@ nlp = "nlp"::Text
 nlpURItext = gerastreeURI </> "nlp_2015" :: PartURI
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
-          | Pos | WordForm | NerTag | SpeakerTag
+          | Pos | PosOrig | WordForm | NerTag | SpeakerTag
           | DependencyType | Dependency
           | SentenceForm
           | Governor | Dependent | DepWordform

@@ -18,6 +18,7 @@
 
 module CoreNLP.POScodesUD (module CoreNLP.POScodesUD
 --        , module NLP.Corpora.Conll
+        , NLPtypes.Tag(..)
         )
          where
 
@@ -40,7 +41,7 @@ import qualified NLP.Types.Tags as NLPtypes
 --type PosTagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 PosTagEng Text
 
-data PosTagUD =   -- copied from http://universaldependencies.org/u/pos/
+data POStagUD =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
     ADJ | -- adjective
@@ -63,7 +64,7 @@ data PosTagUD =   -- copied from http://universaldependencies.org/u/pos/
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
-instance NLPtypes.Tag PosTagUD where
+instance NLPtypes.Tag POStagUD where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK
@@ -78,11 +79,11 @@ instance NLPtypes.Tag PosTagUD where
 
     isDt tag = tag `elem` [DET]
 
-instance Arbitrary PosTagUD where
+instance Arbitrary POStagUD where
   arbitrary = elements [minBound ..]
-instance Serialize PosTagUD
+instance Serialize POStagUD
 
-readTag :: Text -> ErrOrVal PosTagUD
+readTag :: Text -> ErrOrVal POStagUD
 --readTag "#" = Right Hash
 --readTag "$" = Right Dollar
 --readTag "(" = Right Op_Paren
@@ -105,7 +106,7 @@ tagTxtPatterns = [ ("$", "dollar")
 reversePatterns :: [(Text, Text)]
 reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
 
-showTag :: PosTagUD -> Text
+showTag :: POStagUD -> Text
 --showTag Hash = "#"
 --showTag Op_Paren = "("
 --showTag Cl_Paren = ")"
@@ -120,11 +121,11 @@ showTag tag = replaceAll reversePatterns (s2t $ show tag)
 replaceAll :: [(Text, Text)] -> (Text -> Text)
 replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
 
---readTag :: Text -> ErrOrVal PosTagUD
+--readTag :: Text -> ErrOrVal POStagUD
 --readTag txt = maybe2errorP . read . t2s $ txt
 --
 --maybe2errorP  :: Maybe a -> ErrOrVal a
---maybe2errorP Nothing = Left "readTag PosTagUD 34232"
+--maybe2errorP Nothing = Left "readTag POStagUD 34232"
 --maybe2errorP (Just a) = Right a
 
 -- @since 4.6.0.0
@@ -133,12 +134,12 @@ readOrErr    t = case (readEither (t2s t)) of
                         Left msg -> Left (s2t msg)
                         Right a -> Right a
 
-instance CharChains2 PosTagUD String where
+instance CharChains2 POStagUD String where
     show' =  show
-instance CharChains2 PosTagUD Text where
+instance CharChains2 POStagUD Text where
     show' =  s2t . show
 
-instance Zeros PosTagUD where zero = X
+instance Zeros POStagUD where zero = X
 --type Unk = Conll.Unk
 
 

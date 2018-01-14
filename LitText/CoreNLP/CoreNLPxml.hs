@@ -46,8 +46,8 @@ import Uniform.TestHarness
 
 import qualified NLP.Types.Tags         as NLP (Tag (..))
 import qualified CoreNLP.POScodesUD         as UD
-import  CoreNLP.POScodesUD         (PosTagUD (..))
-import  CoreNLP.POScodesConll         ( PosTagConll(..))
+import  CoreNLP.POScodesUD         (POStagUD (..))
+import  CoreNLP.POScodesConll         ( POStagConll(..))
 import CoreNLP.POScodesTinT   -- italian
 
 import           Uniform.Error
@@ -58,7 +58,7 @@ import           Text.XML.HXT.Core hiding (when)
 
 --import           CoreNLP.POScodes
 import           CoreNLP.Defs0
-import NLP.Corpora.Conll (Tag(..))
+--import NLP.Corpora.Conll (Tag(..))
 -- import CoreNLP.ReadDoc0
 -- import           CoreNLP.DependencyCodes
 import Data.Maybe
@@ -311,19 +311,19 @@ instance (NLP.Tag postag) => ReadDocXML postag where
 parseOne :: (NLP.Tag postag) => postag -> Text -> IO [Doc0 postag]
 parseOne ph text = runX (readString [withValidate no]  (t2s text)
                                     >>> getDoc0 ph)
---parseOnee :: (NLP.Tag PosTagConll) => postag -> Text -> IO [Doc0 PosTagConll]
+--parseOnee :: (NLP.Tag POStagConll) => postag -> Text -> IO [Doc0 POStagConll]
 --parseOnee ph text = runX (readString [withValidate no]  (t2s text)
 --                                    >>> getDoc0x)
 test_xml_0_Engl :: IO ()
 test_xml_0_Engl = do
-        r <-parseOne (undef "xx32" :: PosTagConll) doc001
+        r <-parseOne (undef "xx32" :: POStagConll) doc001
         putIOwords ["test_xml_0_Engl", showT r]
---        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagConll]) r
+--        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 POStagConll]) r
         assertEqual resEng r
 
 test_xml_0_DU :: IO ()
 test_xml_0_DU = do
-        r <-parseOne (undef "xx33" :: PosTagUD) doc001 -- no parse RD is not a UD POS tag. what is it?
+        r <-parseOne (undef "xx33" :: POStagUD) doc001 -- no parse RD is not a UD POS tag. what is it?
         putIOwords ["test_xml_0_DU", showT r]
         assertEqual resUD r
 
@@ -337,7 +337,7 @@ doc001ud ::Text
 --doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
 doc001ud = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>X</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
 
-resEng :: [Doc0 PosTagConll]
+resEng :: [Doc0 POStagConll]
 resEng = [Doc0{docSents =
         [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
                    stoks =
@@ -349,7 +349,7 @@ resEng = [Doc0{docSents =
                    sdeps = Nothing}],
       docCorefs = []}]
 
-resUD :: [Doc0 PosTagUD]
+resUD :: [Doc0 POStagUD]
 resUD = [Doc0{docSents =
                 [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
                   stoks =
@@ -361,8 +361,8 @@ resUD = [Doc0{docSents =
                    sdeps = Nothing}],
       docCorefs = []}]
 
-test_parsePosConll = assertEqual (Unk::PosTagConll)  (NLP.parseTag  "xx")
-test_parsePosUD = assertEqual (X::PosTagUD)  (NLP.parseTag  "xx")
+test_parsePosConll = assertEqual (Unk::POStagConll)  (NLP.parseTag  "xx")
+test_parsePosUD = assertEqual (X::POStagUD)  (NLP.parseTag  "xx")
 
 ----getDoc0 :: _ ->  Doc0 postag
 --getDoc0x   = atTag "document" >>>
