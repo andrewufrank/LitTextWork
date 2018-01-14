@@ -257,6 +257,7 @@ getToken ph = atTag "token" >>>
                         , tlemma = Lemma0   l
                         , tword = Wordform0 w
                         , tpos = (NLP.parseTag  p) `asTypeOf` ph
+                        , tposOrig = p  -- the text received
                         , tpostt = zero
                         , tner = n ++ n2 -- readNoteT "nertag" n
                         , tspeaker = map readSpeakerTag  s
@@ -322,7 +323,7 @@ test_xml_0_Engl = do
 
 test_xml_0_DU :: IO ()
 test_xml_0_DU = do
-        r <-parseOne (undef "xx33" :: PosTagUD) doc001ud  -- no parse RD is not a UD POS tag. what is it?
+        r <-parseOne (undef "xx33" :: PosTagUD) doc001 -- no parse RD is not a UD POS tag. what is it?
         putIOwords ["test_xml_0_DU", showT r]
         assertEqual resUD r
 
@@ -343,6 +344,7 @@ resEng = [Doc0{docSents =
                      [Token0{tid = TokenID0{untid0 = 1},
                              tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
                              tbegin = 0, tend = 2, tpos = Unk, tpostt = "", tner = ["O"],
+                             tposOrig = "RD" ,
                              tspeaker = []}],
                    sdeps = Nothing}],
       docCorefs = []}]
@@ -354,6 +356,7 @@ resUD = [Doc0{docSents =
                      [Token0{tid = TokenID0{untid0 = 1},
                              tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
                              tbegin = 0, tend = 2, tpos = X, tpostt = "", tner = ["O"],
+                             tposOrig = "RD",
                              tspeaker = []}],
                    sdeps = Nothing}],
       docCorefs = []}]

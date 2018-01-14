@@ -89,7 +89,8 @@ data Token0 postag = Token0 { tid :: TokenID0
                     , tword :: Wordform0
                     , tlemma :: Lemma0
                     , tbegin, tend :: Int  -- not used
-                    , tpos :: postag -- is Connl.Tag -- Text -- is Conll.Tag defined ind DependencyCodes -- Penn Treebank
+                    , tpos :: postag --  the pos tag recognized
+                    , tposOrig :: Text -- the pos tag received
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [Text] -- String
                     , tspeaker :: [SpeakerTag] -- Text -- String
