@@ -43,7 +43,7 @@ import  Test.Framework
 --import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 ---------- form snips which go to NLP
 ------
---import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
+import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
     -- calls produceNLPtriples
 --------------    -- makes result  E
 ------

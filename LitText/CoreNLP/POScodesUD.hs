@@ -133,7 +133,10 @@ readOrErr    t = case (readEither (t2s t)) of
                         Left msg -> Left (s2t msg)
                         Right a -> Right a
 
-instance CharChains2 PosTagUD Text
+instance CharChains2 PosTagUD String where
+    show' =  show
+instance CharChains2 PosTagUD Text where
+    show' =  s2t . show
 
 instance Zeros PosTagUD where zero = X
 --type Unk = Conll.Unk
