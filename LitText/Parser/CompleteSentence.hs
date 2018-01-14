@@ -33,7 +33,7 @@ import Uniform.Error
 import Producer.Servers
 import Parser.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
-import CoreNLP.POScodes
+import CoreNLP.POScodesConll
 import BuchCode.BuchToken (LanguageCode(..))
 
 import Uniform.HttpCallWithConduit
@@ -79,13 +79,13 @@ tpostt' f t = t{tpostt = f . tpostt $ t}
 s0 =  Sentence0 {sid = SentID0 {unSentID0 = 1}
 , sparse = "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n"
     , stoks = [Token0 {tid = TokenID0 {untid0 = 1}, tword = Wordform0 {word0 = "Unsere"}
-    , tlemma = Lemma0 {lemma0 = "unsere"}, tbegin = 0, tend = 6, tpos = Unk "test", tpostt = "", tner = ["O"], tspeaker = []}
+    , tlemma = Lemma0 {lemma0 = "unsere"}, tbegin = 0, tend = 6, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
     ,Token0 {tid = TokenID0 {untid0 = 2}, tword = Wordform0 {word0 = "Namen"}, tlemma = Lemma0 {lemma0 = "namen"}
     , tbegin = 7, tend = 12, tpos = NN, tpostt = "", tner = ["O"], tspeaker = []},Token0 {tid = TokenID0 {untid0 = 3}
     , tword = Wordform0 {word0 = "werden"}, tlemma = Lemma0 {lemma0 = "werden"}
-    , tbegin = 13, tend = 19, tpos = Unk "test", tpostt = "", tner = ["O"], tspeaker = []}
+    , tbegin = 13, tend = 19, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
     ,Token0 {tid = TokenID0 {untid0 = 4}, tword = Wordform0 {word0 = "lebendig"}, tlemma = Lemma0 {lemma0 = "lebendig"}
-    , tbegin = 20, tend = 28, tpos = Unk "test", tpostt = "", tner = ["O"], tspeaker = []}]
+    , tbegin = 20, tend = 28, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}]
     , sdeps = Nothing}
 --    ], docCorefs = []
 
@@ -96,7 +96,7 @@ s9 = Sentence0{sid = SentID0{unSentID0 = 1},
             [Token0{tid = TokenID0{untid0 = 1},
                     tword = Wordform0{word0 = "Unsere"},
                     tlemma = Lemma0{lemma0 = "unser"}, tbegin = 0, tend = 6,
-                    tpos = Unk "test", tpostt = "PPOSAT", tner = ["O"], tspeaker = []},
+                    tpos = Unk, tpostt = "PPOSAT", tner = ["O"], tspeaker = []},
              Token0{tid = TokenID0{untid0 = 2},
                     tword = Wordform0{word0 = "Namen"},
                     tlemma = Lemma0{lemma0 = "Name"}, tbegin = 7, tend = 12, tpos = NN,
@@ -104,11 +104,11 @@ s9 = Sentence0{sid = SentID0{unSentID0 = 1},
              Token0{tid = TokenID0{untid0 = 3},
                     tword = Wordform0{word0 = "werden"},
                     tlemma = Lemma0{lemma0 = "werden"}, tbegin = 13, tend = 19,
-                    tpos = Unk "test", tpostt = "VAFIN", tner = ["O"], tspeaker = []},
+                    tpos = Unk, tpostt = "VAFIN", tner = ["O"], tspeaker = []},
              Token0{tid = TokenID0{untid0 = 4},
                     tword = Wordform0{word0 = "lebendig"},
                     tlemma = Lemma0{lemma0 = "lebendig"}, tbegin = 20, tend = 28,
-                    tpos = Unk "test", tpostt = "ADJD", tner = ["O"], tspeaker = []}],
+                    tpos = Unk, tpostt = "ADJD", tner = ["O"], tspeaker = []}],
           sdeps = Nothing}
 --test_complete :: IO ()
 test_complete = do

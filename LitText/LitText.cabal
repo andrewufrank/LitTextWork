@@ -63,7 +63,7 @@ library
         Lines2para.HandleLayout
         CoreNLP.Defs0
         CoreNLP.CoreNLPxml
---        CoreNLP.POScodes
+        CoreNLP.POScodesConll
         CoreNLP.POScodesUD
         CoreNLP.NERcodes
         CoreNLP.DEPcodes

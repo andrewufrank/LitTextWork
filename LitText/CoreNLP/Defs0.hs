@@ -32,7 +32,8 @@ module CoreNLP.Defs0 (
 
 import              Uniform.Strings
 import Uniform.Zero
-import CoreNLP.POScodes
+import CoreNLP.POScodesConll
+import CoreNLP.POScodesUD
 import CoreNLP.NERcodes
 import CoreNLP.DEPcodes
 -- import              Uniform.FileIO

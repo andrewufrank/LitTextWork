@@ -2,7 +2,7 @@
 --
 -- Module      :  Dependency and other Codes
 --
--- | use what NLP exports ...
+-- | use what NLP exports for Conll
 --
 -----------------------------------------------------------------------------}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -15,8 +15,9 @@
         , DeriveAnyClass
         #-}
 
-module CoreNLP.POScodes (module CoreNLP.POScodes
+module CoreNLP.POScodesConll (module CoreNLP.POScodesConll
 --        , module NLP.Corpora.Conll
+        , Conll.Tag(..)
 --
 --        DepCode1(..), DepCode2 (..), DepCode
 --        , isROOT, isPUNCT
@@ -44,8 +45,10 @@ import Uniform.Error
 import qualified Data.Text as T   -- for the code copied from haskell-conll
 import Text.Read (readEither)
 
-import qualified    NLP.Corpora.Conll  as NLP
+import qualified    NLP.Corpora.Conll  as Conll
 import qualified NLP.Types.Tags as NLPtypes
+import NLP.Corpora.Conll (Tag(..))  -- unqualified
+
 --import      NLP.Corpora.Conll                   -- from chatter package
 --import      NLP.Corpora.Conll   as Conll
 --import              NLP.Corpora.Conll  hiding (NERTag (..))
@@ -53,13 +56,13 @@ import qualified NLP.Types.Tags as NLPtypes
 --import qualified    NLP.Corpora.Conll   as NLP (Tag(..))
 --import Safe
 
-instance Zeros PosTag where zero = Unk zero
+instance Zeros PosTagConll where zero = Unk
 --type Unk = Conll.Unk
 
-type Tag = PosTag   -- TODO
+type PosTagConll = Conll.Tag   -- TODO
 
 
-isVerbCode :: Tag -> Bool
+isVerbCode :: PosTagConll -> Bool
 isVerbCode v = v `elem` [VB, VBD, VBG, VBN, VBZ, VBP]
 --         | VB -- ^ Verb, base form
 --         | VBD -- ^ Verb, past tense
@@ -87,7 +90,7 @@ isClosedClass v = not (isNounCode v || isVerbCode v ||  isAdjective v
             || isPunctuation v)
 
 
-coarsePOS :: Tag -> Tag         -- code muss hier sein, weil sonst Tag nicht importiert
+coarsePOS :: PosTagConll -> PosTagConll         -- code muss hier sein, weil sonst Tag nicht importiert
 coarsePOS p | isVerbCode p = VB
             | isNounCode p = NN
             | isAdjective p = JJ
@@ -95,59 +98,59 @@ coarsePOS p | isVerbCode p = VB
             | isPunctuation p = Term  --
             | otherwise = p
 
-data PosTag = START -- ^ START tag, used in training.
-         | END -- ^ END tag, used in training.
-         | Hash -- ^ #
-         | Dollar -- ^ $
-         | CloseDQuote -- ^ ''
-         | OpenDQuote -- ^ ``
-         | Op_Paren -- ^ (
-         | Cl_Paren -- ^ )
-         | Comma -- ^ ,
-         | Term -- ^ . Sentence Terminator
-         | Colon -- ^ :
-         | CC -- ^ Coordinating conjunction
-         | CD -- ^ Cardinal number
-         | DT -- ^ Determiner
-         | EX -- ^ Existential there
-         | FW -- ^ Foreign word
-         | IN -- ^ Preposition or subordinating conjunction
-         | JJ -- ^ Adjective
-         | JJR -- ^ Adjective, comparative
-         | JJS -- ^ Adjective, superlative
-         | LS -- ^ List item marker
-         | MD -- ^ Modal
-         | NN -- ^ Noun, singular or mass
-         | NNS -- ^ Noun, plural
-         | NNP -- ^ Proper noun, singular
-         | NNPS -- ^ Proper noun, plural
-         | PDT -- ^ Predeterminer
-         | POS -- ^ Possessive ending
-         | PRP -- ^ Personal pronoun
-         | PRPdollar -- ^ Possessive pronoun
-         | RB -- ^ Adverb
-         | RBR -- ^ Adverb, comparative
-         | RBS -- ^ Adverb, superlative
-         | RP -- ^ Particle
-         | SYM -- ^ Symbol
-         | TO -- ^ to
-         | UH -- ^ Interjection
-         | VB -- ^ Verb, base form
-         | VBD -- ^ Verb, past tense
-         | VBG -- ^ Verb, gerund or present participle
-         | VBN -- ^ Verb, past participle
-         | VBP -- ^ Verb, non-3rd person singular present
-         | VBZ -- ^ Verb, 3rd person singular present
-         | WDT -- ^ Wh-determiner
-         | WP -- ^ Wh-pronoun
-         | WPdollar -- ^ Possessive wh-pronoun
-         | WRB -- ^ Wh-adverb
-         | Unk Text
-  deriving (Read, Show, Ord, Eq)  -- ,  Bounded, Generic, Enum,
+--data PosTag = START -- ^ START tag, used in training.
+--         | END -- ^ END tag, used in training.
+--         | Hash -- ^ #
+--         | Dollar -- ^ $
+--         | CloseDQuote -- ^ ''
+--         | OpenDQuote -- ^ ``
+--         | Op_Paren -- ^ (
+--         | Cl_Paren -- ^ )
+--         | Comma -- ^ ,
+--         | Term -- ^ . Sentence Terminator
+--         | Colon -- ^ :
+--         | CC -- ^ Coordinating conjunction
+--         | CD -- ^ Cardinal number
+--         | DT -- ^ Determiner
+--         | EX -- ^ Existential there
+--         | FW -- ^ Foreign word
+--         | IN -- ^ Preposition or subordinating conjunction
+--         | JJ -- ^ Adjective
+--         | JJR -- ^ Adjective, comparative
+--         | JJS -- ^ Adjective, superlative
+--         | LS -- ^ List item marker
+--         | MD -- ^ Modal
+--         | NN -- ^ Noun, singular or mass
+--         | NNS -- ^ Noun, plural
+--         | NNP -- ^ Proper noun, singular
+--         | NNPS -- ^ Proper noun, plural
+--         | PDT -- ^ Predeterminer
+--         | POS -- ^ Possessive ending
+--         | PRP -- ^ Personal pronoun
+--         | PRPdollar -- ^ Possessive pronoun
+--         | RB -- ^ Adverb
+--         | RBR -- ^ Adverb, comparative
+--         | RBS -- ^ Adverb, superlative
+--         | RP -- ^ Particle
+--         | SYM -- ^ Symbol
+--         | TO -- ^ to
+--         | UH -- ^ Interjection
+--         | VB -- ^ Verb, base form
+--         | VBD -- ^ Verb, past tense
+--         | VBG -- ^ Verb, gerund or present participle
+--         | VBN -- ^ Verb, past participle
+--         | VBP -- ^ Verb, non-3rd person singular present
+--         | VBZ -- ^ Verb, 3rd person singular present
+--         | WDT -- ^ Wh-determiner
+--         | WP -- ^ Wh-pronoun
+--         | WPdollar -- ^ Possessive wh-pronoun
+--         | WRB -- ^ Wh-adverb
+--         | Unk Text
+--  deriving (Read, Show, Ord, Eq)  -- ,  Bounded, Generic, Enum,
 
 isPOSpunctuation p = p >= Hash && p <= Colon
 
-instance CharChains2 PosTag Text where
+instance CharChains2 PosTagConll Text where
     show' = s2t . show
 
 ---- the following code is copied from haskell-conll

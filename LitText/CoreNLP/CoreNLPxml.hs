@@ -30,7 +30,9 @@
 -- {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE OverloadedStrings         #-}
 {-# LANGUAGE ScopedTypeVariables
-    , UndecidableInstances       #-}
+    , UndecidableInstances
+         , TypeSynonymInstances
+     #-}
 -- {-# LANGUAGE UndecidableInstances      #-}
 
 module CoreNLP.CoreNLPxml (
@@ -44,7 +46,8 @@ import Uniform.TestHarness
 
 import qualified NLP.Types.Tags         as NLP (Tag (..))
 import qualified CoreNLP.POScodesUD         as UD
-import  CoreNLP.POScodesUD         (PosTagUD (..), PosTagEng(..))
+import  CoreNLP.POScodesUD         (PosTagUD (..))
+import  CoreNLP.POScodesConll         ( PosTagConll(..))
 
 import           Uniform.Error
 import           Uniform.FileIO
@@ -54,6 +57,7 @@ import           Text.XML.HXT.Core hiding (when)
 
 --import           CoreNLP.POScodes
 import           CoreNLP.Defs0
+import NLP.Corpora.Conll (Tag(..))
 -- import CoreNLP.ReadDoc0
 -- import           CoreNLP.DependencyCodes
 import Data.Maybe
@@ -305,14 +309,15 @@ instance (NLP.Tag postag) => ReadDocXML postag where
 parseOne :: (NLP.Tag postag) => postag -> Text -> IO [Doc0 postag]
 parseOne ph text = runX (readString [withValidate no]  (t2s text)
                                     >>> getDoc0 ph)
---parseOnee :: (NLP.Tag PosTagEng) => postag -> Text -> IO [Doc0 PosTagEng]
+--parseOnee :: (NLP.Tag PosTagConll) => postag -> Text -> IO [Doc0 PosTagConll]
 --parseOnee ph text = runX (readString [withValidate no]  (t2s text)
 --                                    >>> getDoc0x)
 test_xml_0_Engl :: IO ()
 test_xml_0_Engl = do
-        r <-parseOne (undef "xx32" :: PosTagEng) doc001
+        r <-parseOne (undef "xx32" :: PosTagConll) doc001
         putIOwords ["test_xml_0_Engl", showT r]
-        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagEng]) r
+        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagConll]) r
+        assertEqual resEng r
 
 test_xml_0_DU :: IO ()
 test_xml_0_DU = do
@@ -323,6 +328,17 @@ test_xml_0_DU = do
 doc001 ::Text
 --doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
 doc001 = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
+
+resEng :: [Doc0 PosTagConll]
+resEng = [Doc0{docSents =
+        [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
+                   stoks =
+                     [Token0{tid = TokenID0{untid0 = 1},
+                             tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
+                             tbegin = 0, tend = 2, tpos = Unk, tpostt = "", tner = ["O"],
+                             tspeaker = []}],
+                   sdeps = Nothing}],
+      docCorefs = []}]
 
 ----getDoc0 :: _ ->  Doc0 postag
 --getDoc0x   = atTag "document" >>>

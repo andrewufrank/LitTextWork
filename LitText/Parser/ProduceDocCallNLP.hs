@@ -43,6 +43,7 @@ import Parser.FilterTextForNLP
 import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples (processDoc0toTriples2)
 import CoreNLP.POScodesUD
+import CoreNLP.POScodesConll
 
 data EnglishType  -- should go with all the rest of language defs.
 data GermanType
@@ -66,7 +67,7 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
 
                 case language of
                     English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
-                                            (undef "convertOneSnip2Triples postat":: PosTagEng)
+                                            (undef "convertOneSnip2Triples postat":: PosTagConll)
                                             debugNLP showXML textstate snip
                 --                    German -> germanNLP debugNLP showXML sloc text
                 --                    French -> frenchNLP debugNLP showXML sloc text
@@ -102,7 +103,7 @@ class (CharChains2 postag Text) =>  LanguageSpecificNLPcall  langPhantom postag 
 --    italianNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
     -- process an english text snip to a Doc0
 
-instance Docs PosTagEng where
+instance Docs PosTagConll where
 
 --    ---- | tests which would call NLP
 --    -- textdescriptor gives server, but lang comes from snip
@@ -148,7 +149,7 @@ instance Docs PosTagEng where
              return zero
                 )
 
-instance LanguageSpecificNLPcall EnglishType PosTagEng where
+instance LanguageSpecificNLPcall EnglishType PosTagConll where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
 --    englishNLP debugNLP showXML sloc text = do
