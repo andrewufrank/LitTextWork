@@ -74,7 +74,7 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                 --                    French -> frenchNLP debugNLP showXML sloc text
                 --                    Spanish -> spanishNLP debugNLP showXML sloc text
                     Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
-                                            (undef "convertOneSnip2Triples postat":: PosTagUD)
+                                            (undef "convertOneSnip2Triples postat":: PosTagTinT)
                                             debugNLP showXML textstate snip
                 --                    NoLanguage -> return zero
                     _    -> do
@@ -283,7 +283,7 @@ instance LanguageSpecificNLPcall EnglishType PosTagConll where
 --        return   docs
 
 
-instance LanguageSpecificNLPcall ItalianType PosTagUD where
+instance LanguageSpecificNLPcall ItalianType PosTagTinT where
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
 --    italianNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an italian text snip to a Doc0
