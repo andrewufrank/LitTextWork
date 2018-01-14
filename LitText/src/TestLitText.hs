@@ -43,7 +43,7 @@ import  Test.Framework
 --import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 ---------- form snips which go to NLP
 ------
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
+--import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
     -- calls produceNLPtriples
 --------------    -- makes result  E
 ------
@@ -53,9 +53,11 @@ import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, 
 ----import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
 ---------------------- calls 17701
 ----------------
-import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
 --
-import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
+--import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
+-- tests tp check codes
+import   {-@ HTF_TESTS @-}  CoreNLP.POScodesFrench
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers
 ------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput

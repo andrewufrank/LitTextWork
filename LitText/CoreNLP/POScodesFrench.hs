@@ -35,6 +35,7 @@ import Text.Read (readEither)
 --import qualified NLP.Corpora.Conll      as Conll
 
 import qualified NLP.Types.Tags as NLPtypes
+import  NLP.Types.Tags as NLPtypes (Tag(..))
 --import      NLP.Corpora.Conll
 --import      NLP.Corpora.Conll   as Conll
 
@@ -44,53 +45,53 @@ import qualified NLP.Types.Tags as NLPtypes
 data POStagFrench =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
-    Dollar | -- ^ $
-    Comma  | -- ^ ,
-    Point | -- ^ .
-    OpenBracket |   -- [
-    Dollarpoint | --    $. 	    |   --	0
-    DollaropenBracket | --  $[ 	    |   --	 '
-    Dollarcomma 	    |   --	,
-    ADJA 	    |   --	environs
-    ADJD 	    |   --	I.
-    ADV 	    |   --	que
-    APPO 	    |   --	l'épouse
-    APPR 	    |   --	 --
-    APPRART 	    |   --	 --
-    APZR 	    |   --	avoir
-    ART 	    |   --	DES
-    CARD 	    |   --	XI
-    FM 	    |   --	tous
-    ITJ 	    |   --	oui
-    KON 	    |   --	un
-    KOUS 	    |   --	sous
-    NE 	    |   --	XXII
-    NN 	    |   --	CONCLUSION
-    PDAT 	    |   --	d'analyse
-    PDS 	    |   --	une
-    PIAT 	    |   --	ajouta
-    PIDAT 	    |   --	jeune
-    PIS 	    |   --	aller
-    PPER 	    |   --	du
-    PPOSAT 	    |   --	donner
-    PRELS 	    |   --	qui
-    PRF 	    |   --	café
-    PROAV 	    |   --	d'un
-    PTKANT 	    |   --	avec
-    PTKNEG 	    |   --	net
-    PTKVZ 	    |   --	fort
-    PWAV 	    |   --	dit
-    PWS 	    |   --	mon
-    TRUNC 	    |   --	en
-    VAFIN 	    |   --	C'est
-    VAINF 	    |   --	sein
-    VMFIN 	    |   --	démêlés
-    VVFIN 	    |   --	chrétienne
-    VVIMP 	    |   --	j'
-    VVINF 	    |   --	bien
-    VVIZU 	    |   --	hésitation
-    VVPP 	    |   --	maintenant
-    XY 	    |   --	n
+--    Dollar | -- ^ $
+--    Comma  | -- ^ ,
+--    Point | -- ^ .
+--    OpenBracket |   -- [
+    Dollarpoint | --    $.       |   --	0
+    Dollaropenbracket | --  $[       |   --	 '
+    Dollarcomma  |   --	,
+    ADJA       |   --	environs
+    ADJD       |   --	I.
+    ADV       |   --	que
+    APPO       |   --	l'épouse
+    APPR       |   --	 --
+    APPRART       |   --	 --
+    APZR       |   --	avoir
+    ART       |   --	DES
+    CARD       |   --	XI
+    FM       |   --	tous
+    ITJ       |   --	oui
+    KON       |   --	un
+    KOUS       |   --	sous
+    NE       |   --	XXII
+    NN       |   --	CONCLUSION
+    PDAT       |   --	d'analyse
+    PDS       |   --	une
+    PIAT       |   --	ajouta
+    PIDAT       |   --	jeune
+    PIS       |   --	aller
+    PPER       |   --	du
+    PPOSAT       |   --	donner
+    PRELS       |   --	qui
+    PRF       |   --	café
+    PROAV       |   --	d'un
+    PTKANT       |   --	avec
+    PTKNEG       |   --	net
+    PTKVZ       |   --	fort
+    PWAV       |   --	dit
+    PWS       |   --	mon
+    TRUNC       |   --	en
+    VAFIN       |   --	C'est
+    VAINF       |   --	sein
+    VMFIN       |   --	démêlés
+    VVFIN       |   --	chrétienne
+    VVIMP       |   --	j'
+    VVINF       |   --	bien
+    VVIZU       |   --	hésitation
+    VVPP       |   --	maintenant
+    XY       |   --	n
     Frenchunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
@@ -116,16 +117,16 @@ instance Serialize POStagFrench
 
 readTag :: Text -> ErrOrVal POStagFrench
 --readTag "#" = Right Hash
-readTag "$" = Right Dollar
+--readTag "$" = Right Dollar
 --readTag "(" = Right Op_Paren
 --readTag ")" = Right Cl_Paren
 --readTag "''" = Right CloseDQuote
 --readTag "``" = Right OpenDQuote
-readTag "," = Right Comma
-readTag "." = Right Point
+--readTag "," = Right Comma
+--readTag "." = Right Point
 --readTag "." = Right Term
 --readTag ":" = Right Colon
-readTag "[" = Right OpenBracket
+--readTag "[" = Right Openbracket
 
 readTag txt =
   let normalized = replaceAll tagTxtPatterns (toUpper' txt)
@@ -134,9 +135,12 @@ readTag txt =
 -- | Order matters here: The patterns are replaced in reverse order
 -- when generating tags, and in top-to-bottom when generating tags.
 tagTxtPatterns :: [(Text, Text)]
-tagTxtPatterns = [ ("$", "dollar")
-                   , ("[", "bracket")
+tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first position, capitalize
+                                        -- better solution is probably to use toUpper
+                                        -- and define DOLLARPOINT etc.
+                   , ("[", "openbracket")
                    , (",", "comma")
+                   , (".", "point")
                  ]
 
 reversePatterns :: [(Text, Text)]
@@ -177,5 +181,14 @@ instance CharChains2 POStagFrench Text where
 instance Zeros POStagFrench where zero = NLPtypes.tagUNK
 --type Unk = Conll.Unk
 
+test_french_tag1 :: IO ()
+test_french_tag1 = assertEqual (Dollaropenbracket::POStagFrench) (parseTag "$["::POStagFrench)
+test_french_tag2 :: IO ()
+test_french_tag2 = assertEqual (Dollarpoint::POStagFrench) (parseTag "$."::POStagFrench)
+test_french_tag3 :: IO ()
+test_french_tag3 = assertEqual (Dollarcomma::POStagFrench) (parseTag "$,"::POStagFrench)
+test_french_tag4 :: IO ()
+test_french_tag4 = assertEqual (VVINF::POStagFrench) (parseTag "VVINF"::POStagFrench)
 
-
+test_french_tagR :: IO ()
+test_french_tagR = assertEqual ("Dollaropenbracket"::Text) (replaceAll tagTxtPatterns (toUpper'   "$[")::Text)
