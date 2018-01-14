@@ -41,7 +41,7 @@ import qualified NLP.Types.Tags as NLPtypes
 --type PosTagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 PosTagEng Text
 
-data PosTagTinT =   -- copied from http://universaldependencies.org/u/pos/
+data POStagTinT =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
 --    ADJ | -- adjective
@@ -64,7 +64,7 @@ data PosTagTinT =   -- copied from http://universaldependencies.org/u/pos/
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
-instance NLPtypes.Tag PosTagTinT where
+instance NLPtypes.Tag POStagTinT where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK
@@ -79,11 +79,11 @@ instance NLPtypes.Tag PosTagTinT where
 
     isDt tag = tag `elem` [DET]
 
-instance Arbitrary PosTagTinT where
+instance Arbitrary POStagTinT where
   arbitrary = elements [minBound ..]
-instance Serialize PosTagTinT
+instance Serialize POStagTinT
 
-readTag :: Text -> ErrOrVal PosTagTinT
+readTag :: Text -> ErrOrVal POStagTinT
 --readTag "#" = Right Hash
 --readTag "$" = Right Dollar
 --readTag "(" = Right Op_Paren
@@ -106,7 +106,7 @@ tagTxtPatterns = [ ("$", "dollar")
 reversePatterns :: [(Text, Text)]
 reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
 
-showTag :: PosTagTinT -> Text
+showTag :: POStagTinT -> Text
 --showTag Hash = "#"
 --showTag Op_Paren = "("
 --showTag Cl_Paren = ")"
@@ -121,11 +121,11 @@ showTag tag = replaceAll reversePatterns (s2t $ show tag)
 replaceAll :: [(Text, Text)] -> (Text -> Text)
 replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
 
---readTag :: Text -> ErrOrVal PosTagTinT
+--readTag :: Text -> ErrOrVal POStagTinT
 --readTag txt = maybe2errorP . read . t2s $ txt
 --
 --maybe2errorP  :: Maybe a -> ErrOrVal a
---maybe2errorP Nothing = Left "readTag PosTagTinT 34232"
+--maybe2errorP Nothing = Left "readTag POStagTinT 34232"
 --maybe2errorP (Just a) = Right a
 
 readOrErr :: Read a => Text -> Either Text a
@@ -133,12 +133,12 @@ readOrErr    t = case (readEither (t2s t)) of
                         Left msg -> Left (s2t msg)
                         Right a -> Right a
 
-instance CharChains2 PosTagTinT String where
+instance CharChains2 POStagTinT String where
     show' =  show
-instance CharChains2 PosTagTinT Text where
+instance CharChains2 POStagTinT Text where
     show' =  s2t . show
 
-instance Zeros PosTagTinT where zero = NLPtypes.tagUNK
+instance Zeros POStagTinT where zero = NLPtypes.tagUNK
 --type Unk = Conll.Unk
 
 

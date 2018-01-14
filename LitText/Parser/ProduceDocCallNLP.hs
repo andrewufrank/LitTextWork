@@ -79,11 +79,14 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                     German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
                                             (undef "convertOneSnip2Triples postat":: POStagGerman)
                                             debugNLP showXML textstate snip
-                --                    German -> germanNLP debugNLP showXML sloc text
-                --                    French -> frenchNLP debugNLP showXML sloc text
-                --                    Spanish -> spanishNLP debugNLP showXML sloc text
                     Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
-                                            (undef "convertOneSnip2Triples postat":: PosTagTinT)
+                                            (undef "convertOneSnip2Triples postat":: POStagTinT)
+                                            debugNLP showXML textstate snip
+                    French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
+                                            (undef "convertOneSnip2Triples postat":: POStagFrench)
+                                            debugNLP showXML textstate snip
+                    Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
+                                            (undef "convertOneSnip2Triples postat":: POStagSpanish)
                                             debugNLP showXML textstate snip
                 --                    NoLanguage -> return zero
                     _    -> do
@@ -298,7 +301,7 @@ instance LanguageSpecificNLPcall SpanishType POStagSpanish where
         return trips
 
 
-instance LanguageSpecificNLPcall ItalianType PosTagTinT where
+instance LanguageSpecificNLPcall ItalianType POStagTinT where
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
 --    italianNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an italian text snip to a Doc0
