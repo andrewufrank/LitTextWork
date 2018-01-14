@@ -104,16 +104,8 @@ class Docs postag where
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
 
-----    ---- | tests which calls NLP
---    testOP_DA_E :: TextDescriptor -> [Snip]-> ErrIO [Triple]  --   [(NLPtext,[Doc0])]
-
 class (CharChains2 postag Text) =>  LanguageSpecificNLPcall  langPhantom postag where
     snip2triples2 :: langPhantom -> postag -> Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple] -- (Doc0 postag)
---    englishNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
---    germanNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
---    frenchNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
---    spanishNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
---    italianNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
     -- process an english text snip to a Doc0
 
 instance (Tag postag) => Docs postag where
@@ -172,7 +164,7 @@ instance LanguageSpecificNLPcall EnglishType POStagConll where
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, (docs))
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
 
         return trips
 
@@ -186,7 +178,7 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
 --    germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an german text snip to a Doc0
 --    germanNLP debugNLP showXML sloc text = do
-        let varsGer =  [("outputFormat", Just "xml"),
+        let vars =  [("outputFormat", Just "xml"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
         when debugNLP $ putIOwords ["germanNLP text", showT  $ tz3text snip]
@@ -199,7 +191,7 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
     --                            then [ text2]
     --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) varsGer  text2
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) vars  text2
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let sents1 = docSents docs
@@ -208,7 +200,7 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
 
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, docs2)
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, docs2)
 
         return trips
 
@@ -258,7 +250,7 @@ instance LanguageSpecificNLPcall FrenchType POStagFrench where
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, (docs))
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
 
         return trips
 --
@@ -296,7 +288,7 @@ instance LanguageSpecificNLPcall SpanishType POStagSpanish where
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, (docs))
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
 
         return trips
 
@@ -323,7 +315,7 @@ instance LanguageSpecificNLPcall ItalianType POStagTinT where
             when debugNLP $ putIOwords ["italianNLP doc", showT docs]
 --
             let snipnr = 1 -- TODO
-            let trips = processDoc0toTriples2 textstate Italian (tz3para $ snip) (snipnr, (docs))
+            let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
             when debugNLP $ putIOwords ["italianNLP end", showT trips]
 
             return trips
