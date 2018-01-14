@@ -22,6 +22,8 @@
 -- limit: the descriptions are local (just reading the xml)
 -- produces sent files, which are just the Defs0
 -----------------------------------------------------------------------------
+{-# OPTIONS_GHC -F -pgmF htfpp #-}
+
 {-# LANGUAGE Arrows                    #-}
 {-# LANGUAGE FlexibleContexts          #-}
 {-# LANGUAGE FlexibleInstances         #-}
@@ -36,6 +38,9 @@ module CoreNLP.CoreNLPxml (
             , module CoreNLP.Defs0
             -- , module CoreNLP.DependencyCodes
             ) where
+
+import           Test.Framework
+import Uniform.TestHarness
 
 import qualified NLP.Types.Tags         as NLP (Tag (..))
 import qualified CoreNLP.POScodesUD         as UD
@@ -282,7 +287,7 @@ instance (NLP.Tag postag) => ReadDocXML postag where
                                     >>> getDoc0 ph)
         when showXML $ do
               putIOwords ["the xml formated"]
-              error "readDocString with showXLM true"
+--              error "readDocString with showXLM true - intentional stop in corenlpxml.hs line285"
               res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
                                                 >>> indentDoc
               putIOwords  $ map s2t res
@@ -297,3 +302,34 @@ instance (NLP.Tag postag) => ReadDocXML postag where
                             return doc2
                 -- error in case of 0
 
+parseOne :: (NLP.Tag postag) => postag -> Text -> IO [Doc0 postag]
+parseOne ph text = runX (readString [withValidate no]  (t2s text)
+                                    >>> getDoc0 ph)
+--parseOnee :: (NLP.Tag PosTagEng) => postag -> Text -> IO [Doc0 PosTagEng]
+--parseOnee ph text = runX (readString [withValidate no]  (t2s text)
+--                                    >>> getDoc0x)
+test_xml_0_Engl :: IO ()
+test_xml_0_Engl = do
+        r <-parseOne (undef "xx32" :: PosTagEng) doc001
+        putIOwords ["test_xml_0_Engl", showT r]
+        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagEng]) r
+
+test_xml_0_DU :: IO ()
+test_xml_0_DU = do
+        r <-parseOne (undef "xx32" :: PosTagUD) doc001  -- no parse RD is not a UD POS tag. what is it?
+        putIOwords ["test_xml_0_DU", showT r]
+        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagUD]) r
+
+doc001 ::Text
+--doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
+doc001 = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
+
+----getDoc0 :: _ ->  Doc0 postag
+--getDoc0x   = atTag "document" >>>
+--    proc x -> do
+----        s <- getSentences ph  -< x
+----        c <- getCoref0' -< x
+--        returnA -< Doc0 [] []
+----      where getCoref0' = (getCoref0)  `orElse` (arr (const []))
+
+-- ende
