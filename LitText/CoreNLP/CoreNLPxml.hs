@@ -46,9 +46,9 @@ import Uniform.TestHarness
 
 import qualified NLP.Types.Tags         as NLP (Tag (..))
 import qualified CoreNLP.POScodesUD         as UD
-import  CoreNLP.POScodesUD         (POStagUD (..))
+import  CoreNLP.POScodesUD        as UD  (POStagUD (..))
 import  CoreNLP.POScodesConll         ( POStagConll(..))
-import CoreNLP.POScodesTinT   -- italian
+import CoreNLP.POScodesTinT   as TinT -- italian
 import        CoreNLP.POScodesGerman
 import CoreNLP.POScodesSpanish
 import        CoreNLP.POScodesFrench
@@ -358,14 +358,14 @@ resUD = [Doc0{docSents =
                   stoks =
                      [Token0{tid = TokenID0{untid0 = 1},
                              tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
-                             tbegin = 0, tend = 2, tpos = X, tpostt = "", tner = ["O"],
+                             tbegin = 0, tend = 2, tpos = UD.X, tpostt = "", tner = ["O"],
                              tposOrig = "RD",
                              tspeaker = []}],
                    sdeps = Nothing}],
       docCorefs = []}]
 
 test_parsePosConll = assertEqual (Unk::POStagConll)  (NLP.parseTag  "xx")
-test_parsePosUD = assertEqual (X::POStagUD)  (NLP.parseTag  "xx")
+test_parsePosUD = assertEqual (UD.X::POStagUD)  (NLP.parseTag  "xx")
 
 ----getDoc0 :: _ ->  Doc0 postag
 --getDoc0x   = atTag "document" >>>

@@ -44,23 +44,51 @@ import qualified NLP.Types.Tags as NLPtypes
 data POStagTinT =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
---    ADJ | -- adjective
---    ADP | -- adposition
---    ADV | -- adverb
---    AUX | -- auxiliary
---    CCONJ | -- coordinating conjunction
-    DET | -- determiner
---    INTJ | -- interjection
---    NOUN | -- noun
---    NUM | -- numeral
---    PART | -- particle
---    PRON | -- pronoun
---    PROPN | -- proper noun
---    PUNCT | -- punctuation
---    SCONJ | -- subordinating conjunction
---    SYM | -- symbol
---    VERB | -- verb
-    TinTunk  -- other  -- conflicts possible!
+    A         | --	felice
+    AP         | --	nostro
+    B         | --	domani
+    BplusPC         | --	eccolo
+    BN         | --	non
+    CC         | --	e
+    CS         | --	che
+    DD         | --	quel
+    DE         | --	che
+    DI         | --	ogni
+    DQ         | --	che
+    DR         | --	cui
+    E         | --	a
+    EplusRD         | --	dalla
+    FB         | --	 -
+    FC         | --	 ;
+    FF         | --	 -
+    FS         | --	 ?
+    I         | --	Oh
+    N         | --	Sei
+    NO         | --	ultima
+    PC         | --	ti
+    PCplusPC         | --	gliele
+    PD         | --	quello
+    PE         | --	Noi
+    PI         | --	tutto
+    PP         | --	mio
+    PQ         | --	Che
+    PR         | --	Che
+    RD         | --	il   -- RD?
+    RI         | --	una
+    S         | --	nutrice
+    SP         | --	FULVIA
+    SW         | --	grand'
+    T         | --	tutti
+    V         | --	vedere
+    VplusPC         | --	avervi
+    VplusPCplusPC         | --	occuparsene
+    VA         | --	 è
+    VAplusPC         | --	averlo
+    VM         | --	volevo
+    VMplusPC         | --	poterci
+    VMplusPCplusPC         | --	sferrarsene
+    X          --	FINE
+--    TinTunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
@@ -70,14 +98,14 @@ instance NLPtypes.Tag POStagTinT where
                    Left  _ -> NLPtypes.tagUNK
                    Right t -> t
 
-    tagUNK = TinTunk
+    tagUNK = X
 
     tagTerm = showTag
 
     startTag = START
     endTag = END
 
-    isDt tag = tag `elem` [DET]
+    isDt tag = tag `elem` [RD]
 
 instance Arbitrary POStagTinT where
   arbitrary = elements [minBound ..]
@@ -101,6 +129,7 @@ readTag txt =
 -- when generating tags, and in top-to-bottom when generating tags.
 tagTxtPatterns :: [(Text, Text)]
 tagTxtPatterns = [ ("$", "dollar")
+                   , ("+", "plus")
                  ]
 
 reversePatterns :: [(Text, Text)]
