@@ -48,6 +48,7 @@ import qualified NLP.Types.Tags         as NLP (Tag (..))
 import qualified CoreNLP.POScodesUD         as UD
 import  CoreNLP.POScodesUD         (PosTagUD (..))
 import  CoreNLP.POScodesConll         ( PosTagConll(..))
+import CoreNLP.POScodesTinT   -- italian
 
 import           Uniform.Error
 import           Uniform.FileIO

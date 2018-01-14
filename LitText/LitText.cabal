@@ -65,6 +65,8 @@ library
         CoreNLP.CoreNLPxml
         CoreNLP.POScodesConll
         CoreNLP.POScodesUD
+        CoreNLP.POScodesTinT
+            -- italian
         CoreNLP.NERcodes
         CoreNLP.DEPcodes
         BuchCode.BuchToken

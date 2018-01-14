@@ -43,7 +43,8 @@ import Parser.FilterTextForNLP
 import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples (processDoc0toTriples2)
 import CoreNLP.POScodesUD
-import CoreNLP.POScodesConll
+import CoreNLP.POScodesConll  -- Conll for english
+import CoreNLP.POScodesTinT   -- for italian
 
 data EnglishType  -- should go with all the rest of language defs.
 data GermanType
