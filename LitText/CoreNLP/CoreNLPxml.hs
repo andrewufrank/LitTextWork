@@ -49,6 +49,9 @@ import qualified CoreNLP.POScodesUD         as UD
 import  CoreNLP.POScodesUD         (POStagUD (..))
 import  CoreNLP.POScodesConll         ( POStagConll(..))
 import CoreNLP.POScodesTinT   -- italian
+import        CoreNLP.POScodesGerman
+import CoreNLP.POScodesSpanish
+import        CoreNLP.POScodesFrench
 
 import           Uniform.Error
 import           Uniform.FileIO

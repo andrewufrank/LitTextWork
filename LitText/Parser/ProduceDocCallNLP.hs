@@ -13,7 +13,8 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables
     ,TypeSynonymInstances
-    , MultiParamTypeClasses #-}
+    , MultiParamTypeClasses
+    , UndecidableInstances #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
@@ -46,6 +47,11 @@ import CoreNLP.POScodesUD
 import CoreNLP.POScodesConll  -- Conll for english
 import CoreNLP.POScodesTinT   -- for italian
 
+import        CoreNLP.POScodesGerman
+import        CoreNLP.POScodesSpanish
+import        CoreNLP.POScodesFrench
+
+
 data EnglishType  -- should go with all the rest of language defs.
 data GermanType
 data FrenchType
@@ -69,6 +75,9 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                 case language of
                     English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
                                             (undef "convertOneSnip2Triples postat":: POStagConll)
+                                            debugNLP showXML textstate snip
+                    German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
+                                            (undef "convertOneSnip2Triples postat":: POStagGerman)
                                             debugNLP showXML textstate snip
                 --                    German -> germanNLP debugNLP showXML sloc text
                 --                    French -> frenchNLP debugNLP showXML sloc text
@@ -104,20 +113,7 @@ class (CharChains2 postag Text) =>  LanguageSpecificNLPcall  langPhantom postag 
 --    italianNLP :: langPhantom-> Bool -> Bool -> URI -> Text -> ErrIO (Doc0 postag)
     -- process an english text snip to a Doc0
 
-instance Docs POStagConll where
-
---    ---- | tests which would call NLP
---    -- textdescriptor gives server, but lang comes from snip
-----    testOP_C_E :: TextDescriptor -> [Snip]-> ErrIO [Doc0]  --   [(NLPtext,[Doc0])]
---    testOP_C_E resultXA resultDAfile = do
---        let sloc = nlpServer  resultXA
---
---        res <-  mapM (snip2doc False   False sloc) resultDAfile
---        -- the secnd bool controls the rendering of the xml file
---    --    putIOwords ["testOP_C_E",  "result:\n",  showT res ] -- " showT msg])
---        -- leave in to force processing and continous output
---        return res
---
+instance (Tag postag) => Docs postag where
 
 
 --    convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
@@ -179,27 +175,40 @@ instance LanguageSpecificNLPcall EnglishType POStagConll where
 
 
 
---instance LanguageSpecificNLPcall GermanType PosTagUD where
-----    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an english text snip to a Doc0
-----    englishNLP debugNLP showXML sloc text = do
---    snip2triples2 _ debugNLP showXML sloc text = do
-----    germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an german text snip to a Doc0
-----    germanNLP debugNLP showXML sloc text = do
---        let varsGer =  [("outputFormat", Just "xml"),
---                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
---                                        ]
---        when debugNLP $ putIOwords ["germanNLP text", showT text]
---
---        let text2 = cleanTextGerman  text
---
---    --            let texts = getPiece . textSplit $ text2
---    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
---    --                            then [ text2]
---    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
---
---        doc0 <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9001 ) varsGer  text2
+instance LanguageSpecificNLPcall GermanType POStagGerman where
+--    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+    -- process an english text snip to a Doc0
+--    englishNLP debugNLP showXML sloc text = do
+    snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
+--    germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+    -- process an german text snip to a Doc0
+--    germanNLP debugNLP showXML sloc text = do
+        let varsGer =  [("outputFormat", Just "xml"),
+                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                        ]
+        when debugNLP $ putIOwords ["germanNLP text", showT  $ tz3text snip]
+
+        let text2 = cleanTextGerman $  tz3text snip
+        let sloc = nlpServer textstate
+
+    --            let texts = getPiece . textSplit $ text2
+    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+    --                            then [ text2]
+    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) varsGer  text2
+        when debugNLP $ putIOwords ["englishNLP end", showT text2]
+--        let docs2 = docs `asTypeOf` doc0Phantom
+        let sents1 = docSents docs
+        sents2 <- mapM (completeSentence False (addPort2URI sloc 17701 ) ) sents1
+        let docs2 = docs{docSents = sents2}
+
+        let snipnr = 1 -- TODO
+
+        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, docs2)
+
+        return trips
+
 --    --            when False $ putIOwords ["germanNLP parse"
 --    --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
 --    --  corenlp does not lemmatize, use lemmatize service
@@ -212,75 +221,81 @@ instance LanguageSpecificNLPcall EnglishType POStagConll where
 --        return   doc0'
 
 --
---instance LanguageSpecificNLPcall FrenchType PosTag where
-----    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an english text snip to a Doc0
-----    englishNLP debugNLP showXML sloc text = do
---    processLanguageSpecificNLP debugNLP showXML sloc text = do
+instance LanguageSpecificNLPcall FrenchType POStagFrench where
+--    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+    -- process an english text snip to a Doc0
+--    englishNLP debugNLP showXML sloc text = do
+    snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
+
+--    frenchNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+    -- process an french text snip to a Doc0
+--    frenchNLP debugNLP showXML sloc text = do
+        let vars  =  [("outputFormat", Just "xml")
+                , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
+    --        --                                    coref -coref.algorithm neural")
+    --        -- perhaps the nerual algorithm is better, but creates problems
+    --        -- with the xml doc received (starts with C?
+    --        --                                        dcoref,coref")
+    --                --                    --  coref, verlangt depparse,
+    --                                    ,
+
+                                        ]
+        when debugNLP $ putIOwords ["frenchNLP text", showT  $ tz3text snip]
+
+        let text2 = cleanTextFrench  $  tz3text snip
+        let sloc = nlpServer textstate
+
+    --            let texts = getPiece . textSplit $ text2
+    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+    --                            then [ text2]
+    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) vars  text2
+        when debugNLP $ putIOwords ["englishNLP end", showT text2]
+--        let docs2 = docs `asTypeOf` doc0Phantom
+        let snipnr = 1 -- TODO
+
+        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, (docs))
+
+        return trips
 --
-----    frenchNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an french text snip to a Doc0
-----    frenchNLP debugNLP showXML sloc text = do
---        let varsEng =  [("outputFormat", Just "xml")
---                , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
---    --        --                                    coref -coref.algorithm neural")
---    --        -- perhaps the nerual algorithm is better, but creates problems
---    --        -- with the xml doc received (starts with C?
---    --        --                                        dcoref,coref")
---    --                --                    --  coref, verlangt depparse,
---    --                                    ,
 --
---                                        ]
---        when debugNLP $ putIOwords ["frenchNLP text", showT text]
---
---        let text2 = cleanTextFrench  text
---
---    --            let texts = getPiece . textSplit $ text2
---    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
---    --                            then [ text2]
---    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
---
---        docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9003) varsEng  text2
---    --            when False $ putIOwords ["frenchNLP parse"
---    --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
---        when debugNLP $ putIOwords ["frenchNLP end", showT text2]
---
---        return   docs
---
---
---instance LanguageSpecificNLPcall SpanishType PosTag where
-----    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an english text snip to a Doc0
-----    englishNLP debugNLP showXML sloc text = do
---    processLanguageSpecificNLP debugNLP showXML sloc text = do
-----    spanishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an spanish text snip to a Doc0
-----    spanishNLP debugNLP showXML sloc text = do
---        let varsEng =  [("outputFormat", Just "xml")
---                , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
---    --        --                                    coref -coref.algorithm neural")
---    --        -- perhaps the nerual algorithm is better, but creates problems
---    --        -- with the xml doc received (starts with C?
---    --        --                                        dcoref,coref")
---    --                --                    --  coref, verlangt depparse,
---    --                                    ,
---    --                                    ("outputFormat", Just "xml")
---                                        ]
---        when debugNLP $ putIOwords ["spanishNLP text", showT text]
---
---        let text2 = cleanTextspanish  text
---
---    --            let texts = getPiece . textSplit $ text2
---    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
---    --                            then [ text2]
---    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
---
---        docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9004) varsEng  text2
---    --            when False $ putIOwords ["spanishNLP parse"
---    --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
---        when debugNLP $ putIOwords ["spanishNLP end", showT text2]
---
---        return   docs
+instance LanguageSpecificNLPcall SpanishType POStagSpanish where
+--    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+    -- process an english text snip to a Doc0
+--    englishNLP debugNLP showXML sloc text = do
+    snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
+--    spanishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
+    -- process an spanish text snip to a Doc0
+--    spanishNLP debugNLP showXML sloc text = do
+        let vars =  [("outputFormat", Just "xml")
+                , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
+    --        --                                    coref -coref.algorithm neural")
+    --        -- perhaps the nerual algorithm is better, but creates problems
+    --        -- with the xml doc received (starts with C?
+    --        --                                        dcoref,coref")
+    --                --                    --  coref, verlangt depparse,
+    --                                    ,
+    --                                    ("outputFormat", Just "xml")
+                                        ]
+        when debugNLP $ putIOwords ["spanishNLP text", showT  $ tz3text snip]
+
+        let text2 = cleanTextspanish  $  tz3text snip
+        let sloc = nlpServer textstate
+
+    --            let texts = getPiece . textSplit $ text2
+    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
+    --                            then [ text2]
+    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
+
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) vars  text2
+        when debugNLP $ putIOwords ["englishNLP end", showT text2]
+--        let docs2 = docs `asTypeOf` doc0Phantom
+        let snipnr = 1 -- TODO
+
+        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, (docs))
+
+        return trips
 
 
 instance LanguageSpecificNLPcall ItalianType PosTagTinT where
@@ -336,17 +351,17 @@ cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 
 
 
-test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
-test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
-test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
-test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
-test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
-test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
-test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
-test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
+--test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
+--test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
+--test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
+--test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
+--test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
+--test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
+--test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
+--test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
 test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
-test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
-test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
+--test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
+--test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
 
 
 -- the result goes to /home/frank/Scratch/NT/LitTest/test (defined in foundation as testNTdir
