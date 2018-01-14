@@ -50,7 +50,7 @@ import CoreNLP.Defs0
 import Parser.NLPvocabulary
 --import CoreNLP.CoreNLPxml (readDocString)
 import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
-import Parser.ProduceDocCallNLP
+--import Parser.ProduceDocCallNLP
 import Parser.TextDescriptor
 import Parser.ProduceLayout (buchURIx)
 

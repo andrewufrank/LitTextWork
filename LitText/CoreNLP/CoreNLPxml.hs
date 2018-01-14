@@ -27,7 +27,8 @@
 {-# LANGUAGE FlexibleInstances         #-}
 -- {-# LANGUAGE NoMonomorphismRestriction #-}
 {-# LANGUAGE OverloadedStrings         #-}
-{-# LANGUAGE ScopedTypeVariables       #-}
+{-# LANGUAGE ScopedTypeVariables
+    , UndecidableInstances       #-}
 -- {-# LANGUAGE UndecidableInstances      #-}
 
 module CoreNLP.CoreNLPxml (
@@ -36,9 +37,10 @@ module CoreNLP.CoreNLPxml (
             -- , module CoreNLP.DependencyCodes
             ) where
 
-import qualified NLP.Corpora.Conll      as Conll
 import qualified NLP.Types.Tags         as NLP (Tag (..))
 import qualified CoreNLP.POScodesUD         as UD
+import  CoreNLP.POScodesUD         (PosTagUD (..), PosTagEng(..))
+
 import           Uniform.Error
 import           Uniform.FileIO
 import           Uniform.Strings
@@ -51,7 +53,6 @@ import           CoreNLP.Defs0
 -- import           CoreNLP.DependencyCodes
 import Data.Maybe
 
-type PosTag = Conll.Tag
 
 {-<root>
   <document>
@@ -106,7 +107,7 @@ atTag tag = deep (isElem >>> hasName (t2s tag))
 
 --text :: XmlTree->  String
 -- ^ get the children from this point
-text = getChildren >>> getText >>> arr (s2t)
+text = getChildren >>> getText >>> arr s2t
 
 getAttrValueT t = getAttrValue (t2s t) >>> arr s2t
 
@@ -169,23 +170,23 @@ getDependencyType = atTag "dependencies" >>>
         returnA -< DependenceType0 t ds
 
 
---getDoc0 :: _ ->  Doc0
-getDoc0 = atTag "document" >>>
+--getDoc0 :: _ ->  Doc0 postag
+getDoc0 ph = atTag "document" >>>
     proc x -> do
-        s <- getSentences -< x
+        s <- getSentences ph  -< x
         c <- getCoref0' -< x
         returnA -< Doc0 s c
       where getCoref0' = (getCoref0)  `orElse` (arr (const []))
 
-getSentences = atTag "sentences" >>>
+getSentences ph = atTag "sentences" >>>
     proc x -> do
-        st <- listA getSentence -< x
+        st <- listA (getSentence ph)-< x
         returnA -<   st
 
-getSentence = atTag "sentence" >>>
+getSentence ph = atTag "sentence" >>>
     proc x -> do
         i <- getAttrValueT "id" -< x
-        tks <- getTokens -< x
+        tks <- getTokens ph -< x
 --        ps <- text <<< atTag "parse" -< x
         ps <- getParse' -< x
         deps <- listA getDependencyType -< x
@@ -203,9 +204,9 @@ getSentence = atTag "sentence" >>>
 --
 --singleton a = [a]
 
-getTokens = atTag "tokens" >>>
+getTokens ph = atTag "tokens" >>>
     proc x -> do
-        ts <- listA getToken -< x
+        ts <- listA (getToken ph) -< x
         returnA -< ts
 
 
@@ -230,7 +231,7 @@ getTokens = atTag "tokens" >>>
 --          </token>
 --        </tokens>
 
-getToken = atTag "token" >>>
+getToken ph = atTag "token" >>>
     proc x -> do
         i <- getAttrValueT "id" -<  x
         w <- text <<< atTag "word" -< x
@@ -245,7 +246,7 @@ getToken = atTag "token" >>>
         returnA -< Token0 { tid = mkTokenID i
                         , tlemma = Lemma0   l
                         , tword = Wordform0 w
-                        , tpos = NLP.parseTag  p
+                        , tpos = (NLP.parseTag  p) `asTypeOf` ph
                         , tpostt = zero
                         , tner = n ++ n2 -- readNoteT "nertag" n
                         , tspeaker = map readSpeakerTag  s
@@ -268,59 +269,31 @@ getSpeaker = atTag "Speaker" >>>
         nx <- text -< x
         returnA -< nx
 
+class (NLP.Tag postag) => ReadDocXML postag where
+    -- the operation on the XML doc which depend on the POStag
 
-readDocString :: Bool -> Text  -> ErrIO  Doc0
-readDocString showXML text = do
-    docs  :: [Doc0] <-callIO $ do
---        d1 :: [Doc0] <-
-        runX (readString [withValidate no]  (t2s text)
-                                >>> getDoc0)
---        putIOwords ["readDocString - d1 extracted \n", showT d1]
---        return d1
+    readDocString :: postag -> Bool -> Text  -> ErrIO  (Doc0 postag)
 
-    when showXML $ do
-          putIOwords ["the xml formated"]
-          error "readDocString with showXLM true"
-          res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
-                                            >>> indentDoc
-          putIOwords  $ map s2t res
-          putIOwords ["the xml formated ---------------------"]
+instance (NLP.Tag postag) => ReadDocXML postag where
 
-    --  let toks2 = filter ((0 /=). sid) toks
-    -- seems to add a lot of empty sentences
+    readDocString ph showXML text = do
+        docs   <-callIO $
+            runX (readString [withValidate no]  (t2s text)
+                                    >>> getDoc0 ph)
+        when showXML $ do
+              putIOwords ["the xml formated"]
+              error "readDocString with showXLM true"
+              res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
+                                                >>> indentDoc
+              putIOwords  $ map s2t res
+              putIOwords ["the xml formated ---------------------"]
+        if length docs > 1
+            then error "multiple document tags"
+            else   if null docs
+                    then throwErrorT ["readDocString", "no document found in readDocString"]
+                     -- return empty doc if call error - issue with italian
+                    else do
+                            let doc2 = (headNote "no document found" docs)
+                            return doc2
+                -- error in case of 0
 
---    docs' <-
-    if length docs > 1
-        then error "multiple document tags"
-        else   if null docs
-                then throwErrorT ["readDocString", "no document found in readDocString"]
-                 -- return empty doc if call error - issue with italian
-                else return (headNote "no document found" docs)
-            -- error in case of 0
---    putIOwords ["readDocString - the docs' returned \n", showT docs']
---    return docs'
-
--- readDocumentT args lfp = readDocument args (toFilePath lfp)
---             -- (t2fp . filepath2text lpX $ lfp)
---
--- readDoc :: Path ar File   -> ErrIO  Doc0
--- readDoc fp = do
---
---   docs  :: [Doc0] <-callIO $ do
---                 d1 :: [Doc0] <-  runX (readDocumentT [withValidate no] fp
---                                         >>> getDoc0)   -- getToken1)
---                 return d1
---
--- --  let toks2 = filter ((0 /=). sid) toks
---   -- seems to add a lot of empty sentences
---   case (length docs) of
---     1 -> do
---         let d  = headNoteT  ["readDoc:", "no document found, but count 1"
---                           , showT docs] (docs :: [Doc0])
---         return d
---     0 -> do
---         putIOwords ["readDoc: count 0", showT docs]
---         throwError "readDoc count 0"
---     _ -> do
---        putIOwords ["readDoc: count ", showT (length docs), showT docs]
---        throwError "read doc count more than 1"

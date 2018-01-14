@@ -37,6 +37,7 @@ import qualified NLP.Types.Tags as NLPtypes
 --import      NLP.Corpora.Conll   as Conll
 
 type PosTagEng = Conll.Tag   -- renames the ConllTag
+instance CharChains2 PosTagEng Text
 
 data PosTagUD =   -- copied from http://universaldependencies.org/u/pos/
     ADJ | -- adjective

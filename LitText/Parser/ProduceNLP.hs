@@ -64,7 +64,8 @@ produceNLP ::  Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 produceNLP showXML textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             snips = formSnips nlpTexts :: [Snip]
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples showXML textstate) snips
+            debug = False
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug showXML textstate) snips
 --    let trips = readNote "writeLitTriples" tripstext :: [Triple]
 --    write6 dest2 ntFileTriples trips
     ntz1 <- foldM writeHandleTriples textstate triples
@@ -75,12 +76,12 @@ produceNLP showXML textstate tzs =  do
 
     return ()
 
-convertOneSnip2Triples :: Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
--- calls nlp to convert to doc
-convertOneSnip2Triples showXML textstate snip = do
-    doc :: Doc0 <- snip2doc False showXML (nlpServer textstate) snip
-    let res =  processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (1, doc)
-    return res
+--convertOneSnip2Triples :: Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
+---- calls nlp to convert to doc
+--convertOneSnip2Triples showXML textstate snip = do
+--    doc :: Doc0 postag <- snip2doc False showXML (nlpServer textstate) snip
+--    let res =  processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (1, doc)
+--    return res
 
 
 produceNLPnotshow = produceNLP False
