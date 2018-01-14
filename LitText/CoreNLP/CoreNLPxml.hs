@@ -316,18 +316,24 @@ test_xml_0_Engl :: IO ()
 test_xml_0_Engl = do
         r <-parseOne (undef "xx32" :: PosTagConll) doc001
         putIOwords ["test_xml_0_Engl", showT r]
-        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagConll]) r
+--        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagConll]) r
         assertEqual resEng r
 
 test_xml_0_DU :: IO ()
 test_xml_0_DU = do
-        r <-parseOne (undef "xx32" :: PosTagUD) doc001  -- no parse RD is not a UD POS tag. what is it?
+        r <-parseOne (undef "xx33" :: PosTagUD) doc001ud  -- no parse RD is not a UD POS tag. what is it?
         putIOwords ["test_xml_0_DU", showT r]
-        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 PosTagUD]) r
+        assertEqual resUD r
 
 doc001 ::Text
+-- code is RD but recognized as Unk
 --doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
 doc001 = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
+
+doc001ud ::Text
+-- code is X
+--doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
+doc001ud = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>X</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
 
 resEng :: [Doc0 PosTagConll]
 resEng = [Doc0{docSents =
@@ -339,6 +345,20 @@ resEng = [Doc0{docSents =
                              tspeaker = []}],
                    sdeps = Nothing}],
       docCorefs = []}]
+
+resUD :: [Doc0 PosTagUD]
+resUD = [Doc0{docSents =
+                [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
+                  stoks =
+                     [Token0{tid = TokenID0{untid0 = 1},
+                             tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
+                             tbegin = 0, tend = 2, tpos = X, tpostt = "", tner = ["O"],
+                             tspeaker = []}],
+                   sdeps = Nothing}],
+      docCorefs = []}]
+
+test_parsePosConll = assertEqual (Unk::PosTagConll)  (NLP.parseTag  "xx")
+test_parsePosUD = assertEqual (X::PosTagUD)  (NLP.parseTag  "xx")
 
 ----getDoc0 :: _ ->  Doc0 postag
 --getDoc0x   = atTag "document" >>>

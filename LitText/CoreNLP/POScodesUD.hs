@@ -29,8 +29,9 @@ import           Test.Framework
 import Uniform.Zero
 import Uniform.Strings
 import Uniform.Error
-
-import qualified NLP.Corpora.Conll      as Conll
+import Data.Text   as T (replace)
+import Text.Read (readEither)
+--import qualified NLP.Corpora.Conll      as Conll
 
 import qualified NLP.Types.Tags as NLPtypes
 --import      NLP.Corpora.Conll
@@ -40,6 +41,8 @@ import qualified NLP.Types.Tags as NLPtypes
 --instance CharChains2 PosTagEng Text
 
 data PosTagUD =   -- copied from http://universaldependencies.org/u/pos/
+    START  | -- START tag, used in training.
+    END | --END tag, used in training.
     ADJ | -- adjective
     ADP | -- adposition
     ADV | -- adverb
@@ -63,17 +66,72 @@ data PosTagUD =   -- copied from http://universaldependencies.org/u/pos/
 instance NLPtypes.Tag PosTagUD where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
-                       Left  _ -> X
-                       Right t -> t
+                   Left  _ -> NLPtypes.tagUNK
+                   Right t -> t
+
+    tagUNK = X
+
+    tagTerm = showTag
+
+    startTag = START
+    endTag = END
+
+    isDt tag = tag `elem` [DET]
+
+instance Arbitrary PosTagUD where
+  arbitrary = elements [minBound ..]
+instance Serialize PosTagUD
 
 readTag :: Text -> ErrOrVal PosTagUD
-readTag txt = maybe2errorP . read . t2s $ txt
+--readTag "#" = Right Hash
+--readTag "$" = Right Dollar
+--readTag "(" = Right Op_Paren
+--readTag ")" = Right Cl_Paren
+--readTag "''" = Right CloseDQuote
+--readTag "``" = Right OpenDQuote
+--readTag "," = Right Comma
+--readTag "." = Right Term
+--readTag ":" = Right Colon
+readTag txt =
+  let normalized = replaceAll tagTxtPatterns (toUpper' txt)
+  in  (readOrErr  normalized)
 
-maybe2errorP  :: Maybe a -> ErrOrVal a
-maybe2errorP Nothing = Left "readTag PosTagUD 34232"
-maybe2errorP (Just a) = Right a
+-- | Order matters here: The patterns are replaced in reverse order
+-- when generating tags, and in top-to-bottom when generating tags.
+tagTxtPatterns :: [(Text, Text)]
+tagTxtPatterns = [ ("$", "dollar")
+                 ]
 
-instance Serialize PosTagUD
+reversePatterns :: [(Text, Text)]
+reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
+
+showTag :: PosTagUD -> Text
+--showTag Hash = "#"
+--showTag Op_Paren = "("
+--showTag Cl_Paren = ")"
+--showTag CloseDQuote = "''"
+--showTag OpenDQuote = "``"
+--showTag Dollar = "$"
+--showTag Comma = ","
+--showTag Term = "."
+--showTag Colon = ":"
+showTag tag = replaceAll reversePatterns (s2t $ show tag)
+
+replaceAll :: [(Text, Text)] -> (Text -> Text)
+replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
+
+--readTag :: Text -> ErrOrVal PosTagUD
+--readTag txt = maybe2errorP . read . t2s $ txt
+--
+--maybe2errorP  :: Maybe a -> ErrOrVal a
+--maybe2errorP Nothing = Left "readTag PosTagUD 34232"
+--maybe2errorP (Just a) = Right a
+
+-- @since 4.6.0.0
+readOrErr :: Read a => Text -> Either Text a
+readOrErr    t = case (readEither (t2s t)) of
+                        Left msg -> Left (s2t msg)
+                        Right a -> Right a
 
 instance CharChains2 PosTagUD Text
 
