@@ -61,7 +61,7 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
             else do
                 let language = tz3lang snip
 --                let sloc = nlpServer textstate
-                when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall", "language"
+                when debugNLP $ putIOwords ["convertOneSnip2Triples", "language"
                             , showT language, "\n snip", showT snip]
 
                 case language of
@@ -75,8 +75,11 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                                             (undef "convertOneSnip2Triples postat":: PosTagUD)
                                             debugNLP showXML textstate snip
                 --                    NoLanguage -> return zero
-                    _    -> errorT ["convertTZ2nlpPrepareCall"
-                                            , showT language, "language has no server"]
+                    _    -> do
+                            putIOwords ["convertOneSnip2Triples", "no server for ", showT language]
+                            return []
+--                    _    -> errorT ["convertOneSnip2Triples"
+--                                            , showT language, "language has no server"]
 --
 --                doc :: Doc0 postag <- snip2doc False showXML (nlpServer textstate) snip
 --                let res =  processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (1, doc)
