@@ -43,7 +43,8 @@ import  Test.Framework
 --import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 ---------- form snips which go to NLP
 ------
-import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, takes time
+import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
+    -- calls produceNLPtriples
 --------------    -- makes result  E
 ------
 --------------                -- tests only the production of the doc files
@@ -52,7 +53,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> E, calls to NLP, 
 ----import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
 ---------------------- calls 17701
 ----------------
-import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- E (doc) -> G  and L (triples)
+import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
 --
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers

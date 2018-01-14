@@ -80,27 +80,18 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                             return []
 --                    _    -> errorT ["convertOneSnip2Triples"
 --                                            , showT language, "language has no server"]
---
---                doc :: Doc0 postag <- snip2doc False showXML (nlpServer textstate) snip
---                let res =  processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (1, doc)
---                return res
+testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
+testOP_DA_L textstate = mapM (convertOneSnip2Triples True True textstate)
+
 
 class Docs postag where
----- the processing of the Doc (preparation and analysis)
---    snip2doc :: Bool -> Bool -> URI -> Snip -> ErrIO   (Doc0 postag)     -- the xml to analyzse  D -> E
---    ---- ^ the entry point for conversionm of one snip (piece of text) to Doc0 in the xml format of stanford CoreNLP
-----    convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> Snip -> ErrIO (Doc0 postag)   -- the xml to analyzse  D -> E
-----    -- prepare call to send text to nlp server
-----    -- works on individual paragraphs
-
     convertTZ2makeNLPCall  :: postag -> Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
 
-----    ---- | tests which would call NLP
-----    -- textdescriptor gives server, but lang comes from snip
-----    testOP_C_E :: TextDescriptor -> [Snip]-> ErrIO [Doc0 postag]  --   [(NLPtext,[Doc0])]
+----    ---- | tests which calls NLP
+--    testOP_DA_E :: TextDescriptor -> [Snip]-> ErrIO [Triple]  --   [(NLPtext,[Doc0])]
 
 class (CharChains2 postag Text) =>  LanguageSpecificNLPcall  langPhantom postag where
     snip2triples2 :: langPhantom -> postag -> Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple] -- (Doc0 postag)
@@ -126,41 +117,6 @@ instance Docs PosTagEng where
 --        return res
 --
 
-
-
-----    convertTZ2nlpPrepareCall :: Bool -> Bool -> URI -> Snip -> ErrIO Doc0   -- the xml to analyzse  D -> E
-----    -- prepare call to send text to nlp server
-----    -- works on individual paragraphs
---    snip2doc debugNLP showXML sloc snip = do
-----    convertTZ2nlpPrepareCall debugNLP showXML sloc tz = do
---        when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall start"]
---        let text = tz3text snip
---
---        doc <- convertTZ2makeNLPCall debugNLP showXML nlpServer vars text
---
---        trips <- processDoc0toTriples2 textstate lang paranr (snipnr, (doc0))
---
---        return trips
-
-        -- reduce for some special cases _italics_
-        -- should be done before the split, because . of abbreviations are elliminated
---        if null' text
---            then return zero
---            else do
---
---                let language = tz3lang snip
---
---                when debugNLP $ putIOwords ["convertTZ2nlpPrepareCall", "language"
---                            , showT language, "\n snip", showT snip]
-----                let (languagePhantom, postag) = case language of
-----                    English -> (undef::EnglishType, PosTag)
-------                    German -> germanNLP debugNLP showXML sloc text
-------                    French -> frenchNLP debugNLP showXML sloc text
-------                    Spanish -> spanishNLP debugNLP showXML sloc text
-----                    Italian -> (undef::ItalianType, PosTagUD)
-------                    NoLanguage -> return zero
-----                    _ -> errorT ["convertTZ2nlpPrepareCall"
-----                        , showT language, "language has no server"]
 
 --    convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
@@ -326,9 +282,6 @@ instance LanguageSpecificNLPcall EnglishType PosTagEng where
 
 
 instance LanguageSpecificNLPcall ItalianType PosTagUD where
---    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
-    -- process an english text snip to a Doc0
---    englishNLP debugNLP showXML sloc text = do
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
 --    italianNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an italian text snip to a Doc0
@@ -339,18 +292,7 @@ instance LanguageSpecificNLPcall ItalianType PosTagUD where
             let text2 = cleanTextitalian $  tz3text snip
             let sloc = nlpServer textstate
 
-
             when debugNLP $ putIOwords ["italianNLP text2", text2]
-
-        ------    let text3 = s3latin . t2s $ text2  :: ByteString -- is a bytestring
-        ------    putIOwords ["italianNLP text3", showT text3]
-        ------    let text4 = s2t $ show text3
-        --------    s2u . fromJustNote "problem with bytestring" . b2s $ text3  -- url encode (but form)
-        ------    putIOwords ["italianNLP text4",  text4]
-        ----
-        --    let dest = showT (addPort2URI sloc 9005) <> "/tint?text=" <> showT text2 <> "&format=xml"
-        --    putIOwords ["italianNLP dest",  dest]
-        --    xml <- callHTTP8get True dest
 
             xml :: Text <- callHTTP10post debugNLP  "multipart/form-data"  (addPort2URI sloc 9005) "tint?format=xml"
                          (b2bl . t2b $ text2) vars  (Just 300)   -- timeout in seconds
@@ -359,13 +301,6 @@ instance LanguageSpecificNLPcall ItalianType PosTagUD where
 
             docs <- readDocString tagPhantom showXML xml
             when debugNLP $ putIOwords ["italianNLP doc", showT docs]
-        ----
-        --    docs <-  convertTZ2makeNLPCall True True (  (addPort2URI sloc 9005)   ) vars  text2
-        --    docs <-  convertTZ2makeNLPCall True True (addToURI (addPort2URI sloc 9005)  "tint") vars  text2
-        ----            when False $ putIOwords ["italianNLP parse"
-        ----                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
---            when debugNLP $ putIOwords ["italianNLP end", showT docs]
---            let docs2 = docs `asTypeOf` (Doc0(undef "snip2triples italian docs2" :: D
 --
             let snipnr = 1 -- TODO
             let trips = processDoc0toTriples2 textstate Italian (tz3para $ snip) (snipnr, (docs))
@@ -378,33 +313,6 @@ instance LanguageSpecificNLPcall ItalianType PosTagUD where
     --         splitAndTryAgain debugNLP showXML nlpServer vars text
              return zero
                 )
---
---instance LanguageSpecificNLPcall EnglishType PosTagEng where
-----    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
---    -- process an english text snip to a Doc0
-----    englishNLP debugNLP showXML sloc text = do
---    snip2triples2 _ doc0Phantom debugNLP showXML textstate snip = do
---        let varsEng =  [("outputFormat", Just "xml")
---                , ("annotators", Just "tokenize,ssplit,pos\
---                                        \,lemma,ner,depparse, dcoref,coref")
---            --                                    coref -coref.algorithm neural")
---    --        -- perhaps the nerual algorithm is better, but creates problems
---    --        -- with the xml doc received (starts with C?
---                                        ]
---        when debugNLP $ putIOwords ["englishNLP text", showT  $ tz3text snip]
---
---        let text2 = cleanTextEnglish $  tz3text snip
---        let sloc = nlpServer textstate
---        docs <-  convertTZ2makeNLPCall debugNLP showXML (addPort2URI sloc 9002) varsEng  text2
---    --            when False $ putIOwords ["englishNLP parse"
---    --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
---        when debugNLP $ putIOwords ["englishNLP end", showT text2]
---        let docs2 = docs `asTypeOf` doc0Phantom
---        let snipnr = 1 -- TODO
---
---        let trips = processDoc0toTriples2 textstate English (tz3para $ snip) (snipnr, (docs))
---
---        return trips
 
 
 cleanTextEnglish :: Text -> Text
@@ -426,17 +334,17 @@ cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 
 
 
---test_1_C_E = testVar3FileIO result1A "resultDA1" "resultE1" testOP_C_E
---test_2_C_E = testVar3FileIO result2A "resultDA2" "resultE2" testOP_C_E
---test_3_C_E = testVar3FileIO result3A "resultDA3" "resultE3" testOP_C_E
---test_4_C_E = testVar3FileIO result4A "resultDA4" "resultE4" testOP_C_E
---test_5_C_E = testVar3FileIO result5A "resultDA5" "resultE5" testOP_C_E  -- lafayette
---test_6_C_E = testVar3FileIO result6A "resultDA6" "resultE6" testOP_C_E
---test_8_C_E = testVar3FileIO result8A "resultDA8" "resultE8" testOP_C_E
---test_9_C_E = testVar3FileIO result9A "resultDA9" "resultE9" testOP_C_E
---test_10_C_E = testVar3FileIO result10A "resultDA10" "resultE10" testOP_C_E
---test_11_C_E = testVar3FileIO result11A "resultDA11" "resultE11" testOP_C_E
---test_12_C_E = testVar3FileIO result12A "resultDA12" "resultE12" testOP_C_E
+----test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
+----test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
+----test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
+----test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
+----test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
+----test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
+----test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
+----test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
+test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
+----test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
+----test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
 
 
 -- the result goes to /home/frank/Scratch/NT/LitTest/test (defined in foundation as testNTdir
