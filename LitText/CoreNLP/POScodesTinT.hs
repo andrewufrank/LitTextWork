@@ -3,7 +3,9 @@
 -- Module       | --  Dependency and other Codes
 --
 -- | the codes for TinT parser for italian
---
+--name of pos tagset ISST TANL Tagset
+-- from http://www.italianlp.it/docs/ISST-TANL-POStagset.pdf
+-- model used TinT
 -----------------------------------------------------------------------------}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
