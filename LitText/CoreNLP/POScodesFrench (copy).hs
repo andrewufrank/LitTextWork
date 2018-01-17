@@ -48,35 +48,53 @@ import  NLP.Types.Tags as NLPtypes (Tag(..))
 data POStagFrench =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
-    DET |
-    N |
-    P |
-    NPP |
-    PUNC |
-    ET |
-    NC |
-    ADJ |
-    CLS |
-    V |
-    VPR |
-    VINF |
-    CLR |
-    VPP |
-    PRO |
-    CC |
-    CS |
-    PROREL |
-    C |
-    PREF |
-    CLO |
-    I |
-    ADVWH |
-    VIMP |
-    DETWH |
-    ADJWH |
-    CL |
-    PROWH |
-    VS |
+--    Dollar | -- ^ $
+--    Comma  | -- ^ ,
+--    Point | -- ^ .
+--    OpenBracket |   -- [
+    Dollarpoint | --    $.       |   --	0
+    Dollaropenbracket | --  $[       |   --	 '
+    Dollarcomma  |   --	,
+    ADJA       |   --	environs
+    ADJD       |   --	I.
+    ADV       |   --	que
+    APPO       |   --	l'épouse
+    APPR       |   --	 --
+    APPRART       |   --	 --
+    APZR       |   --	avoir
+    ART       |   --	DES
+    CARD       |   --	XI
+    FM       |   --	tous
+    ITJ       |   --	oui
+    KON       |   --	un
+    KOUS       |   --	sous
+    NE       |   --	XXII
+    NN       |   --	CONCLUSION
+    PDAT       |   --	d'analyse
+    PDS       |   --	une
+    PIAT       |   --	ajouta
+    PIDAT       |   --	jeune
+    PIS       |   --	aller
+    PPER       |   --	du
+    PPOSAT       |   --	donner
+    PRELS       |   --	qui
+    PRF       |   --	café
+    PROAV       |   --	d'un
+    PTKANT       |   --	avec
+    PTKNEG       |   --	net
+    PTKVZ       |   --	fort
+    PWAV       |   --	dit
+    PWS       |   --	mon
+    TRUNC       |   --	en
+    VAFIN       |   --	C'est
+    VAINF       |   --	sein
+    VMFIN       |   --	démêlés
+    VVFIN       |   --	chrétienne
+    VVIMP       |   --	j'
+    VVINF       |   --	bien
+    VVIZU       |   --	hésitation
+    VVPP       |   --	maintenant
+    XY       |   --	n
     Frenchunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
@@ -166,14 +184,14 @@ instance CharChains2 POStagFrench Text where
 instance Zeros POStagFrench where zero = NLPtypes.tagUNK
 --type Unk = Conll.Unk
 
---test_french_tag1 :: IO ()
---test_french_tag1 = assertEqual (Dollaropenbracket::POStagFrench) (parseTag "$["::POStagFrench)
---test_french_tag2 :: IO ()
---test_french_tag2 = assertEqual (Dollarpoint::POStagFrench) (parseTag "$."::POStagFrench)
---test_french_tag3 :: IO ()
---test_french_tag3 = assertEqual (Dollarcomma::POStagFrench) (parseTag "$,"::POStagFrench)
---test_french_tag4 :: IO ()
---test_french_tag4 = assertEqual (VVINF::POStagFrench) (parseTag "VVINF"::POStagFrench)
---
---test_french_tagR :: IO ()
---test_french_tagR = assertEqual ("Dollaropenbracket"::Text) (replaceAll tagTxtPatterns (toUpper'   "$[")::Text)
+test_french_tag1 :: IO ()
+test_french_tag1 = assertEqual (Dollaropenbracket::POStagFrench) (parseTag "$["::POStagFrench)
+test_french_tag2 :: IO ()
+test_french_tag2 = assertEqual (Dollarpoint::POStagFrench) (parseTag "$."::POStagFrench)
+test_french_tag3 :: IO ()
+test_french_tag3 = assertEqual (Dollarcomma::POStagFrench) (parseTag "$,"::POStagFrench)
+test_french_tag4 :: IO ()
+test_french_tag4 = assertEqual (VVINF::POStagFrench) (parseTag "VVINF"::POStagFrench)
+
+test_french_tagR :: IO ()
+test_french_tagR = assertEqual ("Dollaropenbracket"::Text) (replaceAll tagTxtPatterns (toUpper'   "$[")::Text)
