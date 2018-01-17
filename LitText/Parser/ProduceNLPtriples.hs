@@ -203,7 +203,7 @@ testOP_E_G textstate docs  = concat
 --test_10_E_G = testVar3File result10A "resultE10" "resultG10" testOP_E_G
 --test_11_E_G = testVar3File result11A "resultE11" "resultG11" testOP_E_G
 --test_12_E_G = testVar3File result12A "resultE12" "resultG12" testOP_E_G
------- 10 seems too big for oporto (without swap)
+------ issue with ambiguity in posttag (Enn has no postag and is not Doc0)
 ----
 --test_1G_L = writeLitTriples   "resultG1" "resultL1"
 --test_2G_L = writeLitTriples   "resultG2" "resultL2"

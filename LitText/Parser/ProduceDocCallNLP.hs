@@ -58,6 +58,12 @@ data FrenchType
 data SpanishType
 data ItalianType
 
+portGerman = 9001
+portEnglish = 9002
+portFrench = 9003
+portSpanish = 9004
+portTinT = 9005
+
 convertOneSnip2Triples :: Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
 convertOneSnip2Triples debugNLP showXML textstate snip = do
@@ -157,7 +163,7 @@ instance LanguageSpecificNLPcall EnglishType POStagConll where
 
         let text2 = cleanTextEnglish $  tz3text snip
         let sloc = nlpServer textstate
-        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9002) varsEng  text2
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portEnglish) varsEng  text2
     --            when False $ putIOwords ["englishNLP parse"
     --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
@@ -191,7 +197,7 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
     --                            then [ text2]
     --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) vars  text2
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portGerman ) vars  text2
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let sents1 = docSents docs
@@ -235,7 +241,8 @@ instance LanguageSpecificNLPcall FrenchType POStagFrench where
     --                                    ,
 
                                         ]
-        when debugNLP $ putIOwords ["frenchNLP text", showT  $ tz3text snip]
+--        when debugNLP $
+        putIOwords ["frenchNLP text", showT  $ tz3text snip]
 
         let text2 = cleanTextFrench  $  tz3text snip
         let sloc = nlpServer textstate
@@ -245,7 +252,7 @@ instance LanguageSpecificNLPcall FrenchType POStagFrench where
     --                            then [ text2]
     --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) vars  text2
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portFrench ) vars  text2
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
@@ -283,7 +290,7 @@ instance LanguageSpecificNLPcall SpanishType POStagSpanish where
     --                            then [ text2]
     --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
-        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc 9001 ) vars  text2
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portSpanish ) vars  text2
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
@@ -306,7 +313,7 @@ instance LanguageSpecificNLPcall ItalianType POStagTinT where
 
             when debugNLP $ putIOwords ["italianNLP text2", text2]
 
-            xml :: Text <- callHTTP10post debugNLP  "multipart/form-data"  (addPort2URI sloc 9005) "tint?format=xml"
+            xml :: Text <- callHTTP10post debugNLP  "multipart/form-data"  (addPort2URI sloc portTinT) "tint?format=xml"
                          (b2bl . t2b $ text2) vars  (Just 300)   -- timeout in seconds
 
             when debugNLP $ putIOwords ["italianNLP xml",  xml]
@@ -354,7 +361,7 @@ cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 --test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
 --test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
 --test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
---test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
+test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
 test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
 test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
 
