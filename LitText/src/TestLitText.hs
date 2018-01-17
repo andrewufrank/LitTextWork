@@ -32,18 +32,18 @@ import  Test.Framework
 ------------------
 -------- for nlp:
 --import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
-            --repeats calls to nlp
-            -- files go to
+--            --repeats calls to nlp
+--            -- files go to
 ----
 ----------            -- > E -> F - calls only complete sentence
 ----------------                    blocked: BAEx --> F,X because calls nlp
 --------
 --import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
------------- filters literal text
+-------------- filters literal text
 --import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 ---------- form snips which go to NLP
 ------
---import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
+import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
     -- calls produceNLPtriples
 --------------    -- makes result  E
 ------
@@ -53,7 +53,7 @@ import  Test.Framework
 ----import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
 ---------------------- calls 17701
 ----------------
---import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
+import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
 --
 --import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
 -- tests tp check codes

@@ -41,7 +41,7 @@ import qualified NLP.Types.Tags as NLPtypes
 --type PosTagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 PosTagEng Text
 
-data POStagTinT =   -- copied from http://universaldependencies.org/u/pos/
+data POStagTinT =   -- the definitions are in  http://www.italianlp.it/docs/ISST-TANL-POStagset.pdf
     START  | -- START tag, used in training.
     END | --END tag, used in training.
     A         | --	felice
@@ -58,6 +58,7 @@ data POStagTinT =   -- copied from http://universaldependencies.org/u/pos/
     DR         | --	cui
     E         | --	a
     EplusRD         | --	dalla
+    EA      |
     FB         | --	 -
     FC         | --	 ;
     FF         | --	 -
@@ -87,18 +88,38 @@ data POStagTinT =   -- copied from http://universaldependencies.org/u/pos/
     VM         | --	volevo
     VMplusPC         | --	poterci
     VMplusPCplusPC         | --	sferrarsene
-    X          --	FINE
---    TinTunk  -- other  -- conflicts possible!
+    X         | --	FINE  -- residual class
+    TinTunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
-
+{- additional information available
+     "index": 53,
+          "word": "pregiudizi",
+          "originalText": "pregiudizi",
+          "lemma": "pregiudizio",
+          "characterOffsetBegin": 267,
+          "characterOffsetEnd": 277,
+          "pos": "S",
+          "featuresText": "Gender\u003dMasc|Number\u003dPlur",
+          "ner": "O",
+          "full_morpho": "pregiudizi pregiudizio+n+m+plur",
+          "selected_morpho": "pregiudizio+n+m+plur",
+          "guessed_lemma": false,
+          "features": {
+            "Gender": [
+              "Masc"
+            ],
+            "Number": [
+              "Plur"
+            ]
+            -}
 instance NLPtypes.Tag POStagTinT where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK
                    Right t -> t
 
-    tagUNK = X
+    tagUNK = TinTunk
 
     tagTerm = showTag
 
