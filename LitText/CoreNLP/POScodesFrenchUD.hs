@@ -6,9 +6,8 @@
 -- model is http://nlp.stanford.edu/software/stanford-french-corenlp-2017-06-09-models.jar
 -- pos tageset name is
 -- from http://www.llf.cnrs.fr/Gens/Abeille/French-Treebank-fr.php
-http://www.llf.cnrs.fr/sites/sandbox.linguist.univ-paris-diderot.fr/files/statiques/french_treebank/guide-morpho-synt.02.pdf
 -- model is http://nlp.stanford.edu/software/stanford-french-corenlp-2017-06-09-models.jar
-with set to -serverProperties StanfordCoreNLP-french.properties
+-- called with -serverProperties StanfordCoreNLP-french-UD.properties
 -----------------------------------------------------------------------------}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE        MultiParamTypeClasses
@@ -21,7 +20,7 @@ with set to -serverProperties StanfordCoreNLP-french.properties
         , DeriveGeneric
         #-}
 
-module CoreNLP.POScodesFrench (module CoreNLP.POScodesFrench
+module CoreNLP.POScodesFrenchUD (module CoreNLP.POScodesFrenchUD
 --        , module NLP.Corpora.Conll
 --        , ErrOrVal (..)
         )
@@ -47,44 +46,66 @@ import  NLP.Types.Tags as NLPtypes (Tag(..))
 --type POStagEng = Conll.Tag   -- renames the ConllTag
 --instance CharChains2 POStagEng Text
 
-data POStagFrench =   -- copied from http://universaldependencies.org/u/pos/
+data POStagFrenchUD =   -- copied from http://universaldependencies.org/u/pos/
     START  | -- START tag, used in training.
     END | --END tag, used in training.
-    DET |
-    N |
-    P |
-    NPP |
-    PUNC |
-    ET |
-    NC |
-    ADJ |
-    ADV |  -- found in output, example peu (UD code set)
-    CLS |
-    V |
-    VPR |
-    VINF |
-    CLR |
-    VPP |
-    PRO |
-    CC |
-    CS |
-    PROREL |
-    C |
-    PREF |
-    CLO |
-    I |
-    ADVWH |
-    VIMP |
-    DETWH |
-    ADJWH |
-    CL |
-    PROWH |
-    VS |
+--    Dollar | -- ^ $
+--    Comma  | -- ^ ,
+--    Point | -- ^ .
+--    OpenBracket |   -- [
+    Dollarpoint | --    $.       |   --	0
+    Dollaropenbracket | --  $[       |   --	 '
+    Dollarcomma  |   --	,
+    ADJA       |   --	environs
+    ADJD       |   --	I.
+    ADP |
+    ADV       |   --	que
+    APPO       |   --	l'épouse
+    APPR       |   --	 --
+    APPRART       |   --	 --
+    APZR       |   --	avoir
+    ART       |   --	DES
+    CARD       |   --	XI
+    FM       |   --	tous
+    ITJ       |   --	oui
+    KON       |   --	un
+    KOUS       |   --	sous
+    NE       |   --	XXII
+    NOUN |
+    NN       |   --	CONCLUSION
+    PDAT       |   --	d'analyse
+    PDS       |   --	une
+    PIAT       |   --	ajouta
+    PIDAT       |   --	jeune
+    PIS       |   --	aller
+    PPER       |   --	du
+    PPOSAT       |   --	donner
+    PRELS       |   --	qui
+    PRF       |   --	café
+    PRON |
+    PROAV       |   --	d'un
+    PTKANT       |   --	avec
+    PTKNEG       |   --	net
+    PTKVZ       |   --	fort
+    PWAV       |   --	dit
+    PWS       |   --	mon
+    TRUNC       |   --	en
+    VAFIN       |   --	C'est
+    VAINF       |   --	sein
+    VMFIN       |   --	démêlés
+    VERB |
+    VVFIN       |   --	chrétienne
+    VVIMP       |   --	j'
+    VVINF       |   --	bien
+    VVIZU       |   --	hésitation
+    VVPP       |   --	maintenant
+    X |
+    XY       |   --	n
     Frenchunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
-instance NLPtypes.Tag POStagFrench where
+instance NLPtypes.Tag POStagFrenchUD where
 --parseTag :: Text -> POStag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK
@@ -99,11 +120,11 @@ instance NLPtypes.Tag POStagFrench where
 
     isDt tag = tag `elem` []  -- unknown what is a det here?
 
-instance Arbitrary POStagFrench where
+instance Arbitrary POStagFrenchUD where
   arbitrary = elements [minBound ..]
-instance Serialize POStagFrench
+instance Serialize POStagFrenchUD
 
-readTag :: Text -> ErrOrVal POStagFrench
+readTag :: Text -> ErrOrVal POStagFrenchUD
 --readTag "#" = Right Hash
 --readTag "$" = Right Dollar
 --readTag "(" = Right Op_Paren
@@ -134,7 +155,7 @@ tagTxtPatterns = [ ("$", "Dollar")    -- because dollar is always in first posit
 reversePatterns :: [(Text, Text)]
 reversePatterns = map (\(x,y) -> (y,x)) tagTxtPatterns
 
-showTag :: POStagFrench -> Text
+showTag :: POStagFrenchUD -> Text
 --showTag Hash = "#"
 --showTag Op_Paren = "("
 --showTag Cl_Paren = ")"
@@ -149,11 +170,11 @@ showTag tag = replaceAll reversePatterns (s2t $ show tag)
 replaceAll :: [(Text, Text)] -> (Text -> Text)
 replaceAll patterns = foldl (.) id (map (uncurry  T.replace) patterns)
 
---readTag :: Text -> ErrOrVal POStagFrench
+--readTag :: Text -> ErrOrVal POStagFrenchUD
 --readTag txt = maybe2errorP . read . t2s $ txt
 --
 --maybe2errorP  :: Maybe a -> ErrOrVal a
---maybe2errorP Nothing = Left "readTag POStagFrench 34232"
+--maybe2errorP Nothing = Left "readTag POStagFrenchUD 34232"
 --maybe2errorP (Just a) = Right a
 
 readOrErr :: Read a => Text -> Either Text a
@@ -161,22 +182,22 @@ readOrErr    t = case (readEither (t2s t)) of
                         Left msg -> Left (s2t msg)
                         Right a -> Right a
 
-instance CharChains2 POStagFrench String where
+instance CharChains2 POStagFrenchUD String where
     show' =  show
-instance CharChains2 POStagFrench Text where
+instance CharChains2 POStagFrenchUD Text where
     show' =  s2t . show
 
-instance Zeros POStagFrench where zero = NLPtypes.tagUNK
+instance Zeros POStagFrenchUD where zero = NLPtypes.tagUNK
 --type Unk = Conll.Unk
 
---test_french_tag1 :: IO ()
---test_french_tag1 = assertEqual (Dollaropenbracket::POStagFrench) (parseTag "$["::POStagFrench)
---test_french_tag2 :: IO ()
---test_french_tag2 = assertEqual (Dollarpoint::POStagFrench) (parseTag "$."::POStagFrench)
---test_french_tag3 :: IO ()
---test_french_tag3 = assertEqual (Dollarcomma::POStagFrench) (parseTag "$,"::POStagFrench)
---test_french_tag4 :: IO ()
---test_french_tag4 = assertEqual (VVINF::POStagFrench) (parseTag "VVINF"::POStagFrench)
---
---test_french_tagR :: IO ()
---test_french_tagR = assertEqual ("Dollaropenbracket"::Text) (replaceAll tagTxtPatterns (toUpper'   "$[")::Text)
+test_french_tag1 :: IO ()
+test_french_tag1 = assertEqual (Dollaropenbracket::POStagFrenchUD) (parseTag "$["::POStagFrenchUD)
+test_french_tag2 :: IO ()
+test_french_tag2 = assertEqual (Dollarpoint::POStagFrenchUD) (parseTag "$."::POStagFrenchUD)
+test_french_tag3 :: IO ()
+test_french_tag3 = assertEqual (Dollarcomma::POStagFrenchUD) (parseTag "$,"::POStagFrenchUD)
+test_french_tag4 :: IO ()
+test_french_tag4 = assertEqual (VVINF::POStagFrenchUD) (parseTag "VVINF"::POStagFrenchUD)
+
+test_french_tagR :: IO ()
+test_french_tagR = assertEqual ("Dollaropenbracket"::Text) (replaceAll tagTxtPatterns (toUpper'   "$[")::Text)
