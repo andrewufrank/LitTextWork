@@ -50,6 +50,7 @@ import CoreNLP.POScodesTinT   -- for italian
 import        CoreNLP.POScodesGerman
 import        CoreNLP.POScodesSpanish
 import        CoreNLP.POScodesFrench
+import        CoreNLP.POScodesFrenchUD
 
 
 data EnglishType  -- should go with all the rest of language defs.
@@ -63,6 +64,7 @@ portEnglish = 9002
 portFrench = 9003
 portSpanish = 9004
 portTinT = 9005
+portFrenchUD = 9006
 
 convertOneSnip2Triples :: Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
@@ -89,7 +91,8 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                                             (undef "convertOneSnip2Triples postat":: POStagTinT)
                                             debugNLP showXML textstate snip
                     French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
-                                            (undef "convertOneSnip2Triples postat":: POStagFrench)
+--                                            (undef "convertOneSnip2Triples postat":: POStagFrench)
+                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
                                             debugNLP showXML textstate snip
                     Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
                                             (undef "convertOneSnip2Triples postat":: POStagSpanish)
@@ -192,10 +195,6 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
         let text2 = cleanTextGerman $  tz3text snip
         let sloc = nlpServer textstate
 
-    --            let texts = getPiece . textSplit $ text2
-    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
-    --                            then [ text2]
-    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
         docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portGerman ) vars  text2
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
@@ -253,7 +252,7 @@ instance LanguageSpecificNLPcall FrenchType POStagFrench where
     --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
         docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portFrench ) vars  text2
-        when debugNLP $ putIOwords ["englishNLP end", showT text2]
+        when debugNLP $ putIOwords ["french end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
@@ -261,7 +260,28 @@ instance LanguageSpecificNLPcall FrenchType POStagFrench where
 
         return trips
 --
+instance LanguageSpecificNLPcall FrenchType POStagFrenchUD where
+---- the tagset is perhaps incomplete and does not produce corefs. the normal model is ok
 --
+    snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
+        let vars  =  [("outputFormat", Just "xml")
+                , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
+                                        ]
+--        when debugNLP $
+        putIOwords ["frenchNLP text", showT  $ tz3text snip]
+
+        let text2 = cleanTextFrench  $  tz3text snip
+        let sloc = nlpServer textstate
+
+        docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portFrenchUD ) vars  text2
+        when debugNLP $ putIOwords ["french UD end", showT text2]
+        let snipnr = 1 -- TODO
+
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, docs)
+
+        return trips
+
+
 instance LanguageSpecificNLPcall SpanishType POStagSpanish where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
@@ -361,9 +381,10 @@ cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 --test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
 --test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
 --test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
-test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
+--test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
 --test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
---test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
+test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
+--test_13_DA_L = testVar3FileIO result12A "resultDA12" "resultE12UD" testOP_DA_L
 
 
 -- the result goes to /home/frank/Scratch/NT/LitTest/test (defined in foundation as testNTdir

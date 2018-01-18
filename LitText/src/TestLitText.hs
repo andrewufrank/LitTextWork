@@ -17,28 +17,28 @@ import  Test.Framework
 
 -- for layout and lit triples :
 --
-import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
-
-import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
-import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
-import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
---import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- > BADx -> J
-----    -- not enough memory on oporto
----- if the files are not already correct in .littest
----- problem is in the comparing when error
-import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- BADx > BAEx
-import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
-                -- and Hx -> Kx  (.nt)
-----------------
------- for nlp:
-------import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
-            --repeats calls to nlp
-            -- files go to
+--import {-@ HTF_TESTS @-} Parser.ReadMarkupAB  -- > Bx
 --
-------
-import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
------------- filters literal text
-import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
+--import {-@ HTF_TESTS @-} BuchCode.MarkupText  -- > BAx
+--import   {-@ HTF_TESTS @-} Lines2para.HandleLayout -- > BACx
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore  -- > BADx
+----import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- > BADx -> J
+------    -- not enough memory on oporto
+------ if the files are not already correct in .littest
+------ problem is in the comparing when error
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- BADx > BAEx
+--import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
+--                -- and Hx -> Kx  (.nt)
+------------------
+-------- for nlp:
+--------import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
+--            --repeats calls to nlp
+--            -- files go to
+----
+--------
+--import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
+-------------- filters literal text
+--import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 -------- form snips which go to NLP
 ----
 import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
@@ -55,7 +55,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, 
 --
 --import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
 -- tests tp check codes
-import   {-@ HTF_TESTS @-}  CoreNLP.POScodesFrench
+--import   {-@ HTF_TESTS @-}  CoreNLP.POScodesFrench
 ---- old
 --import {-@ HTF_TESTS @-} Processor.CheckServers
 ------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput

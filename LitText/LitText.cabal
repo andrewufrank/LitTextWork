@@ -69,6 +69,7 @@ library
         CoreNLP.POScodesGerman
         CoreNLP.POScodesSpanish
         CoreNLP.POScodesFrench
+        CoreNLP.POScodesFrenchUD
             -- italian
         CoreNLP.NERcodes
         CoreNLP.DEPcodes
