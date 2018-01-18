@@ -87,6 +87,16 @@ data POStagGerman =   -- copied from http://universaldependencies.org/u/pos/
     VVIZU       |   --	hésitation
     VVPP       |   --	maintenant
     XY       |   --	n
+    PTKZU |
+    VAPP  |
+    KOUI |
+    PTKA |
+    VMINF |
+    VAIMP |
+    PRELAT |
+    PWAT |
+    VMPP |
+    PPOSS |
     Germanunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
