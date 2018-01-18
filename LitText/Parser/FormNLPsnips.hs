@@ -48,8 +48,8 @@ formSnips (n1:n2:ns) =  case mergeNLPtext n1 n2 of
         Just ab ->  formSnips (ab:ns)
 
 
-minSnipSize = 5000 -- char
-maxSnipSize = 10000
+minSnipSize = 1000 -- 5000 -- char
+maxSnipSize = 2000  -- 10000
 
 test_1_D_DA = testFile2File "resultD1" "resultDA1" formSnips
 test_2_D_DA = testFile2File "resultD2" "resultDA2" formSnips
