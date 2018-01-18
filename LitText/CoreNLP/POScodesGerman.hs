@@ -97,6 +97,7 @@ data POStagGerman =   -- copied from http://universaldependencies.org/u/pos/
     PWAT |
     VMPP |
     PPOSS |
+    KOKOM |
     Germanunk  -- other  -- conflicts possible!
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
