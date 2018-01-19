@@ -91,8 +91,8 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
                                             (undef "convertOneSnip2Triples postat":: POStagTinT)
                                             debugNLP showXML textstate snip
                     French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
---                                            (undef "convertOneSnip2Triples postat":: POStagFrench)
-                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
+                                            (undef "convertOneSnip2Triples postat":: POStagFrench)
+--                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
                                             debugNLP showXML textstate snip
                     Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
                                             (undef "convertOneSnip2Triples postat":: POStagSpanish)
@@ -209,16 +209,6 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
 
         return trips
 
---    --            when False $ putIOwords ["germanNLP parse"
---    --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
---    --  corenlp does not lemmatize, use lemmatize service
---        let sents1 = docSents doc0
---        sents2 <- mapM (completeSentence False (addPort2URI sloc 17701 ) ) sents1
---        let doc0' = doc0{docSents = sents2}
---    --    return ( doc0')
---        when debugNLP $ putIOwords ["germanNLP end", showT text2]
---
---        return   doc0'
 
 --
 instance LanguageSpecificNLPcall FrenchType POStagFrench where
