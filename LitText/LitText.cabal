@@ -1,7 +1,10 @@
 name: LitText
-version: 0.0.4.2
+version: 0.0.4.3
  -- changed 0.0.4.1 -> 2 changed language for wordform to 3 letters (same as lemma3)
 --        - new make is ntmake5,
+-- 0.0.4.2 added the coreNLP POS data
+    -- 0.0.4.3 moved all tag data to chatter
+
 cabal-version: 1.12
 build-type: Simple
 license: AllRightsReserved
@@ -30,7 +33,7 @@ library
 --        , lines2para
 --        , coreNLP
         , cereal
-        , chatter
+        , chatter == 0.9.2.0
             -- is support for POS codes (could use haskell-conll)
                 -- used in  POS module
         , HTF
@@ -63,16 +66,16 @@ library
         Lines2para.HandleLayout
         CoreNLP.Defs0
         CoreNLP.CoreNLPxml
-        CoreNLP.POScodesConll
-        CoreNLP.POScodesUD
-        CoreNLP.POScodesTinT
-        CoreNLP.POScodesGerman
-        CoreNLP.POScodesSpanish
-        CoreNLP.POScodesFrench
-        CoreNLP.POScodesFrenchUD
+--        CoreNLP.POScodesConll
+--        CoreNLP.POScodesUD
+--        CoreNLP.POScodesTinT
+--        CoreNLP.POScodesGerman
+--        CoreNLP.POScodesSpanish
+--        CoreNLP.POScodesFrench
+--        CoreNLP.POScodesFrenchUD
             -- italian
-        CoreNLP.NERcodes
-        CoreNLP.DEPcodes
+--        CoreNLP.NERcodes
+--        CoreNLP.DEPcodes
         BuchCode.BuchToken
         BuchCode.MarkupText
         Processor.Main2sub
