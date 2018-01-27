@@ -21,7 +21,7 @@ module CoreNLP.NERcodes (module CoreNLP.NERcodes
 ----        , hasDepCode
 --        , makeSimpleDepCode, makeDepCode
 --        , Pos (..)  -- , Unk
---        , NERTag (..)
+--        , NERtag (..)
 --        , isVerbCode, isNounCode, isPunctuation, isAdjective
 --        , isClosedClass
 --        , isSimpleCode
@@ -40,11 +40,11 @@ import Uniform.Zero
 import Uniform.Strings
 import Uniform.Error
 
-import              NLP.Corpora.Conll  hiding (NERTag (..))
+import              NLP.Corpora.Conll  hiding (NERtag (..))
 
 
 -- | Named entity categories defined for the Conll 2003 task.
-data NERTag = PER
+data NERtag = PER
             | ORG
             | LOC
             | MISC
@@ -66,7 +66,7 @@ data NERTag = PER
 
   deriving (Read, Show, Ord, Eq,  Enum, Bounded)
 
-instance Zeros NERTag where zero = NERunk
+instance Zeros NERtag where zero = NERunk
 
 data SpeakerTag =  -- PER0 | PER1 | PER2 |
                     Speaker Text

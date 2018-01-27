@@ -32,13 +32,11 @@ module CoreNLP.Defs0 (
 
 import              Uniform.Strings
 import Uniform.Zero
-import CoreNLP.POScodesConll
-import CoreNLP.POScodesUD
-import CoreNLP.NERcodes
-import CoreNLP.DEPcodes
--- import              Uniform.FileIO
+import   NLP.Corpora.Conll
+--            Uniform.FileIO
 --import              LitNLP.Tools
---import              CoreNLP.DependencyCodes
+import              CoreNLP.DEPcodes
+import              CoreNLP.NERcodes
 -- import           Text.XML.HXT.Core       hiding (when)
 
 

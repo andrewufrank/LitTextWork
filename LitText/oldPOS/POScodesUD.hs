@@ -18,7 +18,7 @@
 
 module CoreNLP.POScodesUD (module CoreNLP.POScodesUD
 --        , module NLP.Corpora.Conll
-        , NLPtypes.Tag(..)
+        , NLPtypes.POSTags(..)
         )
          where
 
@@ -64,7 +64,7 @@ data POStagUD =   -- copied from http://universaldependencies.org/u/pos/
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
-instance NLPtypes.Tag POStagUD where
+instance NLPtypes.POSTags POStagUD where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK

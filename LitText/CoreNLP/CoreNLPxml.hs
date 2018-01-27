@@ -44,14 +44,20 @@ module CoreNLP.CoreNLPxml (
 import           Test.Framework
 import Uniform.TestHarness
 
-import qualified NLP.Types.Tags         as NLP (Tag (..))
-import qualified CoreNLP.POScodesUD         as UD
-import  CoreNLP.POScodesUD        as UD  (POStagUD (..))
-import  CoreNLP.POScodesConll         ( POStagConll(..))
-import CoreNLP.POScodesTinT   as TinT -- italian
-import        CoreNLP.POScodesGerman
-import CoreNLP.POScodesSpanish
-import        CoreNLP.POScodesFrench
+import qualified NLP.Types.Tags      as NLP (POSTags (..))
+import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.Corpora.UD  as UD
+import              CoreNLP.DEPcodes
+
+import              CoreNLP.NERcodes
+
+--import qualified CoreNLP.POScodesUD         as UD
+--import  CoreNLP.POScodesUD        as UD  (POStagUD (..))
+--import  CoreNLP.POScodesConll         ( POStagConll(..))
+--import CoreNLP.POScodesTinT   as TinT -- italian
+--import        CoreNLP.POScodesGerman
+--import CoreNLP.POScodesSpanish
+--import        CoreNLP.POScodesFrench
 
 import           Uniform.Error
 import           Uniform.FileIO
@@ -283,12 +289,12 @@ getSpeaker = atTag "Speaker" >>>
         nx <- text -< x
         returnA -< nx
 
-class (NLP.Tag postag) => ReadDocXML postag where
+class (NLP.POSTags postag) => ReadDocXML postag where
     -- the operation on the XML doc which depend on the POStag
 
     readDocString :: postag -> Bool -> Text  -> ErrIO  (Doc0 postag)
 
-instance (NLP.Tag postag) => ReadDocXML postag where
+instance (NLP.POSTags postag) => ReadDocXML postag where
 
     readDocString ph showXML text = do
         docs   <-callIO $
@@ -311,22 +317,22 @@ instance (NLP.Tag postag) => ReadDocXML postag where
                             return doc2
                 -- error in case of 0
 
-parseOne :: (NLP.Tag postag) => postag -> Text -> IO [Doc0 postag]
+parseOne :: (NLP.POSTags postag) => postag -> Text -> IO [Doc0 postag]
 parseOne ph text = runX (readString [withValidate no]  (t2s text)
                                     >>> getDoc0 ph)
---parseOnee :: (NLP.Tag POStagConll) => postag -> Text -> IO [Doc0 POStagConll]
+--parseOnee :: (NLP.POSTags POStagConll) => postag -> Text -> IO [Doc0 POStagConll]
 --parseOnee ph text = runX (readString [withValidate no]  (t2s text)
 --                                    >>> getDoc0x)
 test_xml_0_Engl :: IO ()
 test_xml_0_Engl = do
-        r <-parseOne (undef "xx32" :: POStagConll) doc001
+        r <-parseOne (undef "xx32" :: Conll.POStag ) doc001
         putIOwords ["test_xml_0_Engl", showT r]
 --        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 POStagConll]) r
         assertEqual resEng r
 
 test_xml_0_DU :: IO ()
 test_xml_0_DU = do
-        r <-parseOne (undef "xx33" :: POStagUD) doc001 -- no parse RD is not a UD POS tag. what is it?
+        r <-parseOne (undef "xx33" :: Conll.POStag) doc001 -- no parse RD is not a UD POS tag. what is it?
         putIOwords ["test_xml_0_DU", showT r]
         assertEqual resUD r
 
@@ -340,7 +346,7 @@ doc001ud ::Text
 --doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
 doc001ud = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>X</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
 
-resEng :: [Doc0 POStagConll]
+resEng :: [Doc0 Conll.POStag]
 resEng = [Doc0{docSents =
         [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
                    stoks =
@@ -352,7 +358,7 @@ resEng = [Doc0{docSents =
                    sdeps = Nothing}],
       docCorefs = []}]
 
-resUD :: [Doc0 POStagUD]
+resUD :: [Doc0 UD.POStag]
 resUD = [Doc0{docSents =
                 [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
                   stoks =
@@ -364,8 +370,8 @@ resUD = [Doc0{docSents =
                    sdeps = Nothing}],
       docCorefs = []}]
 
-test_parsePosConll = assertEqual (Unk::POStagConll)  (NLP.parseTag  "xx")
-test_parsePosUD = assertEqual (UD.X::POStagUD)  (NLP.parseTag  "xx")
+test_parsePosConll = assertEqual (Unk::Conll.POStag)  (NLP.parseTag  "xx")
+test_parsePosUD = assertEqual (UD.X::UD.POStag)  (NLP.parseTag  "xx")
 
 ----getDoc0 :: _ ->  Doc0 postag
 --getDoc0x   = atTag "document" >>>

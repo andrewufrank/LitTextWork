@@ -115,7 +115,7 @@ data POStagTinT =   -- the definitions are in  http://www.italianlp.it/docs/ISST
               "Plur"
             ]
             -}
-instance NLPtypes.Tag POStagTinT where
+instance NLPtypes.POSTags POStagTinT where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK

@@ -3,7 +3,7 @@ version: 0.0.4.3
  -- changed 0.0.4.1 -> 2 changed language for wordform to 3 letters (same as lemma3)
 --        - new make is ntmake5,
 -- 0.0.4.2 added the coreNLP POS data
-    -- 0.0.4.3 moved all tag data to chatter
+-- 0.0.4.3 moved all tag data to chatter
 
 cabal-version: 1.12
 build-type: Simple
@@ -74,8 +74,8 @@ library
 --        CoreNLP.POScodesFrench
 --        CoreNLP.POScodesFrenchUD
             -- italian
---        CoreNLP.NERcodes
---        CoreNLP.DEPcodes
+        CoreNLP.NERcodes
+        CoreNLP.DEPcodes
         BuchCode.BuchToken
         BuchCode.MarkupText
         Processor.Main2sub
