@@ -14,7 +14,7 @@
     , OverloadedStrings
         , TypeSynonymInstances
         , FlexibleInstances
-        , DeriveAnyClass
+--        , DeriveAnyClass
         , DeriveGeneric
         #-}
 
@@ -115,7 +115,7 @@ data POStagTinT =   -- the definitions are in  http://www.italianlp.it/docs/ISST
               "Plur"
             ]
             -}
-instance NLPtypes.POSTags POStagTinT where
+instance NLPtypes.POStags POStagTinT where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK

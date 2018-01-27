@@ -44,7 +44,7 @@ module CoreNLP.CoreNLPxml (
 import           Test.Framework
 import Uniform.TestHarness
 
-import qualified NLP.Types.Tags      as NLP (POSTags (..))
+import qualified NLP.Types.Tags      as NLP (POStags (..))
 import qualified NLP.Corpora.Conll  as Conll
 import qualified NLP.Corpora.UD  as UD
 import              CoreNLP.DEPcodes
@@ -195,7 +195,7 @@ getDoc0 ph = atTag "document" >>>
         s <- getSentences ph  -< x
         c <- getCoref0' -< x
         returnA -< Doc0 s c
-      where getCoref0' = (getCoref0)  `orElse` (arr (const []))
+      where getCoref0' = getCoref0 `orElse` (arr (const []))
 
 getSentences ph = atTag "sentences" >>>
     proc x -> do
@@ -289,12 +289,12 @@ getSpeaker = atTag "Speaker" >>>
         nx <- text -< x
         returnA -< nx
 
-class (NLP.POSTags postag) => ReadDocXML postag where
+class (NLP.POStags postag) => ReadDocXML postag where
     -- the operation on the XML doc which depend on the POStag
 
     readDocString :: postag -> Bool -> Text  -> ErrIO  (Doc0 postag)
 
-instance (NLP.POSTags postag) => ReadDocXML postag where
+instance (NLP.POStags postag) => ReadDocXML postag where
 
     readDocString ph showXML text = do
         docs   <-callIO $
@@ -317,10 +317,10 @@ instance (NLP.POSTags postag) => ReadDocXML postag where
                             return doc2
                 -- error in case of 0
 
-parseOne :: (NLP.POSTags postag) => postag -> Text -> IO [Doc0 postag]
+parseOne :: (NLP.POStags postag) => postag -> Text -> IO [Doc0 postag]
 parseOne ph text = runX (readString [withValidate no]  (t2s text)
                                     >>> getDoc0 ph)
---parseOnee :: (NLP.POSTags POStagConll) => postag -> Text -> IO [Doc0 POStagConll]
+--parseOnee :: (NLP.POStags POStagConll) => postag -> Text -> IO [Doc0 POStagConll]
 --parseOnee ph text = runX (readString [withValidate no]  (t2s text)
 --                                    >>> getDoc0x)
 test_xml_0_Engl :: IO ()
@@ -332,7 +332,7 @@ test_xml_0_Engl = do
 
 test_xml_0_DU :: IO ()
 test_xml_0_DU = do
-        r <-parseOne (undef "xx33" :: Conll.POStag) doc001 -- no parse RD is not a UD POS tag. what is it?
+        r <-parseOne (undef "xx33" :: UD.POStag) doc001 -- no parse RD is not a UD POS tag. what is it?
         putIOwords ["test_xml_0_DU", showT r]
         assertEqual resUD r
 
@@ -352,7 +352,7 @@ resEng = [Doc0{docSents =
                    stoks =
                      [Token0{tid = TokenID0{untid0 = 1},
                              tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
-                             tbegin = 0, tend = 2, tpos = Unk, tpostt = "", tner = ["O"],
+                             tbegin = 0, tend = 2, tpos = Conll.Unk, tpostt = "", tner = ["O"],
                              tposOrig = "RD" ,
                              tspeaker = []}],
                    sdeps = Nothing}],
@@ -370,7 +370,7 @@ resUD = [Doc0{docSents =
                    sdeps = Nothing}],
       docCorefs = []}]
 
-test_parsePosConll = assertEqual (Unk::Conll.POStag)  (NLP.parseTag  "xx")
+test_parsePosConll = assertEqual (Conll.Unk::Conll.POStag)  (NLP.parseTag  "xx")
 test_parsePosUD = assertEqual (UD.X::UD.POStag)  (NLP.parseTag  "xx")
 
 ----getDoc0 :: _ ->  Doc0 postag

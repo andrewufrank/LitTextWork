@@ -43,14 +43,13 @@ import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples (processDoc0toTriples2)
-import CoreNLP.POScodesUD
-import CoreNLP.POScodesConll  -- Conll for english
-import CoreNLP.POScodesTinT   -- for italian
-
-import        CoreNLP.POScodesGerman
-import        CoreNLP.POScodesSpanish
-import        CoreNLP.POScodesFrench
-import        CoreNLP.POScodesFrenchUD
+import NLP.Corpora.UD
+import NLP.Corpora.Conll  as Conll -- Conll for english
+import NLP.Corpora.ItalianTinT   -- for italian
+import NLP.Corpora.German  -- for italian
+import NLP.Corpora.Spanish -- for italian
+import NLP.Corpora.French-- for italian
+import NLP.Corpora.FrenchUD -- for italian
 
 
 data EnglishType  -- should go with all the rest of language defs.
@@ -82,7 +81,7 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
 
                 case language of
                     English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
-                                            (undef "convertOneSnip2Triples postat":: POStagConll)
+                                            (undef "convertOneSnip2Triples postat":: Conll.POStag )
                                             debugNLP showXML textstate snip
                     German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
                                             (undef "convertOneSnip2Triples postat":: POStagGerman)
@@ -113,11 +112,12 @@ class Docs postag where
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
 
-class (CharChains2 postag Text) =>  LanguageSpecificNLPcall  langPhantom postag where
+-- (CharChains2 postag Text) =>
+class (Show postag) =>  LanguageSpecificNLPcall  langPhantom postag where
     snip2triples2 :: langPhantom -> postag -> Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple] -- (Doc0 postag)
     -- process an english text snip to a Doc0
 
-instance (Tag postag) => Docs postag where
+instance (POStags postag) => Docs postag where
 
 
 --    convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
@@ -150,7 +150,7 @@ instance (Tag postag) => Docs postag where
              return zero
                 )
 
-instance LanguageSpecificNLPcall EnglishType POStagConll where
+instance LanguageSpecificNLPcall EnglishType Conll.POStag where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
 --    englishNLP debugNLP showXML sloc text = do

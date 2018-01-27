@@ -31,7 +31,7 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ScopedTypeVariables, MultiParamTypeClasses #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
@@ -45,6 +45,7 @@ module Parser.ProduceNLPtriples
 
 import           Test.Framework
 import Uniform.TestHarness (testVar3File)
+--import Uniform.Unifor
 import Parser.ReadMarkupAB  -- for resultA1 etc.
 import CoreNLP.Defs0
 import Parser.NLPvocabulary
@@ -53,12 +54,13 @@ import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
 --import Parser.ProduceDocCallNLP
 import Parser.TextDescriptor
 import Parser.ProduceLayout (buchURIx)
-import CoreNLP.POScodesUD
-import CoreNLP.POScodesConll  -- Conll for english
-import CoreNLP.POScodesTinT   -- for italian
+import NLP.Corpora.Conll
+import NLP.Corpora.UD  -- Conll for english
+import NLP.Corpora.ItalianTinT   -- for italian
 
+--instance (Show a) => CharChains2 a Text where show' = s2t . show
 
-processDoc0toTriples2 :: (CharChains2 postag Text, Tag postag) => TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0 postag) -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: (Show postag, POStags postag) => TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0 postag) -> [Triple] -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 -- snipnr is not used anymore?
 
@@ -87,7 +89,7 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 -- currently not producing the not yet used corefs
 
 ----------------------
-mkSentenceTriple2 :: (CharChains2 postag Text, Tag postag) => LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 postag ->  ( [Triple])
+mkSentenceTriple2 :: (Show postag, POStags postag) => LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 postag ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang buchuri  snipid sent
        =      t0 : t1 : t2 : sentenceForm : (toktrips ++ depsTrips)
@@ -107,7 +109,7 @@ mkSentenceTriple2 lang buchuri  snipid sent
                     (unwords' . map (word0 . tword) . stoks $ sent )
 
 ----------------------------------------- --
-mkTokenTriple2 :: (CharChains2 postag Text, Tag postag) => LanguageCode -> SentSigl-> Token0 postag-> [Triple]
+mkTokenTriple2 :: (Show postag, POStags postag) => LanguageCode -> SentSigl-> Token0 postag-> [Triple]
 mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3,  t5] ++ t4 ++ t6 ++ t7
     -- the language code is to pass to the triple maker ! TODO
     where
@@ -119,7 +121,7 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3,  t5] ++ t4 ++ t6 ++ t7
         t2a = mkTripleLang3 lang (unTokenSigl tokensigl)
                     (mkRDFproperty Lemma3) (lemma0 $ tlemma tok)
         t3 = mkTripleText (unTokenSigl tokensigl)
-                    (mkRDFproperty Pos) (show' . tpos $ tok)  -- use the encoding
+                    (mkRDFproperty Pos) (showT . tpos $ tok)  -- use the encoding
         t4 = if tpos tok == tagUNK
                     then  [mkTripleText (unTokenSigl tokensigl)
                             (mkRDFproperty PosOrig) (tposOrig $ tok) ]  -- use what nlp produced
@@ -183,7 +185,7 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8] -- , t9]
 --       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
 --       wf = word0 . dword  $ depp
 
-testOP_E_G :: (CharChains2 postag Text,  Tag postag) => TextDescriptor -> [Doc0 postag] ->  [Triple]
+testOP_E_G :: (Show postag,  POStags postag) => TextDescriptor -> [Doc0 postag] ->  [Triple]
 testOP_E_G textstate docs  = concat
         . map (processDoc0toTriples2 textstate NoLanguage (ParaNum 99))
         $ (zip [1..] docs)

@@ -12,13 +12,13 @@
     , OverloadedStrings
         , TypeSynonymInstances
         , FlexibleInstances
-        , DeriveAnyClass
+--        , DeriveAnyClass
         , DeriveGeneric
         #-}
 
 module CoreNLP.POScodesUD (module CoreNLP.POScodesUD
 --        , module NLP.Corpora.Conll
-        , NLPtypes.POSTags(..)
+        , NLPtypes.POStags(..)
         )
          where
 
@@ -64,7 +64,7 @@ data POStagUD =   -- copied from http://universaldependencies.org/u/pos/
         deriving (Read, Show, Ord, Eq, Generic, Enum, Bounded)
 
 
-instance NLPtypes.POSTags POStagUD where
+instance NLPtypes.POStags POStagUD where
 --parseTag :: Text -> PosTag
     parseTag txt = case readTag txt of
                    Left  _ -> NLPtypes.tagUNK
