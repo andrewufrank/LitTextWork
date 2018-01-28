@@ -17,18 +17,13 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/rdf4h
   extra-dep: true
-- location: /home/frank/Workspace8/chatter
+- location: /home/frank/Workspace8/TreeTagSets
   extra-dep: true
-#- location: /home/frank/Workspace8/storeInJena
-#  extra-dep: true
 - ../LitFoundation
 - ../rdf4hextension
 - '.'
 extra-deps:
-# - chatter-0.8.0.1
-- fullstop-0.1.4
 - hgal-2.0.0.2
 - parsec-extra-0.2.0.0
 - test-invariant-0.4.5.0
-- tokenize-0.3.0
 resolver: lts-9.1

@@ -32,8 +32,9 @@ library
 --        , buchCode
 --        , lines2para
 --        , coreNLP
-        , cereal
-        , chatter ==0.9.2.0
+--        , cereal
+--        , chatter ==0.9.2.0
+        , TreeTagSets
             -- is support for POS codes (could use haskell-conll)
                 -- used in  POS module
         , HTF
