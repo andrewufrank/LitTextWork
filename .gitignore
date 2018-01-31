@@ -3,5 +3,6 @@
 **.HTF
 *.lkshs
 **/dist-newstyle
+**/dist
 **/*.old
 **/*.yaml.*

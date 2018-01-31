@@ -45,11 +45,11 @@ import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples (processDoc0toTriples2)
 import NLP.Corpora.UD
 import NLP.Corpora.Conll  as Conll -- Conll for english
-import NLP.Corpora.ItalianTinT   -- for italian
-import NLP.Corpora.German  -- for italian
-import NLP.Corpora.Spanish -- for italian
-import NLP.Corpora.French-- for italian
-import NLP.Corpora.FrenchUD -- for italian
+import NLP.Corpora.ItalianTinT   as TinT-- for italian
+import NLP.Corpora.German  as German --
+import NLP.Corpora.Spanish as Spanish --
+import NLP.Corpora.French as French --
+import NLP.Corpora.FrenchUD as FrenchUD --
 
 
 data EnglishType  -- should go with all the rest of language defs.
@@ -68,38 +68,38 @@ portFrenchUD = 9006
 convertOneSnip2Triples :: Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
 convertOneSnip2Triples debugNLP showXML textstate snip = do
-        let text = tz3text snip
-        -- reduce for some special cases _italics_
-        -- should be done before the split, because . of abbreviations are elliminated
-        if null' text
-            then return zero
-            else do
-                let language = tz3lang snip
+    let text = tz3text snip
+    -- reduce for some special cases _italics_
+    -- should be done before the split, because . of abbreviations are elliminated
+    if null' text
+        then return zero
+        else do
+            let language = tz3lang snip
 --                let sloc = nlpServer textstate
-                when debugNLP $ putIOwords ["convertOneSnip2Triples", "language"
-                            , showT language, "\n snip", showT snip]
+            when debugNLP $ putIOwords ["convertOneSnip2Triples", "language"
+                        , showT language, "\n snip", showT snip]
 
-                case language of
-                    English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
-                                            (undef "convertOneSnip2Triples postat":: Conll.POStag )
-                                            debugNLP showXML textstate snip
-                    German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
-                                            (undef "convertOneSnip2Triples postat":: POStagGerman)
-                                            debugNLP showXML textstate snip
-                    Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
-                                            (undef "convertOneSnip2Triples postat":: POStagTinT)
-                                            debugNLP showXML textstate snip
-                    French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
-                                            (undef "convertOneSnip2Triples postat":: POStagFrench)
+            case language of
+                English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
+                                        (undef "convertOneSnip2Triples postat":: Conll.POStag )
+                                        debugNLP showXML textstate snip
+                German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
+                                        (undef "convertOneSnip2Triples postat":: German.POStag)
+                                        debugNLP showXML textstate snip
+                Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
+                                        (undef "convertOneSnip2Triples postat":: TinT.POStag)
+                                        debugNLP showXML textstate snip
+                French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
+                                        (undef "convertOneSnip2Triples postat":: French.POStag)
 --                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
-                                            debugNLP showXML textstate snip
-                    Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
-                                            (undef "convertOneSnip2Triples postat":: POStagSpanish)
-                                            debugNLP showXML textstate snip
-                --                    NoLanguage -> return zero
-                    _    -> do
-                            putIOwords ["convertOneSnip2Triples", "no server for ", showT language]
-                            return []
+                                        debugNLP showXML textstate snip
+                Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
+                                        (undef "convertOneSnip2Triples postat":: Spanish.POStag)
+                                        debugNLP showXML textstate snip
+            --                    NoLanguage -> return zero
+                _    -> do
+                        putIOwords ["convertOneSnip2Triples", "no server for ", showT language]
+                        return []
 --                    _    -> errorT ["convertOneSnip2Triples"
 --                                            , showT language, "language has no server"]
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
@@ -179,7 +179,7 @@ instance LanguageSpecificNLPcall EnglishType Conll.POStag where
 
 
 
-instance LanguageSpecificNLPcall GermanType POStagGerman where
+instance LanguageSpecificNLPcall GermanType German.POStag  where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
 --    englishNLP debugNLP showXML sloc text = do
@@ -211,7 +211,7 @@ instance LanguageSpecificNLPcall GermanType POStagGerman where
 
 
 --
-instance LanguageSpecificNLPcall FrenchType POStagFrench where
+instance LanguageSpecificNLPcall FrenchType French.POStag where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
 --    englishNLP debugNLP showXML sloc text = do
@@ -250,7 +250,7 @@ instance LanguageSpecificNLPcall FrenchType POStagFrench where
 
         return trips
 --
-instance LanguageSpecificNLPcall FrenchType POStagFrenchUD where
+instance LanguageSpecificNLPcall FrenchType FrenchUD.POStag where
 ---- the tagset is perhaps incomplete and does not produce corefs. the normal model is ok
 --
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
@@ -272,7 +272,7 @@ instance LanguageSpecificNLPcall FrenchType POStagFrenchUD where
         return trips
 
 
-instance LanguageSpecificNLPcall SpanishType POStagSpanish where
+instance LanguageSpecificNLPcall SpanishType Spanish.POStag  where
 --    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an english text snip to a Doc0
 --    englishNLP debugNLP showXML sloc text = do
@@ -310,7 +310,7 @@ instance LanguageSpecificNLPcall SpanishType POStagSpanish where
         return trips
 
 
-instance LanguageSpecificNLPcall ItalianType POStagTinT where
+instance LanguageSpecificNLPcall ItalianType TinT.POStag  where
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
 --    italianNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an italian text snip to a Doc0

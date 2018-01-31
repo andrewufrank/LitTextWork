@@ -130,8 +130,8 @@ test_12_A_B_textstate_text_12 =   testVar2File result12A "resultB12" textstate2T
 --destinationTest = DGoutDir litTestDir1
 fill_ :: FilePath -> FilePath -> TextDescriptor
 
---fill_ f1 f2 = fillTextState3a dirsTest serverBrest f1 f2 False  -- 3a not including text
-fill_ f1 f2 = fillTextState3a dirsTest serverLocalhost f1 f2 False  -- 3a not including text
+fill_ f1 f2 = fillTextState3a dirsTest serverBrest f1 f2 False  -- 3a not including text
+--fill_ f1 f2 = fillTextState3a dirsTest serverLocalhost f1 f2 False  -- 3a not including text
 result1A = fill_ "test" "t1"
 result2A = fill_ "test" "t2"
 result3A = fill_ "test" "t3"
