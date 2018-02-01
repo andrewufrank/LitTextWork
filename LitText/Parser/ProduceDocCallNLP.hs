@@ -103,7 +103,8 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
 --                    _    -> errorT ["convertOneSnip2Triples"
 --                                            , showT language, "language has no server"]
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
-testOP_DA_L textstate = mapM (convertOneSnip2Triples True True textstate)
+testOP_DA_L textstate = mapM (convertOneSnip2Triples False False textstate)
+-- do not show the doc
 
 
 class Docs postag where
@@ -173,7 +174,7 @@ instance LanguageSpecificNLPcall EnglishType Conll.POStag where
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para snip) (snipnr, docs)
 
         return trips
 
@@ -205,7 +206,7 @@ instance LanguageSpecificNLPcall GermanType German.POStag  where
 
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, docs2)
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para snip) (snipnr, docs2)
 
         return trips
 
@@ -246,7 +247,7 @@ instance LanguageSpecificNLPcall FrenchType French.POStag where
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para snip) (snipnr, docs)
 
         return trips
 --
@@ -267,7 +268,7 @@ instance LanguageSpecificNLPcall FrenchType FrenchUD.POStag where
         when debugNLP $ putIOwords ["french UD end", showT text2]
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, docs)
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para snip) (snipnr, docs)
 
         return trips
 
@@ -305,7 +306,7 @@ instance LanguageSpecificNLPcall SpanishType Spanish.POStag  where
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let snipnr = 1 -- TODO
 
-        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
+        let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para  snip) (snipnr,  docs )
 
         return trips
 
