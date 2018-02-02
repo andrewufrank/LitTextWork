@@ -26,6 +26,7 @@ import Uniform.HttpURI (URI)
 import Producer.Servers  (serverBrest)  -- for test
 import Data.RDF.Extension (LanguageCode (..))
 import           Test.Framework
+import BuchCode.BuchToken hiding ((</>), (<.>))
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"
@@ -36,6 +37,51 @@ litTestDir1 = litDir </> litTests
 ntDir = makeAbsDir "/home/frank/Scratch/NT"
 litNTOrigDir1 = ntDir </> litOriginals
 litNTTestDir1 = ntDir </> litTests
+
+-------------- definitinos of TZ2
+
+data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int} deriving (Read, Show, Eq)
+-- ^ the place of a line in the full text
+-- for simplification, all counts are from the start of the text
+-- not relative to the page or paragraph (can be computed, if desired)
+-- page number (tlline) is text, to deal with III etc.
+    -- removed paraid
+
+instance Zeros TextLoc where zero = TextLoc zero zero
+
+-- the type of the line
+data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
+        -- | AllCaps0
+        deriving (Show, Read, Eq )
+
+data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
+        deriving (Show, Read, Eq )
+-- the text is without markers, the markers are a list
+-- of offset of the marker from start of line resp. previous marker
+-- and the marker as text
+-- the list is empty if none
+
+
+-- the format accumulation all detail info to build the triples.
+-- only tzpara and tzmarkup in final result
+data TZ =
+         TZtext {tzt:: TextType, tzloc :: TextLoc
+                    , tztext:: TextWithMarks   -- is this appropriate here?
+                    , tzlang :: LanguageCode }
+--        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
+--                , tlpara :: ParaNum
+--                , tzInPart :: ParaNum}
+        | TZmarkup  {tzloc :: TextLoc, tztext:: TextWithMarks
+                        , tztok :: BuchToken, tzlang :: LanguageCode
+--                        , tlpara :: ParaNum
+--                        , tzInPart :: ParaNum
+                        }
+        | TZleer  {tzloc :: TextLoc}
+        | TZneueSeite  {tzloc :: TextLoc}
+        | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
+            deriving (Read, Show, Eq )
+
+instance Zeros TZ where zero = TZleer zero
 
 newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
 -- just to avoid confusions

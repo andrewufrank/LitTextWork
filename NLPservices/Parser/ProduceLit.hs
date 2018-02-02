@@ -40,6 +40,8 @@ import           Uniform.Error           (errorT)
 import Uniform.TestHarness
 import Data.RDF.FileTypes
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
+import BuchCode.BuchToken hiding ((</>), (<.>))
+
 
 litURItext =   gerastreeURI </> "lit_2014" :: PartURI
 dcURItext = "http://purl.org/dc/elements/1.1" :: PartURI

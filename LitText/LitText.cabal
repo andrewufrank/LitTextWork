@@ -78,7 +78,7 @@ library
             -- italian
         CoreNLP.NERcodes
         CoreNLP.DEPcodes
-        BuchCode.BuchToken
+--        BuchCode.BuchToken
         BuchCode.MarkupText
         Processor.Main2sub
 --        Process.UtilsProcessing

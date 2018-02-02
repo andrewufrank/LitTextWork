@@ -56,17 +56,17 @@ class Zeilen z where
 type TextParsec a = Parsec Text () a
 type TextParsecBuch = Parsec Text () [MarkupElement]
 
--- the type of the line
-data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
-        -- | AllCaps0
-        deriving (Show, Read, Eq )
-
-data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
-        deriving (Show, Read, Eq )
--- the text is without markers, the markers are a list
--- of offset of the marker from start of line resp. previous marker
--- and the marker as text
--- the list is empty if none
+---- the type of the line
+--data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
+--        -- | AllCaps0
+--        deriving (Show, Read, Eq )
+--
+--data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
+--        deriving (Show, Read, Eq )
+---- the text is without markers, the markers are a list
+---- of offset of the marker from start of line resp. previous marker
+---- and the marker as text
+---- the list is empty if none
 
 -- the kinds of lines differentiated
 data TextZeilen =
