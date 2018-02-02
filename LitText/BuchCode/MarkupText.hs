@@ -37,6 +37,7 @@ import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB
 import Uniform.TestHarness hiding (try)
+import Parser.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 class Zeilen z where
 -- ^ ops on zeilen

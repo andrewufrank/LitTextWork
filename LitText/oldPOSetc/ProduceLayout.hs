@@ -27,34 +27,29 @@ import Data.RDF.Triple2text (triple2text)
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 --import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
---import Parser.ReadMarkupAB    -- result1A etc.
---import Lines2para.HandleLayout
-    -- (RDFtypes (..), RDFproperties (..), TZ (..)
---      , TextDescriptor, PartURI, RDFsubj, Triple) -- TZ
+import Parser.ReadMarkupAB    -- result1A etc.
+import Lines2para.HandleLayout
+    -- (RDFtypes (..), RDFproperties (..), TZ (..), TextDescriptor, PartURI, RDFsubj, Triple) -- TZ
 --import Lines2para.Lines2ignore
 --import Lines2para.Lines2para -- hiding ((</>))
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 import Uniform.TestHarness
 import Producer.Servers (rdfBase)  -- from Foundation
-import Parser.TextDescriptor hiding ((</>)) -- from Foundation
-import Parser.NLPvocabulary
 
 --gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
 --gerastreeURI = "http://gerastree.at"
 --layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
 layoutURItext =   (showT rdfBase) </>  "layout_2017" :: PartURI
 
-produceLayoutTriples ::  TextDescriptor -> [TZ] -> [Triple]
--- test BAD -> J
+produceLayoutTriples ::  TextDescriptor -> [TZ] -> [Triple]  -- test BAD -> J
 -- put lines and pages into rdf
-produceLayoutTriples textstate =
-            concatMap (convOneTZ2triple textstate)
+produceLayoutTriples textstate = concatMap (convOneTZ2triple textstate)
 
 
---buchURIx textstate = RDFsubj $ gerastreeURI
---            <#> authorDir textstate <-> buchName textstate
----- id of buch, part and sentence or page is attached
+buchURIx textstate = RDFsubj $ gerastreeURI
+            <#> authorDir textstate <-> buchName textstate
+-- id of buch, part and sentence or page is attached
 
 data LayoutType = Line | Page
     deriving (Show, Eq, Enum)
@@ -62,23 +57,19 @@ data LayoutType = Line | Page
 instance RDFtypes LayoutType where
     mkRDFtype p =  RDFtype $ layoutURItext <#> (toTitle . showT $ p)
 
-data LayoutProperty = TomeNumber | LineNumber
-    | PageNumber | LineText
-            | InLineMarker | InLineMarkerPos
-            -- could be label for text?
+data LayoutProperty = TomeNumber | LineNumber | PageNumber | LineText
+            | InLineMarker | InLineMarkerPos  -- could be label for text?
     deriving (Show, Eq, Enum)
 
 instance RDFproperties LayoutProperty where
-    mkRDFproperty p = RDFproperty
-            $ layoutURItext <#> (toLowerStart . showT $ p)
+    mkRDFproperty p = RDFproperty $ layoutURItext <#> (toLowerStart . showT $ p)
 
 --
 newtype LineSigl = LineSigl RDFsubj
 unLineSigl (LineSigl t) = t
 --
 formatLineID :: Int -> Text
-formatLineID nr =   "L" <> (s2t .
-        printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
+formatLineID nr =   "L" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
 lineSigl :: TextDescriptor -> Int -> LineSigl
@@ -104,8 +95,7 @@ newtype InLineMarkerSigl = InLineMarkerSigl RDFsubj
 unInLineMarkerSigl (InLineMarkerSigl t) = t
 
 formatInLineMarker :: Int -> Text
-formatInLineMarker nr  =   "ILM" <>
-        (s2t . printf  ('%' : '0' : '2' : 'd' :[]) $  nr )
+formatInLineMarker nr  =   "ILM" <> (s2t . printf  ('%' : '0' : '2' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
 inLineMarkerSigl :: LineSigl -> Int -> InLineMarkerSigl
@@ -121,8 +111,7 @@ convOneTZ2triple :: TextDescriptor -> TZ -> [Triple]
 -- produce all triples necessary for each line item
 -- keeps only markup in v2
 convOneTZ2triple textstate tz  = case tz of
---    TZzahl {}  -> errorT ["formParagraphs"
---                ,"should not have TZzahl left", showT tz]
+--    TZzahl {}  -> errorT ["formParagraphs","should not have TZzahl left", showT tz]
     TZmarkup {} -> lineTriple textstate tz
     TZleer {} -> [] -- where not elliminated?
 ------         errorT ["formParagraphs","should not leer", showT tz]
@@ -136,23 +125,19 @@ lineTriple :: TextDescriptor -> TZ  -> [Triple]
 -- processes markup as well - perhaps this is not necessary?
 -- title and author in gutenberg does not have a language code
 lineTriple textstate  tz =
-    [ mkTripleInt (unLineSigl sigl) (mkRDFproperty LineNumber)
-            (tlline . tzloc $ tz)
+    [ mkTripleInt (unLineSigl sigl) (mkRDFproperty LineNumber)  (tlline . tzloc $ tz)
     , mkTripleType (unLineSigl sigl) (mkRDFtype Line)
-    -- is not necessary, duck typing
-    -- what has a lineNumber is a line
+    -- is not necessary, duck typing - what has a lineNumber is a line
     , mkTriplePartOf (unLineSigl sigl)   (buchURIx textstate)
 --    , mkTriplePartOf (unLineSigl sigl)   (unPageSigl pSigl)
     -- requires a page as an object
     -- gives the page number/text as it was parsed
     -- could be avoided if null
-    , mkTripleLang3 (tzlang tz) (unLineSigl sigl)
-            (mkRDFproperty LineText)
+    , mkTripleLang3 (tzlang tz) (unLineSigl sigl) (mkRDFproperty LineText)
                     (twm . tztext $ tz)
     -- gives the text of a TZtext line
         ]
-            ++ (concat . map (oneMarkerTriple sigl)
-                $ (twmMarks . tztext $ tz))
+            ++ (concat . map (oneMarkerTriple sigl) $ (twmMarks . tztext $ tz))
             ++ pageNumberTriple
     where
         sigl = lineSigl textstate .  tlline . tzloc $ tz
@@ -199,7 +184,7 @@ layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstat
 ------test_7BAD_J = testVar3File result7A "resultBAD7" "resultJ7" layoutTriples
 --test_8BAD_J = testVar3File result8A "resultBAD8" "resultJ8" layoutTriples
 --test_9BAD_J = testVar3File result9A "resultBAD9" "resultJ9" layoutTriples
---test_10BAD_J = testVar3File result10A "resultBAD10" "resultJ10" layoutTriples
+test_10BAD_J = testVar3File result10A "resultBAD10" "resultJ10" layoutTriples
 
 
 

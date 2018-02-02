@@ -37,6 +37,7 @@ import           Uniform.Error
 --import Data.List (nub)
 --import           Text.Printf         (printf)
 import Uniform.TestHarness
+import Parser.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
 --instance Zeros (Maybe a) where zero = Nothing
 

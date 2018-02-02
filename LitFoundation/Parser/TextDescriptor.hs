@@ -16,6 +16,8 @@ module Parser.TextDescriptor (
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
     , LanguageCode (..) -- from rdf4hextension
+    , RDFtypes (..)
+    , RDFproperties (..)
     ) where
 
 -- import           Data.RDF.Extension
@@ -24,7 +26,7 @@ import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
 import System.IO (Handle)  -- todo include in FileIO exports
 import Uniform.HttpURI (URI)
 import Producer.Servers  (serverBrest)  -- for test
-import Data.RDF.Extension (LanguageCode (..))
+import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
 
@@ -37,6 +39,16 @@ litTestDir1 = litDir </> litTests
 ntDir = makeAbsDir "/home/frank/Scratch/NT"
 litNTOrigDir1 = ntDir </> litOriginals
 litNTTestDir1 = ntDir </> litTests
+
+-- S N I P
+
+-- | a single language piece of text with lanuage code, length and start para number
+data Snip = Snip { tz3loc :: TextLoc
+                        , tz3para :: ParaNum
+                        , tz3text:: Text
+                        , tz3textLength :: Int
+                        , tz3lang :: LanguageCode }
+            deriving (Read, Show, Eq )
 
 -------------- definitinos of TZ2
 

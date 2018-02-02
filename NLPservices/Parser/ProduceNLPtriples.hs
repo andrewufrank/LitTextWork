@@ -40,7 +40,7 @@ module Parser.ProduceNLPtriples
     (module Parser.ProduceNLPtriples
     , module CoreNLP.Defs0
     , module Parser.NLPvocabulary
-    , module Lines2para.Lines2para
+--    , module Lines2para.Lines2para
     ) where
 
 import           Test.Framework
@@ -57,6 +57,7 @@ import Parser.TextDescriptor
 import NLP.Corpora.Conll
 import NLP.Corpora.UD  -- Conll for english
 import NLP.Corpora.ItalianTinT   -- for italian
+import Parser.NLPvocabulary  -- from Foundation
 
 --instance (Show a) => CharChains2 a Text where show' = s2t . show
 

@@ -25,7 +25,7 @@
 
 module Lines2para.Lines2para
     (module Lines2para.Lines2para
-    module Parser.TextDescriptor (ParaNum, unparaNum)
+     , module Parser.TextDescriptor -- (ParaNum, unparaNum)
 --    , module Lines2para.Lines2ignore
 --    , module Lines2para.HandleLayout
         ) where
@@ -41,7 +41,7 @@ import Uniform.FileIO
 import Data.List (nub)
 import           Test.Framework
 import Uniform.TestHarness
-import Parser.TextDescriptor (ParaNum (..), unparaNum)
+import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 
 --newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
 ------ just to avoid confusions

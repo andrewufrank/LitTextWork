@@ -44,9 +44,6 @@ import Data.Maybe (catMaybes)  -- todo
 --import Parser.ReadMarkupAB
 import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
-import Parser.FilterTextForNLP  (prepareTZ4nlp)
-import Parser.FormNLPsnips (formSnips)
-
 
 debugNLP1 = False
 

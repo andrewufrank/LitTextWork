@@ -14,11 +14,11 @@
 module Parser.NLPvocabulary
     ( module Parser.NLPvocabulary
       , module CoreNLP.Defs0
-      , module Parser.ProduceLit
+--      , module Parser.ProduceLit
       , module Data.RDF.Extension
       , module Uniform.Strings
---      , buchURIx, paraSigl, unPara
---      , PartURI, RDFproperty
+      , buchURIx, paraSigl
+      , PartURI, RDFproperty
 --      , NLPproperty (..)
 --      , nlpURItext
     ) where
@@ -31,10 +31,12 @@ import           Data.RDF.Extension      --(PartURI, RDFproperty)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
 -- import Uniform.StringInfix
-import Parser.ProduceLayout (gerastreeURI)
+--import Parser.ProduceLayout (gerastreeURI)
+import Parser.TextDescriptor hiding ((</>)) -- from Foundation
+import Producer.Servers (rdfBase)  -- from Foundation
 
 nlp = "nlp"::Text
-nlpURItext = gerastreeURI </> "nlp_2015" :: PartURI
+nlpURItext =  (showT rdfBase) </> "nlp_2015" :: PartURI
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | NerTag | SpeakerTag
@@ -57,6 +59,27 @@ data NLPtype = Doc | Snip | Sentence | Token
 
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ nlpURItext <#> (toTitle . showT $ p)
+
+newtype ParaSigl = ParaSigl RDFsubj
+unParaSigl (ParaSigl t) = t
+
+formatParaID :: Int -> Text
+formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
+-- format to 5 digits
+--
+--formatLineID :: Int -> Text
+--formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
+---- format to 3 digits
+
+buchURIx textstate = RDFsubj $ (showT rdfBase)
+            <#> authorDir textstate <-> buchName textstate
+-- id of buch, part and sentence or page is attached
+
+paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
+paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
+                (formatParaID . unparaNum $ pn)
+                      ( buchURIx $ textstate)
+                      )
 
 type DocSigl = ParaSigl
 unDocSigl = unParaSigl  -- is this ok?? ?

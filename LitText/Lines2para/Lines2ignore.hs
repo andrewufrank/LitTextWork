@@ -32,6 +32,7 @@ import           Data.List.Split
 --import Data.List (nub)
 import           Test.Framework
 import Uniform.TestHarness
+import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 
 
 paragraphs2TZsimple :: [TZ] -> [TZ]  -- test BA -> C

@@ -44,13 +44,13 @@ import Text.Regex (mkRegex, subRegex)
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 
 
--- | a single language piece of text with lanuage code, length and start para number
-data Snip = Snip { tz3loc :: TextLoc
-                        , tz3para :: ParaNum
-                        , tz3text:: Text
-                        , tz3textLength :: Int
-                        , tz3lang :: LanguageCode }
-            deriving (Read, Show, Eq )
+---- | a single language piece of text with lanuage code, length and start para number
+--data Snip = Snip { tz3loc :: TextLoc
+--                        , tz3para :: ParaNum
+--                        , tz3text:: Text
+--                        , tz3textLength :: Int
+--                        , tz3lang :: LanguageCode }
+--            deriving (Read, Show, Eq )
 
 tz3fillLength :: Snip -> Snip
 -- fill the length field
