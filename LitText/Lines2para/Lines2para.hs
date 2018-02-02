@@ -25,6 +25,7 @@
 
 module Lines2para.Lines2para
     (module Lines2para.Lines2para
+    module Parser.TextDescriptor (ParaNum, unparaNum)
 --    , module Lines2para.Lines2ignore
 --    , module Lines2para.HandleLayout
         ) where
@@ -40,24 +41,25 @@ import Uniform.FileIO
 import Data.List (nub)
 import           Test.Framework
 import Uniform.TestHarness
+import Parser.TextDescriptor (ParaNum (..), unparaNum)
 
-newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
--- just to avoid confusions
-unparaNum (ParaNum t) = t
-instance Zeros ParaNum where zero =  ParaNum zero
+--newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
+------ just to avoid confusions
+--unparaNum (ParaNum t) = t
+--instance Zeros ParaNum where zero =  ParaNum zero
 
--- the format accumulation all detail info to build the triples.
--- only tzpara and tzmarkup in final result
-data TZ2 =
-     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
-            , tz2para :: ParaNum
-            , tz2inPart :: ParaNum}
-    | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
-                    , tz2tok :: BuchToken, tz2lang :: LanguageCode
-                    , tz2para :: ParaNum
-                    , tz2inPart :: ParaNum
-                    }
-            deriving (Read, Show, Eq )
+---- the format accumulation all detail info to build the triples.
+---- only tzpara and tzmarkup in final result
+--data TZ2 =
+--     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
+--            , tz2para :: ParaNum
+--            , tz2inPart :: ParaNum}
+--    | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
+--                    , tz2tok :: BuchToken, tz2lang :: LanguageCode
+--                    , tz2para :: ParaNum
+--                    , tz2inPart :: ParaNum
+--                    }
+--            deriving (Read, Show, Eq )
 
 --paragraphs2TZ :: [TextZeilen] -> [TZ2]  -- test BA -> C
 ---- ^ produce the text files (ignores removed, language marked)

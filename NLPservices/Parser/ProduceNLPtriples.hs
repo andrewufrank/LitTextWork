@@ -60,7 +60,9 @@ import NLP.Corpora.ItalianTinT   -- for italian
 
 --instance (Show a) => CharChains2 a Text where show' = s2t . show
 
-processDoc0toTriples2 :: (Show postag, POStags postag) => TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0 postag) -> [Triple] -- TriplesGraph  G -> H
+processDoc0toTriples2 :: (Show postag, POStags postag) =>
+    TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0 postag) -> [Triple]
+            -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 -- snipnr is not used anymore?
 
@@ -89,7 +91,8 @@ processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
 -- currently not producing the not yet used corefs
 
 ----------------------
-mkSentenceTriple2 :: (Show postag, POStags postag) => LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 postag ->  ( [Triple])
+mkSentenceTriple2 :: (Show postag, POStags postag) =>
+        LanguageCode ->  RDFsubj ->  SnipSigl  ->    Sentence0 postag ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang buchuri  snipid sent
        =      t0 : t1 : t2 : sentenceForm : (toktrips ++ depsTrips)
@@ -109,7 +112,8 @@ mkSentenceTriple2 lang buchuri  snipid sent
                     (unwords' . map (word0 . tword) . stoks $ sent )
 
 ----------------------------------------- --
-mkTokenTriple2 :: (Show postag, POStags postag) => LanguageCode -> SentSigl-> Token0 postag-> [Triple]
+mkTokenTriple2 :: (Show postag, POStags postag) =>
+        LanguageCode -> SentSigl-> Token0 postag-> [Triple]
 mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3,  t5] ++ t4 ++ t6 ++ t7
     -- the language code is to pass to the triple maker ! TODO
     where

@@ -52,6 +52,8 @@ library
         Parser.ProduceNLP
         Parser.ProduceNLPtriples
         Parser.ConvertTaggerOutput
+        Parser.ProduceLit
+        Parser.NLPvocabulary
 --        CoreNLP.POScodesConll
 --        CoreNLP.POScodesUD
 --        CoreNLP.POScodesTinT

@@ -37,6 +37,24 @@ ntDir = makeAbsDir "/home/frank/Scratch/NT"
 litNTOrigDir1 = ntDir </> litOriginals
 litNTTestDir1 = ntDir </> litTests
 
+newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
+-- just to avoid confusions
+unparaNum (ParaNum t) = t
+instance Zeros ParaNum where zero =  ParaNum zero
+
+-- the format accumulation all detail info to build the triples.
+-- only tzpara and tzmarkup in final result
+data TZ2 =
+     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
+            , tz2para :: ParaNum
+            , tz2inPart :: ParaNum}
+    | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
+                    , tz2tok :: BuchToken, tz2lang :: LanguageCode
+                    , tz2para :: ParaNum
+                    , tz2inPart :: ParaNum
+                    }
+            deriving (Read, Show, Eq )
+
 data LitDirs = LitDirs {
         source :: Path Abs Dir
         , dest :: Path Abs Dir
