@@ -16,7 +16,7 @@ module Parser.TextDescriptor (
     -- , module Data.RDF.Extension
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
-    , LanguageCode (..)
+    , LanguageCode (..) -- from rdf4hextension
     ) where
 
 -- import           Data.RDF.Extension
