@@ -44,6 +44,8 @@ dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"
 
 ntDirsRel = makeRelDir "NT"  -- where it is for testing (can be expanded
 
+treeTaggerPort = 9010  -- current range 9000 - 9010
+
 -- -- todo move to uniform-http
 -- makeAbsURI :: Text -> URI
 -- makeAbsURI u = maybe (errorT ["makeURI in Foundation Servers", u])

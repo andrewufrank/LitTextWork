@@ -24,6 +24,8 @@ library
         , HTF
         , optparse-applicative
         , pipes
+        , rdf4hextension
+        -- import all what is lower, to avoid duplications
 
     exposed-modules:
         Parser.TextDescriptor
