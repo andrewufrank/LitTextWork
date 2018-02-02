@@ -3,7 +3,7 @@
 -- Module      :  Parser . TextDescriptor
 -- Copyright   :  andrew u frank -
 --
--- | the definitions of the descrption of the text
+-- | the definitions of the descrption of the text and related types (e.g. Language)
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
