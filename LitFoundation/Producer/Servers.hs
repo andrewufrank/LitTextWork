@@ -44,7 +44,7 @@ dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"
 
 ntDirsRel = makeRelDir "NT"  -- where it is for testing (can be expanded
 
-treeTaggerPort = 9010  -- current range 9000 - 9010
+treeTaggerPort = 9010 :: Int -- current range 9000 - 9010  -- is Wai warp port = Int
 
 -- -- todo move to uniform-http
 -- makeAbsURI :: Text -> URI

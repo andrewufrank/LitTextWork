@@ -16,6 +16,7 @@ module Parser.TextDescriptor (
     -- , module Data.RDF.Extension
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
+    , LanguageCode (..)
     ) where
 
 -- import           Data.RDF.Extension
@@ -24,6 +25,7 @@ import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
 import System.IO (Handle)  -- todo include in FileIO exports
 import Uniform.HttpURI (URI)
 import Producer.Servers  (serverBrest)  -- for test
+import Data.RDF.Extension (LanguageCode (..))
 import           Test.Framework
 
 -- directories:
