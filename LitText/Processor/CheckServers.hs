@@ -88,7 +88,7 @@ check17701tt = do
     putIOwords ["response from 17701 english brest \n",showT response]
     if response == okResponse17701e then return "" else return response
 
-destTest17701 = addPort2URI  serverBrest 17701
+destTest17701 = addPort2URI  serverBrest treeTaggerPort
 pathEmpty = "" :: Text
 varsTest17701 = []
 mimetypeTest17701e = "test/application"

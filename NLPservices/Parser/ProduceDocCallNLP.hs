@@ -202,7 +202,7 @@ instance LanguageSpecificNLPcall GermanType German.POStag  where
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
         let sents1 = docSents docs
-        sents2 <- mapM (completeSentence False (addPort2URI sloc 17701 ) ) sents1
+        sents2 <- mapM (completeSentence False (addPort2URI sloc treeTaggerPort ) ) sents1
         let docs2 = docs{docSents = sents2}
 
         let snipnr = 1 -- TODO

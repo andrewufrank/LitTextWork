@@ -112,7 +112,7 @@ s9 = Sentence0{sid = SentID0{unSentID0 = 1},
           sdeps = Nothing}
 --test_complete :: IO ()
 test_complete = do
-    s1 <- runErr $ completeSentence False (addPort2URI serverBrest 17701 )  s0
+    s1 <- runErr $ completeSentence False (addPort2URI serverBrest treeTaggerPort )  s0
     case s1 of
         Left msg -> errorT ["test complete", msg]
         Right s2 -> assertEqual s9 s2
