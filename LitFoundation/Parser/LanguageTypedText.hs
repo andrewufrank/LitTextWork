@@ -25,6 +25,7 @@ module Parser.LanguageTypedText
 
 import           Test.Framework
 --import Uniform.TestHarness (testVar3File)
+import Uniform.Zero (Zeros (..))
 import Uniform.Strings
 import Uniform.Error (undef)
 import Data.RDF.Extension (LanguageCode (..))
@@ -97,4 +98,5 @@ class LanguageCodedText l where
 instance LanguageCodedText LCtext where
     codeText lc t = LCtext t lc
 
-
+instance Zeros LCtext where
+    zero = LCtext "" NoLanguage
