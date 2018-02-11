@@ -34,10 +34,10 @@ import           Uniform.Strings         hiding ((<|>))
 -- import Uniform.StringInfix
 --import Parser.ProduceLayout (gerastreeURI)
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
-import Producer.Servers (rdfBase)  -- from Foundation
+import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
 
 nlp = "nlp"::Text
-nlpURItext =  (showT rdfBase) </> "nlp_2015" :: PartURI
+nlpURItext =  (showT vocabularyBase) </> "nlp_2015" :: PartURI
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | NerTag | SpeakerTag
@@ -88,10 +88,10 @@ paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
 --unDocSigl = unParaSigl  -- is this ok?? ?
 
 -- snip sigl uses the paragraph number of the first paragraph
-newtype SnipID  =   SnipID Int  deriving (Show, Eq, Ord)
+newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 unSnipID (SnipID i) = i
 --
-newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Eq)
+newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
 mkSnipSigl parasigl snipid =  SnipSigl

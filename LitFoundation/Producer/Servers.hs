@@ -47,6 +47,9 @@ serverBrest = makeAbsURI "http://nlp.gerastree.at"
 localhost = makeAbsURI "http://127.0.0.1"
 
 rdfBase = makeAbsURI "http://gerastree.at"
+-- ^ for the text
+vocabularyBase = makeAbsURI "http://gerastree.at"
+-- for the vocabularies
 
 dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
 dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"

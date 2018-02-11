@@ -61,7 +61,7 @@ class RDFproperties p where
 -- class URIs a b where
 --   extendURI :: a -> b
 
-newtype RDFsubj = RDFsubj Text deriving (Show, Eq)
+newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq)
 -- ^ a type to identify the RDF subject value
 unRDFsubj (RDFsubj a) = a
 

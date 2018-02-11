@@ -43,7 +43,7 @@ import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, a
 import Text.Regex (mkRegex, subRegex)
 --import Parser.FilterTextForNLP
 import Parser.CompleteSentence (completeSentence)
-import Parser.ProduceNLPtriples (processDoc0toTriples2)
+import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
 import Parser.NLPvocabulary
 import Parser.TextDescriptor
 import NLP.Corpora.UD
@@ -55,11 +55,6 @@ import NLP.Corpora.French as French --
 import NLP.Corpora.FrenchUD as FrenchUD --
 
 
-data EnglishType  -- should go with all the rest of language defs.
-data GermanType
-data FrenchType
-data SpanishType
-data ItalianType
 
 portGerman = 9001 -- make port type
 portEnglish = 9002
@@ -74,6 +69,16 @@ undefGerman = undef "convertOneSnip2Triples lang german" :: GermanType
 undefConll = undef "convertOneSnip2Triples postag":: Conll.POStag
 undefGermanPos = undef "convertOneSnip2Triples postag":: German.POStag
 
+class LanguageDependent lang where
+
+    preNLP :: LCtext lang -> LCtext lang
+    -- the processing of the text before NLP
+    preNLP = LCtext . cleanTextOther . unLCtext
+
+instance LanguageDependent EnglishType where
+    preNLP    =  LCtext . cleanTextEnglish . unLCtext
+
+instance LanguageDependent GermanType
 
 convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
@@ -85,22 +90,24 @@ convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
 convertOneSnip2Triples debugNLP textstate snip = do
     let text = tz3text snip
     let language = tz3lang snip    -- reduce for some special cases _italics_
+--    let buchname = buchName textstate
+    let paranum = tz3para snip
+    let parasigl = paraSigl textstate paranum
+    let snipSigl = mkSnipSigl parasigl (SnipID 1)   -- where is this comming from  ???
+    let nlpserver = nlpServer textstate
     if null' text
         then return zero
         else do
             trips <- case language of
                     English -> do
                                 t <- convertOneSnip2Triples2 undefEnglish undefConll
-                                            debugNLP  textstate (typeText undefEnglish text)
+                                            debugNLP   (Snip2 (typeText undefEnglish text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
                     German -> do
                                 t <- convertOneSnip2Triples2 undefGerman undefGermanPos
-                                            debugNLP  textstate (typeText undefGerman text)
+                                            debugNLP   (Snip2 (typeText undefGerman text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
-
-
-
-            return zero
+            return trips
 
 
 
@@ -126,34 +133,18 @@ convertOneSnip2Triples debugNLP textstate snip = do
 
 
 
-newtype LCtext a = LCtext Text  deriving (Show, Eq)
--- a piece of text in one language typed
-unLCtext (LCtext text) = text
 
 newtype NLPtriple postag = NLPtriple Triple
 unNLPtriple (NLPtriple t) = t
 
 
-class LanguageTypedText lang where
-    typeText :: lang -> Text -> LCtext lang
-    typeText _ = LCtext
-
-    preNLP :: LCtext lang -> LCtext lang
-    -- the processing of the text before NLP
-    preNLP = LCtext . cleanTextOther . unLCtext
-
-
-    sayLanguageOfText :: LCtext lang -> Text
-    langCode ::  lang -> LanguageCode
-
-    -- just name the language
 
 class TaggedTyped postag where
     postNLP :: Bool -> Doc0 postag -> ErrIO (Doc0 postag)
     -- postprocessing (e.g. adding POS to german)
     postNLP _ = return
 
-class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageTyped2 lang postag where
+class (POStags postag) =>  LanguageTyped2 lang postag where
     snip2doc :: lang -> postag -> Bool ->  LCtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
     snip2doc lph pph debugNLP  text sloc = do
@@ -165,7 +156,9 @@ class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageT
     nlpParams :: lang -> postag -> [(Text,Maybe Text)]
     nlpPort :: lang -> postag -> Int   -- should be a port type
 
-    convertOneSnip2Triples2 :: lang -> postag -> Bool ->  TextDescriptor -> LCtext lang -> ErrIO [NLPtriple postag]
+class  LanguageTyped22 lang postag where
+
+    convertOneSnip2Triples2 :: lang -> postag -> Bool ->  Snip2 lang -> URI -> ErrIO [NLPtriple postag]
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output
     -- calls nlp to convert to doc
@@ -178,31 +171,30 @@ class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageT
     -- the snip should have a type parameter language
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
-    convertOneSnip2Triples2 lph pph debugNLP  textstate text =
-        if  null' . unLCtext $ text
+
+instance (LanguageDependent lang, LanguageTypedText lang, TaggedTyped postag, POStags postag, LanguageTyped2 lang postag)
+    =>  LanguageTyped22 lang postag where
+    convertOneSnip2Triples2 lph pph debugNLP snip sloc =
+        if  snipIsNull snip
             then return zero
             else do
-                when debugNLP $ putIOwords ["convertOneSnip2Triples", sayLanguageOfText text
+                let text = snip2text snip
+                when debugNLP $ putIOwords ["convertOneSnip2Triples" -- , sayLanguageOfText text
                                   , "\n text", showT text]
                 let text2 = preNLP  text
-                let sloc = nlpServer textstate
+--                let sloc = nlpServer textstate
                 doc1 <- snip2doc lph pph debugNLP   text2 sloc
 
                 doc2 <- postNLP debugNLP  doc1
 
-                let trips = processDoc0toTriples3 lph textstate  (SnipID 1) doc2
+                let trips = processDoc0toTriples2 lph pph snip doc2
 
                 return (map NLPtriple trips)
 
-processDoc0toTriples3 lph textstate snipID doc =
-    processDoc0toTriples2 textstate (langCode lph) (ParaNum 99) (snipID, doc )
+--processDoc0toTriples3 :: lang -> Snip2 lang -> Doc0 lang postag
+--processDoc0toTriples3 lph  snip doc =
+--    processDoc0toTriples2  (langCode lph) snip doc
 
-instance LanguageTypedText EnglishType where
-    sayLanguageOfText _ = "English"
-    preNLP    =  LCtext . cleanTextEnglish . unLCtext
-
-instance LanguageTypedText GermanType where
-    sayLanguageOfText _ = "German"
 
 instance TaggedTyped Conll.POStag
 instance TaggedTyped German.POStag
