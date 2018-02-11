@@ -80,7 +80,7 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 
     --------------------------------------NLP  -- processing by paragraphs
 
-    responses <- produceNLP False textstate3 tzpara -- test D ->
+    responses <- produceNLP  textstate3 tzpara -- test D ->
         -- argument is to show the xml
 
     putIOwords ["mainLitAndNLPproduction: triples stored in .nt file "

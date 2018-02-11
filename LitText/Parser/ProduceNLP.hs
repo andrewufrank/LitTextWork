@@ -60,12 +60,12 @@ debugNLP1 = False
 --    return ()
 ----produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
-produceNLP ::  Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
-produceNLP showXML textstate tzs =  do
+produceNLP ::   TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
+produceNLP  textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             snips = formSnips nlpTexts :: [Snip]
             debug = False
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug showXML textstate) snips
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips
 --    let trips = readNote "writeLitTriples" tripstext :: [Triple]
 --    write6 dest2 ntFileTriples trips
     ntz1 <- foldM writeHandleTriples textstate triples
@@ -84,7 +84,7 @@ produceNLP showXML textstate tzs =  do
 --    return res
 
 
-produceNLPnotshow = produceNLP False
+produceNLPnotshow = produceNLP
 
 --test_1_BAE_XproduceNLPtriples :: IO ()
 test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow

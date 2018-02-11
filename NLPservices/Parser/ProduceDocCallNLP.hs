@@ -75,14 +75,14 @@ undefConll = undef "convertOneSnip2Triples postag":: Conll.POStag
 undefGermanPos = undef "convertOneSnip2Triples postag":: German.POStag
 
 
-convertOneSnip2Triples :: Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
+convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
 -- the snip should have a type parameter language
 -- internal the text2nlp should have a tag type parameter
 -- the triples (i.e. NLPtriples should have a tag parameter
 
 -- the following is just the bridges, which should go earlier
-convertOneSnip2Triples debugNLP showXML textstate snip = do
+convertOneSnip2Triples debugNLP textstate snip = do
     let text = tz3text snip
     let language = tz3lang snip    -- reduce for some special cases _italics_
     if null' text
@@ -91,11 +91,11 @@ convertOneSnip2Triples debugNLP showXML textstate snip = do
             trips <- case language of
                     English -> do
                                 t <- convertOneSnip2Triples2 undefEnglish undefConll
-                                            debugNLP showXML textstate (typeText undefEnglish text)
+                                            debugNLP  textstate (typeText undefEnglish text)
                                 return (map unNLPtriple t)
                     German -> do
                                 t <- convertOneSnip2Triples2 undefGerman undefGermanPos
-                                            debugNLP showXML textstate (typeText undefGerman text)
+                                            debugNLP  textstate (typeText undefGerman text)
                                 return (map unNLPtriple t)
 
 
@@ -154,10 +154,10 @@ class TaggedTyped postag where
     postNLP _ = return
 
 class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageTyped2 lang postag where
-    snip2doc :: lang -> postag -> Bool -> Bool -> LCtext lang -> URI -> ErrIO (Doc0 postag)
+    snip2doc :: lang -> postag -> Bool ->  LCtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
-    snip2doc lph pph debugNLP showXML text sloc = do
-        docs <-  convertTZ2makeNLPCall pph debugNLP showXML (addPort2URI sloc (nlpPort lph pph))
+    snip2doc lph pph debugNLP  text sloc = do
+        docs <-  convertTZ2makeNLPCall pph debugNLP  (addPort2URI sloc (nlpPort lph pph))
                                 (nlpParams lph pph)  (unLCtext text)
         when debugNLP $ putIOwords ["NLP end", showT text]
         return docs
@@ -165,7 +165,7 @@ class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageT
     nlpParams :: lang -> postag -> [(Text,Maybe Text)]
     nlpPort :: lang -> postag -> Int   -- should be a port type
 
-    convertOneSnip2Triples2 :: lang -> postag -> Bool -> Bool -> TextDescriptor -> LCtext lang -> ErrIO [NLPtriple postag]
+    convertOneSnip2Triples2 :: lang -> postag -> Bool ->  TextDescriptor -> LCtext lang -> ErrIO [NLPtriple postag]
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output
     -- calls nlp to convert to doc
@@ -178,7 +178,7 @@ class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageT
     -- the snip should have a type parameter language
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
-    convertOneSnip2Triples2 lph pph debugNLP showXML textstate text =
+    convertOneSnip2Triples2 lph pph debugNLP  textstate text =
         if  null' . unLCtext $ text
             then return zero
             else do
@@ -186,7 +186,7 @@ class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageT
                                   , "\n text", showT text]
                 let text2 = preNLP  text
                 let sloc = nlpServer textstate
-                doc1 <- snip2doc lph pph debugNLP showXML  text2 sloc
+                doc1 <- snip2doc lph pph debugNLP   text2 sloc
 
                 doc2 <- postNLP debugNLP  doc1
 
@@ -217,7 +217,7 @@ instance LanguageTyped2 EnglishType Conll.POStag where
     --        -- with the xml doc received (starts with C?
 
 --    snip2doc  :: Bool -> Bool -> LanguageCode -> Text -> ErrIO (Doc0 a)
-    snip2doc lph pph debugNLP showXML text sloc = do
+    snip2doc lph pph debugNLP  text sloc = do
 --        let varsEng =  [("outputFormat", Just "xml")
 --                , ("annotators", Just "tokenize,ssplit,pos\
 --                                        \,lemma,ner,depparse, dcoref,coref")
@@ -229,7 +229,7 @@ instance LanguageTyped2 EnglishType Conll.POStag where
 
 --        let text2 = cleanTextEnglish $  tz3text snip
 --        let sloc = nlpServer textstate
-        docs <-  convertTZ2makeNLPCall pph debugNLP showXML (addPort2URI sloc portEnglish)
+        docs <-  convertTZ2makeNLPCall pph debugNLP  (addPort2URI sloc portEnglish)
                                 (nlpParams lph pph)  (unLCtext text)
     --            when False $ putIOwords ["englishNLP parse"
     --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
@@ -244,7 +244,7 @@ instance LanguageTyped2 GermanType German.POStag where
                                         ]
 
 class Docs postag where
-    convertTZ2makeNLPCall  :: postag -> Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
+    convertTZ2makeNLPCall  :: postag -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
@@ -255,11 +255,11 @@ class Docs postag where
 --    -- process an english text snip to a Doc0
 
 instance (POStags postag) => Docs postag where
---    convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
+--    convertTZ2makeNLPCall  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
-    convertTZ2makeNLPCall ph debugNLP showXML nlpServer vars text = do
+    convertTZ2makeNLPCall ph debugNLP  nlpServer vars text = do
             when debugNLP $
                 putIOwords ["convertTZ2makeNLPCall start"
                             , showT . lengthChar $ text
@@ -273,7 +273,7 @@ instance (POStags postag) => Docs postag where
             when debugNLP  $
                 putIOwords ["convertTZ2makeNLPCall end \n", showT xml]
 
-            doc0 <- readDocString ph showXML xml                    -- E -> F
+            doc0 <- readDocString ph False xml                    -- E -> F
             when debugNLP  $
                 putIOwords ["convertTZ2makeNLPCall doc0 \n", showT doc0]
 
