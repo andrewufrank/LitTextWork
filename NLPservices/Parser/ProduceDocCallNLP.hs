@@ -39,6 +39,7 @@ import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
 --import Parser.NLPvocabulary -- export of ProduceNLPtriples
 --import           CoreNLP.Defs0 -- export of ProduceNLPtriples
+import Parser.LanguageTypedText
 
 --import NLP.Corpora.UD
 import NLP.Corpora.Conll  as Conll -- Conll for english
@@ -57,11 +58,6 @@ portSpanish = 9004
 portTinT = 9005
 portFrenchUD = 9006
 
-undefEnglish = undef "convertOneSnip2Triples lang engl" :: EnglishType
-undefGerman = undef "convertOneSnip2Triples lang german" :: GermanType
-undefItalian = undef "convertOneSnip2Triples lang ital":: ItalianType
-undefFrench = undef "convertOneSnip2Triples lang ital":: FrenchType
-undefSpanish = undef "convertOneSnip2Triples lang ital":: SpanishType
 
 undefConll = undef "convertOneSnip2Triples postag conll":: Conll.POStag
 undefGermanPos = undef "convertOneSnip2Triples postag german":: German.POStag

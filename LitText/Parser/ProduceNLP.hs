@@ -46,9 +46,9 @@ import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
+import Parser.LanguageTypedText -- (LanguageTypedText (..) )
 
-
-debugNLP1 = False
+-- debugNLP1 = False
 
 -- main export
 --produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
