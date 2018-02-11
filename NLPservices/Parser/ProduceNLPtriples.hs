@@ -32,15 +32,8 @@ module Parser.ProduceNLPtriples
 import           Test.Framework
 import Uniform.TestHarness (testVar3File)
 import CoreNLP.Defs0
---import Parser.NLPvocabulary
---import CoreNLP.CoreNLPxml (readDocString)
---import Lines2para.Lines2para hiding ((<|>),(</>), (<.>))
---import Parser.ProduceDocCallNLP
 import Parser.TextDescriptor
---import Parser.ProduceLayout (buchURIx)
-import NLP.Corpora.Conll
-import NLP.Corpora.UD  -- Conll for english
-import NLP.Corpora.ItalianTinT   -- for italian
+import NLP.Types.Tags
 import Parser.NLPvocabulary  -- from Foundation
 
 data EnglishType  -- should go with all the rest of language defs.
@@ -49,6 +42,7 @@ data FrenchType
 data SpanishType
 data ItalianType
 
+
 newtype LCtext a = LCtext Text  deriving (Show, Eq, Read)
 -- a piece of text in one language typed
 unLCtext (LCtext text) = text
@@ -56,10 +50,6 @@ unLCtext (LCtext text) = text
 class LanguageTypedText lang where
     typeText :: lang -> Text -> LCtext lang
     typeText _ = LCtext
-
---    preNLP :: LCtext lang -> LCtext lang
---    -- the processing of the text before NLP
---    preNLP = LCtext . cleanTextOther . unLCtext
 
 
     sayLanguageOfText :: LCtext lang -> Text
@@ -88,8 +78,6 @@ instance LanguageTypedText ItalianType where
 
 newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
 unNLPtriple (NLPtriple t) = t
---instance Zeros (NLPtriple postag) where
---    zero = []
 
 
 -- | a single language piece of text with lanuage code, length and start para number
@@ -102,58 +90,17 @@ snipIsNull :: Snip2 lang -> Bool
 -- ^ test for null text
 snipIsNull = null' . unLCtext . snip2text
 
---instance (Show a) => CharChains2 a Text where show' = s2t . show
-
---processDoc0toTriples2 :: (Show postag, POStags postag) =>
---    LanguageCode -> ParaNum -> (SnipID, Doc0 postag) -> [Triple]
---            -- TriplesGraph  G -> H
----- ^ convert the doc0 (which is the analysed xml) and produce the triples
----- snipnr is not used anymore?
---
---    -- TODO add a version to the NLP produced
---processDoc0toTriples2 textstate lang paranr (snipnr, doc0)   =
-----        t0 : t1 :
---        t2  : sents ++ corefs
---                    -- , corefs] corefs not produced
---    where
---        -- unfertig - snipnr is not yet used.
---        -- add a sentence part of para, sentence id made with snip id (paranr - sniptnr)
-----        lang = tz3lang ntz
---        paraid = paraSigl textstate $ paranr -- . tz3para $ ntz
---        snipid = mkSnipSigl paraid snipnr
---        buchUri = buchURIx textstate
-----        t0 = mkTripleType (unSnipSigl snipid) (mkRDFtype Snip)
-----        t1 = mkTriplePartOf (unSnipSigl snipid) (unParaSigl paraid)
---        t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
-----        t3 = mkTripleType  (unParaSigl paraid) (mkRDFtype Paragraph)
---        -- gives two different lit: and nlp:Paragraph types?
---        -- t4 gives se
---        sents :: [Triple]
---        sents =   concat $ map (mkSentenceTriple2 lang buchUri snipid) (docSents doc0)
---        corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )
---                            (docCorefs doc0) [1 .. ]
-
 processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
             => lang ->  postag -> Snip2 lang  -> Doc0 postag -> [NLPtriple postag]
             -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 
-    -- TODO add a version to the NLP produced
 processDoc0toTriples2  lph pph snip  doc0 = map NLPtriple $ t2  : sents ++ corefs
 
     where
-        -- unfertig - snipnr is not yet used.
-        -- add a sentence part of para, sentence id made with snip id (paranr - sniptnr)
         lang = languageCode lph -- tz3lang ntz
---        paraid = paraSigl textstate $ paranr -- . tz3para $ ntz
         snipid = snip2sigl snip -- mkSnipSigl paraid snipnr
---        buchUri = buchURIx textstate
---        t0 = mkTripleType (unSnipSigl snipid) (mkRDFtype Snip)
---        t1 = mkTriplePartOf (unSnipSigl snipid) (unParaSigl paraid)
         t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
---        t3 = mkTripleType  (unParaSigl paraid) (mkRDFtype Paragraph)
-        -- gives two different lit: and nlp:Paragraph types?
-        -- t4 gives se
         sents :: [Triple]
         sents =   concat $ map (mkSentenceTriple2 lang  snipid) (docSents doc0)
         corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )
@@ -165,7 +112,6 @@ mkSentenceTriple2 :: (Show postag, POStags postag) =>
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang snipid sent
        =      t0 : t1 :   sentenceForm : (toktrips ++ depsTrips)
-       -- here a strange looping occurs? ?
     where
         sentSigl = mkSentSigl snipid (sid sent)
         t0 = mkTripleType (unSentSigl sentSigl) (mkRDFtype Sentence)
@@ -214,19 +160,7 @@ mkDependenceTypeTriples2 :: LanguageCode -> SentSigl ->    DependenceType0 -> [T
 mkDependenceTypeTriples2 lang sentSigl  d   =
 --              t1 : t2 :
                      ts
--- the selection is already in coreNLPxml, which takes the last of the dep analysis
--- this is too complex and too indirect. link directly to sentence
-
---    if  dtt d == "enhanced-plus-plus-dependencies"
---    -- use only the best dependency analysis -- could filter out earlier?
---        -- "enhanced-plus-plus-dependencies"
---            then t1 : ts
---            else []
     where
---        depTid = mkDepTypeSigl sentSigl  "dependency" -- (dtt d)
-        -- only one selected in corenlpxml
---        t1 = mkTripleType (unDepTypeSigl depTid) (mkRDFtype DepType)
---        t2 = mkTriplePartOf (unDepTypeSigl depTid)     (unSentSigl sentSigl)
         ts = concat $ zipWith (mkDependenceTriple2 lang sentSigl  ) ( dtd d)  [1..]
                 -- passes sentSigl to construct the tokenid later
 

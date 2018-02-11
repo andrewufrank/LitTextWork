@@ -22,7 +22,7 @@
 
 module Parser.ProduceDocCallNLP
     (module Parser.ProduceDocCallNLP
-    , module CoreNLP.Defs0
+--    , module CoreNLP.Defs0
 --    , module Lines2para.Lines2para
     , module Producer.Servers
 --    , module Parser.FilterTextForNLP
@@ -31,13 +31,13 @@ module Parser.ProduceDocCallNLP
 import              Test.Framework
 import              Uniform.TestHarness
 import Producer.Servers
-import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
-import Parser.NLPvocabulary
+--import Parser.NLPvocabulary -- export of ProduceNLPtriples
+--import           CoreNLP.Defs0 -- export of ProduceNLPtriples
 
 --import NLP.Corpora.UD
 import NLP.Corpora.Conll  as Conll -- Conll for english
@@ -62,11 +62,11 @@ undefItalian = undef "convertOneSnip2Triples lang ital":: ItalianType
 undefFrench = undef "convertOneSnip2Triples lang ital":: FrenchType
 undefSpanish = undef "convertOneSnip2Triples lang ital":: SpanishType
 
-undefConll = undef "convertOneSnip2Triples postag":: Conll.POStag
-undefGermanPos = undef "convertOneSnip2Triples postag":: German.POStag
-undefTinTPos = undef "convertOneSnip2Triples postat":: TinT.POStag
-undefFrenchPos = undef "convertOneSnip2Triples postat":: French.POStag
-undefSpanishPos = undef "convertOneSnip2Triples postat":: Spanish.POStag
+undefConll = undef "convertOneSnip2Triples postag conll":: Conll.POStag
+undefGermanPos = undef "convertOneSnip2Triples postag german":: German.POStag
+undefTinTPos = undef "convertOneSnip2Triples postat TinT":: TinT.POStag
+undefFrenchPos = undef "convertOneSnip2Triples postat French":: French.POStag
+undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: Spanish.POStag
 
 class LanguageDependent lang where
 
