@@ -67,12 +67,12 @@ undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: Spanish.POStag
 
 class LanguageDependent lang where
 
-    preNLP :: LCtext lang -> LCtext lang
+    preNLP :: LTtext lang -> LTtext lang
     -- the processing of the text before NLP
-    preNLP = LCtext . cleanTextOther . unLCtext
+    preNLP = LTtext . cleanTextOther . unLCtext
 
 instance LanguageDependent EnglishType where
-    preNLP    =  LCtext . cleanTextEnglish . unLCtext
+    preNLP    =  LTtext . cleanTextEnglish . unLCtext
 
 instance LanguageDependent GermanType
 instance LanguageDependent FrenchType
@@ -86,7 +86,7 @@ class TaggedTyped postag where
     postNLP _ _ = return
 
 class (POStags postag) =>  LanguageTyped2 lang postag where
-    snip2doc :: lang -> postag -> Bool ->  LCtext lang -> URI -> ErrIO (Doc0 postag)
+    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
     snip2doc lph pph debugNLP  text sloc = do
         docs <-  convertTZ2makeNLPCall pph debugNLP  (addPort2URI sloc (nlpPort lph pph))
@@ -107,7 +107,7 @@ class  LanguageTyped22 lang postag where
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
 
-    -- convertOneSnip2Triples2 :: Bool -> Bool -> TextDescriptor -> LCtext lang -> ErrIO [NLPtriple postag]
+    -- convertOneSnip2Triples2 :: Bool -> Bool -> TextDescriptor -> LTtext lang -> ErrIO [NLPtriple postag]
     -- calls nlp to convert to doc
     -- the snip should have a type parameter language
     -- internal the text2nlp should have a tag type parameter

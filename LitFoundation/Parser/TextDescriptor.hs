@@ -29,6 +29,7 @@ import Producer.Servers  (serverBrest)  -- for test
 import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
+import Parser.LanguageTypedText
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"
@@ -66,7 +67,7 @@ data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
         -- | AllCaps0
         deriving (Show, Read, Eq )
 
-data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
+data TextWithMarks = TextWithMarks {twm::LCtext, twmMarks::[(Int, Text)]}
         deriving (Show, Read, Eq )
 -- the text is without markers, the markers are a list
 -- of offset of the marker from start of line resp. previous marker
@@ -79,12 +80,15 @@ data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
 data TZ =
          TZtext {tzt:: TextType, tzloc :: TextLoc
                     , tztext:: TextWithMarks   -- is this appropriate here?
-                    , tzlang :: LanguageCode }
+--                    , tzlang :: LanguageCode
+                    }
 --        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
 --                , tlpara :: ParaNum
 --                , tzInPart :: ParaNum}
-        | TZmarkup  {tzloc :: TextLoc, tztext:: TextWithMarks
-                        , tztok :: BuchToken, tzlang :: LanguageCode
+        | TZmarkup  {tzloc :: TextLoc
+                        , tztext:: TextWithMarks
+                        , tztok :: BuchToken
+--                        , tzlang :: LanguageCode
 --                        , tlpara :: ParaNum
 --                        , tzInPart :: ParaNum
                         }

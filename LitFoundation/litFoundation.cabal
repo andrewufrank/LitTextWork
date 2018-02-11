@@ -17,6 +17,7 @@ library
         , uniform-strings
         , uniform-error
         , uniform-fileio
+        , uniform-algebras
         , network-uri
         , uniform-http
         , uniform-convenience

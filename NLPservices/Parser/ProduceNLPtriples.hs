@@ -42,7 +42,7 @@ unNLPtriple (NLPtriple t) = t
 
 
 -- | a single language piece of text with lanuage code, length and start para number
-data Snip2 lang = Snip2 { snip2text :: LCtext lang
+data Snip2 lang = Snip2 { snip2text :: LTtext lang
                         , snip2sigl :: SnipSigl  -- the id of the snip
                           }
             deriving (Read, Show, Eq)
