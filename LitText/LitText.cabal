@@ -49,7 +49,7 @@ library
 
     exposed-modules:
         -- in order of inclusion
---        Parser.ProduceLit
+        Parser.ProduceLit
         Parser.ProduceLayout
         Parser.ProduceNLP
         Parser.FilterTextForNLP
@@ -66,8 +66,8 @@ library
         Lines2para.Lines2para
         Lines2para.Lines2ignore
         Lines2para.HandleLayout
-        CoreNLP.Defs0
-        CoreNLP.CoreNLPxml
+--        CoreNLP.Defs0
+--        CoreNLP.CoreNLPxml
 --        CoreNLP.POScodesConll
 --        CoreNLP.POScodesUD
 --        CoreNLP.POScodesTinT
@@ -76,8 +76,8 @@ library
 --        CoreNLP.POScodesFrench
 --        CoreNLP.POScodesFrenchUD
             -- italian
-        CoreNLP.NERcodes
-        CoreNLP.DEPcodes
+--        CoreNLP.NERcodes
+--        CoreNLP.DEPcodes
 --        BuchCode.BuchToken
         BuchCode.MarkupText
         Processor.Main2sub

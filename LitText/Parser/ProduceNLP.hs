@@ -33,8 +33,8 @@ module Parser.ProduceNLP
 
 import           Test.Framework
 import Uniform.TestHarness
-import Parser.FormNLPsnips
-import Parser.FilterTextForNLP
+--import Parser.FormNLPsnips
+--import Parser.FilterTextForNLP
 import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
@@ -44,6 +44,9 @@ import Data.Maybe (catMaybes)  -- todo
 import Parser.ReadMarkupAB
 import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
+import Parser.FilterTextForNLP  (prepareTZ4nlp)
+import Parser.FormNLPsnips (formSnips)
+
 
 debugNLP1 = False
 
@@ -60,7 +63,7 @@ debugNLP1 = False
 --    return ()
 ----produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
-produceNLP ::   TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
+produceNLP ::  TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
 produceNLP  textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             snips = formSnips nlpTexts :: [Snip]
@@ -76,30 +79,82 @@ produceNLP  textstate tzs =  do
 
     return ()
 
---convertOneSnip2Triples :: Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
----- calls nlp to convert to doc
---convertOneSnip2Triples showXML textstate snip = do
---    doc :: Doc0 postag <- snip2doc False showXML (nlpServer textstate) snip
---    let res =  processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (1, doc)
---    return res
+convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
+-- calls nlp to convert to doc
+-- the snip should have a type parameter language
+-- internal the text2nlp should have a tag type parameter
+-- the triples (i.e. NLPtriples should have a tag parameter
 
+-- the following is just the bridges, which should go earlier
+convertOneSnip2Triples debugNLP textstate snip = do
+    let text = tz3text snip
+    let language = tz3lang snip    -- reduce for some special cases _italics_
+--    let buchname = buchName textstate
+    let paranum = tz3para snip
+    let parasigl = paraSigl textstate paranum
+    let snipSigl = mkSnipSigl parasigl (SnipID 1)   -- where is this comming from  ???
+    let nlpserver = nlpServer textstate
+    if null' text
+        then return zero
+        else do
+            trips <- case language of
+                    English -> do
+                                t <- convertOneSnip2Triples2 undefEnglish undefConll
+                                            debugNLP   (Snip2 (typeText undefEnglish text) snipSigl) nlpserver
+                                return (map unNLPtriple t)
+                    German -> do
+                                t <- convertOneSnip2Triples2 undefGerman undefGermanPos
+                                            debugNLP   (Snip2 (typeText undefGerman text) snipSigl) nlpserver
+                                return (map unNLPtriple t)
+                Italian -> do
+                                t <- convertOneSnip2Triples2 undefItalian undefTinTPos
+                                            debugNLP   (Snip2 (typeText undefItalian text) snipSigl) nlpserver
+                                return (map unNLPtriple t)
+                French -> do
+                                t <- convertOneSnip2Triples2 undefFrench undefFrenchPos
+                                            debugNLP   (Snip2 (typeText undefFrench text) snipSigl) nlpserver
+                                return (map unNLPtriple t)
+                Spanish -> do
+                                t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
+                                            debugNLP   (Snip2 (typeText undefSpanish text) snipSigl) nlpserver
+                                return (map unNLPtriple t)
+                NoLanguage -> return zero
+            return trips
+
+
+
+testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
+testOP_DA_L textstate = mapM (convertOneSnip2Triples  True textstate)
+
+test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
+test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
+test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
+test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
+test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
+test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
+test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
+test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
+test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
+test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
+test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
+test_13_DA_L = testVar3FileIO result12A "resultDA12" "resultE12UD" testOP_DA_L
 
 produceNLPnotshow = produceNLP
 
---test_1_BAE_XproduceNLPtriples :: IO ()
-test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
-test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
-test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
-test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
-test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
-test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
-test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
-test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPnotshow
-test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
-test_11_BAE_XproduceNLPtriples = testVar3FileIO result11A "resultBAE11" "resultX11" produceNLPnotshow
-test_12_BAE_XproduceNLPtriples = testVar3FileIO result12A "resultBAE12" "resultX12" produceNLPnotshow
------- no result file is necessary, because result is zero
------- but results are found in LitTest/test
+----test_1_BAE_XproduceNLPtriples :: IO ()
+--test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPnotshow
+--test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPnotshow
+--test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPnotshow
+--test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPnotshow
+--test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPnotshow
+--test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPnotshow
+--test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPnotshow
+--test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPnotshow
+--test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPnotshow
+--test_11_BAE_XproduceNLPtriples = testVar3FileIO result11A "resultBAE11" "resultX11" produceNLPnotshow
+--test_12_BAE_XproduceNLPtriples = testVar3FileIO result12A "resultBAE12" "resultX12" produceNLPnotshow
+-------- no result file is necessary, because result is zero
+-------- but results are found in LitTest/test
 --
 
 

@@ -52,7 +52,7 @@ library
 --        Parser.ProduceNLP
         Parser.ProduceNLPtriples
         Parser.ConvertTaggerOutput
-        Parser.ProduceLit
+--        Parser.ProduceLit
 --        Parser.ProduceLayout
         Parser.NLPvocabulary
 --        CoreNLP.POScodesConll

@@ -31,7 +31,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
                 -- and Hx -> Kx  (.nt)
 ----------------
 ------ for nlp:
-------import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
+import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
             --repeats calls to nlp
             -- files go to
 --
