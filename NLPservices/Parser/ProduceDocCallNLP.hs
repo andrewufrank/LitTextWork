@@ -109,16 +109,6 @@ convertOneSnip2Triples debugNLP textstate snip = do
                                 return (map unNLPtriple t)
             return trips
 
-
-
---        case lang of
---            case language of
---                English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
---                                        (undef "convertOneSnip2Triples postat":: Conll.POStag )
---                                        debugNLP showXML textstate snip
---                German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
---                                        (undef "convertOneSnip2Triples postat":: German.POStag)
---                                        debugNLP showXML textstate snip
 --                Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
 --                                        (undef "convertOneSnip2Triples postat":: TinT.POStag)
 --                                        debugNLP showXML textstate snip
@@ -134,8 +124,6 @@ convertOneSnip2Triples debugNLP textstate snip = do
 
 
 
-newtype NLPtriple postag = NLPtriple Triple
-unNLPtriple (NLPtriple t) = t
 
 
 
@@ -189,7 +177,7 @@ instance (LanguageDependent lang, LanguageTypedText lang, TaggedTyped postag, PO
 
                 let trips = processDoc0toTriples2 lph pph snip doc2
 
-                return (map NLPtriple trips)
+                return trips
 
 --processDoc0toTriples3 :: lang -> Snip2 lang -> Doc0 lang postag
 --processDoc0toTriples3 lph  snip doc =

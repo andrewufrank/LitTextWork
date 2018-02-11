@@ -74,6 +74,9 @@ instance LanguageTypedText GermanType where
     sayLanguageOfText _ = "German"
     languageCode _ = German
 
+newtype NLPtriple postag = NLPtriple Triple
+unNLPtriple (NLPtriple t) = t
+
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip2 lang = Snip2 { snip2text :: LCtext lang
                         , snip2sigl :: SnipSigl  -- the id of the snip
@@ -116,13 +119,12 @@ snipIsNull = null' . unLCtext . snip2text
 --                            (docCorefs doc0) [1 .. ]
 
 processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
-            => lang ->  postag -> Snip2 lang  -> Doc0 postag -> [Triple]
+            => lang ->  postag -> Snip2 lang  -> Doc0 postag -> [NLPtriple postag]
             -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
--- snipnr is not used anymore?
 
     -- TODO add a version to the NLP produced
-processDoc0toTriples2  lph pph snip  doc0 = t2  : sents ++ corefs
+processDoc0toTriples2  lph pph snip  doc0 = map NLPtriple $ t2  : sents ++ corefs
 
     where
         -- unfertig - snipnr is not yet used.
