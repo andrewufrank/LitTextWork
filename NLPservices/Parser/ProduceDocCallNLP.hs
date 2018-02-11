@@ -30,6 +30,7 @@ module Parser.ProduceDocCallNLP
 
 import              Test.Framework
 import              Uniform.TestHarness
+import Parser.LanguageTypedText
 import Producer.Servers
 import CoreNLP.CoreNLPxml (readDocString)
 import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)

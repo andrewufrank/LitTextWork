@@ -19,6 +19,7 @@ library
         , uniform-fileio
         , network-uri
         , uniform-http
+        , uniform-convenience
         -- not yet required, should replace rdf4hextension for PartURI
         -- , rdf4hextension
         , HTF
@@ -29,6 +30,7 @@ library
 
     exposed-modules:
         Parser.TextDescriptor
+        Parser.LanguageTypedText
         Producer.Servers
         Process.UtilsParseArgs
         Process.UtilsProcessing
