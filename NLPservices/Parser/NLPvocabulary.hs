@@ -25,14 +25,9 @@ module Parser.NLPvocabulary
     ) where
 
 import           CoreNLP.Defs0
---import           CoreNLP.DependencyCodes
 import           Data.RDF.Extension      --(PartURI, RDFproperty)
---import           Parser.TextDescriptor hiding ((</>), (<.>), (<|>))
---import           Parser.ProduceLit     --  (buchURIx, paraSigl)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
--- import Uniform.StringInfix
---import Parser.ProduceLayout (gerastreeURI)
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
 import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
 
@@ -84,8 +79,6 @@ paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
                       ( buchURIx $ textstate)
                       )
 
---type DocSigl = ParaSigl
---unDocSigl = unParaSigl  -- is this ok?? ?
 
 -- snip sigl uses the paragraph number of the first paragraph
 newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
@@ -142,13 +135,6 @@ mkDepTypeSigl sentsigl  did =  DepTypeSigl
 newtype DepSigl = DepSigl RDFsubj deriving (Show, Eq)
 unDepSigl (DepSigl a) = a
 
---mkDepSigl :: DepTypeSigl -> Int -> DepSigl
----- make the dependency sigl (these must be numbered)
---mkDepSigl deptsigl  i =  DepSigl
---      . extendSlashRDFsubj (formatDepID i)   -- is a Text
---      . unDepTypeSigl $ deptsigl
---    where
---        formatDepID  = ("Dep" <>) .s2t . printf ('%' : '0' : '2' : 'd' :[])
 
 mkDepSigl2 :: SentSigl -> Int -> DepSigl
 -- make the dependency sigl (these must be numbered)
@@ -190,9 +176,3 @@ mkMentionsigl corefsigl c =   MentionSigl
     formatMentionID  = ("Mention" <>) . s2t . printf ('%' : '0' : '3' : 'd' :[])
 
 
---mkMentionID :: MentionID -> Text
---mkMentionID   c =  t2oURI <#>  "M"<> (coref2text . mid1doc $ c)  <-> (show' . mid1int $ c)
-
---formatSnippetID ::Int -> Text
----- format an Int to 2 decimals for tokens in sentence
---formatSnippetID  = s2t . printf ('%' : '0' : '2' : 'd' :[])
