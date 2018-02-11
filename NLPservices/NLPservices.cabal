@@ -73,7 +73,7 @@ library
 
 Test-Suite nlpTestAuto
     type:       exitcode-stdio-1.0
-    main-is:    TestLitText.hs
+    main-is:    TestNLP.hs
     build-depends: base
         , HTF
         , uniform-strings

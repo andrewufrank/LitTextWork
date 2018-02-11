@@ -237,6 +237,25 @@ instance LanguageTyped2 GermanType German.POStag where
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
+instance LanguageTyped2 ItalianType TinT.POStag where
+    nlpPort _ _ = portTinT
+    nlpParams _ _ =   [("outputFormat", Just "xml"),
+                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                        ]
+
+instance LanguageTyped2 FrenchType French.POStag where
+    nlpPort _ _ = portFrench
+    nlpParams _ _ =   [("outputFormat", Just "xml"),
+                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                        ]
+
+instance LanguageTyped2 SpanishType Spanish.POStag where
+    nlpPort _ _ = portSpanish
+    nlpParams _ _ =   [("outputFormat", Just "xml"),
+                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                        ]
+
+
 class Docs postag where
     convertTZ2makeNLPCall  :: postag -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0

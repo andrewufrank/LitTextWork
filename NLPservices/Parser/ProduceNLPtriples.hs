@@ -74,6 +74,18 @@ instance LanguageTypedText GermanType where
     sayLanguageOfText _ = "German"
     languageCode _ = German
 
+instance LanguageTypedText FrenchType where
+    sayLanguageOfText _ = "French"
+    languageCode _ = French
+
+instance LanguageTypedText SpanishType where
+    sayLanguageOfText _ = "Spanish"
+    languageCode _ = Spanish
+
+instance LanguageTypedText ItalianType where
+    sayLanguageOfText _ = "Italian"
+    languageCode _ = Italian
+
 newtype NLPtriple postag = NLPtriple Triple
 unNLPtriple (NLPtriple t) = t
 
