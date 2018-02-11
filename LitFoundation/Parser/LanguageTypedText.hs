@@ -26,6 +26,7 @@ module Parser.LanguageTypedText
 import           Test.Framework
 --import Uniform.TestHarness (testVar3File)
 import Uniform.Strings
+import Uniform.Error (undef)
 import Data.RDF.Extension (LanguageCode (..))
 --import CoreNLP.Defs0
 --import Parser.TextDescriptor
@@ -37,19 +38,28 @@ data GermanType
 data FrenchType
 data SpanishType
 data ItalianType
+data NoLanguageType
+
+undefEnglish = undef "convertOneSnip2Triples lang engl" :: EnglishType
+undefGerman = undef "convertOneSnip2Triples lang german" :: GermanType
+undefItalian = undef "convertOneSnip2Triples lang ital":: ItalianType
+undefFrench = undef "convertOneSnip2Triples lang french":: FrenchType
+undefSpanish = undef "convertOneSnip2Triples lang spanish":: SpanishType
+undefNoLanguage = undef "convertOneSnip2Triples no lang":: NoLanguageType
 
 
-newtype LCtext a = LCtext Text  deriving (Show, Eq, Read)
+newtype LTtext a = LTtext Text  deriving (Show, Eq, Read)
 -- a piece of text in one language typed
-unLCtext (LCtext text) = text
+unLCtext (LTtext text) = text
 
 class LanguageTypedText lang where
-    typeText :: lang -> Text -> LCtext lang
-    typeText _ = LCtext
+    typeText :: lang -> Text -> LTtext lang
+    typeText _ = LTtext
 
 
-    sayLanguageOfText :: LCtext lang -> Text
+    sayLanguageOfText :: LTtext lang -> Text
     languageCode ::  lang -> LanguageCode
+
 
     -- just name the language
 instance LanguageTypedText EnglishType where
@@ -72,7 +82,19 @@ instance LanguageTypedText ItalianType where
     sayLanguageOfText _ = "Italian"
     languageCode _ = Italian
 
+instance LanguageTypedText NoLanguageType where
+    sayLanguageOfText _ = "NoLanguage"
+    languageCode _ = NoLanguage
 
 
+data LCtext = LCtext {ltxt :: Text
+                        , llang :: LanguageCode
+                      } deriving (Read, Show, Eq, Ord)
+
+class LanguageCodedText l where
+    codeText  :: LanguageCode-> Text -> l
+
+instance LanguageCodedText LCtext where
+    codeText lc t = LCtext t lc
 
 
