@@ -86,8 +86,11 @@ instance LanguageTypedText ItalianType where
     sayLanguageOfText _ = "Italian"
     languageCode _ = Italian
 
-newtype NLPtriple postag = NLPtriple Triple
+newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
 unNLPtriple (NLPtriple t) = t
+--instance Zeros (NLPtriple postag) where
+--    zero = []
+
 
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip2 lang = Snip2 { snip2text :: LCtext lang

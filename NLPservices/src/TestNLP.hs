@@ -29,10 +29,10 @@ import {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP
 
 
 main =  do
-    putStrLn "Lit Text Test.hs:\n"
+    putStrLn "TestNLP.hs:\n"
 --    r <- htfMainWithArgs ["--colors=True", "--fail-fast"] htf_importedTests
     r <- htfMain htf_importedTests
-    putStrLn "Lit Text Test.hs end ------------- \n"
+    putStrLn "TestNLP.hs end ------------- \n"
     return ()
 
 
