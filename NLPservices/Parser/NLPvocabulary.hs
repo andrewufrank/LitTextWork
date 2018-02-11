@@ -19,6 +19,7 @@ module Parser.NLPvocabulary
       , module Uniform.Strings
       , buchURIx, paraSigl
       , PartURI, RDFproperty
+      , SnipID, unSnipID
 --      , NLPproperty (..)
 --      , nlpURItext
     ) where
@@ -60,10 +61,12 @@ data NLPtype = Doc | Snip | Sentence | Token
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ nlpURItext <#> (toTitle . showT $ p)
 
+type ParaID = Int   -- should be typed?
+
 newtype ParaSigl = ParaSigl RDFsubj
 unParaSigl (ParaSigl t) = t
 
-formatParaID :: Int -> Text
+formatParaID :: ParaID -> Text
 formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
@@ -81,18 +84,19 @@ paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
                       ( buchURIx $ textstate)
                       )
 
-type DocSigl = ParaSigl
-unDocSigl = unParaSigl  -- is this ok?? ?
+--type DocSigl = ParaSigl
+--unDocSigl = unParaSigl  -- is this ok?? ?
 
-type SnipID0  = Int
-unSnipID0 = id
-
+-- snip sigl uses the paragraph number of the first paragraph
+newtype SnipID  =   SnipID Int  deriving (Show, Eq, Ord)
+unSnipID (SnipID i) = i
+--
 newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Eq)
-mkSnipSigl :: ParaSigl   -> SnipID0 -> SnipSigl
+mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
-mkSnipSigl docsigl snipid =  SnipSigl
-      . extendSlashRDFsubj  (formatSnipID  . unSnipID0 $    snipid)
-      . unDocSigl $ docsigl
+mkSnipSigl parasigl snipid =  SnipSigl
+      . extendSlashRDFsubj  (formatSnipID  . unSnipID $    snipid)
+      . unParaSigl $ parasigl
   where
     formatSnipID ::Int -> Text
     -- format an Int to 2 decimals for Snis

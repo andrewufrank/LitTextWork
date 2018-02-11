@@ -1,29 +1,16 @@
-
-
 -----------------------------------------------------------------------------
 --
 -- Module      :  Parser . Produce NLP triples
 -- Copyright   :  andrew u frank -
 --
 -- | produce the triples for the NLP part
---
--- version 2 assumes that each paragraph is individually analyzed
---  for german - the lemma are determined for each sentence individually
--- using the tokenization from the coreNLP
+-- the analysis is completed and stored in doc0
+-- this is only producing the triples, converted from doc0
 
--- reduced to a single dependency
+-- the snip has an id (which is the paraid of the first paragraph
+-- snips are not separated in paragraphs but the sentences are part of the snip and the snip part of the book
 
--- later - open language changes inside paragraph :
--- snippets are pieces in one paragraph of one languageBreakCode
--- therefo~~~~~re the snippet id is paragraph id + count
---
--- the aggregation of small paragraphs to longer units to snaps will be
--- done later, which will require a snap unit consisting of serveral paragraphs
--- changed, but questions:
-    -- why is docsigl = parasigl?
-    -- why goes snipets up to 20+ in t9
-    -- add sentence part of .. sniped - para - doc
-    -- add the redundant info from coref for testing
+
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -40,13 +27,10 @@ module Parser.ProduceNLPtriples
     (module Parser.ProduceNLPtriples
     , module CoreNLP.Defs0
     , module Parser.NLPvocabulary
---    , module Lines2para.Lines2para
     ) where
 
 import           Test.Framework
 import Uniform.TestHarness (testVar3File)
---import Uniform.Unifor
---import Parser.ReadMarkupAB  -- for resultA1 etc.
 import CoreNLP.Defs0
 --import Parser.NLPvocabulary
 --import CoreNLP.CoreNLPxml (readDocString)
@@ -62,7 +46,7 @@ import Parser.NLPvocabulary  -- from Foundation
 --instance (Show a) => CharChains2 a Text where show' = s2t . show
 
 processDoc0toTriples2 :: (Show postag, POStags postag) =>
-    TextDescriptor -> LanguageCode -> ParaNum -> (Int, Doc0 postag) -> [Triple]
+    TextDescriptor -> LanguageCode -> ParaNum -> (SnipID, Doc0 postag) -> [Triple]
             -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 -- snipnr is not used anymore?
@@ -193,7 +177,7 @@ mkDependencePart2 lang sentid depidp gd depp   = [t8] -- , t9]
 testOP_E_G :: (Show postag,  POStags postag) => TextDescriptor -> [Doc0 postag] ->  [Triple]
 testOP_E_G textstate docs  = concat
         . map (processDoc0toTriples2 textstate NoLanguage (ParaNum 99))
-        $ (zip [1..] docs)
+        $ (zip (map SnipID [1 ..]) docs)
 -- here missing the values for language and paranr
 -- fake paranr 99 should be ok for test
 --

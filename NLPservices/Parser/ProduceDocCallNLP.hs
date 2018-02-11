@@ -14,6 +14,7 @@
 {-# LANGUAGE ScopedTypeVariables
     ,TypeSynonymInstances
     , MultiParamTypeClasses
+    , NoMonomorphismRestriction
     , UndecidableInstances #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
@@ -60,50 +61,282 @@ data FrenchType
 data SpanishType
 data ItalianType
 
-portGerman = 9001
+portGerman = 9001 -- make port type
 portEnglish = 9002
 portFrench = 9003
 portSpanish = 9004
 portTinT = 9005
 portFrenchUD = 9006
 
+undefEnglish = undef "convertOneSnip2Triples lang engl" :: EnglishType
+undefGerman = undef "convertOneSnip2Triples lang german" :: GermanType
+
+undefConll = undef "convertOneSnip2Triples postag":: Conll.POStag
+undefGermanPos = undef "convertOneSnip2Triples postag":: German.POStag
+
+
 convertOneSnip2Triples :: Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
+-- the snip should have a type parameter language
+-- internal the text2nlp should have a tag type parameter
+-- the triples (i.e. NLPtriples should have a tag parameter
+
+-- the following is just the bridges, which should go earlier
 convertOneSnip2Triples debugNLP showXML textstate snip = do
     let text = tz3text snip
-    -- reduce for some special cases _italics_
-    -- should be done before the split, because . of abbreviations are elliminated
+    let language = tz3lang snip    -- reduce for some special cases _italics_
     if null' text
         then return zero
         else do
-            let language = tz3lang snip
---                let sloc = nlpServer textstate
-            when debugNLP $ putIOwords ["convertOneSnip2Triples", "language"
-                        , showT language, "\n snip", showT snip]
+            trips <- case language of
+                    English -> do
+                                t <- convertOneSnip2Triples2 undefEnglish undefConll
+                                            debugNLP showXML textstate (typeText undefEnglish text)
+                                return (map unNLPtriple t)
+                    German -> do
+                                t <- convertOneSnip2Triples2 undefGerman undefGermanPos
+                                            debugNLP showXML textstate (typeText undefGerman text)
+                                return (map unNLPtriple t)
 
-            case language of
-                English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
-                                        (undef "convertOneSnip2Triples postat":: Conll.POStag )
-                                        debugNLP showXML textstate snip
-                German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
-                                        (undef "convertOneSnip2Triples postat":: German.POStag)
-                                        debugNLP showXML textstate snip
-                Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
-                                        (undef "convertOneSnip2Triples postat":: TinT.POStag)
-                                        debugNLP showXML textstate snip
-                French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
-                                        (undef "convertOneSnip2Triples postat":: French.POStag)
---                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
-                                        debugNLP showXML textstate snip
-                Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
-                                        (undef "convertOneSnip2Triples postat":: Spanish.POStag)
-                                        debugNLP showXML textstate snip
-            --                    NoLanguage -> return zero
-                _    -> do
-                        putIOwords ["convertOneSnip2Triples", "no server for ", showT language]
-                        return []
---                    _    -> errorT ["convertOneSnip2Triples"
---                                            , showT language, "language has no server"]
+
+
+            return zero
+
+
+
+--        case lang of
+--            case language of
+--                English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
+--                                        (undef "convertOneSnip2Triples postat":: Conll.POStag )
+--                                        debugNLP showXML textstate snip
+--                German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
+--                                        (undef "convertOneSnip2Triples postat":: German.POStag)
+--                                        debugNLP showXML textstate snip
+--                Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
+--                                        (undef "convertOneSnip2Triples postat":: TinT.POStag)
+--                                        debugNLP showXML textstate snip
+--                French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
+--                                        (undef "convertOneSnip2Triples postat":: French.POStag)
+----                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
+--                                        debugNLP showXML textstate snip
+--                Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
+--                                        (undef "convertOneSnip2Triples postat":: Spanish.POStag)
+--                                        debugNLP showXML textstate snip
+--            --                    NoLanguage -> return zero
+
+
+
+newtype LCtext a = LCtext Text  deriving (Show, Eq)
+-- a piece of text in one language typed
+unLCtext (LCtext text) = text
+
+newtype NLPtriple postag = NLPtriple Triple
+unNLPtriple (NLPtriple t) = t
+
+
+class LanguageTypedText lang where
+    typeText :: lang -> Text -> LCtext lang
+    typeText _ = LCtext
+
+    preNLP :: LCtext lang -> LCtext lang
+    -- the processing of the text before NLP
+    preNLP = LCtext . cleanTextOther . unLCtext
+
+
+    sayLanguageOfText :: LCtext lang -> Text
+    langCode ::  lang -> LanguageCode
+
+    -- just name the language
+
+class TaggedTyped postag where
+    postNLP :: Bool -> Doc0 postag -> ErrIO (Doc0 postag)
+    -- postprocessing (e.g. adding POS to german)
+    postNLP _ = return
+
+class (LanguageTypedText lang, TaggedTyped postag, POStags postag) =>  LanguageTyped2 lang postag where
+    snip2doc :: lang -> postag -> Bool -> Bool -> LCtext lang -> URI -> ErrIO (Doc0 postag)
+    -- the nlp process, selected by language and postag
+    snip2doc lph pph debugNLP showXML text sloc = do
+        docs <-  convertTZ2makeNLPCall pph debugNLP showXML (addPort2URI sloc (nlpPort lph pph))
+                                (nlpParams lph pph)  (unLCtext text)
+        when debugNLP $ putIOwords ["NLP end", showT text]
+        return docs
+
+    nlpParams :: lang -> postag -> [(Text,Maybe Text)]
+    nlpPort :: lang -> postag -> Int   -- should be a port type
+
+    convertOneSnip2Triples2 :: lang -> postag -> Bool -> Bool -> TextDescriptor -> LCtext lang -> ErrIO [NLPtriple postag]
+    -- this should be the entry point for conversion of a text to nlp
+    -- typed in and output
+    -- calls nlp to convert to doc
+    -- the snip should have a type parameter language
+    -- internal the text2nlp should have a tag type parameter
+    -- the triples (i.e. NLPtriples should have a tag parameter
+
+    -- convertOneSnip2Triples2 :: Bool -> Bool -> TextDescriptor -> LCtext lang -> ErrIO [NLPtriple postag]
+    -- calls nlp to convert to doc
+    -- the snip should have a type parameter language
+    -- internal the text2nlp should have a tag type parameter
+    -- the triples (i.e. NLPtriples should have a tag parameter
+    convertOneSnip2Triples2 lph pph debugNLP showXML textstate text =
+        if  null' . unLCtext $ text
+            then return zero
+            else do
+                when debugNLP $ putIOwords ["convertOneSnip2Triples", sayLanguageOfText text
+                                  , "\n text", showT text]
+                let text2 = preNLP  text
+                let sloc = nlpServer textstate
+                doc1 <- snip2doc lph pph debugNLP showXML  text2 sloc
+
+                doc2 <- postNLP debugNLP  doc1
+
+                let trips = processDoc0toTriples3 lph textstate  (SnipID 1) doc2
+
+                return (map NLPtriple trips)
+
+processDoc0toTriples3 lph textstate snipID doc =
+    processDoc0toTriples2 textstate (langCode lph) (ParaNum 99) (snipID, doc )
+
+instance LanguageTypedText EnglishType where
+    sayLanguageOfText _ = "English"
+    preNLP    =  LCtext . cleanTextEnglish . unLCtext
+
+instance LanguageTypedText GermanType where
+    sayLanguageOfText _ = "German"
+
+instance TaggedTyped Conll.POStag
+instance TaggedTyped German.POStag
+
+instance LanguageTyped2 EnglishType Conll.POStag where
+    nlpPort _ _ = portEnglish
+    nlpParams _ _ =   [("outputFormat", Just "xml")
+                , ("annotators", Just "tokenize,ssplit,pos\
+                                        \,lemma,ner,depparse, dcoref,coref")]
+            --                                    coref -coref.algorithm neural")
+    --        -- perhaps the nerual algorithm is better, but creates problems
+    --        -- with the xml doc received (starts with C?
+
+--    snip2doc  :: Bool -> Bool -> LanguageCode -> Text -> ErrIO (Doc0 a)
+    snip2doc lph pph debugNLP showXML text sloc = do
+--        let varsEng =  [("outputFormat", Just "xml")
+--                , ("annotators", Just "tokenize,ssplit,pos\
+--                                        \,lemma,ner,depparse, dcoref,coref")
+--            --                                    coref -coref.algorithm neural")
+--    --        -- perhaps the nerual algorithm is better, but creates problems
+--    --        -- with the xml doc received (starts with C?
+--                                        ]
+--        when debugNLP $ putIOwords ["englishNLP text", showT  text]
+
+--        let text2 = cleanTextEnglish $  tz3text snip
+--        let sloc = nlpServer textstate
+        docs <-  convertTZ2makeNLPCall pph debugNLP showXML (addPort2URI sloc portEnglish)
+                                (nlpParams lph pph)  (unLCtext text)
+    --            when False $ putIOwords ["englishNLP parse"
+    --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
+        when debugNLP $ putIOwords ["englishNLP end", showT text]
+--        let docs2 = docs `asTypeOf` doc0Phantom
+        return docs
+
+instance LanguageTyped2 GermanType German.POStag where
+    nlpPort _ _ = portGerman
+    nlpParams _ _ =   [("outputFormat", Just "xml"),
+                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                        ]
+
+class Docs postag where
+    convertTZ2makeNLPCall  :: postag -> Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
+    -- call to send text to nlp server and converts xml to Doc0
+    -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
+    -- merger
+
+---- (CharChains2 postag Text) =>
+--class (Show postag) =>  LanguageSpecificNLPcall  langPhantom postag where
+--    snip2triples2 :: langPhantom -> postag -> Bool -> Bool -> TextDescriptor -> Snip -> ErrIO [Triple] -- (Doc0 postag)
+--    -- process an english text snip to a Doc0
+
+instance (POStags postag) => Docs postag where
+--    convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
+    -- call to send text to nlp server and converts xml to Doc0
+    -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
+    -- merger
+    convertTZ2makeNLPCall ph debugNLP showXML nlpServer vars text = do
+            when debugNLP $
+                putIOwords ["convertTZ2makeNLPCall start"
+                            , showT . lengthChar $ text
+                            , showT . take' 100 $ text ]
+    --        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
+    --                    "multipart/form-data" text
+            xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer ""
+                     (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
+        -- german parser seems to understand utf8encoded bytestring
+
+            when debugNLP  $
+                putIOwords ["convertTZ2makeNLPCall end \n", showT xml]
+
+            doc0 <- readDocString ph showXML xml                    -- E -> F
+            when debugNLP  $
+                putIOwords ["convertTZ2makeNLPCall doc0 \n", showT doc0]
+
+            return   doc0
+        `catchError` (\e -> do
+             putIOwords ["convertTZ2makeNLPCall http error caught 7",  e] -- " showT msg])
+             putIOwords ["convertTZ2makeNLPCall",  "text:\n",  showT text ] -- " showT msg])
+    --         splitAndTryAgain debugNLP showXML nlpServer vars text
+             return zero
+                )
+
+{-
+--snip2doc0 :: Bool -> Bool -> LanguageCode -> Text -> ErrIO (Doc0 a)
+---- convert the text to Doc0 format (or similar)
+--snip2doc0 debugNLP showXML lang text = do
+--    let tagPhantom = case lang of
+--                English -> (undef "convertOneSnip2Triples postat":: Conll.POStag )
+--                German ->  (undef "convertOneSnip2Triples postat":: German.POStag)
+--                Italian ->  (undef "convertOneSnip2Triples postat":: TinT.POStag)
+--                French -> (undef "convertOneSnip2Triples postat":: French.POStag)
+--                Spanish -> (undef "convertOneSnip2Triples postat":: Spanish.POStag)
+--                NoLanguage -> error ("snip2doc0 - no known language " ++ show lang)
+
+
+
+    return zero
+
+--convertOneSnip2Triples debugNLP showXML textstate snip = do
+--    let text = tz3text snip
+--    -- reduce for some special cases _italics_
+--    -- should be done before the split, because . of abbreviations are elliminated
+--    if null' text
+--        then return zero
+--        else do
+--            let language = tz3lang snip
+----                let sloc = nlpServer textstate
+--            when debugNLP $ putIOwords ["convertOneSnip2Triples", "language"
+--                        , showT language, "\n snip", showT snip]
+--
+--            case language of
+--                English -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: EnglishType)
+--                                        (undef "convertOneSnip2Triples postat":: Conll.POStag )
+--                                        debugNLP showXML textstate snip
+--                German -> snip2triples2 (undef "convertOneSnip2Triples lang engl" :: GermanType)
+--                                        (undef "convertOneSnip2Triples postat":: German.POStag)
+--                                        debugNLP showXML textstate snip
+--                Italian -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: ItalianType)
+--                                        (undef "convertOneSnip2Triples postat":: TinT.POStag)
+--                                        debugNLP showXML textstate snip
+--                French -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: FrenchType)
+--                                        (undef "convertOneSnip2Triples postat":: French.POStag)
+----                                            (undef "convertOneSnip2Triples postat":: POStagFrenchUD)
+--                                        debugNLP showXML textstate snip
+--                Spanish -> snip2triples2 (undef "convertOneSnip2Triples lang ital":: SpanishType)
+--                                        (undef "convertOneSnip2Triples postat":: Spanish.POStag)
+--                                        debugNLP showXML textstate snip
+--            --                    NoLanguage -> return zero
+--                _    -> do
+--                        putIOwords ["convertOneSnip2Triples", "no server for ", showT language]
+--                        return []
+----                    _    -> errorT ["convertOneSnip2Triples"
+----                                            , showT language, "language has no server"]
+
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
 testOP_DA_L textstate = mapM (convertOneSnip2Triples True True textstate)
 
@@ -120,8 +353,6 @@ class (Show postag) =>  LanguageSpecificNLPcall  langPhantom postag where
     -- process an english text snip to a Doc0
 
 instance (POStags postag) => Docs postag where
-
-
 --    convertTZ2makeNLPCall  :: Bool -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
@@ -173,7 +404,7 @@ instance LanguageSpecificNLPcall EnglishType Conll.POStag where
     --                    , sparse . headNote "docSents" . docSents . headNote "xx243" $ docs]
         when debugNLP $ putIOwords ["englishNLP end", showT text2]
 --        let docs2 = docs `asTypeOf` doc0Phantom
-        let snipnr = 1 -- TODO
+        let snipnr = SnipID 1 -- TODO
 
         let trips = processDoc0toTriples2 textstate (tz3lang snip) (tz3para $ snip) (snipnr, (docs))
 
@@ -182,9 +413,6 @@ instance LanguageSpecificNLPcall EnglishType Conll.POStag where
 
 
 instance LanguageSpecificNLPcall GermanType German.POStag  where
---    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
-    -- process an english text snip to a Doc0
---    englishNLP debugNLP showXML sloc text = do
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
 --    germanNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
     -- process an german text snip to a Doc0
@@ -214,9 +442,6 @@ instance LanguageSpecificNLPcall GermanType German.POStag  where
 
 --
 instance LanguageSpecificNLPcall FrenchType French.POStag where
---    englishNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
-    -- process an english text snip to a Doc0
---    englishNLP debugNLP showXML sloc text = do
     snip2triples2 _ tagPhantom debugNLP showXML textstate snip = do
 
 --    frenchNLP :: Bool -> Bool -> URI -> Text -> ErrIO Doc0
@@ -225,23 +450,12 @@ instance LanguageSpecificNLPcall FrenchType French.POStag where
         let vars  =  [("outputFormat", Just "xml")
                 , ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
     --        --                                    coref -coref.algorithm neural")
-    --        -- perhaps the nerual algorithm is better, but creates problems
-    --        -- with the xml doc received (starts with C?
-    --        --                                        dcoref,coref")
-    --                --                    --  coref, verlangt depparse,
-    --                                    ,
-
                                         ]
 --        when debugNLP $
         putIOwords ["frenchNLP text", showT  $ tz3text snip]
 
         let text2 = cleanTextFrench  $  tz3text snip
         let sloc = nlpServer textstate
-
-    --            let texts = getPiece . textSplit $ text2
-    --            let texts = if True -- lengthChar text2 < nlpDocSizeLimit
-    --                            then [ text2]
-    --                            else getPiece nlpDocSizeLimit . textSplit2 $ text2
 
         docs <-  convertTZ2makeNLPCall tagPhantom debugNLP showXML (addPort2URI sloc portFrench ) vars  text2
         when debugNLP $ putIOwords ["french end", showT text2]
@@ -344,13 +558,17 @@ instance LanguageSpecificNLPcall ItalianType TinT.POStag  where
     --         splitAndTryAgain debugNLP showXML nlpServer vars text
              return zero
                 )
-
+-}
 
 cleanTextEnglish :: Text -> Text
 cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
             . subRegex' "([0-9])([ds])."  "\\1 \\2 "   -- shiling/pence
             . subRegex' "([a-zA-Z]+)-([a-zA-Z]+)" "\\1 \\2"
 
+cleanTextOther :: Text -> Text
+cleanTextOther    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+
+{-
 cleanTextGerman :: Text -> Text
 cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
@@ -362,7 +580,7 @@ cleanTextspanish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 
 cleanTextitalian :: Text -> Text
 cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
-
+-}
 
 
 --test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
