@@ -26,9 +26,18 @@ import Uniform.HttpCallWithConduit (makeAbsURI)
 --import Uniform.HttpURI
 import Network.URI
 import           Test.Framework
+import Text.Read (Read (..))
 
+-- an attempt to have a read for URI  ReadS
+instance Read URI where
+    readsPrec _  = readS'
+
+readS' :: String -> [(URI, String)]
+readS' uri = [(fromJustNote ("read uri failed " ++ uri) . parseURI $ uri,"")]
 --type PartURI = Text   -- should be defined in uniform.http?? todo
         -- is defined in RDF.Extension
+
+test_readURI = assertEqual localhost (read (show localhost))
 
 serverLocalhost, serverBrest :: URI
 
