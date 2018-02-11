@@ -28,32 +28,24 @@ module Parser.ProduceDocCallNLP
 --    , module Parser.FilterTextForNLP
     ) where
 
-import           Test.Framework
-import Uniform.TestHarness
---import Parser.ReadMarkupAB -- for test readNA
---import Uniform.StringConversion (b2urlf)
-import Data.Maybe -- todo
---import Lines2para.Lines2para
---import Lines2para.HandleLayout
---import Parser.ReadMarkupAB  -- todo  -- for test
+import              Test.Framework
+import              Uniform.TestHarness
 import Producer.Servers
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
-import Data.List.Split
 import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
 import Text.Regex (mkRegex, subRegex)
---import Parser.FilterTextForNLP
 import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
 import Parser.NLPvocabulary
---import Parser.TextDescriptor
-import NLP.Corpora.UD
+
+--import NLP.Corpora.UD
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
 import NLP.Corpora.German  as German --
 import NLP.Corpora.Spanish as Spanish --
 import NLP.Corpora.French as French --
-import NLP.Corpora.FrenchUD as FrenchUD --
+--import NLP.Corpora.FrenchUD as FrenchUD --
 
 
 
@@ -193,7 +185,6 @@ class Docs postag where
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
 
----- (CharChains2 postag Text) =>
 
 instance (POStags postag) => Docs postag where
 --    convertTZ2makeNLPCall  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
@@ -274,22 +265,6 @@ test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN
 test_N_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultN4" testOP_Snip_N
 test_N_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultN5" testOP_Snip_N
 
---test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
---test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
---test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
---test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
---test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
---test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
---test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
---test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
---test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
---test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
---test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
---test_13_DA_L = testVar3FileIO result12A "resultDA12" "resultE12UD" testOP_DA_L
-
-
--- the result goes to /home/frank/Scratch/NT/LitTest/test (defined in foundation as testNTdir
--- setup in readMarkup
 
 --------------------------
 
