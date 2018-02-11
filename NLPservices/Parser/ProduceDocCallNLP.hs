@@ -86,6 +86,9 @@ instance LanguageDependent EnglishType where
     preNLP    =  LCtext . cleanTextEnglish . unLCtext
 
 instance LanguageDependent GermanType
+instance LanguageDependent FrenchType
+instance LanguageDependent SpanishType
+instance LanguageDependent ItalianType
 
 --convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
 ---- calls nlp to convert to doc
@@ -134,9 +137,9 @@ instance LanguageDependent GermanType
 
 
 class TaggedTyped postag where
-    postNLP :: Bool -> Doc0 postag -> ErrIO (Doc0 postag)
+    postNLP :: Bool -> URI -> Doc0 postag -> ErrIO (Doc0 postag)
     -- postprocessing (e.g. adding POS to german)
-    postNLP _ = return
+    postNLP _ _ = return
 
 class (POStags postag) =>  LanguageTyped2 lang postag where
     snip2doc :: lang -> postag -> Bool ->  LCtext lang -> URI -> ErrIO (Doc0 postag)
@@ -179,7 +182,7 @@ instance (LanguageDependent lang, LanguageTypedText lang, TaggedTyped postag, PO
 --                let sloc = nlpServer textstate
                 doc1 <- snip2doc lph pph debugNLP   text2 sloc
 
-                doc2 <- postNLP debugNLP  doc1
+                doc2 <- postNLP debugNLP  sloc doc1
 
                 let trips = processDoc0toTriples2 lph pph snip doc2
 
@@ -187,7 +190,16 @@ instance (LanguageDependent lang, LanguageTypedText lang, TaggedTyped postag, PO
 
 
 instance TaggedTyped Conll.POStag
-instance TaggedTyped German.POStag
+instance TaggedTyped German.POStag where
+    postNLP debug sloc doc1  = do
+        let sents1 = docSents doc1
+        sents2 <- mapM (completeSentence False (addPort2URI sloc treeTaggerPort ) ) sents1
+        let docs2 = doc1{docSents = sents2}
+        return docs2
+
+instance TaggedTyped TinT.POStag
+instance TaggedTyped Spanish.POStag
+instance TaggedTyped French.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish

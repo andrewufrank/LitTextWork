@@ -106,19 +106,19 @@ convertOneSnip2Triples debugNLP textstate snip = do
                                 t <- convertOneSnip2Triples2 undefGerman undefGermanPos
                                             debugNLP   (Snip2 (typeText undefGerman text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
-                Italian -> do
+                    Italian -> do
                                 t <- convertOneSnip2Triples2 undefItalian undefTinTPos
                                             debugNLP   (Snip2 (typeText undefItalian text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
-                French -> do
+                    French -> do
                                 t <- convertOneSnip2Triples2 undefFrench undefFrenchPos
                                             debugNLP   (Snip2 (typeText undefFrench text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
-                Spanish -> do
+                    Spanish -> do
                                 t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
                                             debugNLP   (Snip2 (typeText undefSpanish text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
-                NoLanguage -> return zero
+                    NoLanguage -> return zero
             return trips
 
 
