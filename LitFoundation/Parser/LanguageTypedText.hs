@@ -94,9 +94,14 @@ data LCtext = LCtext {ltxt :: Text
 
 class LanguageCodedText l where
     codeText  :: LanguageCode-> Text -> l
+    setLanguageCode :: LanguageCode -> l -> l
+    getLength :: l -> Int
+    sameLanguage :: l -> l -> Bool
+    mergeLC :: l -> l -> Maybe l
 
 instance LanguageCodedText LCtext where
     codeText lc t = LCtext t lc
+    setLanguageCode lc2 (LCtext t lc) = LCtext t lc2
 
 instance Zeros LCtext where
     zero = LCtext "" NoLanguage
