@@ -40,38 +40,6 @@ import           Uniform.Error
 import Uniform.TestHarness
 import Parser.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
---instance Zeros (Maybe a) where zero = Nothing
-
---data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int} deriving (Read, Show, Eq)
----- ^ the place of a line in the full text
----- for simplification, all counts are from the start of the text
----- not relative to the page or paragraph (can be computed, if desired)
----- page number (tlline) is text, to deal with III etc.
---    -- removed paraid
---
---instance Zeros TextLoc where zero = TextLoc zero zero
---
---
----- the format accumulation all detail info to build the triples.
----- only tzpara and tzmarkup in final result
---data TZ =
---         TZtext {tzt:: TextType, tzloc :: TextLoc
---                    , tztext:: TextWithMarks   -- is this appropriate here?
---                    , tzlang :: LanguageCode }
-----        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
-----                , tlpara :: ParaNum
-----                , tzInPart :: ParaNum}
---        | TZmarkup  {tzloc :: TextLoc, tztext:: TextWithMarks
---                        , tztok :: BuchToken, tzlang :: LanguageCode
-----                        , tlpara :: ParaNum
-----                        , tzInPart :: ParaNum
---                        }
---        | TZleer  {tzloc :: TextLoc}
---        | TZneueSeite  {tzloc :: TextLoc}
---        | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
---            deriving (Read, Show, Eq )
---
---instance Zeros TZ where zero = TZleer zero
 
 paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
 -- ^ produce the paragraphs with the seitenzahlen in each line
