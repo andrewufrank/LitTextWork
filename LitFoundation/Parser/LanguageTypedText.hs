@@ -72,10 +72,12 @@ class LanguageTypedText lang where
 instance LanguageTypedText EnglishType where
     sayLanguageOfText _ = "English"
     languageCode _ = English
+    languageCode2undef English = undefEnglish
 
 instance LanguageTypedText GermanType where
     sayLanguageOfText _ = "German"
     languageCode _ = German
+    languageCode2undef German = undefGerman
 
 instance LanguageTypedText FrenchType where
     sayLanguageOfText _ = "French"
@@ -112,6 +114,15 @@ class LanguageCodedText l where
 instance LanguageCodedText LCtext where
     codeText lc t = LCtext t lc
     setLanguageCode lc2 (LCtext t lc) = LCtext t lc2
+    getText = ltxt
+    getLanguageCode = llang
+    getLengthLC = lengthChar . getText
+    notNullLC = (0 /=) . getLengthLC
+    sameLanguageLC a b =  getLanguageCode a == getLanguageCode b
+    mergeLC sep a b = if sameLanguageLC a b
+        then Just $ a {ltxt = getText a <> sep <> getText b}
+        else Nothing
+
 
 mkTripleLang33 :: RDFsubj -> RDFproperty -> LCtext -> Triple
 mkTripleLang33 o p lctext = mkTripleLang3 (getLanguageCode lctext) o p (getText lctext)
