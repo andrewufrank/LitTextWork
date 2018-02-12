@@ -118,8 +118,10 @@ markTZsWithLanguage lg = map  (markoneLanguage lg . copyTZtoTZ1)
             -- does not work, because noLang is filled earlier
 
     where
-        markoneLanguage lg tz@TZtext1 {} = tz {tzlang1 = lg }
-        markoneLanguage lg tz@TZmarkup1 {} = tz {tzlang1 = lg }
+--        markoneLanguage lg tz@TZtext1 {} = tz {tzlang1 = lg }
+--        markoneLanguage lg tz@TZmarkup1 {} = tz {tzlang1 = lg }
+        markoneLanguage lg tz@TZtext1 {} = tz {tztext1 = codeTextWM1 lg (tztext1 tz) }
+        markoneLanguage lg tz@TZmarkup1 {} = tz {tztext1 = codeTextWM1 lg (tztext1 tz) }
         markoneLanguage lg tz@TZleer1 {} = tz
         markoneLanguage lg tz@TZignore1 {} = tz
         markoneLanguage lg tz = error ("markoneLanguage missing case " ++ show tz)

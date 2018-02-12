@@ -28,7 +28,7 @@ import           Test.Framework
 import Uniform.Zero (Zeros (..))
 import Uniform.Strings
 import Uniform.Error (undef)
-import Data.RDF.Extension (LanguageCode (..))
+import Data.RDF.Extension -- (LanguageCode (..))
 --import CoreNLP.Defs0
 --import Parser.TextDescriptor
 --import NLP.Types.Tags
@@ -60,6 +60,12 @@ class LanguageTypedText lang where
 
     sayLanguageOfText :: LTtext lang -> Text
     languageCode ::  lang -> LanguageCode
+
+    languageCode2undef :: LanguageCode -> lang
+
+    convertLC2LT :: LCtext -> LTtext lang
+    convertLC2LT (LCtext t lc) =
+                typeText (languageCode2undef lc) t
 
 
     -- just name the language
@@ -94,14 +100,22 @@ data LCtext = LCtext {ltxt :: Text
 
 class LanguageCodedText l where
     codeText  :: LanguageCode-> Text -> l
+    getText :: l -> Text
     setLanguageCode :: LanguageCode -> l -> l
-    getLength :: l -> Int
-    sameLanguage :: l -> l -> Bool
-    mergeLC :: l -> l -> Maybe l
+    getLanguageCode :: l -> LanguageCode
+    getLengthLC :: l -> Int
+    notNullLC :: l -> Bool
+    sameLanguageLC :: l -> l -> Bool
+    mergeLC :: Text -> l -> l -> Maybe l
+    -- ^ merge with the separator between
 
 instance LanguageCodedText LCtext where
     codeText lc t = LCtext t lc
     setLanguageCode lc2 (LCtext t lc) = LCtext t lc2
+
+mkTripleLang33 :: RDFsubj -> RDFproperty -> LCtext -> Triple
+mkTripleLang33 o p lctext = mkTripleLang3 (getLanguageCode lctext) o p (getText lctext)
+
 
 instance Zeros LCtext where
     zero = LCtext "" NoLanguage

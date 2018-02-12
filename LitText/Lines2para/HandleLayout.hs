@@ -14,9 +14,10 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# OPTIONS_GHC -Wall #-}
---{-# OPTIONS_GHC -fno-warn-missing-methods #-}
+{-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 --{-# OPTIONS_GHC -w #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
@@ -223,7 +224,7 @@ instance Zeilen TZ where
 
 instance Zeilen TZ1 where
     zeilenText TZleer1 {} = ""
-    zeilenText TZtext1 {tztext1=tx} =  twm tx
+    zeilenText TZtext1 {tztext1=tx} =  getText . twm1 $ tx
     zeilenText _ = ""
 
     isTextZeileIncludeInPara  TZtext1 {tzt1=Text0} = True   -- can include footnote text

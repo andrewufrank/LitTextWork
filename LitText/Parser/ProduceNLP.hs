@@ -88,35 +88,35 @@ convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
 -- the following is just the bridges, which should go earlier
 convertOneSnip2Triples debugNLP textstate snip = do
     let text = tz3text snip
-    let language = tz3lang snip    -- reduce for some special cases _italics_
+    let language = getLanguageCode . tz3text $  snip    -- reduce for some special cases _italics_
 --    let buchname = buchName textstate
     let paranum = tz3para snip
     let parasigl = paraSigl textstate paranum
     let snipSigl = mkSnipSigl parasigl (SnipID 1)   -- where is this comming from  ???
     let nlpserver = nlpServer textstate
-    if null' text
+    if not . notNullLC $ text
         then return zero
         else do
             trips <- case language of
                     English -> do
                                 t <- convertOneSnip2Triples2 undefEnglish undefConll
-                                            debugNLP   (Snip2 (typeText undefEnglish text) snipSigl) nlpserver
+                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
                     German -> do
                                 t <- convertOneSnip2Triples2 undefGerman undefGermanPos
-                                            debugNLP   (Snip2 (typeText undefGerman text) snipSigl) nlpserver
+                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
                     Italian -> do
                                 t <- convertOneSnip2Triples2 undefItalian undefTinTPos
-                                            debugNLP   (Snip2 (typeText undefItalian text) snipSigl) nlpserver
+                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
                     French -> do
                                 t <- convertOneSnip2Triples2 undefFrench undefFrenchPos
-                                            debugNLP   (Snip2 (typeText undefFrench text) snipSigl) nlpserver
+                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
                     Spanish -> do
                                 t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
-                                            debugNLP   (Snip2 (typeText undefSpanish text) snipSigl) nlpserver
+                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
                                 return (map unNLPtriple t)
                     NoLanguage -> return zero
             return trips

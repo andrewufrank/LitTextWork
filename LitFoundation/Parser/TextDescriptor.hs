@@ -15,6 +15,7 @@ module Parser.TextDescriptor (
         module Parser.TextDescriptor
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
+    , module Parser.LanguageTypedText
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
@@ -46,9 +47,10 @@ litNTTestDir1 = ntDir </> litTests
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
-                        , tz3text:: Text
+                        , tz3text:: LCtext
                         , tz3textLength :: Int
-                        , tz3lang :: LanguageCode }
+--                        , tz3lang :: LanguageCode
+                        }
             deriving (Read, Show, Eq )
 
 -------------- definitinos of TZ2
@@ -100,37 +102,52 @@ data TZ =
 
 instance Zeros TZ where zero = TZleer zero
 
+data TextWithMarks1 = TextWithMarks1 {twm1::LCtext, twmMarks1::[(Int, Text)]}
+        deriving (Show, Read, Eq )
+-- the text is without markers, the markers are a list
+-- of offset of the marker from start of line resp. previous marker
+-- and the marker as text
+-- the list is empty if none
+
+codeTextWM :: LanguageCode -> TextWithMarks -> TextWithMarks1
+codeTextWM lc t = TextWithMarks1 {twm1=codeText lc (twm t), twmMarks1=twmMarks t}
+
+codeTextWM1 :: LanguageCode -> TextWithMarks1 -> TextWithMarks1
+codeTextWM1 lc t = TextWithMarks1 {twm1=codeText lc (getText $ twm1 t), twmMarks1=twmMarks1 t}
+
 -- | the input text after language has been distributed
 data TZ1 =
          TZtext1 {tzt1:: TextType
                     , tzloc1 :: TextLoc
-                    , tztext1:: TextWithMarks   -- is this appropriate here?
-                    , tzlang1 :: LanguageCode
+                    , tztext1:: TextWithMarks1   -- is this appropriate here?
+--                    , tzlang1 :: LanguageCode
                     }
 --        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
 --                , tlpara :: ParaNum
 --                , tzInPart :: ParaNum}
         | TZmarkup1  {tzloc1 :: TextLoc
-                        , tztext1:: TextWithMarks
+                        , tztext1:: TextWithMarks1
                         , tztok1 :: BuchToken
-                        , tzlang1 :: LanguageCode
+--                        , tzlang1 :: LanguageCode
 --                        , tlpara :: ParaNum
 --                        , tzInPart :: ParaNum
                         }
         | TZleer1  {tzloc1 :: TextLoc}
         | TZneueSeite1  {tzloc1 :: TextLoc}
-        | TZignore1 {tzloc1 :: TextLoc, tztext1:: TextWithMarks}
+        | TZignore1 {tzloc1 :: TextLoc, tztext1:: TextWithMarks1}
             deriving (Read, Show, Eq )
 
 -- instance Zeros TZ1 where zero = TZleer zero
 
 copyTZtoTZ1 :: TZ -> TZ1
-copyTZtoTZ1 (TZtext t l m) = TZtext1 t l m zero
-copyTZtoTZ1 (TZmarkup l m t) = TZmarkup1 l m t zero
-copyTZtoTZ1 (TZignore l t ) = TZignore1 l t
+copyTZtoTZ1 (TZtext t l m) = TZtext1 t l (codeTextWM NoLanguage m)
+copyTZtoTZ1 (TZmarkup l m t) = TZmarkup1 l (codeTextWM NoLanguage m) t
+copyTZtoTZ1 (TZignore l m ) = TZignore1 l (codeTextWM NoLanguage m)
 copyTZtoTZ1 (TZleer l  ) = TZleer1 l
 copyTZtoTZ1 x = error ("copyTZtoTZ1 missing case: " ++ show x)
 
+getLanguage3TZ1 :: TZ1 -> LanguageCode
+getLanguage3TZ1 = getLanguageCode . twm1 . tztext1
 
 newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
 -- just to avoid confusions
@@ -140,11 +157,15 @@ instance Zeros ParaNum where zero =  ParaNum zero
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result
 data TZ2 =
-     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ1], tz2lang :: LanguageCode
-            , tz2para :: ParaNum
-            , tz2inPart :: ParaNum}
-    | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
-                    , tz2tok :: BuchToken, tz2lang :: LanguageCode
+     TZ2para  {tz2loc :: TextLoc
+                , tz2tzs :: [TZ1]
+--                , tz2lang :: LanguageCode
+                , tz2para :: ParaNum
+                , tz2inPart :: ParaNum}
+    | TZ2markup  {tz2loc :: TextLoc
+                , tz2text:: TextWithMarks1
+                    , tz2tok :: BuchToken
+--                    , tz2lang :: LanguageCode
                     , tz2para :: ParaNum
                     , tz2inPart :: ParaNum
                     }

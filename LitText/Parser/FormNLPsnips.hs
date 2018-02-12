@@ -65,28 +65,30 @@ test_12_D_DA = testFile2File "resultD12" "resultDA12" formSnips
 
 mergeNLPtext :: Snip -> Snip -> Maybe Snip
 -- merge two text if same language and size less than maxSnipSize
-mergeNLPtext a b = if sameLang a b && tz3textLength a + tz3textLength b < maxSnipSize
-                        then Just (a{tz3text = tz3text a <> " " <> tz3text b
+mergeNLPtext a b = if sameLang a b && (tz3textLength a + tz3textLength b) < maxSnipSize
+                        then Just (a {tz3text = fromJustNote "mergeNLPtext "
+                                         (mergeLC " " (tz3text a) (tz3text b))
+--                                tz3text = tz3text a <> " " <> tz3text b
                                 , tz3textLength = tz3textLength a + tz3textLength b +1})
                                     -- there is a spaece added, would a period "." be needed?
                         else Nothing
 
     where
-        alength = lengthChar . tz3text $ a
-        blength = lengthChar . tz3text $ b
-        sameLang a b = tz3lang a == tz3lang b
+--        alength = lengthChar . tz3text $ a
+--        blength = lengthChar . tz3text $ b
+        sameLang a b = sameLanguageLC (tz3text a) (tz3text b)
 
 -- test mergeNLP
 text1 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
-        tz3text = "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme .", tz3lang = German}
+        tz3text = LCtext "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme ."  German}
 text2 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
-        tz3text = "die ich dann mit Schminke korrigierte.", tz3lang = German}
+        tz3text = LCtext "die ich dann mit Schminke korrigierte."  German}
 t12 =  Just . tz3fillLength $
   (Snip{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
            tz3para = ParaNum 11,
-           tz3text =
-             "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme . die ich dann mit Schminke korrigierte.",
-           tz3lang = German})
+           tz3text = LCtext
+             "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme . die ich dann mit Schminke korrigierte."
+              German})
 
 test_mergeNLP = assertEqual    t12  (mergeNLPtext text1 text2)
 

@@ -147,13 +147,14 @@ lineTriple textstate  tz =
     -- requires a page as an object
     -- gives the page number/text as it was parsed
     -- could be avoided if null
-    , mkTripleLang3 (tzlang1 tz) (unLineSigl sigl)
-            (mkRDFproperty LineText)
-                    (twm . tztext1 $ tz)
+    , mkTripleLang33 (unLineSigl sigl) (mkRDFproperty LineText) (twm1 . tztext1 $ tz)
+--    , mkTripleLang3 (getLanguage3TZ1 tz) (unLineSigl sigl)
+--            (mkRDFproperty LineText)
+--                    (twm . tztext1 $ tz)
     -- gives the text of a TZtext line
         ]
             ++ (concat . map (oneMarkerTriple sigl)
-                $ (twmMarks . tztext1 $ tz))
+                $ (twmMarks1 . tztext1 $ tz))
             ++ pageNumberTriple
     where
         sigl = lineSigl textstate .  tlline . tzloc1$ tz
@@ -163,8 +164,6 @@ lineTriple textstate  tz =
             Just pgnr -> [  mkTripleText (unLineSigl sigl)
                     (mkRDFproperty PageNumber)
                     pgnr ]
-
-
 --footnoteTriples :: TextState2 -> (Int,Text) -> [Triple]
 ---- make the extra triples for the marker
 --footnoteTriples linesigl intText = if hasNoMarkers then []

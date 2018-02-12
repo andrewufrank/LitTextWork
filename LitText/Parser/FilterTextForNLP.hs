@@ -54,9 +54,9 @@ import Text.Regex (mkRegex, subRegex)
 
 tz3fillLength :: Snip -> Snip
 -- fill the length field
-tz3fillLength n = n{tz3textLength = lengthChar . tz3text $ n}
+tz3fillLength n = n{tz3textLength = getLengthLC . tz3text $ n}
 
-instance Zeros Snip where zero = Snip zero zero zero zero zero
+instance Zeros Snip where zero = Snip zero zero zero zero
 --instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 -- todo algebra
 
@@ -91,20 +91,24 @@ formatParaText :: TZ2 -> Snip
 formatParaText tz@TZ2para{} = Snip {
                 tz3loc = tz2loc tz
                 , tz3para = tz2para tz
-                , tz3lang = tz2lang tz
-                , tz3text = foldl1 combine2linesWithHyphenation
-            . map (twm . tztext1) $ (tz2tzs tz)
+--                , tz3lang = tz2lang tz
+                , tz3text = codeText lang (foldl1 combine2linesWithHyphenation
+            . map (getText . twm1 . tztext1) $ (tz2tzs tz))
         }
+    where
+            lang  = getLanguageCode . twm1 . tztext1
+                        . headNote "formatParaText lang" . tz2tzs $ tz  :: LanguageCode
 
 formatParaText tz@TZ2markup {} = Snip {tz3loc = tz2loc tz
-        , tz3lang = tz2lang tz
+--        , tz3lang = tz2lang tz
         , tz3para = tz2para tz
-        , tz3text =  tx <> ". "     -- to make sure these are sentences for NLP
+        , tz3text = codeText lang $ tx <> ". "     -- to make sure these are sentences for NLP
                                       --    risk of two ..
         }
 
     where
-        tx = twm . tz2text $ tz
+        tx = getText . twm1 . tz2text $ tz
+        lang = getLanguageCode . twm1 . tz2text $ tz
 
 test_1_C_D = testFile2File "resultBAE1" "resultD1" ( prepareTZ4nlp)
 test_2_C_D = testFile2File "resultBAE2" "resultD2" ( prepareTZ4nlp)

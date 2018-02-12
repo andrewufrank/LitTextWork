@@ -155,8 +155,10 @@ convOneTextZeile2triple textstate tz  = case tz of
 otherBuchTriple :: TextDescriptor -> TZ2 -> [Triple]
 -- make triples for other markup (author etc.), which apply to the buch as a whole
 otherBuchTriple textstate tz =
-    [mkTripleLang3 (tz2lang tz) buchUri (mkRDFproperty mk)
-                     (twm $ tz2text tz)]
+--    [mkTripleLang3 (tz2lang tz) buchUri (mkRDFproperty mk)
+--                     (twm $ tz2text tz)]
+    [mkTripleLang33   buchUri (mkRDFproperty mk)
+                     (twm1 $ tz2text tz)]
     where
             buchUri = buchURIx textstate
 --        sigl = paraSigl textstate . tz2para $ tz
@@ -175,8 +177,10 @@ hlTriple :: TextDescriptor ->   TZ2 -> [Triple]
 -- ^ produce the triples for header levels
 hlTriple textstate  tz =   if includeText textstate
         then
-            [ mkTripleLang3 lang (unParaSigl sigl) (mkRDFproperty Text)
-                (twm $ tz2text tz)
+            [ mkTripleLang33  (unParaSigl sigl) (mkRDFproperty Text)
+                (twm1 $ tz2text tz)
+--             mkTripleLang3  (unParaSigl sigl) (mkRDFproperty Text)
+--                (twm $ tz2text tz)
             , inWerkTriple textstate (unParaSigl sigl)
             , mkTripleRef (unParaSigl sigl) (mkRDFproperty InPart)
                         (unParaSigl inSigl)
@@ -188,7 +192,7 @@ hlTriple textstate  tz =   if includeText textstate
     where
         sigl = paraSigl textstate . tz2para $  tz
         inSigl = paraSigl textstate . tz2inPart $ tz
-        lang = tz2lang tz
+--        lang = tz2lang tz
         mk = tz2tok tz
 
 
