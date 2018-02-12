@@ -198,7 +198,7 @@ openHandleTriples textstate  = do
                     else openHandle6 (destNT textstate)  ntFileTriples
                 return textstate{destHandle = Just hand}
             `catchError` \e -> do
-                putIOwords ["openHandleTriples - error ", e ]
+                putIOwords ["openHandleTriples - error ", e , "file", showT $ destNT textstate]
 --                openHandleTriples2 textstate
                 return textstate
 
