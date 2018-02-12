@@ -67,7 +67,7 @@ data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
         -- | AllCaps0
         deriving (Show, Read, Eq )
 
-data TextWithMarks = TextWithMarks {twm::LCtext, twmMarks::[(Int, Text)]}
+data TextWithMarks = TextWithMarks {twm::Text, twmMarks::[(Int, Text)]}
         deriving (Show, Read, Eq )
 -- the text is without markers, the markers are a list
 -- of offset of the marker from start of line resp. previous marker
@@ -77,6 +77,7 @@ data TextWithMarks = TextWithMarks {twm::LCtext, twmMarks::[(Int, Text)]}
 
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result
+-- has no language field because language is encoded as markup
 data TZ =
          TZtext {tzt:: TextType, tzloc :: TextLoc
                     , tztext:: TextWithMarks   -- is this appropriate here?
@@ -99,6 +100,38 @@ data TZ =
 
 instance Zeros TZ where zero = TZleer zero
 
+-- | the input text after language has been distributed
+data TZ1 =
+         TZtext1 {tzt1:: TextType
+                    , tzloc1 :: TextLoc
+                    , tztext1:: TextWithMarks   -- is this appropriate here?
+                    , tzlang1 :: LanguageCode
+                    }
+--        | TZpara  {tzloc :: TextLoc, tztzs :: [TZ], tzlang :: LanguageCode
+--                , tlpara :: ParaNum
+--                , tzInPart :: ParaNum}
+        | TZmarkup1  {tzloc1 :: TextLoc
+                        , tztext1:: TextWithMarks
+                        , tztok1 :: BuchToken
+                        , tzlang1 :: LanguageCode
+--                        , tlpara :: ParaNum
+--                        , tzInPart :: ParaNum
+                        }
+        | TZleer1  {tzloc1 :: TextLoc}
+        | TZneueSeite1  {tzloc1 :: TextLoc}
+        | TZignore1 {tzloc1 :: TextLoc, tztext1:: TextWithMarks}
+            deriving (Read, Show, Eq )
+
+-- instance Zeros TZ1 where zero = TZleer zero
+
+copyTZtoTZ1 :: TZ -> TZ1
+copyTZtoTZ1 (TZtext t l m) = TZtext1 t l m zero
+copyTZtoTZ1 (TZmarkup l m t) = TZmarkup1 l m t zero
+copyTZtoTZ1 (TZignore l t ) = TZignore1 l t
+copyTZtoTZ1 (TZleer l  ) = TZleer1 l
+copyTZtoTZ1 x = error ("copyTZtoTZ1 missing case: " ++ show x)
+
+
 newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
 -- just to avoid confusions
 unparaNum (ParaNum t) = t
@@ -107,7 +140,7 @@ instance Zeros ParaNum where zero =  ParaNum zero
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result
 data TZ2 =
-     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
+     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ1], tz2lang :: LanguageCode
             , tz2para :: ParaNum
             , tz2inPart :: ParaNum}
     | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks

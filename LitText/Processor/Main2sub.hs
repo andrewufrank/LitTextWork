@@ -41,7 +41,7 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
     ttext <- textstate2Text textstate -- test A - B (in this module)
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
     let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
-    let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ]
+    let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ1]
         -- ignore line, allCaps, language
         -- missing footnotes?
     let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J

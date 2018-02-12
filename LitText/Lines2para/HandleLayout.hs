@@ -84,15 +84,15 @@ paragraphs2TZlayout =
 ett2tz :: TextZeilen -> TZ
 -- convert the textzeilen to tz without filling location
 -- some markup is converted to lit text
-ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero, tzlang=zero }
+ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero  }
 --ett2tz (ZahlZeile t) = TZzahl {tztext = t, tzloc = zero, tzlang=zero}
 ett2tz (MarkupZeile BuchIgnoreLine t) = TZignore {tztext = t,  tzloc = zero}
 ett2tz (MarkupZeile BuchGedicht t) =
-    TZtext {tzt=Kurz0, tztext = t,  tzloc = zero, tzlang=zero}
+    TZtext {tzt=Kurz0, tztext = t,  tzloc = zero }
 ett2tz (MarkupZeile BuchEnde _) = TZleer {tzloc = zero}
 -- will be filtered out
 ett2tz (MarkupZeile tok t) = TZmarkup {tztext = t, tztok = tok, tzloc = zero
-        , tzlang=zero
+--        , tzlang=zero
 --        , tlpara = zero , tzInPart = zero
              }
 ett2tz LeerZeile = TZleer {tzloc = zero}
@@ -221,6 +221,18 @@ instance Zeilen TZ where
 --                <> " on page " <> (tlpage . tzloc $ tz)
 --                <> "\n" <> (concat' . map renderZeile  . tztzs $ tz) <> "\n"
 
+instance Zeilen TZ1 where
+    zeilenText TZleer1 {} = ""
+    zeilenText TZtext1 {tztext1=tx} =  twm tx
+    zeilenText _ = ""
+
+    isTextZeileIncludeInPara  TZtext1 {tzt1=Text0} = True   -- can include footnote text
+    isTextZeileIncludeInPara  TZtext1 {tzt1=Kurz0} = True
+    isTextZeileIncludeInPara _             = False
+
+    isKurzeZeile TZtext1 {tzt1=Kurz0} = True
+    isKurzeZeile _         = False
+    -- what is needed?
 
 
 ----test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZlayout

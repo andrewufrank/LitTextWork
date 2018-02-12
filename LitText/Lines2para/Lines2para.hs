@@ -43,32 +43,8 @@ import           Test.Framework
 import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 
---newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
------- just to avoid confusions
---unparaNum (ParaNum t) = t
---instance Zeros ParaNum where zero =  ParaNum zero
 
----- the format accumulation all detail info to build the triples.
----- only tzpara and tzmarkup in final result
---data TZ2 =
---     TZ2para  {tz2loc :: TextLoc, tz2tzs :: [TZ], tz2lang :: LanguageCode
---            , tz2para :: ParaNum
---            , tz2inPart :: ParaNum}
---    | TZ2markup  {tz2loc :: TextLoc, tz2text:: TextWithMarks
---                    , tz2tok :: BuchToken, tz2lang :: LanguageCode
---                    , tz2para :: ParaNum
---                    , tz2inPart :: ParaNum
---                    }
---            deriving (Read, Show, Eq )
-
---paragraphs2TZ :: [TextZeilen] -> [TZ2]  -- test BA -> C
----- ^ produce the text files (ignores removed, language marked)
----- paragraphs formed etc.  (all together in LinesToParagraph)
----- page number and line numbers are in layout
---paragraphs2TZ =
---    paragraphs2TZpara . paragraphs2TZsimple . paragraphs2TZlayout
-
-paragraphsTZ2TZ2 :: [TZ] -> [TZ2]  -- test BA -> C
+paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
 -- paragraphs formed etc.  (all together in LinesToParagraph)
 -- page number and line numbers are in layout
@@ -76,7 +52,7 @@ paragraphsTZ2TZ2 =
     paragraphs2TZpara
 --            . paragraphs2TZsimple -- now in layout
 
-paragraphs2TZpara :: [TZ] -> [TZ2]  -- test BA -> C
+paragraphs2TZpara :: [TZ1] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
 -- but not paragraphs
 -- page number and line numbers are in layout
@@ -87,8 +63,6 @@ paragraphs2TZpara =
 --    filterAlleLeer .  -- these are not used after forming paras
     formParagraphs
         -- test BAD -> BAE ...   -> C
-
-
 
 ----test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
 test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphsTZ2TZ2
@@ -108,28 +82,28 @@ test_12BAD_BAE = testFile2File "resultBAD12" "resultBAE12" paragraphsTZ2TZ2
 
 ----------- PARA
 
-formParagraphs :: [TZ] -> [TZ2]
+formParagraphs :: [TZ1] -> [TZ2]
 -- grouplines to meaningful paragraphs (for nlp)
 formParagraphs [] = []
 --formParagraphs [t] = [t]
 formParagraphs (t:ts) = case t of
-    TZleer {} -> formParagraphs ts  -- removes empty lines
-    TZneueSeite {}  -> errorT ["formParagraphs","should not have TZneueSeite left", showT t]
-    TZignore {} -> formParagraphs ts  -- removes ignore lines
+    TZleer1 {} -> formParagraphs ts  -- removes empty lines
+    TZneueSeite1 {}  -> errorT ["formParagraphs","should not have TZneueSeite left", showT t]
+    TZignore1 {} -> formParagraphs ts  -- removes ignore lines
 
-    TZmarkup {..} -> TZ2markup {tz2loc=tzloc, tz2text=tztext
-                    , tz2tok=tztok, tz2lang=tzlang
+    TZmarkup1 {..} -> TZ2markup {tz2loc=tzloc1, tz2text=tztext1
+                    , tz2tok=tztok1, tz2lang=tzlang1
                     , tz2para = zero, tz2inPart=zero} : formParagraphs ts
 
-    TZtext {tzt=Zahl0}  -> errorT ["formParagraphs","should not have TZzahl left", showT t]
+    TZtext1 {tzt1=Zahl0}  -> errorT ["formParagraphs","should not have TZzahl left", showT t]
 
-    TZtext {tzt=Text0} -> p : formParagraphs rest
+    TZtext1 {tzt1=Text0} -> p : formParagraphs rest
                         where (p,rest) = collectPara (t:ts)
-    TZtext {tzt=Para0} -> p : formParagraphs ts  -- do not collect, is one line per paragraph
+    TZtext1 {tzt1=Para0} -> p : formParagraphs ts  -- do not collect, is one line per paragraph
             where p = collectInParagrah [t]
-    TZtext {tzt=Kurz0} -> p : formParagraphs rest
+    TZtext1 {tzt1=Kurz0} -> p : formParagraphs rest
                         where (p,rest) = collectKurz (t:ts)
-    TZtext {tzt=Fussnote0} ->  formParagraphs ts   -- is this ok? dropping t
+    TZtext1 {tzt1=Fussnote0} ->  formParagraphs ts   -- is this ok? dropping t
             -- form a paragraph with the footnote text
 
     otherwise -> errorT ["formParagraph - other ", showT t]
@@ -138,7 +112,7 @@ formParagraphs (t:ts) = case t of
 --formParagraphs x = errorT ["formParagraph - outer  ", showT x]
 
 
-collectPara :: [TZ] -> (TZ2, [TZ])
+collectPara :: [TZ1] -> (TZ2, [TZ1])
 -- group longest poossible chain
 collectPara  tzs
         | null rest = (collectInParagrah ts, [])
@@ -153,23 +127,23 @@ collectPara  tzs
 lastChar :: Text -> Maybe Char
 lastChar t = if null' t then Nothing else Just . headNote "lastChar" . t2s$ t
 
-collectInParagrah :: [TZ] -> TZ2
+collectInParagrah :: [TZ1] -> TZ2
 -- collect the text lines in a paragraph
 collectInParagrah [] = errorT ["collectInParagrah ", "should not occur with empty list"]
 collectInParagrah tzs =
     TZ2para {tz2tzs  = tzs
            , tz2loc = TextLoc
-                {tlpage = tlpage . tzloc . headNote "collectInParagrah" $ tzs
+                {tlpage = tlpage . tzloc1 . headNote "collectInParagrah" $ tzs
 
-                , tlline = tlline . tzloc . headNote "collectInParagrah 2" $ tzs
+                , tlline = tlline . tzloc1 . headNote "collectInParagrah 2" $ tzs
                 }
            , tz2para = zero
-           , tz2lang = tzlang . headNote "collectInParagrah3" $ tzs
+           , tz2lang = tzlang1 . headNote "collectInParagrah3" $ tzs
            -- could check that all have the same langauges
            , tz2inPart = zero  -- this is the id of the title? check that the titel has this
         }
 
-collectKurz :: [TZ] -> (TZ2, [TZ])
+collectKurz :: [TZ1] -> (TZ2, [TZ1])
 -- group longest poossible chain, including merging paragraph
 -- paragraphs broken by seitenzahl is not merged - should go here?
 --   issue: long paragraph lines must not be merged. this is property of the text
@@ -183,13 +157,13 @@ collectKurz  tzs
         (ts, rest) = span isKurzeZeile tzs
         h = headNote "headCollectPara kurz" $ rest
 
-filterAlleLeer :: [TZ] -> [TZ]
+filterAlleLeer :: [TZ1] -> [TZ1]
 filterAlleLeer = filter notLeer
     where
-            notLeer (TZleer {}) = False
-            notLeer (TZneueSeite {}) = False
-            notLeer (TZmarkup {tztext=t}) = not . null' . twm $ t
-            notLeer (TZtext {tztext=t}) = not . null' . twm $ t
+            notLeer (TZleer1 {}) = False
+            notLeer (TZneueSeite1 {}) = False
+            notLeer (TZmarkup1 {tztext1=t}) = not . null' . twm $ t
+            notLeer (TZtext1 {tztext1=t}) = not . null' . twm $ t
             notLeer _ = True
 -----------------------------------
 
@@ -218,6 +192,8 @@ instance Zeilen TZ2 where
                  $ ts
 --    zeilenText _ = ""
 
+
+distributeHeader  ::   [TZ2] -> [TZ2]
 distributeHeader = distributeHeader2 BuchTitel
 
 distributeHeader2 :: BuchToken -> [TZ2] -> [TZ2]
@@ -264,54 +240,54 @@ lowerHeader l         = errorT ["lowerHeader", "for ", showT l]
 
 -- test text combinatioin zeilenText
 
---test_zeilenText = do
---    let res = map zeilenText t11
---    assertEqual t1_res res
+test_zeilenText = do
+    let res = map zeilenText t11
+    assertEqual t1_res res
 
---t1_res =
---    ["'Fury said to a mouse, That he met in the house. ",
---     "CHAPTER IV. The Rabbit Sends in a Little Bill",
---     "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
---
---
---t11 :: [TZ2]
---t11 =
---[TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 49},
---             tz2tzs =
---               [TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 50},
---                       tztext = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
---                       tzlang = English},
---                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 51},
---                       tztext = TextWithMarks{twm = "mouse, That he", twmMarks = []},
---                       tzlang = English},
---                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 52},
---                       tztext = TextWithMarks{twm = "met in the", twmMarks = []},
---                       tzlang = English},
---                TZtext{tzt = Kurz0, tzloc = TextLoc{tlpage = "", tlline = 53},
---                       tztext = TextWithMarks{twm = "house.", twmMarks = []},
---                       tzlang = English}],
---             tz2lang = English, tz2para = ParaNum 9, tz2inPart = ParaNum 4},
---    TZ2markup{tz2loc = TextLoc{tlpage = "", tlline = 55},
---               tz2text =
---                 TextWithMarks{twm =
---                                 "CHAPTER IV. The Rabbit Sends in a Little Bill",
---                               twmMarks = []},
---               tz2tok = BuchHL1, tz2lang = English, tz2para = ParaNum 10,
---               tz2inPart = ParaNum 1},
---     TZ2para{tz2loc = TextLoc{tlpage = "", tlline = 57},
---             tz2tzs =
---               [TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 57},
---                       tztext =
---                         TextWithMarks{twm =
---                                         "It was the White Rabbit, trotting slowly back again, and looking",
---                                       twmMarks = []},
---                       tzlang = English},
---                TZtext{tzt = Text0, tzloc = TextLoc{tlpage = "", tlline = 58},
---                       tztext =
---                         TextWithMarks{twm =
---                                         "anxiously about as it went, as if it had lost something .",
---                                       twmMarks = []},
---                       tzlang = English}],
---             tz2lang = English, tz2para = ParaNum 11, tz2inPart = ParaNum 10}]
+t1_res =
+    ["'Fury said to a mouse, That he met in the house. ",
+     "CHAPTER IV. The Rabbit Sends in a Little Bill",
+     "It was the White Rabbit, trotting slowly back again, and looking anxiously about as it went, as if it had lost something . "]
+
+
+t11 :: [TZ2]
+t11 =
+    [TZ2para{tz2loc = TextLoc{tlpage = Just "", tlline = 49},
+                 tz2tzs =
+                   [TZtext1{tzt1 = Kurz0, tzloc1 = TextLoc{tlpage = Just "", tlline = 50},
+                           tztext1 = TextWithMarks{twm = "'Fury said to a", twmMarks = []},
+                           tzlang1 = English},
+                    TZtext1{tzt1 = Kurz0, tzloc1 = TextLoc{tlpage = Just "", tlline = 51},
+                           tztext1 = TextWithMarks{twm = "mouse, That he", twmMarks = []},
+                           tzlang1 = English},
+                    TZtext1{tzt1 = Kurz0, tzloc1 = TextLoc{tlpage = Just "", tlline = 52},
+                           tztext1 = TextWithMarks{twm = "met in the", twmMarks = []},
+                           tzlang1 = English},
+                    TZtext1{tzt1 = Kurz0, tzloc1 = TextLoc{tlpage = Just "", tlline = 53},
+                           tztext1 = TextWithMarks{twm = "house.", twmMarks = []},
+                           tzlang1 = English}],
+                 tz2lang = English, tz2para = ParaNum 9, tz2inPart = ParaNum 4},
+        TZ2markup{tz2loc = TextLoc{tlpage = Just "", tlline = 55},
+                   tz2text =
+                     TextWithMarks{twm =
+                                     "CHAPTER IV. The Rabbit Sends in a Little Bill",
+                                   twmMarks = []},
+                   tz2tok = BuchHL1, tz2lang = English, tz2para = ParaNum 10,
+                   tz2inPart = ParaNum 1},
+         TZ2para{tz2loc = TextLoc{tlpage = Just "", tlline = 57},
+                 tz2tzs =
+                   [TZtext1{tzt1 = Text0, tzloc1 = TextLoc{tlpage = Just "", tlline = 57},
+                           tztext1 =
+                             TextWithMarks{twm =
+                                             "It was the White Rabbit, trotting slowly back again, and looking",
+                                           twmMarks = []},
+                           tzlang1 = English},
+                    TZtext1{tzt1 = Text0, tzloc1 = TextLoc{tlpage = Just "", tlline = 58},
+                           tztext1 =
+                             TextWithMarks{twm =
+                                             "anxiously about as it went, as if it had lost something .",
+                                           twmMarks = []},
+                           tzlang1 = English}],
+                 tz2lang = English, tz2para = ParaNum 11, tz2inPart = ParaNum 10}]
 
 

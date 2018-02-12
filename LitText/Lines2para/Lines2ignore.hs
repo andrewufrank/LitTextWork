@@ -35,7 +35,7 @@ import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 
 
-paragraphs2TZsimple :: [TZ] -> [TZ]  -- test BA -> C
+paragraphs2TZsimple :: [TZ] -> [TZ1]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)
 -- but not paragraphs
 -- page number and line numbers are in layout
@@ -70,7 +70,7 @@ test_12BAC_BAD = testFile2File "resultBAC12" "resultBAD12" paragraphs2TZsimple
 
 ------------LANGUAGE
 
-distributeLanguage :: [TZ] -> [TZ]
+distributeLanguage :: [TZ] -> [TZ1]
 -- mark the zeilen with the language
 -- removes the language markup lines
 distributeLanguage tz0 = concat . markSublistLanguage . pages $ tz0
@@ -88,12 +88,12 @@ distributeLanguage tz0 = concat . markSublistLanguage . pages $ tz0
                 , unlines' . map showT $ l
                 , "fulllist is \n", unlines' . map showT $ tz0]
 
-        markSublistLanguage :: [[TZ]] -> [[TZ]]
+        markSublistLanguage :: [[TZ]] -> [[TZ1]]
         markSublistLanguage []       = []
-        markSublistLanguage (s1:sl1) = s1 : map markSublistLanguage2 sl1
+        markSublistLanguage (s1:sl1) = (map copyTZtoTZ1 s1) : map markSublistLanguage2 sl1
         -- s1 is the partial start sublist with no language code
 
-        markSublistLanguage2 :: [TZ] -> [TZ]
+        markSublistLanguage2 :: [TZ] -> [TZ1]
         markSublistLanguage2 [] = []
         markSublistLanguage2 sl2 = markTZsWithLanguage
                 (getLangCode sl2 . headNote "distributeLanguage" $ sl2) (tail sl2)
@@ -109,18 +109,22 @@ distributeLanguage tz0 = concat . markSublistLanguage . pages $ tz0
 --readLanguageCode _ "Englisch" = English
 --readLanguageCode msg l  = readNoteT msg l
 
-markTZsWithLanguage :: LanguageCode -> [TZ] -> [TZ]
+markTZsWithLanguage :: LanguageCode -> [TZ] -> [TZ1]
 -- put the page number into the list
-markTZsWithLanguage lg = map  (markoneLanguage lg)
+markTZsWithLanguage lg = map  (markoneLanguage lg . copyTZtoTZ1)
 --                if (lg==NoLanguage)
 --                    then error "no language"
 --                    else
             -- does not work, because noLang is filled earlier
 
     where
-        markoneLanguage lg tz@TZtext {} = tz {tzlang = lg }
-        markoneLanguage lg tz@TZmarkup {} = tz {tzlang = lg }
-        markoneLanguage lg tz = tz
+        markoneLanguage lg tz@TZtext1 {} = tz {tzlang1 = lg }
+        markoneLanguage lg tz@TZmarkup1 {} = tz {tzlang1 = lg }
+        markoneLanguage lg tz@TZleer1 {} = tz
+        markoneLanguage lg tz@TZignore1 {} = tz
+        markoneLanguage lg tz = error ("markoneLanguage missing case " ++ show tz)
+
+
 
 ------- distribute ignore to  ignore end TODO
 distributeIgnore :: [TZ] -> [TZ]

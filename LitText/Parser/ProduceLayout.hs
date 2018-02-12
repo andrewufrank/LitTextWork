@@ -4,6 +4,7 @@
 -- Copyright   :  andrew u frank -
 --
 -- | not used when not producing text included
+-- works with TZ1, language is marked
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
@@ -27,7 +28,7 @@ import Data.RDF.Triple2text (triple2text)
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 --import           Parser.TextDescriptor  hiding ((</>))
 import Uniform.Strings ((</>))  -- for PartURI
---import Parser.ReadMarkupAB    -- result1A etc.
+import Parser.ReadMarkupAB    -- result1A etc.
 --import Lines2para.HandleLayout
     -- (RDFtypes (..), RDFproperties (..), TZ (..)
 --      , TextDescriptor, PartURI, RDFsubj, Triple) -- TZ
@@ -45,7 +46,7 @@ import Parser.NLPvocabulary
 --layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
 layoutURItext =   (showT rdfBase) </>  "layout_2017" :: PartURI
 
-produceLayoutTriples ::  TextDescriptor -> [TZ] -> [Triple]
+produceLayoutTriples ::  TextDescriptor -> [TZ1] -> [Triple]
 -- test BAD -> J
 -- put lines and pages into rdf
 produceLayoutTriples textstate =
@@ -117,27 +118,27 @@ inLineMarkerSigl linesigl pn = InLineMarkerSigl ( extendSlashRDFsubj
 
 debugTurtle = True
 
-convOneTZ2triple :: TextDescriptor -> TZ -> [Triple]
+convOneTZ2triple :: TextDescriptor -> TZ1 -> [Triple]
 -- produce all triples necessary for each line item
 -- keeps only markup in v2
 convOneTZ2triple textstate tz  = case tz of
 --    TZzahl {}  -> errorT ["formParagraphs"
 --                ,"should not have TZzahl left", showT tz]
-    TZmarkup {} -> lineTriple textstate tz
-    TZleer {} -> [] -- where not elliminated?
+    TZmarkup1{} -> lineTriple textstate tz
+    TZleer1 {} -> [] -- where not elliminated?
 ------         errorT ["formParagraphs","should not leer", showT tz]
-    TZtext {} -> lineTriple textstate tz
-    TZignore {} -> []
-    _  -> errorT [showT tz]
+    TZtext1 {} -> lineTriple textstate tz
+    TZignore1 {} -> []
+    _  -> errorT ["convOneTZ2triple", "not expected type for T1", showT tz]
 
 
-lineTriple :: TextDescriptor -> TZ  -> [Triple]
+lineTriple :: TextDescriptor -> TZ1  -> [Triple]
 -- ^ enter a line triple
 -- processes markup as well - perhaps this is not necessary?
 -- title and author in gutenberg does not have a language code
 lineTriple textstate  tz =
     [ mkTripleInt (unLineSigl sigl) (mkRDFproperty LineNumber)
-            (tlline . tzloc $ tz)
+            (tlline . tzloc1 $ tz)
     , mkTripleType (unLineSigl sigl) (mkRDFtype Line)
     -- is not necessary, duck typing
     -- what has a lineNumber is a line
@@ -146,18 +147,18 @@ lineTriple textstate  tz =
     -- requires a page as an object
     -- gives the page number/text as it was parsed
     -- could be avoided if null
-    , mkTripleLang3 (tzlang tz) (unLineSigl sigl)
+    , mkTripleLang3 (tzlang1 tz) (unLineSigl sigl)
             (mkRDFproperty LineText)
-                    (twm . tztext $ tz)
+                    (twm . tztext1 $ tz)
     -- gives the text of a TZtext line
         ]
             ++ (concat . map (oneMarkerTriple sigl)
-                $ (twmMarks . tztext $ tz))
+                $ (twmMarks . tztext1 $ tz))
             ++ pageNumberTriple
     where
-        sigl = lineSigl textstate .  tlline . tzloc $ tz
+        sigl = lineSigl textstate .  tlline . tzloc1$ tz
 --        pSigl = pageSigl textstate . tlpage . tzloc $ tz
-        pageNumberTriple = case tlpage . tzloc $ tz of
+        pageNumberTriple = case tlpage . tzloc1 $ tz of
             Nothing -> []
             Just pgnr -> [  mkTripleText (unLineSigl sigl)
                     (mkRDFproperty PageNumber)
@@ -183,23 +184,23 @@ oneMarkerTriple lineSigl intText =
         mSigl = inLineMarkerSigl lineSigl . fst $ intText
 
 
-layoutTriples ::  TextDescriptor -> [TZ] -> Text  -- test BAD -> J
+layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test BAD -> J
 
 --layoutTriples textstate =  unlines' .  map triple2text . produceLayoutTriples textstate
 -- too expensive to map triple2text (at least on oporto)
 layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstate
 
 
---test_1BAD_J = testVar3File result1A "resultBAD1" "resultJ1" layoutTriples
---test_2BAD_J = testVar3File result2A "resultBAD2" "resultJ2" layoutTriples
---test_3BAD_J = testVar3File result3A "resultBAD3" "resultJ3" layoutTriples
---test_4BAD_J = testVar3File result4A "resultBAD4" "resultJ4" layoutTriples
---test_5BAD_J = testVar3File result5A "resultBAD5" "resultJ5" layoutTriples
---test_6BAD_J = testVar3File result6A "resultBAD6" "resultJ6" layoutTriples
-------test_7BAD_J = testVar3File result7A "resultBAD7" "resultJ7" layoutTriples
---test_8BAD_J = testVar3File result8A "resultBAD8" "resultJ8" layoutTriples
---test_9BAD_J = testVar3File result9A "resultBAD9" "resultJ9" layoutTriples
---test_10BAD_J = testVar3File result10A "resultBAD10" "resultJ10" layoutTriples
+test_1BAD_J = testVar3File result1A "resultBAD1" "resultJ1" layoutTriples
+test_2BAD_J = testVar3File result2A "resultBAD2" "resultJ2" layoutTriples
+test_3BAD_J = testVar3File result3A "resultBAD3" "resultJ3" layoutTriples
+test_4BAD_J = testVar3File result4A "resultBAD4" "resultJ4" layoutTriples
+test_5BAD_J = testVar3File result5A "resultBAD5" "resultJ5" layoutTriples
+test_6BAD_J = testVar3File result6A "resultBAD6" "resultJ6" layoutTriples
+----test_7BAD_J = testVar3File result7A "resultBAD7" "resultJ7" layoutTriples
+test_8BAD_J = testVar3File result8A "resultBAD8" "resultJ8" layoutTriples
+test_9BAD_J = testVar3File result9A "resultBAD9" "resultJ9" layoutTriples
+test_10BAD_J = testVar3File result10A "resultBAD10" "resultJ10" layoutTriples
 
 
 

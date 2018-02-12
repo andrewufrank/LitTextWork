@@ -93,7 +93,7 @@ formatParaText tz@TZ2para{} = Snip {
                 , tz3para = tz2para tz
                 , tz3lang = tz2lang tz
                 , tz3text = foldl1 combine2linesWithHyphenation
-            . map (twm . tztext) $ (tz2tzs tz)
+            . map (twm . tztext1) $ (tz2tzs tz)
         }
 
 formatParaText tz@TZ2markup {} = Snip {tz3loc = tz2loc tz
