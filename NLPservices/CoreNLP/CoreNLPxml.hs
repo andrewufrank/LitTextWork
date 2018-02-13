@@ -44,7 +44,7 @@ module CoreNLP.CoreNLPxml (
 import           Test.Framework
 import Uniform.TestHarness
 
-import qualified NLP.Types.Tags      as NLP (POStags (..))
+import qualified NLP.Types.Tags      as NLP (POStags (..), DEPtags(..))
 import qualified NLP.Corpora.Conll  as Conll
 import qualified NLP.Corpora.UD  as UD
 import              CoreNLP.DEPcodes

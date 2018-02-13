@@ -63,8 +63,8 @@ library
 --        CoreNLP.POScodesFrench
 --        CoreNLP.POScodesFrenchUD
             -- italian
-        CoreNLP.NERcodes
-        CoreNLP.DEPcodes
+--        CoreNLP.NERcodes
+--        CoreNLP.DEPcodes
 
     exposed: True
     buildable: True

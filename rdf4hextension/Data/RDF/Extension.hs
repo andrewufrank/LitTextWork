@@ -44,7 +44,7 @@ import           Uniform.Zero
 ----import           Uniform.Convenience.LitTypes
 type PartURI = Text
 -- ^ TOOD should be used wherever a Text string is a URI code
--- there is another type...
+-- there is another type - Network.URI, which is checked (and problems with Read class)
 
 --gerastreeURI =    "http://gerastree.at"  :: PartURI
 -- the base url - with no closing
