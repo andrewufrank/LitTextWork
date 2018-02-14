@@ -175,7 +175,7 @@ getDependence = atTag "dep" >>>
         t <- getAttrValue "type" -<  x
         g <- getGov1 -< x
         d <- getDep1 -< x
-        returnA -< Dependence0 (parseDEPtag . s2t $ t) g d
+        returnA -< Dependence0 (parseDEPtag . s2t $ t) (s2t t) g d
 
 --getDependencies = atTag "dependencies" >>>
 --    proc x -> do

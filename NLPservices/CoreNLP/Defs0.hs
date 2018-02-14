@@ -95,6 +95,7 @@ data Token0 postag = Token0 { tid :: TokenID0
                     }   deriving (Read, Show, Eq)
 
 data Dependence0 = Dependence0 {dtype :: DepCode -- Text -- String
+                        , dorig :: Text -- the value given in the XML
                         , dgov :: DependencePart0
                         , ddep :: DependencePart0
                         }   deriving (Show, Read, Eq)

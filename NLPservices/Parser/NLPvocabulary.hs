@@ -35,8 +35,8 @@ nlp = "nlp"::Text
 nlpURItext =  (showT vocabularyBase) </> "nlp_2015" :: PartURI
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
-          | Pos | PosOrig | WordForm | NerTag | SpeakerTag
-          | DependencyType | Dependency
+          | Pos | PosOrig | WordForm | NerTag | NERorig |SpeakerTag
+          | DependencyType | Dependency | DEPorig
           | SentenceForm
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
