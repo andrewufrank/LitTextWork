@@ -5,7 +5,7 @@ version: 0.0.4.6
 cabal-version: >=1.20
 build-type: Simple
 license: AllRightsReserved
-synopsis: convert text in a single language to RDF
+synopsis: convert text in a single language to RDF as a service
 description:
         break the nlpservices away from the LitText (0.0.4.3 -> 0.0.4.4)
 
