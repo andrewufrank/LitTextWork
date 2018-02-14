@@ -269,7 +269,7 @@ getToken ph = atTag "token" >>>
                         , tposOrig = p  -- the text received
                         , tpostt = zero
                         , tner = n ++ n2 -- readNoteT "nertag" n
-                        , tspeaker = map readSpeakerTag  s
+                        , tspeaker = map parseSpeakerTag  s
                         , tbegin = readNoteT "tbegin" tb
                         , tend = readNoteT "tend" te
                         }

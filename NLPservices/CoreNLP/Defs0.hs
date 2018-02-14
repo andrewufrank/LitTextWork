@@ -22,7 +22,7 @@
 module CoreNLP.Defs0 (
         module CoreNLP.Defs0
 --        , module CoreNLP.POScodes
-        , readSpeakerTag
+        ,  SpeakerTags (..)
 --        , module CoreNLP.NERcodes -- import separately when needed
             , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)
