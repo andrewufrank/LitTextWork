@@ -44,7 +44,7 @@ module CoreNLP.CoreNLPxml (
 import           Test.Framework
 import Uniform.TestHarness
 
-import qualified NLP.Types.Tags      as NLP (POStags (..), DEPtags(..))
+import qualified NLP.Types.Tags      as NLP
 import qualified NLP.Corpora.Conll  as Conll
 import qualified NLP.Corpora.UD  as UD
 import              CoreNLP.DEPcodes
@@ -175,7 +175,7 @@ getDependence = atTag "dep" >>>
         t <- getAttrValue "type" -<  x
         g <- getGov1 -< x
         d <- getDep1 -< x
-        returnA -< Dependence0 (readDepCodes . s2t $ t) g d
+        returnA -< Dependence0 (parseDEPtag . s2t $ t) g d
 
 --getDependencies = atTag "dependencies" >>>
 --    proc x -> do

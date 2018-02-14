@@ -135,7 +135,7 @@ mkDependenceTriple2 lang sentid  dep i  =  t0:  t4 : (t5 ++ t6)
 --        depid = mkDepSigl depTid i
         depid = mkDepSigl2 sentid i
                 -- must be numbered - the same code may appear twice (dtype dep)
-        dependencyCode = shownice . dtype $ dep  -- the depCode
+        dependencyCode = fromDEPtag . dtype $ dep  -- the depCode
         t0 = mkTripleType (unDepSigl depid) (mkRDFtype Dependence)
 --        t0 = mkTripleType (unSentSigl sentid) (mkRDFtype Dependence)
 --        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)

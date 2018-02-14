@@ -67,7 +67,7 @@ produceNLP ::  TextDescriptor ->  [TZ2] -> ErrIO TextDescriptor -- test C  -> X
 produceNLP  textstate tzs =  do
     let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
             snips = formSnips nlpTexts :: [Snip]
-            debug = False
+            debug = True
     triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips
 --    let trips = readNote "writeLitTriples" tripstext :: [Triple]
 --    write6 dest2 ntFileTriples trips
@@ -155,9 +155,9 @@ produceNLPtest textstate tzs  = do
 --test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPtest
 --test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPtest
 --test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPtest
-test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPtest
---test_11_BAE_XproduceNLPtriples = testVar3FileIO result11A "resultBAE11" "resultX11" produceNLPtest
---test_12_BAE_XproduceNLPtriples = testVar3FileIO result12A "resultBAE12" "resultX12" produceNLPtest
+--test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPtest
+test_11_BAE_XproduceNLPtriples = testVar3FileIO result11A "resultBAE11" "resultX11" produceNLPtest
+test_12_BAE_XproduceNLPtriples = testVar3FileIO result12A "resultBAE12" "resultX12" produceNLPtest
 ------ no result file is necessary, because result is zero
 ------ but results are found in LitTest/test
 --

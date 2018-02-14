@@ -70,6 +70,8 @@ class LanguageDependent lang where
     preNLP :: LTtext lang -> LTtext lang
     -- the processing of the text before NLP
     preNLP = LTtext . cleanTextOther . unLCtext
+    nlpPath :: lang -> Text
+    nlpPath _ = ""   -- only italian uses a path
 
 instance LanguageDependent EnglishType where
     preNLP    =  LTtext . cleanTextEnglish . unLCtext
@@ -77,7 +79,8 @@ instance LanguageDependent EnglishType where
 instance LanguageDependent GermanType
 instance LanguageDependent FrenchType
 instance LanguageDependent SpanishType
-instance LanguageDependent ItalianType
+instance LanguageDependent ItalianType where
+    nlpPath _ = "tint"
 
 
 class TaggedTyped postag where
@@ -85,11 +88,13 @@ class TaggedTyped postag where
     -- postprocessing (e.g. adding POS to german)
     postNLP _ _ = return
 
-class (POStags postag) =>  LanguageTyped2 lang postag where
+class (POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag where
     snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
     snip2doc lph pph debugNLP  text sloc = do
-        docs <-  convertTZ2makeNLPCall pph debugNLP  (addPort2URI sloc (nlpPort lph pph))
+        docs <-  convertTZ2makeNLPCall pph debugNLP
+                            (addPort2URI sloc (nlpPort lph pph))  -- server uri
+                            (nlpPath lph)   -- path
                                 (nlpParams lph pph)  (unLCtext text)
         when debugNLP $ putIOwords ["NLP end", showT text]
         return docs
@@ -160,14 +165,16 @@ instance LanguageTyped2 GermanType German.POStag where
 
 instance LanguageTyped2 ItalianType TinT.POStag where
     nlpPort _ _ = portTinT
-    nlpParams _ _ =   [("outputFormat", Just "xml"),
-                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
-                                        ]
+    nlpParams _ _ =   [("format", Just "xml")]
+
+--    nlpParams _ _ =   [("outputFormat", Just "xml"),
+--                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+--                                        ]
 
 instance LanguageTyped2 FrenchType French.POStag where
     nlpPort _ _ = portFrench
     nlpParams _ _ =   [("outputFormat", Just "xml"),
-                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                        ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 SpanishType Spanish.POStag where
@@ -177,10 +184,11 @@ instance LanguageTyped2 SpanishType Spanish.POStag where
                                         ]
 
 class Docs postag where
-    convertTZ2makeNLPCall  :: postag -> Bool -> URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
+    convertTZ2makeNLPCall  :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
+    -- the path parameter is used for TinT which wants a path "tint" before the paremters
 
 
 instance (POStags postag) => Docs postag where
@@ -188,14 +196,14 @@ instance (POStags postag) => Docs postag where
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
-    convertTZ2makeNLPCall ph debugNLP  nlpServer vars text = do
+    convertTZ2makeNLPCall ph debugNLP  nlpServer path vars text = do
             when debugNLP $
                 putIOwords ["convertTZ2makeNLPCall start"
                             , showT . lengthChar $ text
                             , showT . take' 100 $ text ]
     --        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
     --                    "multipart/form-data" text
-            xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer ""
+            xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer path
                      (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
         -- german parser seems to understand utf8encoded bytestring
 

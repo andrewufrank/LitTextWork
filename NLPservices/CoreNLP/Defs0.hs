@@ -24,7 +24,7 @@ module CoreNLP.Defs0 (
 --        , module CoreNLP.POScodes
         , readSpeakerTag
 --        , module CoreNLP.NERcodes -- import separately when needed
-            , DepCode (..), readDepCodes, hasDepCode
+            , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)
 --        , module CoreNLP.DEPcodes  -- import separately when needed
         -- ,readDocString
