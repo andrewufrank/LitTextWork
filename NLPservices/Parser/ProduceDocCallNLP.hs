@@ -47,7 +47,7 @@ import NLP.Corpora.ItalianTinT   as TinT-- for italian
 import NLP.Corpora.German  as German --
 import NLP.Corpora.Spanish as Spanish --
 import NLP.Corpora.French as French --
---import NLP.Corpora.FrenchUD as FrenchUD --
+import NLP.Corpora.FrenchUD as FrenchUD --
 
 
 
@@ -63,6 +63,7 @@ undefConll = undef "convertOneSnip2Triples postag conll":: Conll.POStag
 undefGermanPos = undef "convertOneSnip2Triples postag german":: German.POStag
 undefTinTPos = undef "convertOneSnip2Triples postat TinT":: TinT.POStag
 undefFrenchPos = undef "convertOneSnip2Triples postat French":: French.POStag
+undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD":: FrenchUD.POStag
 undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: Spanish.POStag
 
 class LanguageDependent lang where
@@ -92,11 +93,12 @@ class (POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag wh
     snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
     snip2doc lph pph debugNLP  text sloc = do
-        docs <-  convertTZ2makeNLPCall pph debugNLP
+        let debug2 = True -- debugNLP
+        docs <-  convertTZ2makeNLPCall pph debug2
                             (addPort2URI sloc (nlpPort lph pph))  -- server uri
                             (nlpPath lph)   -- path
                                 (nlpParams lph pph)  (unLCtext text)
-        when debugNLP $ putIOwords ["NLP end", showT text]
+        when debug2 $ putIOwords ["NLP end", showT text]
         return docs
 
     nlpParams :: lang -> postag -> [(Text,Maybe Text)]

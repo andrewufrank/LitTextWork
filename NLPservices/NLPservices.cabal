@@ -1,5 +1,5 @@
 name: NLPservices
-version: 0.0.4.6
+version: 0.0.4.7
 
 
 cabal-version: >=1.20
@@ -31,7 +31,7 @@ library
 --        , coreNLP
 --        , cereal
 --        , chatter ==0.9.2.0
-        , TreeTagSets
+        , TreeTagSets >=0.0.2.6.7
             -- is support for POS codes (could use haskell-conll)
                 -- used in  POS module
         , HTF
