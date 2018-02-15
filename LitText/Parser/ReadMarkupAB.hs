@@ -124,6 +124,22 @@ test_11_A_B_textstate_text_11 =   testVar2File result11A "resultB11" textstate2T
 test_12_A_B_textstate_text_12 =   testVar2File result12A "resultB12" textstate2Text
 
 
+fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
+                -> TextDescriptor
+
+-- construct at text state with authorDir and buchFilename as FilePath
+fillTextState3a litdirs server author buch includeText = TextDescriptor {
+    sourceMarkup = (source litdirs) </> (author </> buch)
+    , destNT = (dest litdirs) </> (author </> buch)
+    , gzipFlag = False
+    , destHandle = Nothing
+    , nlpServer = server
+    , authorDir = s2t author
+    , buchName = s2t buch
+    , includeText =  includeText
+    , txPosTagset = ""   -- take default
+    }
+
 
 --litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
 --sourceTest = TextSource {server = serverBrest, sourceDir = litTestDir1}

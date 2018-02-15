@@ -43,6 +43,7 @@ import Uniform.FileIO
 import Uniform.FileStatus
 --import Uniform.Strings hiding ((</>),(<|>))
 import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
+import Process.UtilsParseArgs ( LitTextFlags (..) )
 
 --processAll :: Bool ->  LitDirs-> URI -> Path ar File  -> ErrIO ()
 ---- | get all markup files in the partially filled TextState2
@@ -70,13 +71,13 @@ import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
 ----debugNLP = False
 ----litDebugOnly = False
 
-processOneMarkup4 :: Bool  -> Bool ->  URI -> Text -> Path Abs Dir -> Path Abs File
+processOneMarkup4 ::  LitTextFlags ->  URI -> Text -> Path Abs Dir -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
-processOneMarkup4 debug forceFlag  server authorReplacement ntdir   file = do
+processOneMarkup4  flags  server authorReplacement ntdir   file = do
     let buchReplacement = s2t $ getNakedFileName file
-        includeText = False
-        textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement includeText
+        flags2 = flags {flagIncludeText = False}
+        textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement flags2
     -- forces gzip in fillTextState4a
     putIOwords ["\n processOneMarkup", showT textstate2  ]
     if  gzipFlag textstate2
@@ -91,11 +92,11 @@ processOneMarkup4 debug forceFlag  server authorReplacement ntdir   file = do
                 else
                     return True
 
-            if processNeeded || forceFlag
+            if processNeeded || (flagForce flags2)
                 then do
                     putIOwords  ["\n processOneMarkup4 - process"
                             , showT $ sourceMarkup textstate2, "\n"]
-                    mainLitAndNLPproduction False False textstate2
+                    mainLitAndNLPproduction flags2 textstate2
                     -- first bool is debug output
                     -- second if true stops processing after lit (no nlp calls)
                     putIOwords  ["\n processOneMarkup4 - processed"

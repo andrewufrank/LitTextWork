@@ -35,7 +35,7 @@ import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import Processor.Main2sub (mainLitAndNLPproduction)
 
 import Process.UtilsProcessing (processAll)
-import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer)
+import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer, LitTextFlags (..) )
 import Processor.ProcessAll
 --import qualified System.Directory as S (getHomeDirectory)
 
@@ -66,8 +66,10 @@ parseAndExecute t1 t2    = do
         let resultFile = makeAbsFile "/home/frank/ntstore4.txt" :: Path Abs File
         writeFileOrCreate2 resultFile ("" :: Text)  -- to make sure it exist
         -- not really interesting
-        let forceFlag = argForceFlag args
-        let debugFlag = False
+        let flags = LitTextFlags {flagForce = argForceFlag args
+                    , flagFrenchUD = argFrenchUDFlag args
+                    , flagDebug = False
+                    , flagIncludeText = False}
         let
              originDir = makeAbsDir  $  addDir homeDirX (argOrigin args) :: Path Abs Dir
              destinationDir = makeAbsDir $  addDir homeDirX ( argDestination args) :: Path Abs Dir
@@ -77,13 +79,15 @@ parseAndExecute t1 t2    = do
                     , "\n\tserver", showT server
                     , "\n\tdestinationDir", showT destinationDir
                     , "\n\tauthorReplacement",   authorReplacement
-                    , "\n\tforceFlag", showT forceFlag
+--                    , "\n\tforceFlag", showT forceFlag
+--                    , "\n\tFrenchUDFlag", showT forceFlag
+                    , "\n\tFlags", showT flags
 --                    , "\n\tdbarg", showT dbarg
                     , "\n\toriginDir", showT originDir
                     ]
 --        if null . argFn $ args
 --            then
-        processAll (processOneMarkup4 debugFlag forceFlag server authorReplacement destinationDir)
+        processAll (processOneMarkup4  flags server authorReplacement destinationDir)
 --            then processAll (putOneFile2 debugFlag forceFlag server  -- ntdir db
 --                        dbarg mgraph )
                         isMarkup -- (\f -> isNT f || isGZ f)
@@ -122,6 +126,7 @@ data NtmakeArgs = NtmakeArgs
      , argDestination :: String -- ^ the directory for the nt files
    , argOrigin :: String -- ^ the directoy in which the markup files are
    , argForceFlag :: Bool -- ^ force processing, even if newer exist
+   , argFrenchUDFlag :: Bool -- ^ used UD model for french
   } deriving (Show)
 
 ntcmdArgs :: Parser (NtmakeArgs)
@@ -148,6 +153,12 @@ ntcmdArgs = NtmakeArgs
 --            short 'l' <>
 --            metavar "force processing " <>
             help "force processing even when newer exist (default false)" )
+     <*> switch
+          ( long "frenchUD" <>
+--            value False <>
+--            short 'l' <>
+--            metavar "force processing " <>
+            help "use for french the model trained for UD" )
 
 
 

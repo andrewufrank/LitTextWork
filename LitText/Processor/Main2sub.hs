@@ -33,9 +33,11 @@ import           Uniform.Strings
 import Lines2para.HandleLayout
 import Data.RDF.FileTypes (ntFileTriples)
 -- (parseMarkup, result1B, result2B, result3B, result4B)
+import Process.UtilsParseArgs ( LitTextFlags (..) )
 
-mainLitAndNLPproduction :: Bool -> Bool -> TextDescriptor -> ErrIO ()
-mainLitAndNLPproduction debugLit produceLitOnly textstate = do
+mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()
+mainLitAndNLPproduction flags  textstate = do
+    let debugLit = flagDebug flags
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
@@ -72,11 +74,11 @@ mainLitAndNLPproduction debugLit produceLitOnly textstate = do
 --             unlines' . map showT $ (layoutTriples ++ litTriples)
 --                    ]
 
-    when produceLitOnly $
-        throwError . unlines' $  [ "\nmainLitAndNLPproduction stopped"
-        , "\n because debugLitOnly true - set to lit only!\n"
-        , showT textstate
-        ]
+--    when (not . includeText $ textstate) $
+--        throwError . unlines' $  [ "\nmainLitAndNLPproduction stopped"
+--        , "\n because debugLitOnly true - set to lit only!\n"
+--        , showT textstate
+--        ]
 
     --------------------------------------NLP  -- processing by paragraphs
 

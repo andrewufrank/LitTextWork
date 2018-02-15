@@ -148,6 +148,7 @@ instance TaggedTyped German.POStag where
 instance TaggedTyped TinT.POStag
 instance TaggedTyped Spanish.POStag
 instance TaggedTyped French.POStag
+instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
@@ -171,6 +172,12 @@ instance LanguageTyped2 ItalianType TinT.POStag where
 --                                        ]
 
 instance LanguageTyped2 FrenchType French.POStag where
+    nlpPort _ _ = portFrench
+    nlpParams _ _ =   [("outputFormat", Just "xml"),
+                        ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
+                                        ]
+
+instance LanguageTyped2 FrenchType FrenchUD.POStag where
     nlpPort _ _ = portFrench
     nlpParams _ _ =   [("outputFormat", Just "xml"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")

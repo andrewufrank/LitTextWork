@@ -56,7 +56,7 @@ tz3fillLength :: Snip -> Snip
 -- fill the length field
 tz3fillLength n = n{tz3textLength = getLengthLC . tz3text $ n}
 
-instance Zeros Snip where zero = Snip zero zero zero zero
+instance Zeros Snip where zero = Snip zero zero zero zero zero
 --instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 -- todo algebra
 

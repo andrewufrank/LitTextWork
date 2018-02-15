@@ -43,6 +43,7 @@ import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
 import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
+import Parser.ProduceDocCallNLP
 import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
@@ -51,33 +52,23 @@ import Parser.LanguageTypedText -- (LanguageTypedText (..) )
 -- debugNLP1 = False
 
 -- main export
---produceNLP :: Bool -> TextDescriptor ->  [TZ2] -> ErrIO () -- test C  -> X
----- produce the triples and store them in triple store,
----- first extract only the text TZ lines and convert the hyphenated texts
----- repeated for each paragraph
---produceNLP showXML textstate tzs = do
---    let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
---            nlpTexts2 = formSnips nlpTexts :: [Snip]
---
---    foldM_ (produceOneSnip showXML ) textstate nlpTexts2
---    return ()
-----produceNLP showXML textstate tzs = foldM_ (produceOneParaNLP showXML ) textstate tzs
 
 produceNLP ::  TextDescriptor ->  [TZ2] -> ErrIO TextDescriptor -- test C  -> X
 produceNLP  textstate tzs =  do
-    let     nlpTexts = prepareTZ4nlp tzs :: [Snip]
-            snips = formSnips nlpTexts :: [Snip]
+    let     snips1 = prepareTZ4nlp tzs :: [Snip]
+            snips2 = formSnips snips1  :: [Snip]
+            snips3 = map (pushPosTagset2snip textstate) snips2
             debug = False
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips
---    let trips = readNote "writeLitTriples" tripstext :: [Triple]
---    write6 dest2 ntFileTriples trips
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips3
     ntz1 <- foldM writeHandleTriples textstate triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
 --            ,"snip size", showT $ tz3textLength snip
 --            ,"from text", buchName textstate
 --            ]
-
     return ntz1
+
+pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
+pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
 
 convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
 -- calls nlp to convert to doc
@@ -94,31 +85,36 @@ convertOneSnip2Triples debugNLP textstate snip = do
     let parasigl = paraSigl textstate paranum
     let snipSigl = mkSnipSigl parasigl (SnipID 1)   -- where is this comming from  ???
     let nlpserver = nlpServer textstate
+    let pt = txPosTagset textstate
     if not . notNullLC $ text
         then return zero
         else do
-            trips <- case language of
-                    English -> do
-                                t <- convertOneSnip2Triples2 undefEnglish undefConll
-                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
-                                return (map unNLPtriple t)
-                    German -> do
-                                t <- convertOneSnip2Triples2 undefGerman undefGermanPos
-                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
-                                return (map unNLPtriple t)
-                    Italian -> do
-                                t <- convertOneSnip2Triples2 undefItalian undefTinTPos
-                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
-                                return (map unNLPtriple t)
-                    French -> do
-                                t <- convertOneSnip2Triples2 undefFrench undefFrenchPos
-                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
-                                return (map unNLPtriple t)
-                    Spanish -> do
-                                t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
-                                            debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
-                                return (map unNLPtriple t)
-                    NoLanguage -> return zero
+            trips <- case (language, pt) of
+                (English, "") -> do
+                            t <- convertOneSnip2Triples2 undefEnglish undefConll
+                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                            return (map unNLPtriple t)
+                (German, "") -> do
+                            t <- convertOneSnip2Triples2 undefGerman undefGermanPos
+                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                            return (map unNLPtriple t)
+                (Italian,"") -> do
+                            t <- convertOneSnip2Triples2 undefItalian undefTinTPos
+                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                            return (map unNLPtriple t)
+                (French, "")-> do
+                            t <-convertOneSnip2Triples2 undefFrench undefFrenchPos
+                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                            return (map unNLPtriple t)
+                (French, "FrenchUD")-> do
+                            t <- convertOneSnip2Triples2 undefFrench undefFrenchUDPos
+                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                            return (map unNLPtriple t)
+                (Spanish,"") -> do
+                            t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
+                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                            return (map unNLPtriple t)
+                _ -> return zero
             return trips
 
 

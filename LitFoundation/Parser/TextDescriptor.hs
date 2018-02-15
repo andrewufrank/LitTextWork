@@ -31,6 +31,7 @@ import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Parser.LanguageTypedText
+import Process.UtilsParseArgs (LitTextFlags (..) )
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"
@@ -49,6 +50,7 @@ data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3text:: LCtext
                         , tz3textLength :: Int
+                        , tz3posTag :: Text
 --                        , tz3lang :: LanguageCode
                         }
             deriving (Read, Show, Eq )
@@ -200,51 +202,52 @@ data TextDescriptor = TextDescriptor
     , includeText :: Bool -- ^ full text is included in triples
 --                    (false - only the analysis, sentence can be reconstructed
 --                      but not the remainder of the text)
+    , txPosTagset :: Text
     } deriving (Show, Eq)
 
-fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
-                -> TextDescriptor
--- construct at text state with authorDir and buchFilename as FilePath
-fillTextState3 litdirs server author buch = TextDescriptor {
-    sourceMarkup = (source litdirs) </> (author </> buch)
-    , destNT = (dest litdirs) </> (author </> buch)
-    , gzipFlag = False
-    , destHandle = Nothing
-    , nlpServer = server
-    , authorDir = s2t author
-    , buchName = s2t buch
-    , includeText = True
-}
-fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
-                -> TextDescriptor
--- construct at text state with authorDir and buchFilename as FilePath
-fillTextState3a litdirs server author buch includeText = TextDescriptor {
-    sourceMarkup = (source litdirs) </> (author </> buch)
-    , destNT = (dest litdirs) </> (author </> buch)
-    , gzipFlag = False
-    , destHandle = Nothing
-    , nlpServer = server
-    , authorDir = s2t author
-    , buchName = s2t buch
-    , includeText =  includeText
-    }
+--fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
+--                -> TextDescriptor
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState3 litdirs server author buch = TextDescriptor {
+--    sourceMarkup = (source litdirs) </> (author </> buch)
+--    , destNT = (dest litdirs) </> (author </> buch)
+--    , gzipFlag = False
+--    , destHandle = Nothing
+--    , nlpServer = server
+--    , authorDir = s2t author
+--    , buchName = s2t buch
+--    , includeText = True
+--}
+--fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
+--                -> TextDescriptor
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState3a litdirs server author buch includeText = TextDescriptor {
+--    sourceMarkup = (source litdirs) </> (author </> buch)
+--    , destNT = (dest litdirs) </> (author </> buch)
+--    , gzipFlag = False
+--    , destHandle = Nothing
+--    , nlpServer = server
+--    , authorDir = s2t author
+--    , buchName = s2t buch
+--    , includeText =  includeText
+--    }
 
 --authorName = s2t . authorDir
 --buchName = s2t . buchName
 
-fillTextState4 :: LitDirs -> URI -> Path Abs File
-                -> TextDescriptor
--- construct at text state with authorDir and buchFilename as FilePath
-fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
-    where
-            author = getImmediateParentDir fp
-            buch = getNakedFileName fp
+--fillTextState4 :: LitDirs -> URI -> Path Abs File
+--                -> TextDescriptor
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
+--    where
+--            author = getImmediateParentDir fp
+--            buch = getNakedFileName fp
 
-fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> Bool
+fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> LitTextFlags
                 -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
 -- output is gzip, text is not included
-fillTextState4a file server ntdir authordir buchname includeText = TextDescriptor {
+fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
         sourceMarkup = file
         , destNT = (ntdir </> filename) :: Path Abs File
         , gzipFlag = True
@@ -252,7 +255,8 @@ fillTextState4a file server ntdir authordir buchname includeText = TextDescripto
         , nlpServer = server
         , authorDir = authordir
         , buchName = buchname
-        , includeText = includeText
+        , includeText = flagIncludeText flags
+        , txPosTagset = "FrenchUD"
         }
 --        fillTextState3 litdirs server author buch
     where
@@ -260,39 +264,39 @@ fillTextState4a file server ntdir authordir buchname includeText = TextDescripto
 --             = getImmediateParentDir fp
 --            buch = getNakedFileName fp
 
-test_fillTextState11 = assertEqual res10 res
-    where
-        res = fillTextState3 dirsOrig serverBrest "may" "test"
-res10 = TextDescriptor {
-        sourceMarkup = makeAbsFile
-            "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
-        , destNT = makeAbsFile
-            "/home/frank/Scratch/NT/LitOriginals/may/test"
-        , nlpServer = serverBrest
-        , authorDir = "may"
-        , buchName = "test"
-        , destHandle = Nothing
-         , gzipFlag = False
-        , includeText = True
-       }
-
-test_fillTextState12 = assertEqual res11 res
-    where
-        res = fillTextState4 dirsTest serverBrest fp
-        fp = makeAbsFile
-             "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
-res11 = TextDescriptor {
-        sourceMarkup = makeAbsFile
-            "/home/frank/additionalSpace/DataBig/LitTest/may/test"
-        , destNT = makeAbsFile
-            "/home/frank/Scratch/NT/LitTest/may/test"
-        , nlpServer = serverBrest
-        , authorDir = "may"
-        , buchName = "test"
-        , destHandle = Nothing
-        , gzipFlag = False
-        , includeText = True
-        }
+--test_fillTextState11 = assertEqual res10 res
+--    where
+--        res = fillTextState3 dirsOrig serverBrest "may" "test"
+--res10 = TextDescriptor {
+--        sourceMarkup = makeAbsFile
+--            "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
+--        , destNT = makeAbsFile
+--            "/home/frank/Scratch/NT/LitOriginals/may/test"
+--        , nlpServer = serverBrest
+--        , authorDir = "may"
+--        , buchName = "test"
+--        , destHandle = Nothing
+--         , gzipFlag = False
+--        , includeText = True
+--       }
+--
+--test_fillTextState12 = assertEqual res11 res
+--    where
+--        res = fillTextState4 dirsTest serverBrest fp
+--        fp = makeAbsFile
+--             "/home/frank/additionalSpace/DataBig/LitOriginals/may/test"
+--res11 = TextDescriptor {
+--        sourceMarkup = makeAbsFile
+--            "/home/frank/additionalSpace/DataBig/LitTest/may/test"
+--        , destNT = makeAbsFile
+--            "/home/frank/Scratch/NT/LitTest/may/test"
+--        , nlpServer = serverBrest
+--        , authorDir = "may"
+--        , buchName = "test"
+--        , destHandle = Nothing
+--        , gzipFlag = False
+--        , includeText = True
+--        }
 
 --TextState2 {
 --    sourceMarkup = makeDirAbs ""
