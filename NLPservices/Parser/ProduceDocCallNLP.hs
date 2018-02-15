@@ -37,11 +37,8 @@ import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, a
 import Text.Regex (mkRegex, subRegex)
 import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
---import Parser.NLPvocabulary -- export of ProduceNLPtriples
---import           CoreNLP.Defs0 -- export of ProduceNLPtriples
 import Parser.LanguageTypedText
 
---import NLP.Corpora.UD
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
 import NLP.Corpora.German  as German --
