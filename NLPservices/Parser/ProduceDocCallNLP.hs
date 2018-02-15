@@ -90,7 +90,7 @@ class (POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag wh
     snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
     snip2doc lph pph debugNLP  text sloc = do
-        let debug2 = True -- debugNLP
+        let debugNLP
         docs <-  convertTZ2makeNLPCall pph debug2
                             (addPort2URI sloc (nlpPort lph pph))  -- server uri
                             (nlpPath lph)   -- path
