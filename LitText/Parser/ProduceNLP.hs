@@ -55,11 +55,11 @@ import Parser.LanguageTypedText -- (LanguageTypedText (..) )
 
 produceNLP ::  TextDescriptor ->  [TZ2] -> ErrIO TextDescriptor -- test C  -> X
 produceNLP  textstate tzs =  do
-    let     snips1 = prepareTZ4nlp tzs :: [Snip]
+    let     snips1 = prepareTZ4nlp posTag tzs :: [Snip]
             snips2 = formSnips snips1  :: [Snip]
-            snips3 = map (pushPosTagset2snip textstate) snips2
+            posTag = txPosTagset textstate
             debug = False
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips3
+    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips2
     ntz1 <- foldM writeHandleTriples textstate triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
 --            ,"snip size", showT $ tz3textLength snip
@@ -117,6 +117,20 @@ convertOneSnip2Triples debugNLP textstate snip = do
                 _ -> return zero
             return trips
 
+snip4test :: [TZ2] -> [Snip]
+snip4test = prepareTZ4nlp ""
+
+test_1_C_D = testFile2File "resultBAE1" "resultD1" snip4test
+test_2_C_D = testFile2File "resultBAE2" "resultD2" snip4test
+test_3_C_D = testFile2File "resultBAE3" "resultD3" snip4test
+test_4_C_D = testFile2File "resultBAE4" "resultD4" snip4test
+test_5_C_D = testFile2File "resultBAE5" "resultD5" snip4test
+test_6_C_D = testFile2File "resultBAE6" "resultD6" snip4test
+test_8_C_D = testFile2File "resultBAE8" "resultD8" snip4test
+test_9_C_D = testFile2File "resultBAE9" "resultD9" snip4test
+test_10_C_D = testFile2File "resultBAE10" "resultD10" snip4test
+test_11_C_D = testFile2File "resultBAE11" "resultD11" snip4test
+test_12_C_D = testFile2File "resultBAE12" "resultD12" snip4test
 
 
 --testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
@@ -151,7 +165,7 @@ produceNLPtest textstate tzs  = do
 --test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPtest
 --test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPtest
 --test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPtest
---test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPtest
+test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPtest
 test_11_BAE_XproduceNLPtriples = testVar3FileIO result11A "resultBAE11" "resultX11" produceNLPtest
 test_12_BAE_XproduceNLPtriples = testVar3FileIO result12A "resultBAE12" "resultX12" produceNLPtest
 ------ no result file is necessary, because result is zero

@@ -90,7 +90,7 @@ data Token0 postag = Token0 { tid :: TokenID0
                     , tpos :: postag --  the pos tag recognized
                     , tposOrig :: Text -- the pos tag received
                     , tpostt :: Text -- the pos from the tree tagger
-                    , tner :: [Text] -- String
+                    , tner :: [NERtag] -- [Text] -- String
                     , tspeaker :: [SpeakerTag] -- Text -- String
                     }   deriving (Read, Show, Eq)
 

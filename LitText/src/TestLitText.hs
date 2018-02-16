@@ -35,15 +35,15 @@ import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
 --------
 import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
 -------------- filters literal text
-import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
--------- form snips which go to NLP
 
 ----import {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  --  E -> G and G -> L
 --   does not yet work (ambigous var)
 
-import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE -> X1  -- overall test, run at end
+import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE=C -> D and BAE -> X1  -- overall test, run at end
 --            --repeats calls to nlp
 --            -- files go to
+import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
+-------- form snips which go to NLP
 ----
 --import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
 --    -- calls produceNLPtriples

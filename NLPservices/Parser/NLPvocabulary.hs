@@ -35,8 +35,8 @@ nlp = "nlp"::Text
 nlpURItext =  (showT vocabularyBase) </> "nlp_2015" :: PartURI
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
-          | Pos | PosOrig | WordForm | NerTag | NERorig |SpeakerTag
-          | DependencyType | Dependency | DEPorig
+          | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker
+          | DependencyType | Dep  | DepOrig
           | SentenceForm
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
@@ -45,6 +45,7 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | MentionSentenceHead  | MentionSentenceText
           deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
+          -- do not capitalize second and following (not DEPorig)
 
 instance RDFproperties NLPproperty where
     mkRDFproperty p = RDFproperty $ nlpURItext <#> (toLowerStart . showT $ p)

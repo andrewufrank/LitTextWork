@@ -268,8 +268,8 @@ getToken ph = atTag "token" >>>
                         , tpos = (NLP.parseTag  p) `asTypeOf` ph
                         , tposOrig = p  -- the text received
                         , tpostt = zero
-                        , tner = n ++ n2 -- readNoteT "nertag" n
-                        , tspeaker = map parseSpeakerTag  s
+                        , tner =  parseNERtagList $ n ++ n2 -- readNoteT "nertag" n
+                        , tspeaker =  parseSpeakerTagList  s
                         , tbegin = readNoteT "tbegin" tb
                         , tend = readNoteT "tend" te
                         }
@@ -352,7 +352,7 @@ resEng = [Doc0{docSents =
                    stoks =
                      [Token0{tid = TokenID0{untid0 = 1},
                              tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
-                             tbegin = 0, tend = 2, tpos = Conll.Unk, tpostt = "", tner = ["O"],
+                             tbegin = 0, tend = 2, tpos = Conll.Unk, tpostt = "", tner = [O],
                              tposOrig = "RD" ,
                              tspeaker = []}],
                    sdeps = Nothing}],
@@ -364,7 +364,7 @@ resUD = [Doc0{docSents =
                   stoks =
                      [Token0{tid = TokenID0{untid0 = 1},
                              tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
-                             tbegin = 0, tend = 2, tpos = UD.X, tpostt = "", tner = ["O"],
+                             tbegin = 0, tend = 2, tpos = UD.X, tpostt = "", tner = [O],
                              tposOrig = "RD",
                              tspeaker = []}],
                    sdeps = Nothing}],

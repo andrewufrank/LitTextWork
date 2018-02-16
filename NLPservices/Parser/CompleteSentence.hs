@@ -76,46 +76,46 @@ tlemma' f t = t{tlemma = f . tlemma $ t}
 tpostt' f t = t{tpostt = f . tpostt $ t}
 
 
-s0 =  Sentence0 {sid = SentID0 {unSentID0 = 1}
-, sparse = "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n"
-    , stoks = [Token0 {tid = TokenID0 {untid0 = 1}, tword = Wordform0 {word0 = "Unsere"}
-    , tlemma = Lemma0 {lemma0 = "unsere"}, tbegin = 0, tend = 6, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
-    ,Token0 {tid = TokenID0 {untid0 = 2}, tword = Wordform0 {word0 = "Namen"}, tlemma = Lemma0 {lemma0 = "namen"}
-    , tbegin = 7, tend = 12, tpos = NN, tpostt = "", tner = ["O"], tspeaker = []},Token0 {tid = TokenID0 {untid0 = 3}
-    , tword = Wordform0 {word0 = "werden"}, tlemma = Lemma0 {lemma0 = "werden"}
-    , tbegin = 13, tend = 19, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
-    ,Token0 {tid = TokenID0 {untid0 = 4}, tword = Wordform0 {word0 = "lebendig"}, tlemma = Lemma0 {lemma0 = "lebendig"}
-    , tbegin = 20, tend = 28, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}]
-    , sdeps = Nothing}
---    ], docCorefs = []
-
-s9 = Sentence0{sid = SentID0{unSentID0 = 1},
-          sparse =
-            "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n",
-          stoks =
-            [Token0{tid = TokenID0{untid0 = 1},
-                    tword = Wordform0{word0 = "Unsere"},
-                    tlemma = Lemma0{lemma0 = "unser"}, tbegin = 0, tend = 6,
-                    tpos = Unk, tpostt = "PPOSAT", tner = ["O"], tspeaker = []},
-             Token0{tid = TokenID0{untid0 = 2},
-                    tword = Wordform0{word0 = "Namen"},
-                    tlemma = Lemma0{lemma0 = "Name"}, tbegin = 7, tend = 12, tpos = NN,
-                    tpostt = "NN", tner = ["O"], tspeaker = []},
-             Token0{tid = TokenID0{untid0 = 3},
-                    tword = Wordform0{word0 = "werden"},
-                    tlemma = Lemma0{lemma0 = "werden"}, tbegin = 13, tend = 19,
-                    tpos = Unk, tpostt = "VAFIN", tner = ["O"], tspeaker = []},
-             Token0{tid = TokenID0{untid0 = 4},
-                    tword = Wordform0{word0 = "lebendig"},
-                    tlemma = Lemma0{lemma0 = "lebendig"}, tbegin = 20, tend = 28,
-                    tpos = Unk, tpostt = "ADJD", tner = ["O"], tspeaker = []}],
-          sdeps = Nothing}
+--s0 =  Sentence0 {sid = SentID0 {unSentID0 = 1}
+--, sparse = "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n"
+--    , stoks = [Token0 {tid = TokenID0 {untid0 = 1}, tword = Wordform0 {word0 = "Unsere"}
+--    , tlemma = Lemma0 {lemma0 = "unsere"}, tbegin = 0, tend = 6, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
+--    ,Token0 {tid = TokenID0 {untid0 = 2}, tword = Wordform0 {word0 = "Namen"}, tlemma = Lemma0 {lemma0 = "namen"}
+--    , tbegin = 7, tend = 12, tpos = NN, tpostt = "", tner = ["O"], tspeaker = []},Token0 {tid = TokenID0 {untid0 = 3}
+--    , tword = Wordform0 {word0 = "werden"}, tlemma = Lemma0 {lemma0 = "werden"}
+--    , tbegin = 13, tend = 19, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
+--    ,Token0 {tid = TokenID0 {untid0 = 4}, tword = Wordform0 {word0 = "lebendig"}, tlemma = Lemma0 {lemma0 = "lebendig"}
+--    , tbegin = 20, tend = 28, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}]
+--    , sdeps = Nothing}
+----    ], docCorefs = []
+--
+--s9 = Sentence0{sid = SentID0{unSentID0 = 1},
+--          sparse =
+--            "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n",
+--          stoks =
+--            [Token0{tid = TokenID0{untid0 = 1},
+--                    tword = Wordform0{word0 = "Unsere"},
+--                    tlemma = Lemma0{lemma0 = "unser"}, tbegin = 0, tend = 6,
+--                    tpos = Unk, tpostt = "PPOSAT", tner = ["O"], tspeaker = []},
+--             Token0{tid = TokenID0{untid0 = 2},
+--                    tword = Wordform0{word0 = "Namen"},
+--                    tlemma = Lemma0{lemma0 = "Name"}, tbegin = 7, tend = 12, tpos = NN,
+--                    tpostt = "NN", tner = ["O"], tspeaker = []},
+--             Token0{tid = TokenID0{untid0 = 3},
+--                    tword = Wordform0{word0 = "werden"},
+--                    tlemma = Lemma0{lemma0 = "werden"}, tbegin = 13, tend = 19,
+--                    tpos = Unk, tpostt = "VAFIN", tner = ["O"], tspeaker = []},
+--             Token0{tid = TokenID0{untid0 = 4},
+--                    tword = Wordform0{word0 = "lebendig"},
+--                    tlemma = Lemma0{lemma0 = "lebendig"}, tbegin = 20, tend = 28,
+--                    tpos = Unk, tpostt = "ADJD", tner = ["O"], tspeaker = []}],
+--          sdeps = Nothing}
 --test_complete :: IO ()
-test_complete = do
-    s1 <- runErr $ completeSentence False (addPort2URI serverBrest treeTaggerPort )  s0
-    case s1 of
-        Left msg -> errorT ["test complete", msg]
-        Right s2 -> assertEqual s9 s2
+--test_complete = do
+--    s1 <- runErr $ completeSentence False (addPort2URI serverBrest treeTaggerPort )  s0
+--    case s1 of
+--        Left msg -> errorT ["test complete", msg]
+--        Right s2 -> assertEqual s9 s2
 
 {-
 -- try with paragrahs

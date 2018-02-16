@@ -112,12 +112,12 @@ mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3,  t5] ++ t4 ++ t6 ++ t7
                     else []
         t5 = mkTripleLang3 lang (unTokenSigl tokensigl) (mkRDFproperty WordForm)
                 ( word0 . tword $ tok)
-        t6 = if tner tok ==  ["O"]  -- this is the default, no need to store
+        t6 = if tner tok ==  [O]  -- this is the default, no need to store
                 then []
                 else map (mkTripleText (unTokenSigl tokensigl)
-                        (mkRDFproperty NerTag)) (tner tok)
+                            (mkRDFproperty Ner)) (map fromNERtag  (tner tok))
         t7 = map (mkTripleText (unTokenSigl tokensigl)
-                    (mkRDFproperty SpeakerTag) . showT )
+                    (mkRDFproperty Speaker) . fromSpeakerTag   )
                     (tspeaker tok)
 --        t8 = if tpos tok == nerUNK
 --                    then  [mkTripleText (unTokenSigl tokensigl)
@@ -144,12 +144,12 @@ mkDependenceTriple2 lang sentid  dep i  =  t0:  t4 : (t5 ++ t6 ++ t7)
         t0 = mkTripleType (unDepSigl depid) (mkRDFtype Dependence)
 --        t0 = mkTripleType (unSentSigl sentid) (mkRDFtype Dependence)
 --        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
-        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dependency) dependencyCode
+        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dep) dependencyCode
         t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
         t6 = mkDependencePart2 lang sentid  depid  GDdep  (ddep dep)
         t7 = if (dtype dep) == tagDEPunk
                     then  [mkTripleText (unDepSigl depid)
-                            (mkRDFproperty DEPorig) (dorig $ dep) ]  -- use what nlp produced
+                            (mkRDFproperty DepOrig) (dorig $ dep) ]  -- use what nlp produced
                     else []
 
 data GOV_DEP = GDgov | GDdep

@@ -154,7 +154,7 @@ instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
     nlpParams _ _ =   [("outputFormat", Just "xml")
                 , ("annotators", Just "tokenize,ssplit,pos\
-                                        \,lemma,ner,depparse, dcoref,coref")]
+                                        \,lemma,ner,depparse,dcoref,coref")]
             --                                    coref -coref.algorithm neural")
 
 instance LanguageTyped2 GermanType German.POStag where
@@ -216,7 +216,8 @@ instance (POStags postag) => Docs postag where
             when debugNLP  $
                 putIOwords ["convertTZ2makeNLPCall end \n", showT xml]
 
-            doc0 <- readDocString ph False xml                    -- E -> F
+            doc0 <- readDocString ph True xml                    -- E -> F
+                        -- bool controls production of XML output
             when debugNLP  $
                 putIOwords ["convertTZ2makeNLPCall doc0 \n", showT doc0]
 

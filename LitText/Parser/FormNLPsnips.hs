@@ -78,18 +78,18 @@ mergeNLPtext a b = if sameLang a b && (tz3textLength a + tz3textLength b) < maxS
 --        blength = lengthChar . tz3text $ b
         sameLang a b = sameLanguageLC (tz3text a) (tz3text b)
 
--- test mergeNLP
-text1 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
-        tz3text = LCtext "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme ."  German}
-text2 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
-        tz3text = LCtext "die ich dann mit Schminke korrigierte."  German}
-t12 =  Just . tz3fillLength $
-  (Snip{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
-           tz3para = ParaNum 11,
-           tz3text = LCtext
-             "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme . die ich dann mit Schminke korrigierte."
-              German})
-
-test_mergeNLP = assertEqual    t12  (mergeNLPtext text1 text2)
+---- test mergeNLP
+--text1 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
+--        tz3text = LCtext "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme ."  German}
+--text2 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
+--        tz3text = LCtext "die ich dann mit Schminke korrigierte."  German}
+--t12 =  Just . tz3fillLength $
+--  (Snip{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
+--           tz3para = ParaNum 11,
+--           tz3text = LCtext
+--             "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme . die ich dann mit Schminke korrigierte."
+--              German})
+--
+--test_mergeNLP = assertEqual    t12  (mergeNLPtext text1 text2)
 
 
