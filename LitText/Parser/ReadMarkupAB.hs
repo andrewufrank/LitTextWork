@@ -72,17 +72,15 @@ textstate2Text textstate = do
 readMarkupFile :: TextDescriptor -> ErrIO Text
 readMarkupFile textstate = do
     text <- read6 (sourceMarkup textstate) markupFileType5
---    text <-  read5 ((originalsDir $ textstate) </>
---                (makeRelDir .  authorDir $ textstate) :: Path Abs Dir)
---
---            (makeRelFile .  buchname $ textstate) markupFileType5
+    putIOwords ["readMarkupFile file", showT (sourceMarkup textstate)]
+
     bomWarning text   -- the check for BOM is in MainParse only -
---    putIOwords ["text", text]
+    putIOwords ["text"] --, text]
     let text2 = s2t . filter (/='\SUB') . convertLatin . t2s $ text
     let text2 = s2t . filter (/= '\65279') . t2s $  text -- s2t . filter (/='\SUB') . convertLatin . t2s $ text
     -- to remove the non-latin characters which were not mapped
     --    and the \sub character if any present
---    putIOwords ["text2", text2]
+    putIOwords ["text2"] --, text2]
     let nonlats =  nubChar . findNonLatinCharsT $ text2
 --    putIOwords ["nonlats", nonlats]
     unless (null' nonlats) $
