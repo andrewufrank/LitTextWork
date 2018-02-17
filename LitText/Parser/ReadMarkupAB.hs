@@ -63,8 +63,8 @@ textstate2Text :: TextDescriptor -> ErrIO Text  -- test A -> B
 -- reads the markup file and converts to coded llines
 textstate2Text textstate = do
     t <- readMarkupFile textstate -- test A -> B
---    when debugRead $
-    putIOwords ["textstate2TZ - the file content\n", t,
+    when debugRead $
+        putIOwords ["textstate2TZ - the file content\n", t,
                          "\n with show\n", showT t, "\nend of file"]
     let t2 = filterChar (`notElem` ['\r']) t
     return t2
