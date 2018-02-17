@@ -126,7 +126,8 @@ instance (LanguageDependent lang, LanguageTypedText lang, TaggedTyped postag, PO
             else do
                 let text = snip2text snip
                 when debugNLP $ putIOwords ["convertOneSnip2Triples" -- , sayLanguageOfText text
-                                  , "\n text", showT text]
+                                  , "\n text", showT text
+                                  , "\n debug", showT debugNLP]
                 let text2 = preNLP  text
 --                let sloc = nlpServer textstate
                 doc1 <- snip2doc lph pph debugNLP   text2 sloc
