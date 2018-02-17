@@ -67,6 +67,7 @@ mkSentID s = SentID0 $ readNoteT "mkSentID" s
 data Doc0 postag = Doc0 {docSents:: [Sentence0 postag]
                  , docCorefs :: [Coref0]
                        } deriving (Read, Show,  Eq)
+
 instance Zeros (Doc0 postag) where zero = Doc0 [] []
 
 data Sentence0 postag = Sentence0 {sid :: SentID0

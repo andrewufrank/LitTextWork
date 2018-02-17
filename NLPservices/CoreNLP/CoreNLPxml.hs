@@ -300,20 +300,20 @@ instance (NLP.POStags postag) => ReadDocXML postag where
         docs   <-callIO $
             runX (readString [withValidate no]  (t2s text)
                                     >>> getDoc0 ph)
+--              error "readDocString with showXLM true - intentional stop in corenlpxml.hs line285"
+        xmlres <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
+                                                >>> indentDoc
         when showXML $ do
               putIOwords ["the xml formated"]
---              error "readDocString with showXLM true - intentional stop in corenlpxml.hs line285"
-              res <- callIO $ runX . xshow $ readString [withValidate no]  (t2s text)
-                                                >>> indentDoc
-              putIOwords  $ map s2t res
+              putIOwords  $ map (s2t . take 200) xmlres
               putIOwords ["the xml formated ---------------------"]
         if length docs > 1
             then error "multiple document tags"
             else   if null docs
-                    then throwErrorT ["readDocString", "no document found in readDocString"]
+                    then throwErrorT ["readDocString", "no document found ", take' 1000 . showT $ xmlres]
                      -- return empty doc if call error - issue with italian
                     else do
-                            let doc2 = (headNote "no document found" docs)
+                            let doc2 = headNote "no document found" docs
                             return doc2
                 -- error in case of 0
 

@@ -33,6 +33,7 @@ import              Uniform.TestHarness
 import Parser.LanguageTypedText
 import Producer.Servers
 import CoreNLP.CoreNLPxml (readDocString)
+import CoreNLP.Defs0 ()
 import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
 import Text.Regex (mkRegex, subRegex)
 import Parser.CompleteSentence (completeSentence)
@@ -87,7 +88,7 @@ class TaggedTyped postag where
     -- postprocessing (e.g. adding POS to german)
     postNLP _ _ = return
 
-class (POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag where
+class ( POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag where
     snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
     snip2doc lph pph debugNLP  text sloc = do
@@ -215,17 +216,18 @@ instance (POStags postag) => Docs postag where
                      (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
         -- german parser seems to understand utf8encoded bytestring
 
-            when debugNLP  $
-                putIOwords ["convertTZ2makeNLPCall end \n", showT xml]
+--            when debugNLP  $
+            putIOwords ["convertTZ2makeNLPCall end \n", take' 200 . showT    $  xml]
 
-            doc0 <- readDocString ph False xml                    -- E -> F
+            doc0 <- readDocString ph True xml                    -- E -> F
                         -- bool controls production of XML output
-            when debugNLP  $
-                putIOwords ["convertTZ2makeNLPCall doc0 \n", showT doc0]
+--            when debugNLP  $
+            putIOwords ["convertTZ2makeNLPCall doc0 \n",  take' 200  . showT $ doc0]
 
             return   doc0
         `catchError` (\e -> do
-             putIOwords ["convertTZ2makeNLPCall http error caught 7",  e] -- " showT msg])
+             putIOwords ["convertTZ2makeNLPCall error caught 7",  e
+                            ,  "\n\n the input was \n", text] -- " showT msg])
              putIOwords ["convertTZ2makeNLPCall",  "text:\n",  showT text ] -- " showT msg])
     --         splitAndTryAgain debugNLP showXML nlpServer vars text
              return (Doc0 [] []) -- zero
