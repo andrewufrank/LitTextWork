@@ -246,9 +246,12 @@ cleanTextOther    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple w
 cleanTextItalian :: Text -> Text
 cleanTextItalian    = T.replace "ů" "u" . T.replace "ŕ" "a"     -- missing accents àèéìòóóù
                     . T.replace "č" "e" . T.replace "ň" "o"
-                    . T.replace "ě" "i"
+                    . T.replace "ě" "i" . T.replace "Č" "e"    -- for perche
+                    . T.replace "ę" "a"  -- ?? far provar, Danis??
+                    . T.replace "ű" "u" . T.replace "ď" "i"  -- conclusion
                     . subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 -- Cosě  -- keine akzente gestzt, weil uneinheitlich im italienischen
+-- to map would be ŕčňůěČęűď "\341\269\328\367\283\268\281\369\271"
 {-
 cleanTextGerman :: Text -> Text
 cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
