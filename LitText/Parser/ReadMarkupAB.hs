@@ -63,7 +63,8 @@ textstate2Text :: TextDescriptor -> ErrIO Text  -- test A -> B
 -- reads the markup file and converts to coded llines
 textstate2Text textstate = do
     t <- readMarkupFile textstate -- test A -> B
-    when debugRead $ putIOwords ["textstate2TZ - the file content\n", t,
+--    when debugRead $
+    putIOwords ["textstate2TZ - the file content\n", t,
                          "\n with show\n", showT t, "\nend of file"]
     let t2 = filterChar (`notElem` ['\r']) t
     return t2
@@ -76,15 +77,20 @@ readMarkupFile textstate = do
 --
 --            (makeRelFile .  buchname $ textstate) markupFileType5
     bomWarning text   -- the check for BOM is in MainParse only -
+--    putIOwords ["text", text]
     let text2 = s2t . filter (/='\SUB') . convertLatin . t2s $ text
+    let text2 = text -- s2t . filter (/='\SUB') . convertLatin . t2s $ text
     -- to remove the non-latin characters which were not mapped
     --    and the \sub character if any present
+--    putIOwords ["text2", text2]
     let nonlats =  nubChar . findNonLatinCharsT $ text2
+--    putIOwords ["nonlats", nonlats]
     unless (null' nonlats) $
                 putIOwords ["this file contains characters not in the latin1"
                 , " charset which are not yet mapped\n"
                  , nonlats, showT nonlats]
     return text2
+
 bomWarning :: Text -> ErrIO ()
 bomWarning v = do  -- not required - parser filter it out
     -- putIOwords ["bomWarning - the start of the file "]
@@ -111,17 +117,17 @@ bomWarning v = do  -- not required - parser filter it out
 --        :: Path Abs Dir
 
 ------test_0_A_B_textstate_text_1 =   testVar2File result0A "resultB0" textstate2Text
-test_1_A_B_textstate_text_1 =   testVar2File result1A "resultB1" textstate2Text
-test_2_A_B_textstate_text_2 =   testVar2File result2A "resultB2" textstate2Text
-test_3_A_B_textstate_text_3 =   testVar2File result3A "resultB3" textstate2Text
-test_4_A_B_textstate_text_4 =   testVar2File result4A "resultB4" textstate2Text
-test_5_A_B_textstate_text_5 =   testVar2File result5A "resultB5" textstate2Text
-test_6_A_B_textstate_text_6 =   testVar2File result6A "resultB6" textstate2Text
-test_8_A_B_textstate_text_8 =   testVar2File result8A "resultB8" textstate2Text
-test_9_A_B_textstate_text_9 =   testVar2File result9A "resultB9" textstate2Text
+--test_1_A_B_textstate_text_1 =   testVar2File result1A "resultB1" textstate2Text
+--test_2_A_B_textstate_text_2 =   testVar2File result2A "resultB2" textstate2Text
+--test_3_A_B_textstate_text_3 =   testVar2File result3A "resultB3" textstate2Text
+--test_4_A_B_textstate_text_4 =   testVar2File result4A "resultB4" textstate2Text
+--test_5_A_B_textstate_text_5 =   testVar2File result5A "resultB5" textstate2Text
+--test_6_A_B_textstate_text_6 =   testVar2File result6A "resultB6" textstate2Text
+--test_8_A_B_textstate_text_8 =   testVar2File result8A "resultB8" textstate2Text
+--test_9_A_B_textstate_text_9 =   testVar2File result9A "resultB9" textstate2Text
 test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2Text
-test_11_A_B_textstate_text_11 =   testVar2File result11A "resultB11" textstate2Text
-test_12_A_B_textstate_text_12 =   testVar2File result12A "resultB12" textstate2Text
+--test_11_A_B_textstate_text_11 =   testVar2File result11A "resultB11" textstate2Text
+--test_12_A_B_textstate_text_12 =   testVar2File result12A "resultB12" textstate2Text
 
 
 fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool

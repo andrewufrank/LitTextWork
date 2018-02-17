@@ -46,7 +46,7 @@ import NLP.Corpora.Spanish as Spanish --
 import NLP.Corpora.French as French --
 import NLP.Corpora.FrenchUD as FrenchUD --
 
-
+import Data.Text as T
 
 portGerman = 9001 -- make port type
 portEnglish = 9002
@@ -79,6 +79,7 @@ instance LanguageDependent FrenchType
 instance LanguageDependent SpanishType
 instance LanguageDependent ItalianType where
     nlpPath _ = "tint"
+    preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
 class TaggedTyped postag where
@@ -216,7 +217,7 @@ instance (POStags postag) => Docs postag where
             when debugNLP  $
                 putIOwords ["convertTZ2makeNLPCall end \n", showT xml]
 
-            doc0 <- readDocString ph True xml                    -- E -> F
+            doc0 <- readDocString ph False xml                    -- E -> F
                         -- bool controls production of XML output
             when debugNLP  $
                 putIOwords ["convertTZ2makeNLPCall doc0 \n", showT doc0]
@@ -239,6 +240,12 @@ cleanTextEnglish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 cleanTextOther :: Text -> Text
 cleanTextOther    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
+cleanTextItalian :: Text -> Text
+cleanTextItalian    = T.replace "ů" "u" . T.replace "ŕ" "a"     -- missing accents àèéìòóóù
+                    . T.replace "č" "e" . T.replace "ň" "o"
+                    . T.replace "ě" "i"
+                    . subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
+-- Cosě  -- keine akzente gestzt, weil uneinheitlich im italienischen
 {-
 cleanTextGerman :: Text -> Text
 cleanTextGerman    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
@@ -249,9 +256,14 @@ cleanTextFrench    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple 
 cleanTextspanish :: Text -> Text
 cleanTextspanish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 
-cleanTextitalian :: Text -> Text
-cleanTextitalian    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple words
 -}
+
+italianGutenberg = "Cosě, non fu contento finchč. E cosě,   han giŕ voluto che piů vi stesse a dondolare"
+italianResult = "Cosi, non fu contento finche. E cosi,   han gia voluto che piu vi stesse a dondolare"
+
+test_italGutenberg = assertEqual italianResult (cleanTextItalian italianGutenberg)
+
+-- Cos\283, non fu contento finche. E cos\283,   han gia voluto che piu vi stesse a dondolare
 
 entz3text = "Test Multiple Languages.   The uncle flew to Boston. When he came into the room, he carried a book. It was red."
 gertz3text = "Der Onkel flog nach Boston. Als er den Raum betrat, hatte er ein Buch dabei. Es war rot."
@@ -267,10 +279,9 @@ snip2eng = Snip2 (typeText undefEnglish entz3text) (mkSnipSigl paraSigl1 (SnipID
 testOP_Snip_N (langPh, postagPh, text, i) = do
         putIOwords [ "testOP"]
         let snip  = Snip2 (typeText langPh text) (mkSnipSigl paraSigl1 (SnipID i))
-
         convertOneSnip2Triples2 langPh postagPh True snip serverBrest
 
-test_N_1 :: IO ()
+--test_N_1 :: IO ()
 test_N_1 = testVar2File (undefEnglish, undefConll, entz3text, 1)        "resultN1" testOP_Snip_N
 test_N_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultN2" testOP_Snip_N
 test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN3" testOP_Snip_N

@@ -29,10 +29,10 @@ import   {-@ HTF_TESTS @-} Parser.ProduceLayout  -- > BADx -> J
 import   {-@ HTF_TESTS @-} Lines2para.Lines2para -- BADx > BAEx
 import   {-@ HTF_TESTS @-} Parser.ProduceLit  -- BAEx -> Hx (triples)
 --                -- and Hx -> Kx  (.nt)
-------------------
--------- for nlp:
-----
---------
+----------------
+------ for nlp:
+--
+------
 import {-@ HTF_TESTS @-} Parser.FilterTextForNLP   -- BAE=C -> D
 -------------- filters literal text
 
@@ -45,31 +45,31 @@ import   {-@ HTF_TESTS @-} Parser.ProduceNLP  -- BAE=C -> D and BAE -> X1  -- ov
 import {-@ HTF_TESTS @-} Parser.FormNLPsnips   -- D -> DA
 -------- form snips which go to NLP
 ----
---import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
+----import   {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP   -- DA -> L, calls to NLP, takes time
 --    -- calls produceNLPtriples
-------------    -- makes result  E
-----
-------------                -- tests only the production of the doc files
---------                      all tests above can be switched off
-----
-----import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
--------------------- calls 17701
-----------------
-----------import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
-----
-----import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
----- tests tp check codes
-----import   {-@ HTF_TESTS @-}  CoreNLP.POScodesFrench
------- old
-----import {-@ HTF_TESTS @-} Processor.CheckServers
---------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput
----------- no test for NLPvocabulary
+--------------    -- makes result  E
 ------
+--------------                -- tests only the production of the doc files
+----------                      all tests above can be switched off
 ------
--------- makes call to NLP
---------import {-@ HTF_TESTS @-} Main2sub
-------import {-@ HTF_TESTS @-} Parser.Main2subTest
-------import  {-@ HTF_TESTS @-} Processor.ProcessAll
+------import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
+---------------------- calls 17701
+------------------
+------------import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples  -- removed -- E (doc) -> G  and L (triples)
+------
+------import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml
+------ tests tp check codes
+------import   {-@ HTF_TESTS @-}  CoreNLP.POScodesFrench
+-------- old
+------import {-@ HTF_TESTS @-} Processor.CheckServers
+----------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput
+------------ no test for NLPvocabulary
+--------
+--------
+---------- makes call to NLP
+----------import {-@ HTF_TESTS @-} Main2sub
+--------import {-@ HTF_TESTS @-} Parser.Main2subTest
+--------import  {-@ HTF_TESTS @-} Processor.ProcessAll
 
 main =  do
     putStrLn "Lit Text Test.hs:\n"
