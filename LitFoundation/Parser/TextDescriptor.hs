@@ -256,7 +256,7 @@ fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
         , authorDir = authordir
         , buchName = buchname
         , includeText = flagIncludeText flags
-        , txPosTagset = "FrenchUD"
+        , txPosTagset = if flagFrenchUD flags then "FrenchUD" else ""
         }
 --        fillTextState3 litdirs server author buch
     where
