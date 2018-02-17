@@ -79,7 +79,7 @@ readMarkupFile textstate = do
     bomWarning text   -- the check for BOM is in MainParse only -
 --    putIOwords ["text", text]
     let text2 = s2t . filter (/='\SUB') . convertLatin . t2s $ text
-    let text2 = text -- s2t . filter (/='\SUB') . convertLatin . t2s $ text
+    let text2 = s2t . filter (/= '\65279') . t2s $  text -- s2t . filter (/='\SUB') . convertLatin . t2s $ text
     -- to remove the non-latin characters which were not mapped
     --    and the \sub character if any present
 --    putIOwords ["text2", text2]
