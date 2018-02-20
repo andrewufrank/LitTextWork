@@ -59,7 +59,7 @@ produceNLP  textstate tzs =  do
             snips2 = formSnips snips1  :: [Snip]
             posTag = txPosTagset textstate
             debug = False
-    triples :: [[Triple]] <-mapM2 (convertOneSnip2Triples debug  textstate) (map SnipID [1..]) snips2
+    triples :: [[Triple]] <-zipWithM (convertOneSnip2Triples debug  textstate) (map SnipID [1..]) snips2
     ntz1 <- foldM writeHandleTriples textstate triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
 --            ,"snip size", showT $ tz3textLength snip
@@ -67,11 +67,6 @@ produceNLP  textstate tzs =  do
 --            ]
     return ntz1
 
-mapM2 :: Monad m => (a -> b -> m c) -> [a] -> [b] -> m [c]
-mapM2 op as bs = mapM op' abs
-        where
-            abs = zip as bs
-            op' (a,b) = op a b
 
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
 pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
@@ -91,39 +86,41 @@ convertOneSnip2Triples debugNLP textstate snipnr snip = do
 --    let buchname = buchName textstate
     let paranum = tz3para snip
     let parasigl = paraSigl textstate paranum
-    let snipSigl = mkSnipSigl parasigl snipnr  -- where is this comming from  ???
+    let snipsigl = mkSnipSigl parasigl snipnr
     let nlpserver = nlpServer textstate
     let pt = txPosTagset textstate
-    if not . notNullLC $ text
+    trips2 <- if not . notNullLC $ text
         then return zero
         else do
             trips <- case (language, pt) of
                 (English, "") -> do
                             t <- convertOneSnip2Triples2 undefEnglish undefConll
-                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
                             return (map unNLPtriple t)
                 (German, "") -> do
                             t <- convertOneSnip2Triples2 undefGerman undefGermanPos
-                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
                             return (map unNLPtriple t)
                 (Italian,"") -> do
                             t <- convertOneSnip2Triples2 undefItalian undefTinTPos
-                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
                             return (map unNLPtriple t)
                 (French, "")-> do
                             t <-convertOneSnip2Triples2 undefFrench undefFrenchPos
-                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
                             return (map unNLPtriple t)
                 (French, "FrenchUD")-> do
                             t <- convertOneSnip2Triples2 undefFrench undefFrenchUDPos
-                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
                             return (map unNLPtriple t)
                 (Spanish,"") -> do
                             t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
-                                        debugNLP   (Snip2 (convertLC2LT text) snipSigl) nlpserver
+                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
                             return (map unNLPtriple t)
                 _ -> return zero
             return trips
+    let paratrip = mkTriplePartOf (unParaSigl parasigl) (unSnipSigl snipsigl)
+    return $ paratrip : trips2
 
 snip4test :: [TZ2] -> [Snip]
 snip4test = prepareTZ4nlp ""

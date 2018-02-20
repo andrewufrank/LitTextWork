@@ -102,7 +102,7 @@ mkSnipSigl parasigl snipid =  SnipSigl
   where
     formatSnipID ::Int -> Text
     -- format an Int to 2 decimals for Snis
-    formatSnipID  = ("N" <>) . s2t . printf ('%' : '0' : '2' : 'd' :[])
+    formatSnipID  = ("N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
 
 
 newtype SentSigl = SentSigl RDFsubj deriving (Show, Eq)
