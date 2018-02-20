@@ -75,12 +75,14 @@ data Sentence0 postag = Sentence0 {sid :: SentID0
                         , stoks :: [Token0 postag]
                         , sdeps :: Maybe DependenceType0
                         -- should be only one or none
+                        -- select (last = best) in coreNLPxml in getSentence
+                        -- could be changed to parse all and select later
                         } deriving (Read, Show,  Eq)
 
 type DepTypeID0 = Text
 
 data DependenceType0 = DependenceType0 { dtt :: DepTypeID0
-                -- replaced with "dependency" (simplified?)in ProduceNLPtriples
+                -- not used - whatever the last depType produced is taken
             , dtd :: [Dependence0]
             } deriving (Show, Read, Eq, Zeros)
 

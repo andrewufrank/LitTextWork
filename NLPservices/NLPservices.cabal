@@ -1,5 +1,5 @@
 name: NLPservices
-version: 0.0.4.7
+version: 0.0.5.0
 
 
 cabal-version: >=1.20
@@ -8,6 +8,7 @@ license: AllRightsReserved
 synopsis: convert text in a single language to RDF as a service
 description:
         break the nlpservices away from the LitText (0.0.4.3 -> 0.0.4.4)
+        0.0.5.0 - change depTags to property - change to nlp_2017
 
 library
     build-depends:
