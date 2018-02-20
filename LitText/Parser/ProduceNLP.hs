@@ -119,8 +119,10 @@ convertOneSnip2Triples debugNLP textstate snipnr snip = do
                             return (map unNLPtriple t)
                 _ -> return zero
             return trips
-    let paratrip = mkTriplePartOf (unParaSigl parasigl) (unSnipSigl snipsigl)
-    return $ paratrip : trips2
+    let buchURI = buchURIx   textstate
+    let paratrip = mkTriplePartOf (unSnipSigl snipsigl) (unParaSigl parasigl)
+    let buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
+    return $ buchtrip : paratrip : trips2
 
 snip4test :: [TZ2] -> [Snip]
 snip4test = prepareTZ4nlp ""
