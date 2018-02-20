@@ -74,14 +74,14 @@ mkSentenceTriple2 :: (Show postag, POStags postag) =>
         LanguageCode ->  SnipSigl  ->    Sentence0 postag ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentenceTriple2 lang snipid sent
-       =      t0 : t1 :   sentenceForm : (toktrips ++ depsTrips)
+       =      t0 : t1 : t2:   sentenceForm : (toktrips ++ depsTrips)
     where
         sentSigl = mkSentSigl snipid (sid sent)
         t0 = mkTripleType (unSentSigl sentSigl) (mkRDFtype Sentence)
         t1 = mkTripleText   (unSentSigl sentSigl) (mkRDFproperty Parse)
                                 (sparse sent)
---        t2 = mkTriplePartOf (unSentSigl sentSigl) buchuri
-                            -- (unSnipSigl snipid)
+        t2 = mkTriplePartOf (unSentSigl sentSigl) --`buchuri
+                             (unSnipSigl snipid)
         depsTrips =  maybe [] (mkDependenceTypeTriples2 lang sentSigl )
                                 ( sdeps sent) :: [Triple]
                                 -- in CoreNLPxml only the last dependency analysis, if any, is retained

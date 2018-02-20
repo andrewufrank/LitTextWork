@@ -59,7 +59,7 @@ produceNLP  textstate tzs =  do
             snips2 = formSnips snips1  :: [Snip]
             posTag = txPosTagset textstate
             debug = False
-    triples :: [[Triple]] <-mapM (convertOneSnip2Triples debug  textstate) snips2
+    triples :: [[Triple]] <-mapM2 (convertOneSnip2Triples debug  textstate) (map SnipID [1..]) snips2
     ntz1 <- foldM writeHandleTriples textstate triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
 --            ,"snip size", showT $ tz3textLength snip
@@ -67,23 +67,31 @@ produceNLP  textstate tzs =  do
 --            ]
     return ntz1
 
+mapM2 :: Monad m => (a -> b -> m c) -> [a] -> [b] -> m [c]
+mapM2 op as bs = mapM op' abs
+        where
+            abs = zip as bs
+            op' (a,b) = op a b
+
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
 pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
 
-convertOneSnip2Triples :: Bool ->   TextDescriptor -> Snip -> ErrIO [Triple]
+
+
+convertOneSnip2Triples :: Bool ->   TextDescriptor -> SnipID -> Snip ->  ErrIO [Triple]
 -- calls nlp to convert to doc
 -- the snip should have a type parameter language
 -- internal the text2nlp should have a tag type parameter
 -- the triples (i.e. NLPtriples should have a tag parameter
 
 -- the following is just the bridges, which should go earlier
-convertOneSnip2Triples debugNLP textstate snip = do
+convertOneSnip2Triples debugNLP textstate snipnr snip = do
     let text = tz3text snip
     let language = getLanguageCode . tz3text $  snip    -- reduce for some special cases _italics_
 --    let buchname = buchName textstate
     let paranum = tz3para snip
     let parasigl = paraSigl textstate paranum
-    let snipSigl = mkSnipSigl parasigl (SnipID 1)   -- where is this comming from  ???
+    let snipSigl = mkSnipSigl parasigl snipnr  -- where is this comming from  ???
     let nlpserver = nlpServer textstate
     let pt = txPosTagset textstate
     if not . notNullLC $ text
@@ -120,17 +128,17 @@ convertOneSnip2Triples debugNLP textstate snip = do
 snip4test :: [TZ2] -> [Snip]
 snip4test = prepareTZ4nlp ""
 
-test_1_C_D = testFile2File "resultBAE1" "resultD1" snip4test
-test_2_C_D = testFile2File "resultBAE2" "resultD2" snip4test
-test_3_C_D = testFile2File "resultBAE3" "resultD3" snip4test
-test_4_C_D = testFile2File "resultBAE4" "resultD4" snip4test
-test_5_C_D = testFile2File "resultBAE5" "resultD5" snip4test
-test_6_C_D = testFile2File "resultBAE6" "resultD6" snip4test
-test_8_C_D = testFile2File "resultBAE8" "resultD8" snip4test
-test_9_C_D = testFile2File "resultBAE9" "resultD9" snip4test
+--test_1_C_D = testFile2File "resultBAE1" "resultD1" snip4test
+--test_2_C_D = testFile2File "resultBAE2" "resultD2" snip4test
+--test_3_C_D = testFile2File "resultBAE3" "resultD3" snip4test
+--test_4_C_D = testFile2File "resultBAE4" "resultD4" snip4test
+--test_5_C_D = testFile2File "resultBAE5" "resultD5" snip4test
+--test_6_C_D = testFile2File "resultBAE6" "resultD6" snip4test
+--test_8_C_D = testFile2File "resultBAE8" "resultD8" snip4test
+--test_9_C_D = testFile2File "resultBAE9" "resultD9" snip4test
 test_10_C_D = testFile2File "resultBAE10" "resultD10" snip4test
-test_11_C_D = testFile2File "resultBAE11" "resultD11" snip4test
-test_12_C_D = testFile2File "resultBAE12" "resultD12" snip4test
+--test_11_C_D = testFile2File "resultBAE11" "resultD11" snip4test
+--test_12_C_D = testFile2File "resultBAE12" "resultD12" snip4test
 
 
 --testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
