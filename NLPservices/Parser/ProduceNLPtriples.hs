@@ -134,36 +134,48 @@ mkDependenceTypeTriples2 lang sentSigl  d   =
                 -- passes sentSigl to construct the tokenid later
 
 mkDependenceTriple2 :: LanguageCode -> SentSigl ->  Dependence0 -> Int -> [Triple]
-mkDependenceTriple2 lang sentid  dep i  =  t0:  t4 : (t5 ++ t6 ++ t7)
+mkDependenceTriple2 lang sentid  dep i  =  [mkTripleRef (unTokenSigl govtokenid)
+                                             (mkRDFproperty dt)
+                                             (unTokenSigl deptokenid)]
 -- dependence construction produces incorrect (white space, " etc in depSigl
     where
---        depid = mkDepSigl depTid i
-        depid = mkDepSigl2 sentid i
-                -- must be numbered - the same code may appear twice (dtype dep)
-        dependencyCode = fromDEPtag . dtype $ dep  -- the depCode
-        t0 = mkTripleType (unDepSigl depid) (mkRDFtype Dependence)
---        t0 = mkTripleType (unSentSigl sentid) (mkRDFtype Dependence)
---        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
-        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dep) dependencyCode
-        t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
-        t6 = mkDependencePart2 lang sentid  depid  GDdep  (ddep dep)
-        t7 = if (dtype dep) == tagDEPunk
-                    then  [mkTripleText (unDepSigl depid)
-                            (mkRDFproperty DepOrig) (dorig $ dep) ]  -- use what nlp produced
-                    else []
+        dt = dtype dep -- the depence type
 
-data GOV_DEP = GDgov | GDdep
-
-mkDependencePart2 :: LanguageCode -> SentSigl -> DepSigl -> GOV_DEP -> DependencePart0 -> [Triple]
-mkDependencePart2 lang sentid depidp gd depp   = [t8] -- , t9]
-    where
-       tokenid = mkTokenSigl sentid (did depp)
-       prop = case gd of
-                GDgov -> (mkRDFproperty Governor)
-                GDdep -> (mkRDFproperty Dependent)
-       t8 = mkTripleRef (unDepSigl depidp) prop (unTokenSigl tokenid)
---       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
---       wf = word0 . dword  $ depp
+        govTok = did . dgov $ dep   -- tokenID in sentence
+        depTok = did . ddep $ dep
+        govtokenid = mkTokenSigl sentid govTok
+        deptokenid = mkTokenSigl sentid depTok
+        -- code to preserve structure of xml
+        -- =  t0:  t4 : (t5 ++ t6 ++ t7)
+------ dependence construction produces incorrect (white space, " etc in depSigl
+----    where
+------        depid = mkDepSigl depTid i
+----        depid = mkDepSigl2 sentid i
+----                -- must be numbered - the same code may appear twice (dtype dep)
+----        dependencyCode = fromDEPtag . dtype $ dep  -- the depCode
+----        t0 = mkTripleType (unDepSigl depid) (mkRDFtype Dependence)
+------        t0 = mkTripleType (unSentSigl sentid) (mkRDFtype Dependence)
+------        t2 = mkTriplePartOf (unDepSigl depid)     (unDepTypeSigl depTid)
+----        t4 = mkTripleText (unDepSigl depid) (mkRDFproperty Dep) dependencyCode
+----        t5 = mkDependencePart2 lang sentid  depid  GDgov  (dgov dep)
+----        t6 = mkDependencePart2 lang sentid  depid  GDdep  (ddep dep)
+----        t7 = if (dtype dep) == tagDEPunk
+----                    then  [mkTripleText (unDepSigl depid)
+----                            (mkRDFproperty DepOrig) (dorig $ dep) ]  -- use what nlp produced
+----                    else []
+----
+----data GOV_DEP = GDgov | GDdep
+----
+----mkDependencePart2 :: LanguageCode -> SentSigl -> DepSigl -> GOV_DEP -> DependencePart0 -> [Triple]
+----mkDependencePart2 lang sentid depidp gd depp   = [t8] -- , t9]
+----    where
+----       tokenid = mkTokenSigl sentid (did depp)
+----       prop = case gd of
+----                GDgov -> (mkRDFproperty Governor)
+----                GDdep -> (mkRDFproperty Dependent)
+----       t8 = mkTripleRef (unDepSigl depidp) prop (unTokenSigl tokenid)
+------       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
+------       wf = word0 . dword  $ depp
 
 ------------ coreferences ---------------------
 

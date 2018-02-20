@@ -32,11 +32,15 @@ import Parser.TextDescriptor hiding ((</>)) -- from Foundation
 import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
 
 nlp = "nlp"::Text
-nlpURItext =  (showT vocabularyBase) </> "nlp_2015" :: PartURI
+--nlpURItext =  (showT vocabularyBase) </> "nlp_2015" :: PartURI
+nlpURItext =  (showT vocabularyBase) </> "nlp_2017" :: PartURI
+-- the 2017 vocabulary represents the dependency codes as properties (written lower case)
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker
-          | DependencyType | Dep  | DepOrig
+--          | DependencyType   -- in CoreNLPxml is the best (last) selected
+          -- | Dep  | DepOrig -- not used in nlp_2017
+          -- check separately that no unrecognized codes are occuring?
           | SentenceForm
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
@@ -50,6 +54,10 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
 instance RDFproperties NLPproperty where
     mkRDFproperty p = RDFproperty $ nlpURItext <#> (toLowerStart . showT $ p)
 
+instance RDFproperties DepCode where
+    mkRDFproperty c = RDFproperty $ nlpURItext <#> (toLower' . fromDEPtag $ c)
+
+            -- should be changed to 2017
 data NLPtype = Doc | Snip | Sentence | Token
     | DepType | Dependence | Mention | Coreference
   deriving (Show, Eq, Enum)
