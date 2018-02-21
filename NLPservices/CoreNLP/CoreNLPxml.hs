@@ -138,13 +138,16 @@ getMention  = atTag "mention" >>>
         e <- text <<< atTag "end" -< x
         h <- text <<< atTag "head" -< x
         t <- text <<< atTag "text" -< x
-        returnA -< Mention0 { mentRep = r  -- TODO
+        returnA -< Mention0 { mentRep = readRep r
                         , mentSent =   mkSentID s
                         , mentStart = mkTokenID st
                         , mentEnd =  mkTokenID e
                         , mentHead = mkTokenID h
                         , mentText = t
                         }
+
+readRep "true" = True
+readRep _ = False
 
 getCoref = atTag "coreference" >>>   -- occurs twice
     proc x -> do

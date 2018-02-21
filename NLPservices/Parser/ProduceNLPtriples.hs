@@ -196,7 +196,7 @@ mkMention2 lang snipid corefsigl m i = [t0, t10, t1, t2, t3, t4, t5]
         t0 = mkTripleType mentionid (mkRDFtype Mention)
 --        t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
         t10 = mkTripleText  mentionid (mkRDFproperty MentionRepresenatative)
-                    ( mentRep $ m)
+                    ( showT . mentRep $ m)
                     -- true for the representative mention - i.e. not a pronoun
         t1 = mkTripleRef mentionid (mkRDFproperty MentionSentence) (unSentSigl sentid)
         t2 = mkTripleRef mentionid (mkRDFproperty MentionSentenceStart)
