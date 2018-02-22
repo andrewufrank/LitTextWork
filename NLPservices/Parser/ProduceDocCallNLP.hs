@@ -157,7 +157,7 @@ instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
     nlpParams _ _ =   [("outputFormat", Just "xml")
                 , ("annotators", Just "tokenize,ssplit,pos\
-                                        \,lemma,ner,depparse,dcoref,coref")]
+                                        \,lemma,ner,depparse,coref")]
             --                                    coref -coref.algorithm neural")
 
 instance LanguageTyped2 GermanType German.POStag where
