@@ -1,0 +1,115 @@
+ sentence 1 words 1..4 
+ (NP
+    (NP (NN Test))
+    (NP (JJ Multiple) (NNS Languages))
+    (. .)))
+sentence 2 words .. 6
+  (S
+    (NP (DT The) (NN uncle))
+    (VP (VBD flew)
+      (PP (TO to)
+        (NP (NNP Boston))))
+    (. .)))
+sentence 3 words 1..12 
+  (S
+    (SBAR
+      (WHADVP (WRB When))
+      (S
+        (NP (PRP he))
+        (VP (VBD came)
+          (PP (IN into)
+            (NP (DT the) (NN room))))))
+    (, ,)
+    (NP (PRP he))
+    (VP (VBD carried)
+      (NP (DT a) (NN book)))
+    (. .)))
+sentence 4 words 1..4
+  (S
+    (NP (PRP It))
+    (VP (VBD was)
+      (ADJP (JJ red)))
+    (. .)))
+sentence 5 words 1..30
+  (S
+    (NP
+      (NP (DT Every) (CD four) (NNS weeks))
+      (PP (IN for)
+        (NP (DT the) (JJ past) (CD eight) (NNS months)))
+      (SBAR
+        (S
+          (NP (NNP Sir) (NNP Horace))
+          (VP (VBD drew)
+            (NP (DT a) (NN cheque))
+            (PP (IN for)
+              (NP
+                (NP
+                  (QP (# #) (CD 24)))
+                (, ,)
+                (CC and)
+                (NP
+                  (NP (DT every) (NN cheque))
+                  (PP (IN of)
+                    (NP (DT the) (NN kind))))))))))
+    (VP (VBD was)
+      (VP (VBN made)
+        (S
+          (ADJP (JJ payable)
+            (PP (TO to)
+              (NP (NN Number) (CD 365)))))))
+    (. .)))
+
+
+    </sentences>
+    <coreference>
+      <coreference>
+        <mention representative="true">
+          <sentence>5</sentence>
+          <start>9</start>
+          <end>11</end>
+          <head>10</head>
+          <text>Sir Horace</text>
+        </mention>
+        <mention>
+          <sentence>2</sentence>
+          <start>1</start>
+          <end>3</end>
+          <head>2</head>
+          <text>The uncle</text>
+        </mention>
+        <mention>
+          <sentence>3</sentence>
+          <start>2</start>
+          <end>3</end>
+          <head>2</head>
+          <text>he</text>
+        </mention>
+        <mention>
+          <sentence>3</sentence>
+          <start>8</start>
+          <end>9</end>
+          <head>8</head>
+          <text>he</text>
+        </mention>
+      </coreference>
+      <coreference>
+        <mention representative="true">
+          <sentence>3</sentence>
+          <start>10</start>
+          <end>12</end>
+          <head>11</head>
+          <text>a book</text>
+        </mention>
+        <mention>
+          <sentence>4</sentence>
+          <start>1</start>
+          <end>2</end>
+          <head>1</head>
+          <text>It</text>
+        </mention>
+      </coreference>
+    </coreference>
+  </document>
+</root>
+<//>
+

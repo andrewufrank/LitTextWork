@@ -37,6 +37,7 @@ import Parser.TextDescriptor
 import NLP.Types.Tags
 import Parser.NLPvocabulary  -- from Foundation
 import Parser.LanguageTypedText
+import Data.List (partition)
 -- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
 
 newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
@@ -180,33 +181,59 @@ mkDependenceTriple2 lang sentid  dep i  =  [mkTripleRef (unTokenSigl govtokenid)
 ------------ coreferences ---------------------
 
 mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
--- ^ gives a single set of coreferences  - int is to produce id
-mkCorefTriple2 lang snip coref i  = t0 : t1 : concat  coreftrips
-    where
-        corefid = mkCorefsigl snip i
-        coreftrips = zipWith (mkMention2 lang snip  corefid) (corefMents coref) [1 .. ]
-        t0 = mkTripleType (unCorefSigl corefid) (mkRDFtype Coreference )
-        t1 = mkTriplePartOf (unCorefSigl corefid) (unSnipSigl snip)  -- perhaps not necessary
+-- ^ gives a single set of coreferences  - int is to produce id -- not required
+-- ^ produces triples from the mention to the representative one
 
-mkMention2 :: LanguageCode -> SnipSigl ->   CorefSigl ->  Mention0  -> Int -> [Triple]
-mkMention2 lang snipid corefsigl m i = [t0, t10, t1, t2, t3, t4, t5]
+mkCorefTriple2 lang snip coref i  = map (mkRefs repSigl) mentSigl
     where
-        mentionid = unMentionSigl $ mkMentionsigl corefsigl i
-        sentid = mkSentSigl  snipid (mentSent m)
-        t0 = mkTripleType mentionid (mkRDFtype Mention)
---        t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
-        t10 = mkTripleText  mentionid (mkRDFproperty MentionRepresenatative)
-                    ( showT . mentRep $ m)
-                    -- true for the representative mention - i.e. not a pronoun
-        t1 = mkTripleRef mentionid (mkRDFproperty MentionSentence) (unSentSigl sentid)
-        t2 = mkTripleRef mentionid (mkRDFproperty MentionSentenceStart)
-                                    (unTokenSigl . mkTokenSigl sentid . mentStart $ m)
-        t3 = mkTripleRef mentionid (mkRDFproperty MentionSentenceEnd)
-                                    (unTokenSigl . mkTokenSigl sentid . mentEnd $ m)
-        t4 = mkTripleRef mentionid (mkRDFproperty MentionSentenceHead)
-                                    (unTokenSigl . mkTokenSigl  sentid . mentHead $ m)
-        t5 = mkTripleLang3 lang mentionid (mkRDFproperty MentionSentenceText)
-                                    ( mentText $ m)
+
+            mentions = (corefMents coref)
+            (rep,norep) = partition mentRep mentions
+            rep' = headNote "mkCorefTriple2 rep not present" rep :: Mention0
+            heads = map mentHead norep
+                    -- the heads are the references
+
+            repSigl = mkRefSigl snip rep' :: TokenSigl
+            mentSigl = map (mkRefSigl snip) norep  :: [TokenSigl]
+
+
+mkRefSigl :: SnipSigl -> Mention0 -> TokenSigl
+mkRefSigl s m = mkTokenSigl  sentid . mentHead $ m
+    where       sentid = mkSentSigl  s  (mentSent m)
+
+mkRefs :: TokenSigl -> TokenSigl -> Triple
+mkRefs h m = mkTripleRef (unTokenSigl m) (mkRDFproperty Mentions) (unTokenSigl h)
+        -- a is a mention of h
+
+
+--mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
+---- ^ gives a single set of coreferences  - int is to produce id
+--mkCorefTriple2 lang snip coref i  = t0 : t1 : concat  coreftrips
+--    where
+--        corefid = mkCorefsigl snip i
+--        coreftrips = zipWith (mkMention2 lang snip  corefid) (corefMents coref) [1 .. ]
+--        t0 = mkTripleType (unCorefSigl corefid) (mkRDFtype Coreference )
+--        t1 = mkTriplePartOf (unCorefSigl corefid) (unSnipSigl snip)  -- perhaps not necessary
+--
+--mkMention2 :: LanguageCode -> SnipSigl ->   CorefSigl ->  Mention0  -> Int -> [Triple]
+--mkMention2 lang snipid corefsigl m i = [t0, t10, t1, t2, t3, t4, t5]
+--    where
+--        mentionid = unMentionSigl $ mkMentionsigl corefsigl i
+--        sentid = mkSentSigl  snipid (mentSent m)
+--        t0 = mkTripleType mentionid (mkRDFtype Mention)
+----        t00 = mkTriplePartOf mentionid (unCorefSigl corefsigl)
+--        t10 = mkTripleText  mentionid (mkRDFproperty MentionRepresenatative)
+--                    ( showT . mentRep $ m)
+--                    -- true for the representative mention - i.e. not a pronoun
+--        t1 = mkTripleRef mentionid (mkRDFproperty MentionSentence) (unSentSigl sentid)
+--        t2 = mkTripleRef mentionid (mkRDFproperty MentionSentenceStart)
+--                                    (unTokenSigl . mkTokenSigl sentid . mentStart $ m)
+--        t3 = mkTripleRef mentionid (mkRDFproperty MentionSentenceEnd)
+--                                    (unTokenSigl . mkTokenSigl sentid . mentEnd $ m)
+--        t4 = mkTripleRef mentionid (mkRDFproperty MentionSentenceHead)
+--                                    (unTokenSigl . mkTokenSigl  sentid . mentHead $ m)
+--        t5 = mkTripleLang3 lang mentionid (mkRDFproperty MentionSentenceText)
+--                                    ( mentText $ m)
 
 
 -- cannot be used, as result1A is in LitText, which is above
