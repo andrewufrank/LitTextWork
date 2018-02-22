@@ -111,7 +111,7 @@ newtype Coref0 = Coref0 {corefMents:: [Mention0]
                     }
   deriving (Show, Read, Eq)
 
-data Mention0 = Mention0 {mentRep ::  Bool -- , indicates the best description?
+data Mention0 = Mention0 {mentRep ::  Bool -- , indicates the representative mention
         , mentSent :: SentID0
         , mentStart, mentEnd :: TokenID0 -- not used ??
         , mentHead :: TokenID0  -- the head of the mention

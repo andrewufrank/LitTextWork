@@ -44,9 +44,10 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | SentenceForm
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
-          | MentionRepresenatative | MentionSentence
-          | MentionSentenceStart | MentionSentenceEnd
-          | MentionSentenceHead  | MentionSentenceText
+          | Mentions  -- s is a mention of representative o
+--          | MentionRepresenatative | MentionSentence
+--          | MentionSentenceStart | MentionSentenceEnd
+--          | MentionSentenceHead  | MentionSentenceText
           deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
