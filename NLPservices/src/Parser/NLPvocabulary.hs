@@ -14,14 +14,8 @@
 module Parser.NLPvocabulary
     ( module Parser.NLPvocabulary
       , module CoreNLP.Defs0
---      , module Parser.ProduceLit
       , module Data.RDF.Extension
       , module Uniform.Strings
---      , buchURIx, paraSigl
---      , PartURI, RDFproperty
---      , SnipID, unSnipID
---      , NLPproperty (..)
---      , nlpURItext
     ) where
 
 import           CoreNLP.Defs0

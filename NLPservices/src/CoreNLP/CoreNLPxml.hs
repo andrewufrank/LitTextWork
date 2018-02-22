@@ -51,13 +51,6 @@ import              CoreNLP.DEPcodes
 
 import              CoreNLP.NERcodes
 
---import qualified CoreNLP.POScodesUD         as UD
---import  CoreNLP.POScodesUD        as UD  (POStagUD (..))
---import  CoreNLP.POScodesConll         ( POStagConll(..))
---import CoreNLP.POScodesTinT   as TinT -- italian
---import        CoreNLP.POScodesGerman
---import CoreNLP.POScodesSpanish
---import        CoreNLP.POScodesFrench
 
 import           Uniform.Error
 import           Uniform.FileIO
@@ -65,11 +58,7 @@ import           Uniform.Strings
 
 import           Text.XML.HXT.Core hiding (when)
 
---import           CoreNLP.POScodes
 import           CoreNLP.Defs0
---import NLP.Corpora.Conll (Tag(..))
--- import CoreNLP.ReadDoc0
--- import           CoreNLP.DependencyCodes
 import Data.Maybe
 
 
@@ -326,62 +315,3 @@ parseOne ph text = runX (readString [withValidate no]  (t2s text)
 --parseOnee :: (NLP.POStags POStagConll) => postag -> Text -> IO [Doc0 POStagConll]
 --parseOnee ph text = runX (readString [withValidate no]  (t2s text)
 --                                    >>> getDoc0x)
-test_xml_0_Engl :: IO ()
-test_xml_0_Engl = do
-        r <-parseOne (undef "xx32" :: Conll.POStag ) doc001
-        putIOwords ["test_xml_0_Engl", showT r]
---        assertEqual ([Doc0{docSents = [], docCorefs = []}]::[Doc0 POStagConll]) r
-        assertEqual resEng r
-
-test_xml_0_DU :: IO ()
-test_xml_0_DU = do
-        r <-parseOne (undef "xx33" :: UD.POStag) doc001 -- no parse RD is not a UD POS tag. what is it?
-        putIOwords ["test_xml_0_DU", showT r]
-        assertEqual resUD r
-
-doc001 ::Text
--- code is RD but recognized as Unk
---doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
-doc001 = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
-
-doc001ud ::Text
--- code is X
---doc001 = "</ source=\"<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>RD</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root><//>"
-doc001ud = "<root>   <document>    <docDate>2018-01-09</docDate>    <sentences>      <sentence id=\"1\">        <tokens>          <token id=\"1\">            <word>Lo</word>            <lemma>il</lemma>            <CharacterOffsetBegin>0</CharacterOffsetBegin>            <CharacterOffsetEnd>2</CharacterOffsetEnd>            <POS>X</POS>            <NER>O</NER>          </token>        </tokens>    </sentence>    </sentences>  </document></root>"
-
-resEng :: [Doc0 Conll.POStag]
-resEng = [Doc0{docSents =
-        [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
-                   stoks =
-                     [Token0{tid = TokenID0{untid0 = 1},
-                             tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
-                             tbegin = 0, tend = 2, tpos = Conll.Unk, tpostt = "", tner = [O],
-                             tposOrig = "RD" ,
-                             tspeaker = []}],
-                   sdeps = Nothing}],
-      docCorefs = []}]
-
-resUD :: [Doc0 UD.POStag]
-resUD = [Doc0{docSents =
-                [Sentence0{sid = SentID0{unSentID0 = 1}, sparse = "",
-                  stoks =
-                     [Token0{tid = TokenID0{untid0 = 1},
-                             tword = Wordform0{word0 = "Lo"}, tlemma = Lemma0{lemma0 = "il"},
-                             tbegin = 0, tend = 2, tpos = UD.X, tpostt = "", tner = [O],
-                             tposOrig = "RD",
-                             tspeaker = []}],
-                   sdeps = Nothing}],
-      docCorefs = []}]
-
-test_parsePosConll = assertEqual (Conll.Unk::Conll.POStag)  (NLP.parseTag  "xx")
-test_parsePosUD = assertEqual (UD.X::UD.POStag)  (NLP.parseTag  "xx")
-
-----getDoc0 :: _ ->  Doc0 postag
---getDoc0x   = atTag "document" >>>
---    proc x -> do
-----        s <- getSentences ph  -< x
-----        c <- getCoref0' -< x
---        returnA -< Doc0 [] []
-----      where getCoref0' = (getCoref0)  `orElse` (arr (const []))
-
--- ende

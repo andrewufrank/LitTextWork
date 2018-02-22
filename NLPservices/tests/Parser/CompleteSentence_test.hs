@@ -1,9 +1,11 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Convert the output from the tagger to simple structure
+-- Module      :  complete the sentence in Defs0 mit lemma and a second PoS
 -- Copyright   : af
 --
---
+-- conversin F -> G
+-- is calling sentence by sentence for german lemmatization
+-- if other lemmatization are necessary, then select different port
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -11,63 +13,70 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 -- {-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE ScopedTypeVariables
+--        , BangPatterns
+            , UndecidableInstances
+         #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 --{-# OPTIONS_GHC -w #-}
 
-module Parser.ConvertTaggerOutput (convertTT
-    , TTdata (..)
-    , htf_thisModulesTests
-    )   where
+module Parser.CompleteSentence_test   where
 
 import           Test.Framework
---import           Test.Invariant
-import Uniform.Strings
 import Uniform.Error
-import Uniform.Zero
-import qualified System.IO as IO
---import NLP.CallTagger2
+import Producer.Servers
+import Parser.ConvertTaggerOutput--import NLP.CallTagger2
+import CoreNLP.Defs0
+import NLP.Corpora.Conll
+--import BuchCode.BuchToken (LanguageCode(..))
+
+import Uniform.HttpCallWithConduit
+import Parser.CompleteSentence
+
+test_emtpty = assertEqual 1 1
 
 
-data TTdata = TTdata {ttwf::Text  -- the input wordform
-                      , ttpos :: Text  -- the tree tager POS value
-                      , ttlemma :: Text }
-              | TTcode Text   -- the code ending the sentence
-              | TTpage Text Text -- a page number code
-                      deriving (Show, Eq)
-                      -- the code adn page is actually not used
-                      -- produced only when SGML tags in the input
-
--- putIOwordsT :: [Text] -> ErrIO ()
--- putIOwordsT = putIOwords
-
-convertTT :: Text -> [TTdata]
-convertTT = map (toTT . words') . lines'
-
-toTT :: [Text] -> TTdata
--- ^ parse one line of the result
-toTT [w,p,l] = TTdata {ttwf=w, ttpos=p, ttlemma=l}
-toTT [c,n] = TTpage c n
-toTT [c] = TTcode c
-toTT x = errorT ["toTT not expecting", unwords' x]
-
-englTTres = [TTdata{ttwf = "This", ttpos = "DT", ttlemma = "this"},
- TTdata{ttwf = "is", ttpos = "VBZ", ttlemma = "be"},
- TTdata{ttwf = "a", ttpos = "DT", ttlemma = "a"},
- TTdata{ttwf = "test", ttpos = "NN", ttlemma = "test"}]
-
-test_convertTTengl = do
-      let c = convertTT englRes
---      putIOwords ["result", showList' c]
-      assertEqual englTTres c
-
-germanTTRes = [TTdata{ttwf = "Ein", ttpos = "ART", ttlemma = "eine"},
- TTdata{ttwf = "anderer", ttpos = "PIAT", ttlemma = "andere"},
- TTdata{ttwf = "Satz", ttpos = "NN", ttlemma = "Satz"},
- TTdata{ttwf = ".", ttpos = "$.", ttlemma = "."}]
-
-englRes = "This\tDT\tthis\nis\tVBZ\tbe\na\tDT\ta\ntest\tNN\ttest\n"
+--s0 =  Sentence0 {sid = SentID0 {unSentID0 = 1}
+--, sparse = "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n"
+--    , stoks = [Token0 {tid = TokenID0 {untid0 = 1}, tword = Wordform0 {word0 = "Unsere"}
+--    , tlemma = Lemma0 {lemma0 = "unsere"}, tbegin = 0, tend = 6, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
+--    ,Token0 {tid = TokenID0 {untid0 = 2}, tword = Wordform0 {word0 = "Namen"}, tlemma = Lemma0 {lemma0 = "namen"}
+--    , tbegin = 7, tend = 12, tpos = NN, tpostt = "", tner = ["O"], tspeaker = []},Token0 {tid = TokenID0 {untid0 = 3}
+--    , tword = Wordform0 {word0 = "werden"}, tlemma = Lemma0 {lemma0 = "werden"}
+--    , tbegin = 13, tend = 19, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}
+--    ,Token0 {tid = TokenID0 {untid0 = 4}, tword = Wordform0 {word0 = "lebendig"}, tlemma = Lemma0 {lemma0 = "lebendig"}
+--    , tbegin = 20, tend = 28, tpos = Unk, tpostt = "", tner = ["O"], tspeaker = []}]
+--    , sdeps = Nothing}
+----    ], docCorefs = []
+--
+--s9 = Sentence0{sid = SentID0{unSentID0 = 1},
+--          sparse =
+--            "(ROOT\n  (NUR\n    (S\n      (NP (PPOSAT Unsere) (NN Namen))\n      (VAFIN werden) (ADJD lebendig))))\n\n",
+--          stoks =
+--            [Token0{tid = TokenID0{untid0 = 1},
+--                    tword = Wordform0{word0 = "Unsere"},
+--                    tlemma = Lemma0{lemma0 = "unser"}, tbegin = 0, tend = 6,
+--                    tpos = Unk, tpostt = "PPOSAT", tner = ["O"], tspeaker = []},
+--             Token0{tid = TokenID0{untid0 = 2},
+--                    tword = Wordform0{word0 = "Namen"},
+--                    tlemma = Lemma0{lemma0 = "Name"}, tbegin = 7, tend = 12, tpos = NN,
+--                    tpostt = "NN", tner = ["O"], tspeaker = []},
+--             Token0{tid = TokenID0{untid0 = 3},
+--                    tword = Wordform0{word0 = "werden"},
+--                    tlemma = Lemma0{lemma0 = "werden"}, tbegin = 13, tend = 19,
+--                    tpos = Unk, tpostt = "VAFIN", tner = ["O"], tspeaker = []},
+--             Token0{tid = TokenID0{untid0 = 4},
+--                    tword = Wordform0{word0 = "lebendig"},
+--                    tlemma = Lemma0{lemma0 = "lebendig"}, tbegin = 20, tend = 28,
+--                    tpos = Unk, tpostt = "ADJD", tner = ["O"], tspeaker = []}],
+--          sdeps = Nothing}
+--test_complete :: IO ()
+--test_complete = do
+--    s1 <- runErr $ completeSentence False (addPort2URI serverBrest treeTaggerPort )  s0
+--    case s1 of
+--        Left msg -> errorT ["test complete", msg]
+--        Right s2 -> assertEqual s9 s2
 
 {-
 -- try with paragrahs
@@ -134,13 +143,10 @@ cres = [TTpage "<p" "nr=1>",TTdata {ttwf = "Ein", ttpos = "ART", ttlemma = "eine
 
 -}
 --
-test_convertTTgerman = do
-      let c = convertTT germanRes
+--test_convertTTgerman = do
+--      let c = convertTT germanRes
 --      putIOwords ["result", showList' c]
-      assertEqual germanTTRes c
-
-germanRes = "Ein\tART\teine\nanderer\tPIAT\tandere\nSatz\tNN\tSatz\n.\t$.\t.\n"
-
+--      assertEqual germanTTRes c
 --
 -- test_convert_mutliSentence_TT = do
 --       res1 <- nlpProcess2 (t2b . unwords' $ tinp)
