@@ -6,7 +6,7 @@
 -- | form pieces of literal text which are reasonably sized
 
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -25,8 +25,8 @@ module Parser.FormNLPsnips
 --    )
     where
 
-import           Test.Framework
-import Uniform.TestHarness
+--import           Test.Framework
+--import Uniform.TestHarness
 import Data.Maybe -- todo
 import Lines2para.Lines2para
 import Lines2para.HandleLayout
@@ -51,17 +51,6 @@ formSnips (n1:n2:ns) =  case mergeNLPtext n1 n2 of
 minSnipSize = 5000 -- 1000 -- 5000 -- char
 maxSnipSize = 10000 -- 2000  -- 10000
 
-test_1_D_DA = testFile2File "resultD1" "resultDA1" formSnips
-test_2_D_DA = testFile2File "resultD2" "resultDA2" formSnips
-test_3_D_DA = testFile2File "resultD3" "resultDA3" formSnips
-test_4_D_DA = testFile2File "resultD4" "resultDA4" formSnips
-test_5_D_DA = testFile2File "resultD5" "resultDA5" formSnips
-test_6_D_DA = testFile2File "resultD6" "resultDA6" formSnips
-test_8_D_DA = testFile2File "resultD8" "resultDA8" formSnips
-test_9_D_DA = testFile2File "resultD9" "resultDA9" formSnips
-test_10_D_DA = testFile2File "resultD10" "resultDA10" formSnips
-test_11_D_DA = testFile2File "resultD11" "resultDA11" formSnips
-test_12_D_DA = testFile2File "resultD12" "resultDA12" formSnips
 
 mergeNLPtext :: Snip -> Snip -> Maybe Snip
 -- merge two text if same language and size less than maxSnipSize
@@ -78,18 +67,5 @@ mergeNLPtext a b = if sameLang a b && (tz3textLength a + tz3textLength b) < maxS
 --        blength = lengthChar . tz3text $ b
         sameLang a b = sameLanguageLC (tz3text a) (tz3text b)
 
----- test mergeNLP
---text1 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
---        tz3text = LCtext "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme ."  German}
---text2 = tz3fillLength $ Snip {tz3loc = TextLoc {tlpage = Just "7", tlline = 59}, tz3para = ParaNum 11,
---        tz3text = LCtext "die ich dann mit Schminke korrigierte."  German}
---t12 =  Just . tz3fillLength $
---  (Snip{tz3loc = TextLoc{tlpage = Just "7", tlline = 59},
---           tz3para = ParaNum 11,
---           tz3text = LCtext
---             "Neben dem Spiegel hing in einem Rahmen eine Portraitaufnahme . die ich dann mit Schminke korrigierte."
---              German})
---
---test_mergeNLP = assertEqual    t12  (mergeNLPtext text1 text2)
 
 

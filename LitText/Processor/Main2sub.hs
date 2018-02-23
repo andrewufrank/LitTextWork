@@ -6,7 +6,7 @@
 -- |  the common process to producing the lit and nlp triples
 -- could test initially if the services (treetagger, fuseki, corenlp are available
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -17,10 +17,9 @@
 {-# OPTIONS_GHC -w #-}
 
 module Processor.Main2sub (mainLitAndNLPproduction
-    , htf_thisModulesTests
         ) where
 
-import           Test.Framework
+--import           Test.Framework
 import Parser.ReadMarkupAB
 import           BuchCode.MarkupText
 import Parser.ProduceLayout

@@ -37,6 +37,11 @@ import Data.List (partition)
 -- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
 import Parser.ProduceNLPtriples
 
+import Parser.ProduceLit
+
+test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
+                (mkRDFtype ( "Werk"::Text ))
+
 
 -- cannot be used, as result1A is in LitText, which is above
 --testOP_E_G :: (Show postag,  POStags postag) => TextDescriptor -> [Doc0 postag] ->  [Triple]

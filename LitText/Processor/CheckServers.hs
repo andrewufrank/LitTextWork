@@ -5,7 +5,7 @@
 --
 -- |  check whether the servers are working
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -20,7 +20,7 @@ module Processor.CheckServers
     (module Processor.CheckServers
     ) where
 
-import           Test.Framework
+--import           Test.Framework
 
 --import Uniform.HttpURI
 import Uniform.HttpCallWithConduit
@@ -38,9 +38,6 @@ checkAll = do
         tt <- check17701tt
         return (concat' [e,g,tt])
 
-test_checkAll = do
-    r <-  (runErr checkAll)
-    assertEqual (Right "") r
 
 check9000english :: ErrIO Text
 -- ^ test the NLP server for english
