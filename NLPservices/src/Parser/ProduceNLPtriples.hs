@@ -189,7 +189,11 @@ mkCorefTriple2 lang snip coref i  = map (mkRefs repSigl) mentSigl
 
             mentions = (corefMents coref)
             (rep,norep) = partition mentRep mentions
-            rep' = headNote "mkCorefTriple2 rep not present" rep :: Mention0
+
+            rep' = case length rep of
+                1 -> headNote "mkCorefTriple2 rep not present" rep :: Mention0
+                _ -> errorT ["mkCoreTriple2 - not a single true rep",
+                        showT mentions]
             heads = map mentHead norep
                     -- the heads are the references
 
