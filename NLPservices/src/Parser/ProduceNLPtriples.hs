@@ -184,16 +184,18 @@ mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
 -- ^ gives a single set of coreferences  - int is to produce id -- not required
 -- ^ produces triples from the mention to the representative one
 
-mkCorefTriple2 lang snip coref i  = map (mkRefs repSigl) mentSigl
+mkCorefTriple2 lang snip coref i  = if null mentions then []
+                                        else map (mkRefs repSigl) mentSigl
     where
 
-            mentions = (corefMents coref)
+            mentions = corefMents coref
+
             (rep,norep) = partition mentRep mentions
 
             rep' = case length rep of
                 1 -> headNote "mkCorefTriple2 rep not present" rep :: Mention0
-                _ -> errorT ["mkCoreTriple2 - not a single true rep",
-                        showT mentions]
+                _ -> errorT ["mkCoreTriple2 - mentions exist, but not a single true rep",
+                        showT mentions, showT rep]
             heads = map mentHead norep
                     -- the heads are the references
 
