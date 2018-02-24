@@ -100,19 +100,4 @@ bomWarning v = do  -- not required - parser filter it out
     return ()
 
 
-fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
-                -> TextDescriptor
-
--- construct at text state with authorDir and buchFilename as FilePath
-fillTextState3a litdirs server author buch includeText = TextDescriptor {
-    sourceMarkup = (source litdirs) </> (author </> buch)
-    , destNT = (dest litdirs) </> (author </> buch)
-    , gzipFlag = False
-    , destHandle = Nothing
-    , nlpServer = server
-    , authorDir = s2t author
-    , buchName = s2t buch
-    , includeText =  includeText
-    , txPosTagset = ""   -- take default
-    }
 

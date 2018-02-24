@@ -85,7 +85,7 @@ test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
 --produceNLPtest ::  TextDescriptor ->  [TZ2] -> ErrIO ()
 produceNLPtest textstate tzs  = do
         ts2 <- produceNLP textstate tzs
-        closeHandleTriples ts2
+        closeHandleTriples . ntdescriptor $ts2
         return ()
 
 

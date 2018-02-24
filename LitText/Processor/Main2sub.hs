@@ -50,7 +50,9 @@ mainLitAndNLPproduction flags  textstate = do
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
     textstate2 <- if includeText textstate
-                then  writeHandleTriples textstate layoutTriples
+                then do
+                    nt2 <-  writeHandleTriples (ntdescriptor textstate) layoutTriples
+                    return (textstate{ntdescriptor = nt2})
                 else return textstate
 
     let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BAD -> BAE   in LinesToParagraph
@@ -63,8 +65,9 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    textstate3 <- writeHandleTriples textstate2 litTriples
---        if includeText textstate
+    ntdesc3 <- writeHandleTriples (ntdescriptor textstate2) litTriples
+    let textstate3 = textstate2{ntdescriptor = ntdesc3}
+    --        if includeText textstate
 --                                then writeHandleTriples textstate2 litTriples
 --                                else return textstate2
 
@@ -88,7 +91,8 @@ mainLitAndNLPproduction flags  textstate = do
 --           , showT . graph $ textstate, " \n"
 --            , unlines' . map showT $ responses
             ]
-    textstate4 <- case destHandle textstate3 of
-        Nothing -> return textstate3
-        Just h -> closeHandleTriples textstate3
+    ntstate4 <- case destHandle (ntdescriptor textstate3) of
+        Nothing -> return (ntdescriptor textstate3)
+        Just h -> closeHandleTriples (ntdescriptor textstate3)
+    let textstate4 = textstate3 {ntdescriptor = ntstate4}
     return ()

@@ -80,13 +80,13 @@ processOneMarkup4  flags  server authorReplacement ntdir   file = do
         textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement flags2
     -- forces gzip in fillTextState4a
     putIOwords ["\n processOneMarkup", showT textstate2  ]
-    if  gzipFlag textstate2
+    if  gzipFlag . ntdescriptor $ textstate2
         then do
-            ntgzExist <- exist6 (destNT textstate2) ntFileTriplesGZip
+            ntgzExist <- exist6 (destNT . ntdescriptor $ textstate2) ntFileTriplesGZip
             processNeeded <-
                 if ntgzExist
                 then do
-                    nttime <- modificationTime6 (destNT textstate2) ntFileTriplesGZip
+                    nttime <- modificationTime6 (destNT . ntdescriptor $ textstate2) ntFileTriplesGZip
                     markuptime <- getFileModificationTime file
                     return $ nttime < markuptime
                 else

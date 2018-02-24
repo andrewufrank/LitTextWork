@@ -190,10 +190,7 @@ data TextDescriptor = TextDescriptor
     {                -- the projp buchcode gives the code for the book,
                 -- add the element number
      sourceMarkup :: Path Abs File -- the markup file
-     , destNT :: Path Abs File   -- the nt file
-     , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
      -- selects then the type of the ntfile (nt or nt.gz)
-     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , nlpServer :: URI -- ^ where the nlp server is
     , authorDir    :: Text -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
@@ -203,7 +200,15 @@ data TextDescriptor = TextDescriptor
 --                    (false - only the analysis, sentence can be reconstructed
 --                      but not the remainder of the text)
     , txPosTagset :: Text
+    , ntdescriptor :: NTdescriptor
     } deriving (Show, Eq)
+
+data NTdescriptor = NTdescriptor {
+-- ^ description of NT file
+       destNT :: Path Abs File   -- the nt file
+     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
+     , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
+    } deriving (Show,  Eq)
 
 --fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
 --                -> TextDescriptor
@@ -249,20 +254,46 @@ fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> LitTe
 -- output is gzip, text is not included
 fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
         sourceMarkup = file
-        , destNT = (ntdir </> filename) :: Path Abs File
-        , gzipFlag = True
-        , destHandle =  Nothing
         , nlpServer = server
         , authorDir = authordir
         , buchName = buchname
         , includeText = flagIncludeText flags
         , txPosTagset = if flagFrenchUD flags then "FrenchUD" else ""
+        , ntdescriptor = fillNTdescriptor ntdir filename True
         }
 --        fillTextState3 litdirs server author buch
     where
             filename = getFileName file :: Path Rel File
 --             = getImmediateParentDir fp
 --            buch = getNakedFileName fp
+
+fillNTdescriptor :: Path Abs Dir -> Path Rel File -> Bool -> NTdescriptor
+fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
+          destNT = (ntdir </> filename) :: Path Abs File
+        , gzipFlag = gzip
+        , destHandle =  Nothing
+        }
+
+fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
+                -> TextDescriptor
+
+-- construct at text state with authorDir and buchFilename as FilePath
+fillTextState3a litdirs server author buch includeText = TextDescriptor {
+    sourceMarkup = (source litdirs) </> (author </> buch)
+--    , destNT = (dest litdirs) </> (author </> buch)
+--    , gzipFlag = False
+--    , destHandle = Nothing
+    , nlpServer = server
+    , authorDir = s2t author
+    , buchName = s2t buch
+    , includeText =  includeText
+    , txPosTagset = ""   -- take default
+    , ntdescriptor = fillNTdescriptor (dest litdirs) author_buch False
+    }
+        where
+            author_buch = makeRelFile (author </> buch) :: Path Rel File
+--            author1 = author litdirs
+--            buch1 = buch litdirs
 
 --test_fillTextState11 = assertEqual res10 res
 --    where

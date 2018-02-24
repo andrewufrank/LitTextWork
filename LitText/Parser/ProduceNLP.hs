@@ -61,12 +61,12 @@ produceNLP  textstate tzs =  do
             posTag = txPosTagset textstate
             debug = False
     triples :: [[Triple]] <-zipWithM (convertOneSnip2Triples debug  textstate) (map SnipID [1..]) snips2
-    ntz1 <- foldM writeHandleTriples textstate triples
+    ntz1 <- foldM writeHandleTriples (ntdescriptor textstate) triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
 --            ,"snip size", showT $ tz3textLength snip
 --            ,"from text", buchName textstate
 --            ]
-    return ntz1
+    return (textstate{ntdescriptor= ntz1})
 
 
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
@@ -127,7 +127,7 @@ convertOneSnip2Triples debugNLP textstate snipnr snip = do
 
 
 
-openHandleTriples  :: TextDescriptor -> ErrIO TextDescriptor
+openHandleTriples  :: NTdescriptor -> ErrIO NTdescriptor
 openHandleTriples textstate  = do
     let mhand = destHandle textstate
     case mhand of
@@ -146,10 +146,10 @@ openHandleTriples textstate  = do
 --             putIOwords ["openHandleTriples is open", "to", showT $ destNT textstate]
              return textstate
 
---openHandleTriples2  :: TextDescriptor -> ErrIO TextDescriptor
+--openHandleTriples2  :: NTdescriptor -> ErrIO NTdescriptor
 
 
-writeHandleTriples :: TextDescriptor -> [Triple] -> ErrIO TextDescriptor
+writeHandleTriples :: NTdescriptor -> [Triple] -> ErrIO NTdescriptor
 writeHandleTriples  textstate tris = do
 --                putIOwords ["writeHandleTriples"]
                 textstate2 <- openHandleTriples textstate
@@ -159,7 +159,7 @@ writeHandleTriples  textstate tris = do
                     else writeHandle6 hand ntFileTriples tris
                 return textstate2
 
-closeHandleTriples :: TextDescriptor ->  ErrIO TextDescriptor
+closeHandleTriples :: NTdescriptor ->  ErrIO NTdescriptor
 closeHandleTriples textstate = do
                 let hand = fromJustNote "closeHandleTriples" (destHandle textstate)
                 if gzipFlag textstate
