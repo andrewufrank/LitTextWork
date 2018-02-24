@@ -39,7 +39,7 @@ module Parser.ProduceNLP
 import Parser.ProduceDocCallNLP
 import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
-import          Data.RDF.FileTypes (ntFileTriples, ntFileTriplesGZip)
+import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
@@ -126,47 +126,6 @@ convertOneSnip2Triples debugNLP textstate snipnr snip = do
     return $ buchtrip : paratrip : trips2
 
 
-
-openHandleTriples  :: NTdescriptor -> ErrIO NTdescriptor
-openHandleTriples textstate  = do
-    let mhand = destHandle textstate
-    case mhand of
-        Nothing ->  do
---                putIOwords ["openHandleTriples", "to", showT $ destNT textstate]
-                hand <- if gzipFlag textstate
-                    then openHandle6 (destNT textstate) ntFileTriplesGZip
-                    else openHandle6 (destNT textstate)  ntFileTriples
-                return textstate{destHandle = Just hand}
-            `catchError` \e -> do
-                putIOwords ["openHandleTriples - error ", e , "file", showT $ destNT textstate]
---                openHandleTriples2 textstate
-                return textstate
-
-        Just hand -> do
---             putIOwords ["openHandleTriples is open", "to", showT $ destNT textstate]
-             return textstate
-
---openHandleTriples2  :: NTdescriptor -> ErrIO NTdescriptor
-
-
-writeHandleTriples :: NTdescriptor -> [Triple] -> ErrIO NTdescriptor
-writeHandleTriples  textstate tris = do
---                putIOwords ["writeHandleTriples"]
-                textstate2 <- openHandleTriples textstate
-                let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
-                if gzipFlag textstate
-                    then writeHandle6 hand ntFileTriplesGZip tris
-                    else writeHandle6 hand ntFileTriples tris
-                return textstate2
-
-closeHandleTriples :: NTdescriptor ->  ErrIO NTdescriptor
-closeHandleTriples textstate = do
-                let hand = fromJustNote "closeHandleTriples" (destHandle textstate)
-                if gzipFlag textstate
-                    then closeHandle6 (destNT textstate) ntFileTriplesGZip hand
-                    else closeHandle6 (destNT textstate) ntFileTriples hand
-                let textstate2 = textstate{destHandle=Nothing}
-                return textstate2
 
 
 

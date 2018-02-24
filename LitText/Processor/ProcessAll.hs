@@ -42,7 +42,7 @@ import Uniform.Error
 import Uniform.FileIO
 import Uniform.FileStatus
 --import Uniform.Strings hiding ((</>),(<|>))
-import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
+import          Data.RDF.FileTypes  -- (ntFileTriples,ntFileTriplesGZip)
 import Process.UtilsParseArgs ( LitTextFlags (..) )
 
 --processAll :: Bool ->  LitDirs-> URI -> Path ar File  -> ErrIO ()

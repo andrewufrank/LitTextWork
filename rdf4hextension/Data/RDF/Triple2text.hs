@@ -15,6 +15,7 @@
 
 module Data.RDF.Triple2text
     (module Data.RDF.Triple2text
+    , RDF.Triple
     -- , module Data.RDF   -- is imported qualified
     ) where
 

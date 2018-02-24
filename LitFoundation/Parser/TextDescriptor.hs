@@ -28,6 +28,7 @@ import System.IO (Handle)  -- todo include in FileIO exports
 import Uniform.HttpURI (URI)
 import Producer.Servers  (serverBrest)  -- for test
 import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
+import Data.RDF.FileTypes
 import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Parser.LanguageTypedText
@@ -64,7 +65,7 @@ data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int} deriving (Read, Sho
 -- page number (tlline) is text, to deal with III etc.
     -- removed paraid
 
-instance Zeros TextLoc where zero = TextLoc zero zero
+instance Zeros TextLoc where zero = TextLoc Nothing zero
 
 -- the type of the line
 data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
@@ -203,12 +204,6 @@ data TextDescriptor = TextDescriptor
     , ntdescriptor :: NTdescriptor
     } deriving (Show, Eq)
 
-data NTdescriptor = NTdescriptor {
--- ^ description of NT file
-       destNT :: Path Abs File   -- the nt file
-     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
-     , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
-    } deriving (Show,  Eq)
 
 --fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
 --                -> TextDescriptor

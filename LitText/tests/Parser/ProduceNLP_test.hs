@@ -31,6 +31,7 @@ module Parser.ProduceNLP_test where
 
 import           Test.Framework
 import Uniform.TestHarness
+import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 --import Parser.FormNLPsnips
 --import Parser.FilterTextForNLP
 --import Parser.ProduceDocCallNLP
