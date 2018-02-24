@@ -49,9 +49,16 @@ Test-Suite  TestAuto
         , HTF
         , uniform-strings
         , uniform-fileio
+        , uniform-error
         , uniform-convenience
         , litFoundation
 --        , rdf4hextension
-    hs-source-dirs: src
+    hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
+        Parser.TextDescriptor_test
+        Parser.LanguageTypedText_test
+        Producer.Servers_test
+        Process.UtilsParseArgs_test
+        Process.UtilsProcessing_test
+        BuchCode.BuchToken_test

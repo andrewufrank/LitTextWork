@@ -374,7 +374,7 @@ data NTdescriptor = NTdescriptor {
        destNT :: Path Abs File   -- the nt file
      , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
-    } deriving (Show,  Eq)
+    } deriving (Show,  Read, Eq)
 
 openHandleTriples  :: NTdescriptor -> ErrIO NTdescriptor
 openHandleTriples textstate  = do

@@ -5,7 +5,7 @@
 --
 -- | the definitions of the descrption of the text and related types (e.g. Language)
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE OverloadedStrings   #-}
@@ -29,7 +29,7 @@ import Uniform.HttpURI (URI)
 import Producer.Servers  (serverBrest)  -- for test
 import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import Data.RDF.FileTypes
-import           Test.Framework
+--import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Parser.LanguageTypedText
 import Process.UtilsParseArgs (LitTextFlags (..) )
@@ -202,7 +202,7 @@ data TextDescriptor = TextDescriptor
 --                      but not the remainder of the text)
     , txPosTagset :: Text
     , ntdescriptor :: NTdescriptor
-    } deriving (Show, Eq)
+    } deriving (Show, Read, Eq)
 
 
 --fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath

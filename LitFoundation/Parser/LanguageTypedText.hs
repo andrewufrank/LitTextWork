@@ -7,7 +7,7 @@
 
 
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -23,7 +23,7 @@ module Parser.LanguageTypedText
 --    , module Parser.NLPvocabulary
     ) where
 
-import           Test.Framework
+--import           Test.Framework
 --import Uniform.TestHarness (testVar3File)
 import Uniform.Zero (Zeros (..))
 import Uniform.Strings

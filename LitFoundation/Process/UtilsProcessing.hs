@@ -5,7 +5,7 @@
 --
 -- | utilities for the query and storage processing
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -26,7 +26,7 @@ module Process.UtilsProcessing
     )
     where
 
-import           Test.Framework
+--import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import Process.UtilsParseArgs
 import Producer.Servers (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
