@@ -183,11 +183,6 @@ oneMarkerTriple lineSigl intText =
         mSigl = inLineMarkerSigl lineSigl . fst $ intText
 
 
-layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test BAD -> J
-
---layoutTriples textstate =  unlines' .  map triple2text . produceLayoutTriples textstate
--- too expensive to map triple2text (at least on oporto)
-layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstate
 
 
 

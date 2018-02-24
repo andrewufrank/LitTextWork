@@ -42,6 +42,11 @@ import Parser.NLPvocabulary
 import Parser.ProduceLayout
 
 
+layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test BAD -> J
+
+--layoutTriples textstate =  unlines' .  map triple2text . produceLayoutTriples textstate
+-- too expensive to map triple2text (at least on oporto)
+layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstate
 
 
 test_1BAD_J = testVar3File result1A "resultBAD1" "resultJ1" layoutTriples
