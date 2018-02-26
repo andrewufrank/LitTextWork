@@ -23,12 +23,12 @@
 
 module Lines2para.HandleLayout
     (module Lines2para.HandleLayout
-    , module BuchCode.MarkupText
+    , module Lines2para.MarkupText
     , module Uniform.Error
     ) where
 
 --import Test.Framework
-import BuchCode.MarkupText
+import Lines2para.MarkupText
 import           Data.List.Split
 -- todo strings
 import           Uniform.Error

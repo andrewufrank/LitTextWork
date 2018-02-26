@@ -53,7 +53,7 @@ library
         Lines2para.Lines2para
         Lines2para.Lines2ignore
         Lines2para.HandleLayout
-        BuchCode.MarkupText
+        Lines2para.MarkupText
         Processor.Main2sub
 --        Process.UtilsProcessing
 
@@ -87,7 +87,7 @@ Test-Suite LitTextTestAuto
         Lines2para.Lines2para_test
         Lines2para.Lines2ignore_test
         Lines2para.HandleLayout_test
-        BuchCode.MarkupText_test
+        Lines2para.MarkupText_test
 
 
 

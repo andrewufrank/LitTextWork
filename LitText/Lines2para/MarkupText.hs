@@ -22,8 +22,8 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 
-module BuchCode.MarkupText
-    (module BuchCode.MarkupText
+module Lines2para.MarkupText
+    (module Lines2para.MarkupText
     , module BuchCode.BuchToken
     ) where
 
