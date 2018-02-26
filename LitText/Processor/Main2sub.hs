@@ -55,24 +55,24 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
-    textstate2 <- if includeText textstate
-                then do
-                    nt2 <-  writeHandleTriples (ntdescriptor textstate) layoutTriples
-                    return (textstate{ntdescriptor = nt2})
-                else return textstate
+--    textstate2 <- if includeText textstate
+--                then do
+--                    nt2 <-  writeHandleTriples (ntdescriptor textstate) layoutTriples
+--                    return (textstate{ntdescriptor = nt2})
+--                else return textstate
 
-    let tzpara = paragraphsTZ2TZ2  tzlayout1  :: _   -- test BAD -> BAE   in LinesToParagraph
+    let tzpara = paragraphsTZ2TZ2  tzlayout1  :: [TZ2] -- test BAD -> BAE   in LinesToParagraph
 
     when debugLit $ putIOwords
             ["mainLitAndNLPproduction TZ available to produce litTriples \n"
             , unlines' . map showT $ tzpara]
 
-    let litTriples = produceLitTriples textstate2   tzpara  -- test BAE=C -> H and K (nt)
+    let litTriples = produceLitTriples textstate   tzpara  -- test BAE=C -> H and K (nt)
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    ntdesc3 <- writeHandleTriples (ntdescriptor textstate2) litTriples
-    let textstate3 = textstate2{ntdescriptor = ntdesc3}
+--    ntdesc3 <- writeHandleTriples (ntdescriptor textstate2) litTriples
+--    let textstate3 = textstate2{ntdescriptor = ntdesc3}
     --        if includeText textstate
 --                                then writeHandleTriples textstate2 litTriples
 --                                else return textstate2
@@ -90,15 +90,26 @@ mainLitAndNLPproduction flags  textstate = do
 
     --------------------------------------NLP  -- processing by paragraphs
 
-    responses <- produceNLP  textstate3 tzpara -- test D ->
+    nlpTriples <- produceNLPtriples  textstate tzpara -- test D ->
         -- argument is to show the xml
 
     putIOwords ["mainLitAndNLPproduction: triples stored in .nt file "
 --           , showT . graph $ textstate, " \n"
 --            , unlines' . map showT $ responses
             ]
-    ntstate4 <- case destHandle (ntdescriptor textstate3) of
-        Nothing -> return (ntdescriptor textstate3)
-        Just h -> closeHandleTriples (ntdescriptor textstate3)
-    let textstate4 = textstate3 {ntdescriptor = ntstate4}
+--    ntstate4 <- case destHandle (ntdescriptor textstate3) of
+--        Nothing -> return (ntdescriptor textstate3)
+--        Just h -> closeHandleTriples (ntdescriptor textstate3)
+--    let textstate4 = textstate3 {ntdescriptor = ntstate4}
+
+    let ntdescr = ntdescriptor textstate
+
+    bracketErrIO (openHandleTriples ntdescr )
+                (closeHandleTriples ntdescr )
+                (\h -> do
+                    writeHandleTriples ntdescr h layoutTriples
+                    writeHandleTriples ntdescr h litTriples
+                    writeHandleTriples ntdescr h nlpTriples
+                    )
+
     return ()

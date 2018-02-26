@@ -21,6 +21,7 @@
 
 module Data.RDF.FileTypes (
    module Data.RDF.FileTypes
+   , module Uniform.Error
 -- RDFgraph (..), unRDFgraph
 -- , ntFile, ntFileTriples)
   ) where
@@ -30,7 +31,7 @@ import Data.RDF.Triple2text (triple2text, Triple)
 import qualified          System.IO as S
 import           Uniform.FileIO
 import           Uniform.FileIO (EpochTime, getFileModificationTime)
-
+import Uniform.Error
 import           Uniform.Strings hiding ((<.>), (</>))
 
 import Uniform.FileStrings

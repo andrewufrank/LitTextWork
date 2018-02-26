@@ -35,36 +35,22 @@ import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHan
 --import Parser.FormNLPsnips
 --import Parser.FilterTextForNLP
 --import Parser.ProduceDocCallNLP
-import Parser.ProduceNLPtriples hiding ((</>))
-import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
---import          Data.RDF.FileTypes (ntFileTriples, ntFileTriplesGZip)
-import Data.Maybe (catMaybes)  -- todo
--- for tests:
+--import Parser.ProduceNLPtriples hiding ((</>))
+--import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
+----import          Data.RDF.FileTypes (ntFileTriples, ntFileTriplesGZip)
+--import Data.Maybe (catMaybes)  -- todo
+---- for tests:
 import Parser.ReadMarkupAB_test
-import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
-import Parser.ProduceDocCallNLP
-import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
-import Parser.FilterTextForNLP  (prepareTZ4nlp)
-import Parser.FormNLPsnips (formSnips)
-import Parser.LanguageTypedText -- (LanguageTypedText (..) )
+--import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
+--import Parser.ProduceDocCallNLP
+--import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
+--import Parser.FilterTextForNLP  (prepareTZ4nlp)
+--import Parser.FormNLPsnips (formSnips)
+--import Parser.LanguageTypedText -- (LanguageTypedText (..) )
 import Parser.ProduceNLP
+import Uniform.Error
 
 
-
-snip4test :: [TZ2] -> [Snip]
-snip4test = prepareTZ4nlp ""
-
---test_1_C_D = testFile2File "resultBAE1" "resultD1" snip4test
---test_2_C_D = testFile2File "resultBAE2" "resultD2" snip4test
---test_3_C_D = testFile2File "resultBAE3" "resultD3" snip4test
---test_4_C_D = testFile2File "resultBAE4" "resultD4" snip4test
---test_5_C_D = testFile2File "resultBAE5" "resultD5" snip4test
---test_6_C_D = testFile2File "resultBAE6" "resultD6" snip4test
---test_8_C_D = testFile2File "resultBAE8" "resultD8" snip4test
---test_9_C_D = testFile2File "resultBAE9" "resultD9" snip4test
---test_10_C_D = testFile2File "resultBAE10" "resultD10" snip4test
---test_11_C_D = testFile2File "resultBAE11" "resultD11" snip4test
---test_12_C_D = testFile2File "resultBAE12" "resultD12" snip4test
 
 
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
@@ -85,9 +71,16 @@ test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
 
 --produceNLPtest ::  TextDescriptor ->  [TZ2] -> ErrIO ()
 produceNLPtest textstate tzs  = do
-        ts2 <- produceNLP textstate tzs
-        closeHandleTriples . ntdescriptor $ts2
-        return ()
+    trips <- produceNLPtriples textstate tzs
+    let ntdescr = ntdescriptor textstate
+
+    bracketErrIO (openHandleTriples ntdescr )
+                (closeHandleTriples ntdescr )
+                (\h -> do
+                    writeHandleTriples ntdescr h trips
+                    )
+
+    return ()
 
 
 --test_1_BAE_XproduceNLPtriples :: IO ()

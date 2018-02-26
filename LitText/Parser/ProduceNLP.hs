@@ -29,6 +29,8 @@
 
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
+    , module Parser.TextDescriptor
+    , Triple, Snip, SnipID (..)
 --    , TextDescriptor (..)
     ) where
 
@@ -54,19 +56,20 @@ import Parser.LanguageTypedText -- (LanguageTypedText (..) )
 
 -- main export
 
-produceNLP ::  TextDescriptor ->  [TZ2] -> ErrIO TextDescriptor -- test C  -> X
-produceNLP  textstate tzs =  do
+produceNLPtriples ::  TextDescriptor ->  [TZ2] -> ErrIO [Triple] -- test C  -> X
+produceNLPtriples  textstate tzs =  do
     let     snips1 = prepareTZ4nlp posTag tzs :: [Snip]
             snips2 = formSnips snips1  :: [Snip]
             posTag = txPosTagset textstate
             debug = False
     triples :: [[Triple]] <-zipWithM (convertOneSnip2Triples debug  textstate) (map SnipID [1..]) snips2
-    ntz1 <- foldM writeHandleTriples (ntdescriptor textstate) triples
+--    ntz1 <- foldM writeHandleTriples (ntdescriptor textstate) triples
+    return . concat $ triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
 --            ,"snip size", showT $ tz3textLength snip
 --            ,"from text", buchName textstate
 --            ]
-    return (textstate{ntdescriptor= ntz1})
+--    return (textstate{ntdescriptor= ntz1})
 
 
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
