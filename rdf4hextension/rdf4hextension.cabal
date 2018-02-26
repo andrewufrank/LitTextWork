@@ -51,6 +51,11 @@ Test-Suite  TestAuto
 --        , litFoundation
 --        , readMarkup
 --        , buchCode
-    hs-source-dirs: src
+    hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
+        Data.RDF.Extension_test
+--        Data.RDF.Prefs_test
+        Data.RDF.FileTypes_test
+--        Data.RDF.Predicates_test
+--        Data.RDF.Triple2text_test

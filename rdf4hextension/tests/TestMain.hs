@@ -10,7 +10,8 @@ module Main     where      -- must have Main (main) or Main where
 
 --import Uniform.Strings
 import           Test.Framework
-import {-@ HTF_TESTS @-}  Data.RDF.Extension
+import {-@ HTF_TESTS @-}  Data.RDF.Extension_test
+import {-@ HTF_TESTS @-}  Data.RDF.FileTypes_test
 
 main =  do
     putStrLn " Data.RDF.Extension\n"

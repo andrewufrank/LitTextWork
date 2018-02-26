@@ -4,7 +4,7 @@
 -- and not the prefix stuff, which goes to prefs
 --
 -- the URI are always open at end and connecting must add separator
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# OPTIONS_GHC -fno-warn-missing-methods  #-}
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns  #-}
@@ -25,7 +25,7 @@ module Data.RDF.Extension (
     )     where
 
 
-import           Test.Framework
+--import           Test.Framework
 import Text.Printf
 import           Data.Map            as Map (fromList)
 import           Data.RDF            (Node, Triple (..), lnode, objectOf,
@@ -227,14 +227,6 @@ zo n =
 --test_typed = assertEqual (TypedL "0" integerUri)
 --            (typedL "0" integerUri)
 
-test_typed0 = assertEqual (zo 0)
-            (mkTripleInteger s1 r1 0 )
-test_typed100 = assertEqual (zo 100)
-            (mkTripleInteger s1 r1 100 )
-test_typedneg1 = assertEqual (zo (-1))
-            (mkTripleInteger s1 r1 (-1) )
-test_typedneg20 = assertEqual (zo (-20))
-            (mkTripleInteger s1 r1 (-20) )
 
 rdfsURI =  "http://www.w3.org/2000/01/rdf-schema#"
 rdfURI =  "http://www.w3.org/1999/02/22-rdf-syntax-ns#"

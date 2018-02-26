@@ -40,12 +40,12 @@ import Uniform.Strings ((</>))  -- for PartURI
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 --import Uniform.TestHarness
-import Data.RDF.FileTypes
+import Data.RDF.FileTypes hiding ((</>), (<.>))
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Producer.Servers  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
-import Parser.NLPvocabulary
+import Parser.NLPvocabulary hiding ((</>), (<.>))
 
 litURItext =   (showT rdfBase) </> "lit_2014" :: PartURI
 dcURItext = "http://purl.org/dc/elements/1.1" :: PartURI

@@ -32,6 +32,6 @@ import Producer.Servers
 test_readURI = assertEqual localhost (read (show localhost))
 
 
-test_makeURIok = assertEqual "" (showT  serverBrest)
+test_makeURIok = assertEqual "http://nlp.gerastree.at" (showT  serverBrest)
 
-test_makeURIfail = assertEqual "" (showT . parseAbsoluteURI $ "127.0.0.1")
+test_makeURIfail = assertEqual "Nothing" (showT . parseAbsoluteURI $ "127.0.0.1")

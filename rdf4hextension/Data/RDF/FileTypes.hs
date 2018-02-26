@@ -22,6 +22,8 @@
 module Data.RDF.FileTypes (
    module Data.RDF.FileTypes
    , module Uniform.Error
+   , module Uniform.FileIO
+   , Triple
 -- RDFgraph (..), unRDFgraph
 -- , ntFile, ntFileTriples)
   ) where
@@ -30,7 +32,7 @@ import qualified Data.RDF        as RDF
 import Data.RDF.Triple2text (triple2text, Triple)
 import qualified          System.IO as S
 import           Uniform.FileIO
-import           Uniform.FileIO (EpochTime, getFileModificationTime)
+--import           Uniform.FileIO -- (EpochTime, getFileModificationTime)
 import Uniform.Error
 import           Uniform.Strings hiding ((<.>), (</>))
 
@@ -101,20 +103,27 @@ instance TypedFiles5 [RDF.Triple] GZip where
         return hand
 
     closeHandle6  fp tp hand = do
-        when rdfGraphDebug $ putIOwords ["closeHandle6 triples"]
+--        when rdfGraphDebug $
+        putIOwords ["closeHandle6 triples"]
         let ext = unExtension (tpext5 tp)
         let tmpext = Extension (ext <.> "tmp")
         closeFile2 hand
         let fn2 = setExtension tmpext  fp
         let fn1 = setExtension (tpext5 tp) fp
         renameFile fn2 fn1
-        when rdfGraphDebug $ putIOwords ["closeHandle6 triples", showT fn2]
+--        when rdfGraphDebug $
+        putIOwords ["closeHandle6 triples", showT fn2]
         return ()
 
 
     writeHandle6 hand  tp triples = do
-        when rdfGraphDebug $ putIOwords ["writeHandle6 triples"]
-        write2handle  hand (GZip.compress . b2bl . t2b . unlines' $ Prelude.map triple2text triples)
+--        when rdfGraphDebug $
+        putIOwords ["writeHandle6 triples gz"]
+        r <- write2handle  hand (GZip.compress . b2bl . t2b . unlines' $ Prelude.map triple2text triples)
+--        when rdfGraphDebug $
+        putIOwords ["writeHandle6 gz triples done "
+                    , showT r ]
+        return r
 
 --    exist6 fp tp = do
 --        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
@@ -143,7 +152,8 @@ instance TypedFiles5 [RDF.Triple] ()  where
         appendFile2 fn2 (unlines' $ Prelude.map triple2text triples)
 
     openHandle6 fp  tp = do
-        when rdfGraphDebug $ putIOwords ["openHandle6 triples"]
+--        when rdfGraphDebug $
+        putIOwords ["openHandle6 triples"]
         let ext = unExtension (tpext5 tp)
         let tmpext = Extension (ext <.> "tmp")
         let fn2 = setExtension tmpext  fp
@@ -152,24 +162,29 @@ instance TypedFiles5 [RDF.Triple] ()  where
         hand <- openFile2handle fn2 WriteMode
         -- should create or truncate the file, but not when the dir not exist
         --https://hackage.haskell.org/package/base-4.10.0.0/docs/System-IO.html#g:5
-        when rdfGraphDebug $ putIOwords ["openHandle6 triples", showT fn2]
+--        when rdfGraphDebug $
+        putIOwords ["openHandle6 triples", showT fn2]
         return hand
 
     closeHandle6  fp tp hand = do
-        when rdfGraphDebug $ putIOwords ["closeHandle6 triples"]
+--        when rdfGraphDebug $
+        putIOwords ["closeHandle6 triples"]
         let ext = unExtension (tpext5 tp)
         let tmpext = Extension (ext <.> "tmp")
         closeFile2 hand
         let fn2 = setExtension tmpext  fp
         let fn1 = setExtension (tpext5 tp) fp
         renameFile fn2 fn1
-        when rdfGraphDebug $ putIOwords ["closeHandle6 triples", showT fn2]
+--        when rdfGraphDebug $
+        putIOwords ["closeHandle6 triples", showT fn2]
         return ()
 
 
     writeHandle6 hand  tp triples = do
-        when rdfGraphDebug $ putIOwords ["writeHandle6 triples"]
+--        when rdfGraphDebug $
+        putIOwords ["writeHandle6 triples no gz"]
         write2handle  hand (unlines' $ Prelude.map triple2text triples)  -- special !
+        putIOwords ["writeHandle6 triples no gz done "]
 
 --    exist6 fp tp = do
 --        let fn2 =  setExtension (tpext5 tp)  fp :: Path Abs File
@@ -239,7 +254,7 @@ data NTdescriptor = NTdescriptor {
        destNT :: Path Abs File   -- the nt file
 --     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
-    } deriving (Show,  Read, Eq)
+    } deriving (Show, Eq)
 
 openHandleTriples  :: NTdescriptor -> ErrIO  Handle
 openHandleTriples textstate  = do
@@ -259,20 +274,22 @@ openHandleTriples textstate  = do
 
 writeHandleTriples :: NTdescriptor ->  Handle -> [Triple] -> ErrIO ()
 writeHandleTriples  textstate hand tris = do
---                putIOwords ["writeHandleTriples"]
+                putIOwords ["writeHandleTriples 2", showT textstate]
 --                mhand2 <- openHandleTriples textstate mhand1
 --                let hand = fromJustNote "writeHandleTriples" mhand2
-                if gzipFlag textstate
+                r <- if gzipFlag textstate
                     then writeHandle6 hand ntFileTriplesGZip tris
                     else writeHandle6 hand ntFileTriples tris
+                putIOwords ["writeHandleTriples done", showT r]
                 return ()
 
 closeHandleTriples :: NTdescriptor ->   Handle -> ErrIO ()
 closeHandleTriples textstate hand = do
 --                let hand = fromJustNote "closeHandleTriples" mhand
-                if gzipFlag textstate
+                r <- if gzipFlag textstate
                     then closeHandle6 (destNT textstate) ntFileTriplesGZip hand
                     else closeHandle6 (destNT textstate) ntFileTriples hand
 --                let textstate2 = textstate{destHandle=Nothing}
-                return ()
+                putIOwords ["closeHandleTriples done", showT r, showT textstate]
+                return r
 
