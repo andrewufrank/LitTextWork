@@ -266,7 +266,7 @@ fillNTdescriptor :: Path Abs Dir -> Path Rel File -> Bool -> NTdescriptor
 fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
           destNT = (ntdir </> filename) :: Path Abs File
         , gzipFlag = gzip
-        , destHandle =  Nothing
+--        , destHandle =  Nothing
         }
 
 fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
@@ -369,39 +369,4 @@ fillTextState3a litdirs server author buch includeText = TextDescriptor {
 --
 --     }                     deriving (Show, Eq)
 
---litTestDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"
---sourceE1 = TextSource {server = serverBrest, sourceDir = litTestDir}
---generalityE1 = DGoutDir litTestDir
---
---fillTextState2 :: TextSource -> DestGenerality -> FilePath -> FilePath -> TextState2
----- construct at text state with authorDir and buchFilename as FilePath
---fillTextState2 ts dg author buch = TextState2 {
---    source = ts
---    , authorDir = author
---    , buchname = buch
---    , textfilename = (sourceDir ts) </> (author </> buch)
---    , tripleOutDesc =  fillDestination dg author buch True
---    }
---
---fillDestination :: DestGenerality -> FilePath -> FilePath -> Bool -> DestDescriptor
----- | build the description of the destination
----- either a file or a uri with grah
----- later add handle with switch - true for file append output
----- false for use a handle
---fillDestination  (DGoutDir dir) author buch True = OutFile (dir </> (author </> buch))
---fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
---
---
---test_fillTextState10 = assertEqual res10 res
---    where
---        res = fillTextState2 sourceE1 generalityE1 "may" "test"
---res10 =  TextState2 {source = TextSource
---                        {server = makeURI "http://nlp.gerastree.at",
---                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
---                authorDir ="may",
---                buchname = "test",
---            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
---            tripleOutDesc = OutFile
---                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
---
 

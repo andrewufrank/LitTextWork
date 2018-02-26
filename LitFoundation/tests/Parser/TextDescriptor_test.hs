@@ -14,17 +14,17 @@
 module Parser.TextDescriptor_test where
 
 -- import           Data.RDF.Extension
-import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
-import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
-import System.IO (Handle)  -- todo include in FileIO exports
-import Uniform.HttpURI (URI)
-import Producer.Servers  (serverBrest)  -- for test
-import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
-import Data.RDF.FileTypes
+--import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
+--import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
+--import System.IO (Handle)  -- todo include in FileIO exports
+--import Uniform.HttpURI (URI)
+--import Producer.Servers  (serverBrest)  -- for test
+--import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
+--import Data.RDF.FileTypes
 import           Test.Framework
-import BuchCode.BuchToken hiding ((</>), (<.>))
-import Parser.LanguageTypedText
-import Process.UtilsParseArgs (LitTextFlags (..) )
+--import BuchCode.BuchToken hiding ((</>), (<.>))
+--import Parser.LanguageTypedText
+--import Process.UtilsParseArgs (LitTextFlags (..) )
 import Parser.TextDescriptor
 
 
@@ -38,16 +38,16 @@ import Parser.TextDescriptor
 --fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
 --
 --
-test_fillTextState10 = assertEqual res10 res
-    where
-        res = fillTextState2 sourceE1 generalityE1 "may" "test"
-res10 =  TextState2 {source = TextSource
-                        {server = makeURI "http://nlp.gerastree.at",
-                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
-                authorDir ="may",
-                buchname = "test",
-            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
-            tripleOutDesc = OutFile
-                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
+--test_fillTextState10 = assertEqual res10 res
+--    where
+--        res = fillTextState2 sourceE1 generalityE1 "may" "test"
+--res10 =  TextState2 {source = TextSource
+--                        {server = makeURI "http://nlp.gerastree.at",
+--                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
+--                authorDir ="may",
+--                buchname = "test",
+--            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
+--            tripleOutDesc = OutFile
+--                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
 
 

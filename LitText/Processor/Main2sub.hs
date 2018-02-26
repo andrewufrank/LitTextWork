@@ -37,15 +37,21 @@ import Process.UtilsParseArgs ( LitTextFlags (..) )
 mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction flags  textstate = do
     let debugLit = flagDebug flags
+
+    -- read text input
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
     --- convert to TextZeilen format
     ttext <- textstate2Text textstate -- test A - B (in this module)
+
+    -- convert text
     let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
     let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
     let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ1]
         -- ignore line, allCaps, language
         -- missing footnotes?
-    let layoutTriples = produceLayoutTriples textstate tzlayout1  -- BAD -> J
+
+    -- produce triples
+    let layoutTriples = produceLayoutTriples textstate tzlayout1 :: [Triple] -- BAD -> J
 
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
@@ -55,7 +61,7 @@ mainLitAndNLPproduction flags  textstate = do
                     return (textstate{ntdescriptor = nt2})
                 else return textstate
 
-    let tzpara = paragraphsTZ2TZ2  tzlayout1     -- test BAD -> BAE   in LinesToParagraph
+    let tzpara = paragraphsTZ2TZ2  tzlayout1  :: _   -- test BAD -> BAE   in LinesToParagraph
 
     when debugLit $ putIOwords
             ["mainLitAndNLPproduction TZ available to produce litTriples \n"

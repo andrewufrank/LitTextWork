@@ -26,8 +26,8 @@ import Text.Read (Read (..))
 import Producer.Servers
 
 -- an attempt to have a read for URI  ReadS
-instance Read URI where
-    readsPrec _  = readS'
+--instance Read URI where
+--    readsPrec _  = readS'
 
 test_readURI = assertEqual localhost (read (show localhost))
 

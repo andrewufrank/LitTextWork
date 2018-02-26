@@ -34,6 +34,7 @@ import           Uniform.FileIO (EpochTime, getFileModificationTime)
 import           Uniform.Strings hiding ((<.>), (</>))
 
 import Uniform.FileStrings
+import Uniform.Filenames
 
 import qualified Codec.Compression.GZip as GZip
 import qualified Data.Text.IO           as TIO (hGetLine, hPutStr)
@@ -235,48 +236,42 @@ instance TypedFiles5 [Text] Updates where
 data NTdescriptor = NTdescriptor {
 -- ^ description of NT file
        destNT :: Path Abs File   -- the nt file
-     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
+--     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
     } deriving (Show,  Read, Eq)
 
-openHandleTriples  :: NTdescriptor -> ErrIO NTdescriptor
+openHandleTriples  :: NTdescriptor -> ErrIO  Handle
 openHandleTriples textstate  = do
-    let mhand = destHandle textstate
-    case mhand of
-        Nothing ->  do
+--    let mhand = destHandle textstate
 --                putIOwords ["openHandleTriples", "to", showT $ destNT textstate]
                 hand <- if gzipFlag textstate
                     then openHandle6 (destNT textstate) ntFileTriplesGZip
                     else openHandle6 (destNT textstate)  ntFileTriples
-                return textstate{destHandle = Just hand}
-            `catchError` \e -> do
-                putIOwords ["openHandleTriples - error ", e , "file", showT $ destNT textstate]
---                openHandleTriples2 textstate
-                return textstate
-
-        Just hand -> do
---             putIOwords ["openHandleTriples is open", "to", showT $ destNT textstate]
-             return textstate
+                return  ( hand)
+--            `catchError` \e -> do
+--                putIOwords ["openHandleTriples - error ", e , "file", showT $ destNT textstate]
+----                openHandleTriples2 textstate
+--                return textstate
 
 --openHandleTriples2  :: NTdescriptor -> ErrIO NTdescriptor
 
 
-writeHandleTriples :: NTdescriptor -> [Triple] -> ErrIO NTdescriptor
-writeHandleTriples  textstate tris = do
+writeHandleTriples :: NTdescriptor ->  Handle -> [Triple] -> ErrIO ()
+writeHandleTriples  textstate hand tris = do
 --                putIOwords ["writeHandleTriples"]
-                textstate2 <- openHandleTriples textstate
-                let hand = fromJustNote "writeHandleTriples" (destHandle textstate2)
+--                mhand2 <- openHandleTriples textstate mhand1
+--                let hand = fromJustNote "writeHandleTriples" mhand2
                 if gzipFlag textstate
                     then writeHandle6 hand ntFileTriplesGZip tris
                     else writeHandle6 hand ntFileTriples tris
-                return textstate2
+                return ()
 
-closeHandleTriples :: NTdescriptor ->  ErrIO NTdescriptor
-closeHandleTriples textstate = do
-                let hand = fromJustNote "closeHandleTriples" (destHandle textstate)
+closeHandleTriples :: NTdescriptor ->   Handle -> ErrIO ()
+closeHandleTriples textstate hand = do
+--                let hand = fromJustNote "closeHandleTriples" mhand
                 if gzipFlag textstate
                     then closeHandle6 (destNT textstate) ntFileTriplesGZip hand
                     else closeHandle6 (destNT textstate) ntFileTriples hand
-                let textstate2 = textstate{destHandle=Nothing}
-                return textstate2
+--                let textstate2 = textstate{destHandle=Nothing}
+                return ()
 
