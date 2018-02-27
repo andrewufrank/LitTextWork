@@ -17,13 +17,13 @@ import  Test.Framework
 
 -- for layout and lit triples :
 --
-import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Bx
+--import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Bx
 --
---import {-@ HTF_TESTS @-} BuchCode.MarkupText_test  -- > BAx
-import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test -- > BACx
-import   {-@ HTF_TESTS @-} Lines2para.Lines2text_test  --   B -> C
+import {-@ HTF_TESTS @-} BuchCode.MarkupText_test  -- > BAx
+--import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test -- > BACx
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2text_test  --   B -> C
 
-import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test  -- > BC -> J
+--import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test  -- > BC -> J
 --------    -- not enough memory on oporto
 -------- if the files are not already correct in .littest
 -------- problem is in the comparing when error
