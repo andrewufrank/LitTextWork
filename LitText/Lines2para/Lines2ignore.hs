@@ -34,6 +34,11 @@ import           Test.Framework
 --import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 
+text2tz1 :: Text -> [TZ1]
+-- ^ the call to Lines2para module
+text2tz1 = paragraphs2TZsimple
+            . paragraphs2TZlayout
+            . parseMarkup
 
 paragraphs2TZsimple :: [TZ] -> [TZ1]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)

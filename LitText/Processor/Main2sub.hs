@@ -21,12 +21,14 @@ module Processor.Main2sub (mainLitAndNLPproduction
 
 --import           Test.Framework
 import Parser.ReadMarkupAB
-import           BuchCode.MarkupText
+--import           Lines2para.MarkupText
 import Parser.ProduceLayout
 import           Lines2para.Lines2para hiding ((</>))
 import           Lines2para.Lines2ignore
+
 import           Parser.ProduceLit
 import           Parser.ProduceNLP
+
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
 import Lines2para.HandleLayout
@@ -43,14 +45,15 @@ mainLitAndNLPproduction flags  textstate = do
     ttext <- textstate2Text textstate -- test A - B (in this module)
 
     -- convert text to tz1 (module Lines2para - handles layout)
-    let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
-    let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
-    let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ1]
-        -- ignore line, allCaps, language
-        -- missing footnotes?
+--    let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
+--    let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
+--    let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ1]
+--        -- ignore line, allCaps, language
+--        -- missing footnotes?
+    let tzlayout1 = text2tz1 ttext :: [TZ1]  -- B -> C
 
     -- produce triples
-    let layoutTriples = produceLayoutTriples textstate tzlayout1 :: [Triple] -- BAD -> J
+    let layoutTriples = produceLayoutTriples textstate tzlayout1 :: [Triple] -- C -> J
 
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
@@ -73,7 +76,7 @@ mainLitAndNLPproduction flags  textstate = do
                 (closeHandleTriples ntdescr )
                 (\h -> do
                     writeHandleTriples ntdescr h layoutTriples
-                    writeHandleTriples ntdescr h litTriples
+                    when (flagIncludeText flags) $ writeHandleTriples ntdescr h litTriples
                     writeHandleTriples ntdescr h nlpTriples
                     )
 

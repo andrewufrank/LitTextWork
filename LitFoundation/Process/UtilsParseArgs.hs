@@ -39,7 +39,8 @@ import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI, callHTTP10post, 
 data LitTextFlags = LitTextFlags {flagDebug :: Bool
                     , flagForce :: Bool
                     , flagFrenchUD :: Bool
-                    , flagIncludeText :: Bool}
+                    , flagIncludeText :: Bool
+                    , flagXML :: Bool }
             deriving (Show, Read, Eq)
 
 -- check all filenames by converting to Path format
@@ -237,4 +238,4 @@ parseAndStartExecute debugFlag resultFileName originDir t1 t2 = do
         return inp
 
 
---        D
+--

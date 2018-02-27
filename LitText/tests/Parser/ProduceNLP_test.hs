@@ -32,21 +32,7 @@ module Parser.ProduceNLP_test where
 import           Test.Framework
 import Uniform.TestHarness
 import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
---import Parser.FormNLPsnips
---import Parser.FilterTextForNLP
---import Parser.ProduceDocCallNLP
---import Parser.ProduceNLPtriples hiding ((</>))
---import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
-----import          Data.RDF.FileTypes (ntFileTriples, ntFileTriplesGZip)
---import Data.Maybe (catMaybes)  -- todo
----- for tests:
 import Parser.ReadMarkupAB_test
---import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
---import Parser.ProduceDocCallNLP
---import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
---import Parser.FilterTextForNLP  (prepareTZ4nlp)
---import Parser.FormNLPsnips (formSnips)
---import Parser.LanguageTypedText -- (LanguageTypedText (..) )
 import Parser.ProduceNLP
 import Uniform.Error
 

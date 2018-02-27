@@ -153,11 +153,6 @@ processOneMarkup4  flags  server authorReplacement ntdir   file = do
 --            return ""
 
 
---fillTextState :: TextSource -> DestGenerality -> Path Abs File -> TextState2
---fillTextState ts dg fp = fillTextState2 ts dg author buch
---    where
---        author = getImmediateParentDir fp
---        buch = getNakedFileName fp
 
 
 

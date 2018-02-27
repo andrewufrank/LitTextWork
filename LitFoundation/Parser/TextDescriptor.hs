@@ -202,7 +202,7 @@ data TextDescriptor = TextDescriptor
 --                      but not the remainder of the text)
     , txPosTagset :: Text
     , ntdescriptor :: NTdescriptor
-    } deriving (Show,   Eq)
+    } deriving (Show, Read,  Eq)
 
 
 --fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath

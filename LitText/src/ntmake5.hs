@@ -68,8 +68,9 @@ parseAndExecute t1 t2    = do
         -- not really interesting
         let flags = LitTextFlags {flagForce = argForceFlag args
                     , flagFrenchUD = argFrenchUDFlag args
-                    , flagDebug = False
-                    , flagIncludeText = False}
+                    , flagIncludeText = False
+                    , flagDebug = argDebug args
+                    , flagXML = argXML args}
         let
              originDir = makeAbsDir  $  addDir homeDirX (argOrigin args) :: Path Abs Dir
              destinationDir = makeAbsDir $  addDir homeDirX ( argDestination args) :: Path Abs Dir
@@ -127,6 +128,8 @@ data NtmakeArgs = NtmakeArgs
    , argOrigin :: String -- ^ the directoy in which the markup files are
    , argForceFlag :: Bool -- ^ force processing, even if newer exist
    , argFrenchUDFlag :: Bool -- ^ used UD model for french
+   , argDebug :: Bool -- ^ controls debug output
+   , argXML :: Bool -- ^ controls output of xml as text
   } deriving (Show)
 
 ntcmdArgs :: Parser (NtmakeArgs)
@@ -149,16 +152,16 @@ ntcmdArgs = NtmakeArgs
             help "dir in which the markup or query files are (relative to home)" )
      <*> switch
           ( long "force" <>
---            value False <>
---            short 'l' <>
---            metavar "force processing " <>
             help "force processing even when newer exist (default false)" )
      <*> switch
           ( long "frenchUD" <>
---            value False <>
---            short 'l' <>
---            metavar "force processing " <>
             help "use for french the model trained for UD" )
+     <*> switch
+          ( long "debug" <>
+            help "put debug output" )
+     <*> switch
+          ( long "XML" <>
+            help "print xml" )
 
 
 

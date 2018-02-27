@@ -17,12 +17,13 @@ import  Test.Framework
 
 -- for layout and lit triples :
 --
---import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Bx
+import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Bx
 --
 --import {-@ HTF_TESTS @-} BuchCode.MarkupText_test  -- > BAx
---import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test -- > BACx
---import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore_test  -- > BADx
---import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test  -- > BADx -> J
+import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test -- > BACx
+import   {-@ HTF_TESTS @-} Lines2para.Lines2ignore_test  --   B -> C
+
+import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test  -- > BC -> J
 --------    -- not enough memory on oporto
 -------- if the files are not already correct in .littest
 -------- problem is in the comparing when error
@@ -39,7 +40,7 @@ import  Test.Framework
 ----import {-@ HTF_TESTS @-} Parser.ProduceNLPtriples_test  --  E -> G and G -> L
 --   does not yet work (ambigous var)
 
-import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test  -- BAE=C -> D and BAE -> X1  -- overall test, run at end
+--import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test  -- BAE=C -> D and BAE -> X1  -- overall test, run at end
 --            --repeats calls to nlp
 --            -- files go to
 --import {-@ HTF_TESTS @-} Parser.FormNLPsnips_test   -- D -> DA

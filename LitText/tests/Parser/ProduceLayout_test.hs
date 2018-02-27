@@ -49,16 +49,16 @@ layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test BAD -> J
 layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstate
 
 
-test_1BAD_J = testVar3File result1A "resultBAD1" "resultJ1" layoutTriples
-test_2BAD_J = testVar3File result2A "resultBAD2" "resultJ2" layoutTriples
-test_3BAD_J = testVar3File result3A "resultBAD3" "resultJ3" layoutTriples
-test_4BAD_J = testVar3File result4A "resultBAD4" "resultJ4" layoutTriples
-test_5BAD_J = testVar3File result5A "resultBAD5" "resultJ5" layoutTriples
-test_6BAD_J = testVar3File result6A "resultBAD6" "resultJ6" layoutTriples
-----test_7BAD_J = testVar3File result7A "resultBAD7" "resultJ7" layoutTriples
-test_8BAD_J = testVar3File result8A "resultBAD8" "resultJ8" layoutTriples
-test_9BAD_J = testVar3File result9A "resultBAD9" "resultJ9" layoutTriples
-test_10BAD_J = testVar3File result10A "resultBAD10" "resultJ10" layoutTriples
+test_1C_J = test3File "result1A" "resultC1" "resultJ1" layoutTriples
+test_2C_J = test3File "result2A" "resultC2" "resultJ2" layoutTriples
+test_3C_J = test3File "result3A" "resultC3" "resultJ3" layoutTriples
+test_4C_J = test3File "result4A" "resultC4" "resultJ4" layoutTriples
+test_5C_J = test3File "result5A" "resultC5" "resultJ5" layoutTriples
+test_6C_J = test3File "result6A" "resultC6" "resultJ6" layoutTriples
+----test_7C_J = test3File result7A "resultC7" "resultJ7" layoutTriples
+test_8C_J = test3File "result8A" "resultC8" "resultJ8" layoutTriples
+test_9C_J = test3File "result9A" "resultC9" "resultJ9" layoutTriples
+test_10C_J = test3File "result10A" "resultC10" "resultJ10" layoutTriples
 
 
 
