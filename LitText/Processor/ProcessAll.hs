@@ -28,7 +28,7 @@ module Processor.ProcessAll
 import Parser.TextDescriptor hiding ((<>) , (</>), (<.>))
 import Producer.Servers
 import Processor.Main2sub
-import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
+--import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
 
 -- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
 

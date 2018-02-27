@@ -27,7 +27,7 @@
 module Lines2para.Lines2para_test  where
 
 --import Lines2para.Lines2ignore
-import  Lines2para.HandleLayout -- TZ
+--import  Lines2para.HandleLayout -- TZ
 
 --import           Data.List.Split
 import           Uniform.Error

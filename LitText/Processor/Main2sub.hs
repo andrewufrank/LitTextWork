@@ -24,14 +24,14 @@ import Parser.ReadMarkupAB
 --import           Lines2para.MarkupText
 import Parser.ProduceLayout
 import           Lines2para.Lines2para hiding ((</>))
-import           Lines2para.Lines2ignore
+import           Lines2para.Lines2text
 
 import           Parser.ProduceLit
 import           Parser.ProduceNLP
 
 import           Uniform.FileIO (when, errorT)
 import           Uniform.Strings
-import Lines2para.HandleLayout
+--import Lines2para.HandleLayout
 import Data.RDF.FileTypes (ntFileTriples)
 -- (parseMarkup, result1B, result2B, result3B, result4B)
 import Process.UtilsParseArgs ( LitTextFlags (..) )
@@ -44,10 +44,6 @@ mainLitAndNLPproduction flags  textstate = do
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
     ttext <- textstate2Text textstate -- test A - B (in this module)
 
-    -- convert text to tz1 (module Lines2para - handles layout)
---    let ttzeilen = parseMarkup ttext   -- test B -> BA in BuchCode.MarkupText
---    let tzlayout = paragraphs2TZlayout ttzeilen ::  [TZ]
---    let tzlayout1 = paragraphs2TZsimple tzlayout :: [TZ1]
 --        -- ignore line, allCaps, language
 --        -- missing footnotes?
     let tzlayout1 = text2tz1 ttext :: [TZ1]  -- B -> C

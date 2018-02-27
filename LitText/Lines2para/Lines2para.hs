@@ -32,7 +32,7 @@ module Lines2para.Lines2para
         ) where
 
 --import Lines2para.Lines2ignore
-import  Lines2para.HandleLayout -- TZ
+--import  Lines2para.HandleLayout -- TZ
 
 import           Data.List.Split
 import           Uniform.Error
@@ -43,7 +43,7 @@ import Data.List (nub)
 --import           Test.Framework
 --import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
-
+import Lines2para.Lines2text
 
 paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test BA -> C
 -- ^ produce the text files (ignores removed, language marked)

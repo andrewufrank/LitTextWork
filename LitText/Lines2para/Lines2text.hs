@@ -16,8 +16,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2ignore
-    (module Lines2para.Lines2ignore
+module Lines2para.Lines2text
+    (module Lines2para.Lines2text
     , module Lines2para.HandleLayout
 
     ) where

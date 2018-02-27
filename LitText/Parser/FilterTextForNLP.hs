@@ -30,7 +30,7 @@ module Parser.FilterTextForNLP
 --import Uniform.TestHarness
 import Data.Maybe -- todo
 import Lines2para.Lines2para
-import Lines2para.HandleLayout
+--import Lines2para.HandleLayout
 import Parser.ReadMarkupAB  -- todo  -- for test
 import Producer.Servers
 import           CoreNLP.Defs0
@@ -38,8 +38,8 @@ import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
 import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
-
-
+import BuchCode.BuchToken
+import Lines2para.MarkupText (combine2linesWithHyphenation)
 
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 

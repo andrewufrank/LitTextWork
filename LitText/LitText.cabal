@@ -51,7 +51,7 @@ library
         Processor.ProcessAll
         Processor.CheckServers
         Lines2para.Lines2para
-        Lines2para.Lines2ignore
+        Lines2para.Lines2text
         Lines2para.HandleLayout
         Lines2para.MarkupText
         Processor.Main2sub
@@ -85,7 +85,7 @@ Test-Suite LitTextTestAuto
         Parser.FormNLPsnips_test
         Parser.ReadMarkupAB_test
         Lines2para.Lines2para_test
-        Lines2para.Lines2ignore_test
+        Lines2para.Lines2text_test
         Lines2para.HandleLayout_test
         Lines2para.MarkupText_test
 

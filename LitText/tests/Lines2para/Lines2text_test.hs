@@ -16,7 +16,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2ignore_test where
+module Lines2para.Lines2text_test where
 
 
 --import BuchCode.MarkupText
@@ -29,7 +29,7 @@ import Lines2para.HandleLayout
 import           Test.Framework
 import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
-import Lines2para.Lines2ignore
+import Lines2para.Lines2text
 
 ----test_0B_C = testFile2File "resultBAC0" "resultBAD0" text2tz1
 test_1B_C = testFile2File "resultB1" "resultC1" text2tz1
