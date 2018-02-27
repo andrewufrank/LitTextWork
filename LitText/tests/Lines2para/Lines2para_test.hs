@@ -42,19 +42,19 @@ import Lines2para.Lines2para
 
 
 ----test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
-test_1BAD_BAE = testFile2File "resultBAD1" "resultBAE1" paragraphsTZ2TZ2
-test_2BAD_BAE = testFile2File "resultBAD2" "resultBAE2" paragraphsTZ2TZ2
-test_3BAD_BAE = testFile2File "resultBAD3" "resultBAE3" paragraphsTZ2TZ2
-test_4BAD_BAE = testFile2File "resultBAD4" "resultBAE4" paragraphsTZ2TZ2
-test_5BAD_BAE = testFile2File "resultBAD5" "resultBAE5" paragraphsTZ2TZ2
-test_6BAD_BAE = testFile2File "resultBAD6" "resultBAE6" paragraphsTZ2TZ2
-test_8BAD_BAE = testFile2File "resultBAD8" "resultBAE8" paragraphsTZ2TZ2
-test_9BAD_BAE = testFile2File "resultBAD9" "resultBAE9" paragraphsTZ2TZ2
-test_10BAD_BAE = testFile2File "resultBAD10" "resultBAE10" paragraphsTZ2TZ2
-test_11BAD_BAE = testFile2File "resultBAD11" "resultBAE11" paragraphsTZ2TZ2
-test_12BAD_BAE = testFile2File "resultBAD12" "resultBAE12" paragraphsTZ2TZ2
+test_1C_CA = testFile2File "resultC1" "resultCA1" paragraphsTZ2TZ2
+test_2C_CA = testFile2File "resultC2" "resultCA2" paragraphsTZ2TZ2
+test_3C_CA = testFile2File "resultC3" "resultCA3" paragraphsTZ2TZ2
+test_4C_CA = testFile2File "resultC4" "resultCA4" paragraphsTZ2TZ2
+test_5C_CA = testFile2File "resultC5" "resultCA5" paragraphsTZ2TZ2
+test_6C_CA = testFile2File "resultC6" "resultCA6" paragraphsTZ2TZ2
+test_8C_CA = testFile2File "resultC8" "resultCA8" paragraphsTZ2TZ2
+test_9C_CA = testFile2File "resultC9" "resultCA9" paragraphsTZ2TZ2
+test_10C_CA = testFile2File "resultC10" "resultCA10" paragraphsTZ2TZ2
+test_11C_CA = testFile2File "resultC11" "resultCA11" paragraphsTZ2TZ2
+test_12C_CA = testFile2File "resultC12" "resultCA12" paragraphsTZ2TZ2
 
---test_8B_BAE = testFile2File "resultBA8" "resultBAE8" paragraphs2TZ
+--test_8B_CA = testFile2File "resultBA8" "resultCA8" paragraphs2TZ
 
 
 

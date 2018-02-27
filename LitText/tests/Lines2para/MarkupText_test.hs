@@ -22,7 +22,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 
-module BuchCode.MarkupText_test  where
+module Lines2para.MarkupText_test  where
 
 
 import           BuchCode.BuchToken hiding (try, (<|>), (</>))
@@ -36,7 +36,7 @@ import Parser.ReadMarkupAB
 import Uniform.TestHarness hiding (try)
 import Parser.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
-import BuchCode.MarkupText
+import Lines2para.MarkupText
 
 --test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- local test

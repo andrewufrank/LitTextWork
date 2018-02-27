@@ -10,6 +10,7 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Parser.TextDescriptor (
         module Parser.TextDescriptor
@@ -19,6 +20,7 @@ module Parser.TextDescriptor (
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
+    , NTdescriptor (..)
     ) where
 
 -- import           Data.RDF.Extension
@@ -43,6 +45,26 @@ litTestDir1 = litDir </> litTests
 ntDir = makeAbsDir "/home/frank/Scratch/NT"
 litNTOrigDir1 = ntDir </> litOriginals
 litNTTestDir1 = ntDir </> litTests
+
+-- | the description of a file to operate as texts - make legalfilen, when needed
+data TextDescriptor = TextDescriptor
+    {                -- the projp buchcode gives the code for the book,
+                -- add the element number
+     sourceMarkup :: Path Abs File -- the markup file
+     -- selects then the type of the ntfile (nt or nt.gz)
+     , nlpServer :: URI -- ^ where the nlp server is
+    , authorDir    :: Text -- ^ the directory where the inputs in the LitOriginal directory are
+                        -- the project
+                                 -- and where the converted data go
+    , buchName     :: Text -- ^ filename in directory gives the buch sigl
+    , includeText :: Bool -- ^ full text is included in triples
+--                    (false - only the analysis, sentence can be reconstructed
+--                      but not the remainder of the text)
+    , txPosTagset :: Text
+    , ntdescriptor :: NTdescriptor
+    } deriving (Show, Read,  Eq)
+
+--instance IsString (Path Abs File)
 
 -- S N I P
 
@@ -185,24 +207,6 @@ dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 --authorText = s2t . authorDir
 --originalsDir = sourceDir . source
 --serverLoc =  server . source
-
--- | the description of a file to operate as texts - make legalfilen, when needed
-data TextDescriptor = TextDescriptor
-    {                -- the projp buchcode gives the code for the book,
-                -- add the element number
-     sourceMarkup :: Path Abs File -- the markup file
-     -- selects then the type of the ntfile (nt or nt.gz)
-     , nlpServer :: URI -- ^ where the nlp server is
-    , authorDir    :: Text -- ^ the directory where the inputs in the LitOriginal directory are
-                        -- the project
-                                 -- and where the converted data go
-    , buchName     :: Text -- ^ filename in directory gives the buch sigl
-    , includeText :: Bool -- ^ full text is included in triples
---                    (false - only the analysis, sentence can be reconstructed
---                      but not the remainder of the text)
-    , txPosTagset :: Text
-    , ntdescriptor :: NTdescriptor
-    } deriving (Show, Read,  Eq)
 
 
 --fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath

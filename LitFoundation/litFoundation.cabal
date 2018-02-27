@@ -53,6 +53,7 @@ Test-Suite  TestAuto
         , uniform-convenience
         , litFoundation
 --        , rdf4hextension
+        , uniform-http
     hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
