@@ -14,6 +14,7 @@ import {-@ HTF_TESTS @-} Producer.Servers_test
 import {-@ HTF_TESTS @-} Parser.TextDescriptor_test
 
 main =  do
+    twoOut
     putStrLn "LitFoundation.hs:\n"
     -- r <- htfMain htf_thisModulesTests  -- if local tests
     -- putStrLn ("tree tagger test:\n" ++ show r)

@@ -21,13 +21,14 @@ module Parser.TextDescriptor (
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
+--    , module Path   -- to export IsString
     ) where
 
 -- import           Data.RDF.Extension
 import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
 import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
 import System.IO (Handle)  -- todo include in FileIO exports
-import Uniform.HttpURI (URI)
+import Uniform.HttpURI (URI, makeURI)
 import Producer.Servers  (serverBrest)  -- for test
 import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import Data.RDF.FileTypes
@@ -64,7 +65,18 @@ data TextDescriptor = TextDescriptor
     , ntdescriptor :: NTdescriptor
     } deriving (Show, Read,  Eq)
 
+instance Zeros TextDescriptor where
+    zero = TextDescriptor zero zero zero zero zero zero zero
 --instance IsString (Path Abs File)
+
+instance Zeros (Path Abs File) where
+    zero = makeAbsFile ""
+instance Zeros URI where
+    zero = makeURI ""
+instance Zeros Bool where
+    zero = False
+instance Zeros NTdescriptor where
+    zero = NTdescriptor zero zero
 
 -- S N I P
 

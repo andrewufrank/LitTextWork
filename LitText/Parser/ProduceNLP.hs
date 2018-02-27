@@ -47,7 +47,7 @@ import Data.Maybe (catMaybes)  -- todo
 import Parser.ReadMarkupAB
 import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import Parser.ProduceDocCallNLP
-import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), resolveFile, Handle)
+import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), Handle)
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
 import Parser.LanguageTypedText -- (LanguageTypedText (..) )

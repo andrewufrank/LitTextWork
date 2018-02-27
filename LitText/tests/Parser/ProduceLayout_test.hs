@@ -20,25 +20,15 @@
 module Parser.ProduceLayout_test where
 
 import           Test.Framework
-import           Data.Char               (toLower)
---import           Data.RDF  ()
---import Data.RDF.Triple2text (triple2text)
---import           Data.RDF.Extension
---import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
---import           Parser.TextDescriptor  hiding ((</>))
-import Uniform.Strings ((</>))  -- for PartURI
+--import           Data.Char               (toLower)
+--import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB_test    -- result1A etc.
---import Lines2para.HandleLayout
-    -- (RDFtypes (..), RDFproperties (..), TZ (..)
---      , TextDescriptor, PartURI, RDFsubj, Triple) -- TZ
---import Lines2para.Lines2ignore
---import Lines2para.Lines2para -- hiding ((</>))
-import           Text.Printf         (printf)
-import           Uniform.Error           (errorT)
+--import           Text.Printf         (printf)
+--import           Uniform.Error           (errorT)
 import Uniform.TestHarness
-import Producer.Servers (rdfBase)  -- from Foundation
-import Parser.TextDescriptor hiding ((</>)) -- from Foundation
-import Parser.NLPvocabulary
+--import Producer.Servers (rdfBase)  -- from Foundation
+--import Parser.TextDescriptor hiding ((</>)) -- from Foundation
+--import Parser.NLPvocabulary
 import Parser.ProduceLayout
 
 

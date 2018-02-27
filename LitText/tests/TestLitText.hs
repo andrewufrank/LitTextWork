@@ -17,14 +17,14 @@ import  Test.Framework
 
 -- for layout and lit triples :
 --
---import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Bx
+import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Ax and Bx
 --
 --import {-@ HTF_TESTS @-} Lines2para.MarkupText_test  -- > BAx
 --import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test -- BA -> BACx
 
 import   {-@ HTF_TESTS @-} Lines2para.Lines2text_test  --   B -> C
 
-import   {-@ HTF_TESTS @-} Lines2para.Lines2para_test  --     C -> CA
+--import   {-@ HTF_TESTS @-} Lines2para.Lines2para_test  --     C -> CA
 
 import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test  -- > C -> J
 --------    -- not enough memory on oporto

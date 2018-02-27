@@ -23,8 +23,9 @@
 
 module Lines2para.HandleLayout
     (module Lines2para.HandleLayout
-    , module Lines2para.MarkupText
-    , module Uniform.Error
+--    , module Lines2para.MarkupText
+    , module Parser.TextDescriptor
+--    , module Uniform.Error
     ) where
 
 --import Test.Framework
@@ -37,11 +38,11 @@ import           Uniform.Error
 -- TODO string s
 --import Data.List (nub)
 --import           Text.Printf         (printf)
-import Uniform.TestHarness
+--import Uniform.TestHarness
 import Parser.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
 
-paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> C
+paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> BB
 -- ^ produce the paragraphs with the seitenzahlen in each line
 paragraphs2TZlayout =
     removeSeitenZahlen . mergePara0  -- not yet done

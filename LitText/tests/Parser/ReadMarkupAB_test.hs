@@ -85,7 +85,7 @@ result10A = fill_ "test" "t10"
 result11A = fill_ "test" "t11"  -- italian character set issues
 result12A = fill_ "test" "t12"  -- italian character set issues
 
-writeTextstate :: TextDescriptor -> ErrIO Text
+--writeTextstate :: TextDescriptor -> ErrIO TextDescriptor
 writeTextstate textstate = return (showT textstate)
 
 test_1_A = testVar2File result1A "resultA1" writeTextstate

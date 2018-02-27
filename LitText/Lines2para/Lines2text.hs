@@ -18,13 +18,15 @@
 
 module Lines2para.Lines2text
     (module Lines2para.Lines2text
-    , module Lines2para.HandleLayout
+    , Zeilen (..)
+    , BuchToken (..)
+--    , module Lines2para.HandleLayout
 
     ) where
 
 
---import BuchCode.MarkupText
---import BuchCode.BuchToken
+import Lines2para.MarkupText
+import BuchCode.BuchToken
 import Lines2para.HandleLayout
 
 import           Data.List.Split
@@ -34,13 +36,13 @@ import           Test.Framework
 --import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 
-text2tz1 :: Text -> [TZ1]
+text2tz1 :: Text -> [TZ1]  -- test B -> C
 -- ^ the call to Lines2para module
 text2tz1 = paragraphs2TZsimple
-            . paragraphs2TZlayout
-            . parseMarkup
+            . paragraphs2TZlayout  -- BA -> BB
+            . parseMarkup    -- B -> BA
 
-paragraphs2TZsimple :: [TZ] -> [TZ1]  -- test BA -> C
+paragraphs2TZsimple :: [TZ] -> [TZ1]  -- test BA -> BAD
 -- ^ produce the text files (ignores removed, language marked)
 -- but not paragraphs
 -- page number and line numbers are in layout

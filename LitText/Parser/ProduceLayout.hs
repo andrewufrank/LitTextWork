@@ -18,6 +18,7 @@
 
 
 module Parser.ProduceLayout (module Parser.ProduceLayout
+    , TextDescriptor (..), TZ1 (..)
     ) where
 
 --import           Test.Framework

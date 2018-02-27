@@ -62,7 +62,3 @@ test_12BAC_BAD = testFile2File "resultBAC12" "resultBAD12" paragraphs2TZsimple
 
 
 
--- #include "Lines2ignoreTestResults.res"
-
-test_german1 = assertEqual German (readLanguageCode "test_german1" "Deutsch")
-test_german2 = assertEqual German (readLanguageCode "test_german1" "German")

@@ -50,3 +50,6 @@ test_typedneg20 = assertEqual (zo (-20))
             (mkTripleInteger s1 r1 (-20) )
 
 
+test_german1 = assertEqual German (readLanguageCode "test_german1" "Deutsch")
+test_german2 = assertEqual German (readLanguageCode "test_german1" "German")
+

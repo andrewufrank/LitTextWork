@@ -40,17 +40,17 @@ import Lines2para.HandleLayout
 
 
 
-----test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZlayout
-test_1BA_BAC = testFile2File "resultBA1" "resultBAC1" paragraphs2TZlayout
-test_2BA_BAC = testFile2File "resultBA2" "resultBAC2" paragraphs2TZlayout
-test_3BA_BAC = testFile2File "resultBA3" "resultBAC3" paragraphs2TZlayout
-test_4BA_BAC = testFile2File "resultBA4" "resultBAC4" paragraphs2TZlayout
-test_5BA_BAC = testFile2File "resultBA5" "resultBAC5" paragraphs2TZlayout
-test_6BA_BAC = testFile2File "resultBA6" "resultBAC6" paragraphs2TZlayout
-test_8BA_BAC = testFile2File "resultBA8" "resultBAC8" paragraphs2TZlayout
-test_9BA_BAC = testFile2File "resultBA9" "resultBAC9" paragraphs2TZlayout
-test_10BA_BAC = testFile2File "resultBA10" "resultBAC10" paragraphs2TZlayout
-test_11BA_BAC = testFile2File "resultBA11" "resultBAC11" paragraphs2TZlayout
-test_12BA_BAC = testFile2File "resultBA12" "resultBAC12" paragraphs2TZlayout
+----test_0BA_BB = testFile2File "resultBA0" "resultBB0" paragraphs2TZlayout
+test_1BA_BB = testFile2File "resultBA1" "resultBB1" paragraphs2TZlayout
+test_2BA_BB = testFile2File "resultBA2" "resultBB2" paragraphs2TZlayout
+test_3BA_BB = testFile2File "resultBA3" "resultBB3" paragraphs2TZlayout
+test_4BA_BB = testFile2File "resultBA4" "resultBB4" paragraphs2TZlayout
+test_5BA_BB = testFile2File "resultBA5" "resultBB5" paragraphs2TZlayout
+test_6BA_BB = testFile2File "resultBA6" "resultBB6" paragraphs2TZlayout
+test_8BA_BB = testFile2File "resultBA8" "resultBB8" paragraphs2TZlayout
+test_9BA_BB = testFile2File "resultBA9" "resultBB9" paragraphs2TZlayout
+test_10BA_BB = testFile2File "resultBA10" "resultBB10" paragraphs2TZlayout
+test_11BA_BB = testFile2File "resultBA11" "resultBB11" paragraphs2TZlayout
+test_12BA_BB = testFile2File "resultBA12" "resultBB12" paragraphs2TZlayout
 
 
