@@ -31,19 +31,21 @@ import           Test.Framework
 --import Process.UtilsParseArgs (LitTextFlags (..) )
 import Parser.TextDescriptor
 
-deriving instance IsString (Path Abs File)
+--deriving instance IsString (Path Abs File)
 
-nd =  NTdescriptor {destNT =  "/home/frank/Scratch/NT/LitTest/test/t1"
+nd1 =  NTdescriptor {destNT =  "/home/frank/Scratch/NT/LitTest/test/t1"
             , gzipFlag = False}
 
-td = TextDescriptor {
-        sourceMarkup = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/test/t1"
-        , nlpServer = makeURI "http://nlp.gerastree.at"
+td1 = TextDescriptor {
+        sourceMarkup = "/home/frank/additionalSpace/DataBig/LitTest/test/t1"
+        , nlpServer =  "http://nlp.gerastree.at"
         , authorDir = "test"
         , buchName = "t1"
         , includeText = False
         , txPosTagset = ""
-        , ntdescriptor = nd }
+        , ntdescriptor = nd1 }
+
+
 --
 --fillDestination :: DestGenerality -> FilePath -> FilePath -> Bool -> DestDescriptor
 ---- | build the description of the destination
