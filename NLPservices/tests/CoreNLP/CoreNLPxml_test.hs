@@ -46,15 +46,15 @@ import qualified NLP.Corpora.UD  as UD
 import              CoreNLP.DEPcodes
 
 import              CoreNLP.NERcodes
-import              CoreNLP.CoreNLP.CoreNLPxml
-
-
-import           Uniform.Error
-import           Uniform.FileIO
-import           Uniform.Strings
-
-import           Text.XML.HXT.Core hiding (when)
-import           CoreNLP.Defs0
+import              CoreNLP.CoreNLPxml
+--
+--
+--import           Uniform.Error
+--import           Uniform.FileIO
+--import           Uniform.Strings
+--
+--import           Text.XML.HXT.Core hiding (when)
+--import           CoreNLP.Defs0
 import Data.Maybe
 
 

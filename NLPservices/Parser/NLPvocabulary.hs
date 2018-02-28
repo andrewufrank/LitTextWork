@@ -89,6 +89,8 @@ newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 unSnipID (SnipID i) = i
 --
 newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+instance Zeros SnipSigl where zero = SnipSigl zero
+
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
 mkSnipSigl parasigl snipid =  SnipSigl

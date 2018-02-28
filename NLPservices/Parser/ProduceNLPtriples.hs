@@ -49,6 +49,8 @@ data Snip2 lang = Snip2 { snip2text :: LTtext lang
                         , snip2sigl :: SnipSigl  -- the id of the snip
                           }
             deriving (Read, Show, Eq)
+instance Zeros (Snip2 lang) where
+    zero = Snip2 zero zero
 
 snipIsNull :: Snip2 lang -> Bool
 -- ^ test for null text

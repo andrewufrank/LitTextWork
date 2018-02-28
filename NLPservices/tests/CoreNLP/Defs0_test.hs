@@ -10,6 +10,7 @@
 
 -- optional fields are lists .. to conform to HXT
 -----------------------------------------------------------------------------
+{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE
         ScopedTypeVariables
         , FlexibleContexts
@@ -22,12 +23,14 @@
 module CoreNLP.Defs0_test   where
 
 import              Uniform.Strings
-import Uniform.Zero
-import   NLP.Corpora.Conll
+import              Test.Framework
+import              Uniform.TestHarness
+--import Uniform.Zero
+--import   NLP.Corpora.Conll
 import CoreNLP.Defs0
-import              CoreNLP.DEPcodes
-import              CoreNLP.NERcodes
+--import              CoreNLP.DEPcodes
+--import              CoreNLP.NERcodes
 -- import           Text.XML.HXT.Core       hiding (when)
 
 
-test_emtpy = assertEqual 1 1
+test_emtpy = assertEqual True True

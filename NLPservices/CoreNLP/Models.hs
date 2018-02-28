@@ -3,12 +3,12 @@
 , ScopedTypeVariables #-}
 -- | Data types representing the tagsets used in a model
 
-module NLP.Models (
-    module NLP.Models
+module CoreNLP.Models (
+    module CoreNLP.Models
     ) where
 
 
-import  NLP.Types.Tags  (NERtags (..), POStags (..), TagsetIDs (..)
+import  NLP.Types.Tags  (  POStags (..), TagsetIDs (..)
                     , ChunkTags (..))
 import Data.Utilities
 

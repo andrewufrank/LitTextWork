@@ -46,12 +46,12 @@ library
         Parser.ProduceNLPtriples
         Parser.ConvertTaggerOutput
         Parser.NLPvocabulary
---        CoreNLP.Modles
+        CoreNLP.Models
 
     exposed: True
     buildable: True
     default-language: Haskell2010
-    hs-source-dirs: src
+    hs-source-dirs: ., src
 
 Test-Suite nlpTestAuto
     type:       exitcode-stdio-1.0
@@ -64,11 +64,14 @@ Test-Suite nlpTestAuto
         , uniform-error
         , litFoundation
         , NLPservices
+        , TreeTagSets >=0.0.2.6.7
     default-language: Haskell2010
     hs-source-dirs: tests
     other-modules:
---        Parser.ProduceDocCallNLP_test
---        CoreNLP.Modles_test
+        Parser.ProduceDocCallNLP_test
+
+
+        CoreNLP.Models_test
         CoreNLP.Defs0_test
         CoreNLP.CoreNLPxml_test
 --        Parser.CompleteSentence_test

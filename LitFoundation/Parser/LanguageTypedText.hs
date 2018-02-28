@@ -52,6 +52,7 @@ undefNoLanguage = undef "convertOneSnip2Triples no lang":: NoLanguageType
 newtype LTtext a = LTtext Text  deriving (Show, Eq, Read)
 -- a piece of text in one language typed
 unLCtext (LTtext text) = text
+instance Zeros (LTtext a) where zero = LTtext zero
 
 class LanguageTypedText lang where
     typeText :: lang -> Text -> LTtext lang
