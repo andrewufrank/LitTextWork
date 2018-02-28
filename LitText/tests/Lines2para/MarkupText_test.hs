@@ -7,7 +7,7 @@
 -- especially with lines starting with a markup char ('.')
 -- following the example in Real World Haskell
 
--- this produces a list of encoded lines TextZeilen but not yet blocks.
+-- this produces a list of encoded lines TextZeile but not yet blocks.
 -- ignore is parsed as a markup
 -- to use automatic hl2 detection - replace in gutenberg ".--" -- not required anymore
 -- does not read language
@@ -38,7 +38,7 @@ import Parser.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 import Lines2para.MarkupText
 
-parseMarkupTest :: Text -> [TextZeilen]
+parseMarkupTest :: Text -> [TextZeile]
 parseMarkupTest = parseMarkup
 --test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- local test
