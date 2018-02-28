@@ -31,6 +31,8 @@ import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 import Lines2para.Lines2text
 
+--text2tz1 :: Text -> [TZ1]  -- test B -> C
+
 ----test_0B_C = testFile2File "resultBAC0" "resultBAD0" text2tz1
 test_1B_C = testFile2File "resultB1" "resultC1" text2tz1
 --test_2B_C = testFile2File "resultB2" "resultC2" text2tz1
@@ -44,19 +46,20 @@ test_1B_C = testFile2File "resultB1" "resultC1" text2tz1
 --test_11B_C = testFile2File "resultB11" "resultC11" text2tz1
 --test_12B_C = testFile2File "resultB12" "resultC12" text2tz1
 
+--paragraphs2TZsimple :: [TZ] -> [TZ1]  -- test BA -> BC
 
-----test_0BAC_BAD = testFile2File "resultBAC0" "resultBAD0" paragraphs2TZsimple
-test_1BAC_BAD = testFile2File "resultBAC1" "resultBAD1" paragraphs2TZsimple
---test_2BAC_BAD = testFile2File "resultBAC2" "resultBAD2" paragraphs2TZsimple
---test_3BAC_BAD = testFile2File "resultBAC3" "resultBAD3" paragraphs2TZsimple
---test_4BAC_BAD = testFile2File "resultBAC4" "resultBAD4" paragraphs2TZsimple
---test_5BAC_BAD = testFile2File "resultBAC5" "resultBAD5" paragraphs2TZsimple
---test_6BAC_BAD = testFile2File "resultBAC6" "resultBAD6" paragraphs2TZsimple
---test_8BAC_BAD = testFile2File "resultBAC8" "resultBAD8" paragraphs2TZsimple
---test_9BAC_BAD = testFile2File "resultBAC9" "resultBAD9" paragraphs2TZsimple
---test_10BAC_BAD = testFile2File "resultBAC10" "resultBAD10" paragraphs2TZsimple
---test_11BAC_BAD = testFile2File "resultBAC11" "resultBAD11" paragraphs2TZsimple
---test_12BAC_BAD = testFile2File "resultBAC12" "resultBAD12" paragraphs2TZsimple
+----test_0BB_BC = testFile2File "resultBB0" "resultBC0" paragraphs2TZsimple
+test_1BB_BC = testFile2File "resultBB1" "resultBC1" paragraphs2TZsimple
+--test_2BB_BC = testFile2File "resultBB2" "resultBC2" paragraphs2TZsimple
+--test_3BB_BC = testFile2File "resultBB3" "resultBC3" paragraphs2TZsimple
+--test_4BB_BC = testFile2File "resultBB4" "resultBC4" paragraphs2TZsimple
+--test_5BB_BC = testFile2File "resultBB5" "resultBC5" paragraphs2TZsimple
+--test_6BB_BC = testFile2File "resultBB6" "resultBC6" paragraphs2TZsimple
+--test_8BB_BC = testFile2File "resultBB8" "resultBC8" paragraphs2TZsimple
+--test_9BB_BC = testFile2File "resultBB9" "resultBC9" paragraphs2TZsimple
+--test_10BB_BC = testFile2File "resultBB10" "resultBC10" paragraphs2TZsimple
+--test_11BB_BC = testFile2File "resultBB11" "resultBC11" paragraphs2TZsimple
+--test_12BB_BC = testFile2File "resultBB12" "resultBC12" paragraphs2TZsimple
 
 ------------LANGUAGE
 

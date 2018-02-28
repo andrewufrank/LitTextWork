@@ -31,6 +31,7 @@ import           Data.RDF
 import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 import Uniform.Strings ((</>))  -- for PartURI
+import Uniform.HttpURI (uriT)
 --import Parser.ReadMarkupAB
 --import Parser.ProduceLayout
 --import BuchCode.BuchToken
@@ -47,7 +48,7 @@ import Producer.Servers  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
 import Parser.NLPvocabulary hiding ((</>), (<.>))
 
-litURItext =   (showT rdfBase) </> "lit_2014" :: PartURI
+litURItext =   (uriT rdfBase) </> "lit_2014" :: PartURI
 dcURItext = "http://purl.org/dc/elements/1.1" :: PartURI
 -- no terminating /
 

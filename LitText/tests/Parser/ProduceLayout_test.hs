@@ -32,7 +32,7 @@ import Uniform.TestHarness
 import Parser.ProduceLayout
 
 
-layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test BAD -> J
+layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test C -> J
 
 --layoutTriples textstate =  unlines' .  map triple2text . produceLayoutTriples textstate
 -- too expensive to map triple2text (at least on oporto)

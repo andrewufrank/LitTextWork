@@ -40,7 +40,7 @@ import Uniform.TestHarness
 import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
 import Lines2para.Lines2para
 
-
+--paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA
 ----test_0BA_BAC = testFile2File "resultBA0" "resultBAC0" paragraphs2TZpara
 test_1C_CA = testFile2File "resultC1" "resultCA1" paragraphsTZ2TZ2
 --test_2C_CA = testFile2File "resultC2" "resultCA2" paragraphsTZ2TZ2
