@@ -7,7 +7,7 @@
 -- especially with lines starting with a markup char ('.')
 -- following the example in Real World Haskell
 
--- this produces a list of encoded lines TextZeilen but not yet blocks.
+-- this produces a list of encoded lines TextZeile but not yet blocks.
 -- ignore is parsed as a markup
 -- to use automatic hl2 detection - replace in gutenberg ".--" -- not required anymore
 -- does not read language
@@ -59,32 +59,32 @@ type TextParsecBuch = Parsec Text () [MarkupElement]
 
 
 -- the kinds of lines differentiated
-data TextZeilen =
+data TextZeile =
         TextZeile {ttt::TextType, ttx::TextWithMarks}
         | MarkupZeile {ttok:: BuchToken, ttx:: TextWithMarks}
         | LeerZeile
         | NeueSeite
         deriving (Show, Read, Eq )
 
---instance Show TextZeilen where
+--instance Show TextZeile where
 --    show t  = '\n' : show t
 -- gives loop show -> show
---instance Show [TextZeilen] where
+--instance Show [TextZeile] where
 --    show ts = unlines [show ts]
 -- is not used
 
-parseMarkup :: Text ->  [TextZeilen]  -- test B -> BA
--- parse a text file to TextZeilen form
+parseMarkup :: Text ->  [TextZeile]  -- test B -> BA
+-- parse a text file to TextZeile form
 parseMarkup  = fmap removeEmptyMarks . markShortLines
 --        . markAllCapsLines
             . parseMarkupText . s2t . filter (/= '\r') . t2s
 
 
-renderETTs :: [TextZeilen] -> Text
+renderETTs :: [TextZeile] -> Text
 -- renders the lines
 renderETTs  = unlines' . map renderZeile
 
-parseMarkupText :: Text ->   [TextZeilen]
+parseMarkupText :: Text ->   [TextZeile]
 -- mark the page numbers
 parseMarkupText tx =
     case parse fileParser "" tx  of
@@ -93,14 +93,14 @@ parseMarkupText tx =
                    ]
        Right ans ->     ans
 
-fileParser :: TextParsec [TextZeilen]
+fileParser :: TextParsec [TextZeile]
 fileParser = do
     optional (char '\65279')  -- to remove BOM if present
     res <- many lineParser
     eof
     return res
 
-lineParser :: TextParsec TextZeilen
+lineParser :: TextParsec TextZeile
 lineParser = do
     try leerzeile
     <|>
@@ -120,14 +120,14 @@ lineParser = do
         <?> "lineparser"
 
 
-zahlzeile :: TextParsec TextZeilen
+zahlzeile :: TextParsec TextZeile
 zahlzeile = do
     res <- many1  (oneOf "0123456789[]/")
                 -- these are characters encountered in german textarchive
     many1 newline
     return $ TextZeile Zahl0 (TextWithMarks (s2t res) [])
 
-fussnotezeile :: TextParsec TextZeilen
+fussnotezeile :: TextParsec TextZeile
 fussnotezeile = do
     fn <- fussnoteMarker
     res <- parseTextWithMarkers
@@ -141,21 +141,21 @@ fussnoteMarker = do
     return (res ++ [res1])
 
 
-markupzeile :: TextParsec TextZeilen
+markupzeile :: TextParsec TextZeile
 markupzeile = do
     char '.'
     mk <- choice ( map (\t -> try (tokenElement t)) [BuchIgnoreLine .. BuchEnde] )
     res <- parseTextWithMarkers
     return $ MarkupZeile mk  res -- $ (TextWithMarks (trim' $ s2t res) [])
 
---allCapsZeile  :: TextParsec TextZeilen
+--allCapsZeile  :: TextParsec TextZeile
 --allCapsZeile = do
 --    res <- many (satisfy (\c -> cond c && (not $ c `elem` ['\n'])))
 --    newline
 --    return . TextZeile AllCaps0 $ (TextWithMarks ( s2t res) [])
 --    where cond = not . isLower
 
-textzeileMitFussnote :: TextParsec TextZeilen
+textzeileMitFussnote :: TextParsec TextZeile
 textzeileMitFussnote = do
     res <- parseTextWithMarkers
     return . TextZeile Text0 $  res
@@ -196,12 +196,12 @@ annotherFootnoteMarker = do
 
 
 
-leerzeile :: TextParsec TextZeilen
+leerzeile :: TextParsec TextZeile
 leerzeile = do
     newline
     return LeerZeile   <?> "Leerzeile"
 
-neueSeite :: TextParsec TextZeilen
+neueSeite :: TextParsec TextZeile
 neueSeite = do
     char '\f'
     newline
@@ -237,14 +237,14 @@ combine2linesWithHyphenation :: Text -> Text -> Text
 combine2linesWithHyphenation a b = maybe (unwordsT [a,b])  (<>b)  $ stripSuffix' "-" a
 
 
-countSeiten :: [TextZeilen] -> Int
+countSeiten :: [TextZeile] -> Int
 countSeiten = length . filter isSeitenzahl
 
-countLeerzeilen :: [TextZeilen] -> Int
+countLeerzeilen :: [TextZeile] -> Int
 countLeerzeilen = length . filter isLeerzeile
 
 
-instance Zeilen TextZeilen where
+instance Zeilen TextZeile where
     isLeerzeile LeerZeile = True
     isLeerzeile _         = False
 
@@ -281,19 +281,19 @@ instance Zeilen TextZeilen where
     renderZeile _ = ""
     -- renderZeile (TextZeile Kurz0 p) = p
 
-checkSeitenzahlen :: [TextZeilen] -> [(Int, Int)]
+checkSeitenzahlen :: [TextZeile] -> [(Int, Int)]
 checkSeitenzahlen =  diff2 . map  readSeitenzahl . filter isSeitenzahl
 
 diff2 :: [Int] -> [(Int, Int)]
 diff2 [] = []
 diff2 a   =  filter (not . (1==) . snd) . zip a  $ zipWith (subtract) a (tail a)
 
-readSeitenzahl :: TextZeilen -> Int
+readSeitenzahl :: TextZeile -> Int
 readSeitenzahl (TextZeile Zahl0 n) = readNoteTs ["seitenzahlread", showT n]  (twm n)
 readSeitenzahl z             = errorT ["not a seitenzahl ", showT z]
 
 
-markShortLines :: [TextZeilen] -> [TextZeilen]
+markShortLines :: [TextZeile] -> [TextZeile]
 -- ^ lines shorter  0.9 * average are marked, but less than 70 (n case we have para lines
 -- recognizes poems automatically and short lines are marks for end of paragraph
 -- ^ lines longer than 120 are likely paragraphs
@@ -305,7 +305,7 @@ markShortLines tx = map (markOneSL limit1 limit2)  tx
         limit2 = 120
 
 
-markOneSL :: Int -> Int -> TextZeilen -> TextZeilen--
+markOneSL :: Int -> Int -> TextZeile -> TextZeile--
 markOneSL limitshort limitlong (TextZeile Text0 t)
     | lengthChar txt < limitshort = TextZeile Kurz0 t
     | lengthChar txt > limitlong =  TextZeile Para0 t
@@ -314,10 +314,10 @@ markOneSL limitshort limitlong (TextZeile Text0 t)
 
 markOneSL _ _ x = x
 
---markAllCapsLines :: [TextZeilen] -> [TextZeilen]
+--markAllCapsLines :: [TextZeile] -> [TextZeile]
 --markAllCapsLines = map markOneAllCaps
 --
---markOneAllCaps :: TextZeilen -> TextZeilen
+--markOneAllCaps :: TextZeile -> TextZeile
 --markOneAllCaps tz @ (TextZeile Zahl0 t) = tz
 --markOneAllCaps tx @ (TextZeile _ t)  =
 --    if isCapitalizedTitle (twm t) then TextZeile AllCaps0 t else tx
@@ -329,7 +329,7 @@ markOneSL _ _ x = x
 --isCapitalizedTitle ::  Text ->   Bool
 --isCapitalizedTitle =  not . any isLower . t2s
 
-averageLengthTextLines :: [TextZeilen] -> (Int,Int)
+averageLengthTextLines :: [TextZeile] -> (Int,Int)
 --  compute average and max length of text lines
 averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
     where
@@ -339,7 +339,7 @@ averageLengthTextLines etts = (1 + totChar `div` txtCt, maxChars)
         lengthLs = map (lengthChar . zeilenText) $ txtLs
         maxChars = maximum lengthLs
 
-removeEmptyMarks :: TextZeilen -> TextZeilen
+removeEmptyMarks :: TextZeile -> TextZeile
 -- ^ remove the empty (0,"") mark at end of lines mark
 removeEmptyMarks tz@(TextZeile {ttx=t}) = tz {ttx= removeEmptyMarks2 t }
 removeEmptyMarks tz@(MarkupZeile {ttx=t}) = tz {ttx= removeEmptyMarks2 t }

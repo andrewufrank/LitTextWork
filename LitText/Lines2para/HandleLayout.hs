@@ -42,7 +42,7 @@ import           Uniform.Error
 import Parser.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
 
-paragraphs2TZlayout :: [TextZeilen] -> [TZ]  -- test BA -> BB
+paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB
 -- ^ produce the paragraphs with the seitenzahlen in each line
 paragraphs2TZlayout =
     removeSeitenZahlen . mergePara0  -- not yet done
@@ -51,7 +51,7 @@ paragraphs2TZlayout =
     -- test BA -> BAA ... BAG -> C
 
 
-ett2tz :: TextZeilen -> TZ
+ett2tz :: TextZeile -> TZ
 -- convert the textzeilen to tz without filling location
 -- some markup is converted to lit text
 ett2tz (TextZeile ty t) = TZtext {tzt=ty, tztext = t, tzloc = zero  }
@@ -69,7 +69,7 @@ ett2tz LeerZeile = TZleer {tzloc = zero}
 ett2tz (NeueSeite) = TZneueSeite {tzloc = zero}
 ett2tz x = errorT ["ett2tz not prepared for pattern", showT x]
 
-etts2tzs :: [TextZeilen] -> [TZ]
+etts2tzs :: [TextZeile] -> [TZ]
 -- maps the text zeilen and numbers the lines from 1 to end
 etts2tzs = zipWith line2tz [1..] . map ett2tz
 
