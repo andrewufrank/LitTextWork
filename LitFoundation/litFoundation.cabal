@@ -20,10 +20,10 @@ library
         , uniform-algebras
         , network-uri
         , uniform-http
-        , uniform-convenience
+--        , uniform-convenience
         -- not yet required, should replace rdf4hextension for PartURI
         -- , rdf4hextension
-        , HTF
+--        , HTF
         , optparse-applicative
         , pipes
         , rdf4hextension

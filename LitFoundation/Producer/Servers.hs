@@ -13,7 +13,7 @@
 
 module Producer.Servers (
     module Producer.Servers
-    , module Network.URI
+    , module Uniform.HttpURI
     , module Uniform.HttpCallWithConduit
     ) where
 
@@ -23,8 +23,8 @@ import Uniform.Strings
 import Uniform.Error
 import Uniform.FileIO (makeAbsDir, makeRelDir)
 import Uniform.HttpCallWithConduit (makeAbsURI)
---import Uniform.HttpURI
-import Network.URI
+import Uniform.HttpURI
+--import Network.URI
 --import           Test.Framework
 import Text.Read (Read (..))
 

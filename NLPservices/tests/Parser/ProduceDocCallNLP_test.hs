@@ -24,24 +24,24 @@ module Parser.ProduceDocCallNLP_test  where
 
 import              Test.Framework
 import              Uniform.TestHarness
-import Parser.LanguageTypedText
-import Producer.Servers
-import CoreNLP.CoreNLPxml (readDocString)
-import CoreNLP.Defs0 ()
-import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
-import Text.Regex (mkRegex, subRegex)
-import Parser.CompleteSentence (completeSentence)
+--import Parser.LanguageTypedText
+--import Producer.Servers
+--import CoreNLP.CoreNLPxml (readDocString)
+--import CoreNLP.Defs0 ()
+--import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
+--import Text.Regex (mkRegex, subRegex)
+--import Parser.CompleteSentence (completeSentence)
 import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
 import Parser.LanguageTypedText
-
-import NLP.Corpora.Conll  as Conll -- Conll for english
-import NLP.Corpora.ItalianTinT   as TinT-- for italian
-import NLP.Corpora.German  as German --
-import NLP.Corpora.Spanish as Spanish --
-import NLP.Corpora.French as French --
-import NLP.Corpora.FrenchUD as FrenchUD --
-
-import Data.Text as T
+--
+--import NLP.Corpora.Conll  as Conll -- Conll for english
+--import NLP.Corpora.ItalianTinT   as TinT-- for italian
+--import NLP.Corpora.German  as German --
+--import NLP.Corpora.Spanish as Spanish --
+--import NLP.Corpora.French as French --
+--import NLP.Corpora.FrenchUD as FrenchUD --
+--
+--import Data.Text as T b
 
 import Parser.ProduceDocCallNLP
 
@@ -66,17 +66,6 @@ paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP" (RDFsubj $ (showT
 snip2eng = Snip2 (typeText undefEnglish entz3text) (mkSnipSigl paraSigl1 (SnipID 1))
 --nlpserver = serverBrest
 
-testOP_Snip_N (langPh, postagPh, text, i) = do
-        putIOwords [ "testOP"]
-        let snip  = Snip2 (typeText langPh text) (mkSnipSigl paraSigl1 (SnipID i))
-        convertOneSnip2Triples2 langPh postagPh True snip serverBrest
-
---test_N_1 :: IO ()
-test_N_1 = testVar2File (undefEnglish, undefConll, entz3text, 1)        "resultN1" testOP_Snip_N
-test_N_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultN2" testOP_Snip_N
-test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN3" testOP_Snip_N
-test_N_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultN4" testOP_Snip_N
-test_N_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultN5" testOP_Snip_N
 
 
 --------------------------
@@ -92,4 +81,34 @@ test_clean2 = assertEqual "  Knots of idle men  on the South Bridge, for 3 s  2 
 tx1 = "  Knots of idle-men  \
     \on the South Bridge, for 3s. 2d. .   \
     \This street named the _Via Dolorosa_."
+
+--------------
+    -- converts a text to snip2
+testOP_Snip_N (langPh, postagPh, text, i)= do
+        putIOwords [ "testOP"]
+        let snip  = Snip2 (typeText langPh text) (mkSnipSigl paraSigl1 (SnipID i))
+        return snip
+--        convertOneSnip2Triples2 langPh postagPh True snip serverBrest
+
+--test_N_1 :: IO ()
+test_M_1 = testVar2File (undefEnglish, undefConll, entz3text, 1)        "resultM1" testOP_Snip_N
+test_M_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultM2" testOP_Snip_N
+test_M_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultM3" testOP_Snip_N
+test_M_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultM4" testOP_Snip_N
+test_M_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultM5" testOP_Snip_N
+
+instance  ShowTestHarness (Snip2 a) where
+    -- to avoid the additional "" added when show  text
+    showTestH = show
+    readTestH = readNote "showTestHarness Snip2"
+
+testOP_M_N (langPh, postagPh, text, i) snip =
+        convertOneSnip2Triples2 langPh postagPh True snip serverBrest
+
+----test_N_1 :: IO ()
+test_N_1 = testVar3File (undefEnglish, undefConll, entz3text, 1) "resultM1" "resultN1" testOP_M_N
+--test_N_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultN2" testOP_M_N
+--test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN3" testOP_M_N
+--test_N_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultN4" testOP_M_N
+--test_N_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultN5" testOP_M_N
 
