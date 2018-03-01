@@ -110,7 +110,7 @@ instance TypedFiles5 [RDF.Triple] GZip where
         closeFile2 hand
         let fn2 = setExtension tmpext  fp
         let fn1 = setExtension (tpext5 tp) fp
-        renameFile fn2 fn1
+        renameFile' fn2 fn1
 --        when rdfGraphDebug $
         putIOwords ["closeHandle6 triples", showT fn2]
         return ()
@@ -174,7 +174,7 @@ instance TypedFiles5 [RDF.Triple] ()  where
         closeFile2 hand
         let fn2 = setExtension tmpext  fp
         let fn1 = setExtension (tpext5 tp) fp
-        renameFile fn2 fn1
+        renameFile' fn2 fn1
 --        when rdfGraphDebug $
         putIOwords ["closeHandle6 triples", showT fn2]
         return ()
