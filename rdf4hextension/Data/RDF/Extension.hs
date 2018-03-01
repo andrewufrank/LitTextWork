@@ -63,14 +63,18 @@ class RDFproperties p where
 -- class URIs a b where
 --   extendURI :: a -> b
 
-newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq)
+newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq, Ord)
 -- ^ a type to identify the RDF subject value
 -- is a text, not a URI
 unRDFsubj (RDFsubj a) = a
 instance Zeros RDFsubj where zero = RDFsubj zero
 
+--instance Functor RDFsubj where fmap op (RDFsubj a) = RDFsubj (op a)
+-- would applicative work?
+
 extendHashRDFsubj ::  Text -> RDFsubj ->  RDFsubj
 extendHashRDFsubj e a = RDFsubj .  (<#> e) . unRDFsubj $ a
+--extendHashRDFsubj e a = fmap  (<#> e)   a
 extendSlashRDFsubj :: Text -> RDFsubj  -> RDFsubj
 extendSlashRDFsubj e a = RDFsubj .  (</> e) . unRDFsubj $ a
 -- makeRDFproperty :: PartURI -> Text -> RDFproperty

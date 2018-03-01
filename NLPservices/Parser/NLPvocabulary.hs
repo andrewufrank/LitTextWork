@@ -28,7 +28,7 @@ import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
 
 nlp = "nlp"::Text
 --nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
-nlpURItext =  ( vocabularyBase) </> "nlp_2017" :: PartURI
+nlpURItext = PartURI $ (unPartURI vocabularyBase) </> "nlp_2017" :: PartURI
 -- the 2017 vocabulary represents the dependency codes as properties (written lower case)
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
@@ -48,10 +48,10 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           -- do not capitalize second and following (not DEPorig)
 
 instance RDFproperties NLPproperty where
-    mkRDFproperty p = RDFproperty $ nlpURItext <#> (toLowerStart . showT $ p)
+    mkRDFproperty p = RDFproperty $ unPartURI nlpURItext <#> (toLowerStart . showT $ p)
 
 instance RDFproperties DepCode where
-    mkRDFproperty c = RDFproperty $ nlpURItext <#> (toLower' . fromDEPtag $ c)
+    mkRDFproperty c = RDFproperty $ unPartURI nlpURItext <#> (toLower' . fromDEPtag $ c)
 
             -- should be changed to 2017
 data NLPtype = Doc | Snip | Sentence | Token
@@ -59,11 +59,11 @@ data NLPtype = Doc | Snip | Sentence | Token
   deriving (Show, Eq, Enum)
 
 instance RDFtypes NLPtype where
-      mkRDFtype p = RDFtype $ nlpURItext <#> (toTitle . showT $ p)
+      mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
 
 type ParaID = Int   -- should be typed?
 
-newtype ParaSigl = ParaSigl RDFsubj
+newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
 unParaSigl (ParaSigl t) = t
 
 formatParaID :: ParaID -> Text
@@ -74,7 +74,7 @@ formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 --formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
 ---- format to 3 digits
 
-buchURIx textstate = RDFsubj $ ( rdfBase)
+buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
             <#> authorDir textstate <-> buchName textstate
 -- id of buch, part and sentence or page is attached
 

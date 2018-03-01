@@ -27,7 +27,7 @@ import Uniform.HttpURI
 --import Network.URI
 --import           Test.Framework
 --import Text.Read (Read (..))
-import Data.RDF.Extension (PartURI)
+import Data.RDF.Extension (PartURI (..))
 ---- an attempt to have a read for URI  ReadS
 --instance Read URI where
 --    readsPrec _  = readS'
@@ -45,10 +45,10 @@ serverBrest = makeAbsURI "http://nlp.gerastree.at"
 
 localhost = makeAbsURI "http://127.0.0.1"
 
-rdfBase = uriT $ makeAbsURI "http://gerastree.at"
--- ^ for the text
 rdfBase, vocabularyBase :: PartURI  -- not a real URI
-vocabularyBase = uriT $ makeAbsURI "http://gerastree.at"
+rdfBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"
+-- ^ for the text
+vocabularyBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"
 -- for the vocabularies
 
 dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
