@@ -61,12 +61,18 @@ fretz3text = "L'oncle prit l'avion pour Boston. Quand il entrat la chamre, il po
 spantz3text = "El t\237o vol\243 a Boston. Cuando entr\243 en la habitaci\243n, tra\237a un libro. Que era de color rojo."
 ittz3text = "Lo zio vol\242 a Boston. Quando entr\242 nella stanza, port\242 un libro. Era rosso."
 
-paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP" (RDFsubj $ (showT rdfBase))  )
+paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP" (RDFsubj $ (unPartURI rdfBase))  )
 
 snip2eng = Snip2 (typeText undefEnglish entz3text) (mkSnipSigl paraSigl1 (SnipID 1))
 --nlpserver = serverBrest
 
+sigl1 = mkSnipSigl paraSigl1 (SnipID 1)
+test_1 = do
+        putIOwords ["show sigl1", s2t $ show sigl1]
+        putIOwords ["show parasigl1", s2t $ show paraSigl1]
+        assertBool False
 
+test_readSigl = assertEqual sigl1 (read . show $ sigl1)
 
 --------------------------
 
@@ -84,29 +90,34 @@ tx1 = "  Knots of idle-men  \
 
 --------------
     -- converts a text to snip2
+testOP_Snip_N :: LanguageTypedText t0 => (t0, t1, Text, Int) -> ErrIO (Snip2 t0)
 testOP_Snip_N (langPh, postagPh, text, i)= do
         putIOwords [ "testOP"]
         let snip  = Snip2 (typeText langPh text) (mkSnipSigl paraSigl1 (SnipID i))
         return snip
---        convertOneSnip2Triples2 langPh postagPh True snip serverBrest
 
 --test_N_1 :: IO ()
 test_M_1 = testVar2File (undefEnglish, undefConll, entz3text, 1)        "resultM1" testOP_Snip_N
-test_M_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultM2" testOP_Snip_N
-test_M_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultM3" testOP_Snip_N
-test_M_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultM4" testOP_Snip_N
-test_M_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultM5" testOP_Snip_N
+--test_M_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultM2" testOP_Snip_N
+--test_M_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultM3" testOP_Snip_N
+--test_M_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultM4" testOP_Snip_N
+--test_M_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultM5" testOP_Snip_N
 
 instance  ShowTestHarness (Snip2 a) where
     -- to avoid the additional "" added when show  text
     showTestH = show
     readTestH = readNote "showTestHarness Snip2"
 
+testOP_M_N :: (TaggedTyped t1, LanguageTypedText t0, LanguageTyped2 t0 t1) =>
+         (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO [NLPtriple t1]
 testOP_M_N (langPh, postagPh, text, i) snip =
         convertOneSnip2Triples2 langPh postagPh True snip serverBrest
 
-----test_N_1 :: IO ()
-test_N_1 = testVar3File (undefEnglish, undefConll, entz3text, 1) "resultM1" "resultN1" testOP_M_N
+--testVar3File :: (Read a, Eq b, Show b, Read b
+--            , Zeros b, ShowTestHarness b) =>
+--        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
+test_N_1 :: IO ()
+test_N_1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1) "resultM1" "resultN1" testOP_M_N
 --test_N_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultN2" testOP_M_N
 --test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN3" testOP_M_N
 --test_N_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultN4" testOP_M_N

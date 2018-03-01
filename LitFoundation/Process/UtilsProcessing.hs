@@ -27,16 +27,19 @@ module Process.UtilsProcessing
     where
 
 --import           Test.Framework
-import           Uniform.FileIO hiding ((<>), (</>), (<.>))
+import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import Process.UtilsParseArgs
-import Producer.Servers (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
-import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI, callHTTP10post, URI, HttpQueryString)
+import Producer.Servers (serverLocalhost, serverBrest
+                    , rdfBase, dirQueries, URI)
+import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI
+                    , callHTTP10post, URI, HttpQueryString)
 import           Uniform.Strings
 
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
 import Pipes ((>->), (~>))
+--import qualified Path.IO as Path.IO
 -- todo fileio - export for pipes
 
 processAll :: (Path Abs File -> ErrIO Text) -> (Path Abs File -> Bool)
@@ -47,8 +50,8 @@ processAll ops testFile dir file = do  -- debug forceFlag server dir db mgraph  
     putIOwords ["processAllNTGZ", "dir", showT dir, "file", showT file]
 --            db - graph", db, showT mgraph, "debug", showT debug]
     let path = toFilePath dir
-    resFile <- makeAbsolute file
-    bracketErrIO (openFile2handle resFile WriteMode)
+    resFile :: Path Abs File <- makeAbsoluteFile' file
+    bracketErrIO (FN.openFile2handle resFile WriteMode)
                 closeFile2  -- not with transaction tmp
                 (\hand ->
                       Pipe.runEffect $
