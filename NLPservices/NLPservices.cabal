@@ -43,6 +43,7 @@ library
         CoreNLP.Defs0
         CoreNLP.CoreNLPxml
         Parser.CompleteSentence
+        Parser.LanguageSpecific
         Parser.ProduceNLPtriples
         Parser.ConvertTaggerOutput
         Parser.NLPvocabulary

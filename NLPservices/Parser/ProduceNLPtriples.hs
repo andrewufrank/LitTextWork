@@ -57,20 +57,20 @@ snipIsNull :: Snip2 lang -> Bool
 snipIsNull = null' . unLCtext . snip2text
 
 processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
-            => lang ->  postag -> Snip2 lang  -> Doc0 postag -> [NLPtriple postag]
+            => lang ->  postag -> SnipSigl  -> Doc0 postag -> [NLPtriple postag]
             -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 
-processDoc0toTriples2  lph pph snip  doc0 = map NLPtriple $ t2  : sents ++ corefs
+processDoc0toTriples2  lph pph snipsigl  doc0 = map NLPtriple $ t2  : sents ++ corefs
 
     where
         lang = languageCode lph -- tz3lang ntz
-        snipid = snip2sigl snip -- mkSnipSigl paraid snipnr
-        t2 = mkTripleText (unSnipSigl snipid) (mkRDFproperty LanguageTag) (showT lang)
+--        snipid = snip2sigl snip -- mkSnipSigl paraid snipnr
+        t2 = mkTripleText (unSnipSigl snipsigl) (mkRDFproperty LanguageTag) (showT lang)
         sents :: [Triple]
-        sents =   concat $ map (mkSentenceTriple2 lang  snipid) (docSents doc0)
-        corefs = concat $ zipWith (mkCorefTriple2 lang   snipid )
-                            (docCorefs doc0) [1 .. ]
+        sents =   concat $ map (mkSentenceTriple2 lang  snipsigl) (docSents doc0)
+        corefs =    (mkCorefTriple1 lang   snipsigl )
+                            (docCorefs doc0)
 
 ----------------------
 mkSentenceTriple2 :: (Show postag, POStags postag) =>
@@ -181,12 +181,21 @@ mkDependenceTriple2 lang sentid  dep i  =  [mkTripleRef (unTokenSigl govtokenid)
 ------       wf = word0 . dword  $ depp
 
 ------------ coreferences ---------------------
-
-mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]
+mkCorefTriple1 :: LanguageCode -> SnipSigl -> CorefOuter0  ->   [Triple]
 -- ^ gives a single set of coreferences  - int is to produce id -- not required
 -- ^ produces triples from the mention to the representative one
 
-mkCorefTriple2 lang snip coref i  = if null mentions then []
+mkCorefTriple1 lang snipsigl coref    =
+        if null . corefCluster $ coref
+            then []
+            else concat $ map (mkCorefTriple2 lang snipsigl) (corefCluster coref)
+
+
+mkCorefTriple2 :: LanguageCode -> SnipSigl -> CorefCluster0  ->  [Triple]
+-- ^ gives a single set of coreferences  - int is to produce id -- not required
+-- ^ produces triples from the mention to the representative one
+
+mkCorefTriple2 lang snipsigl coref   = if null mentions then []
                                         else map (mkRefs repSigl) mentSigl
     where
 
@@ -201,8 +210,8 @@ mkCorefTriple2 lang snip coref i  = if null mentions then []
             heads = map mentHead norep
                     -- the heads are the references
 
-            repSigl = mkRefSigl snip rep' :: TokenSigl
-            mentSigl = map (mkRefSigl snip) norep  :: [TokenSigl]
+            repSigl = mkRefSigl snipsigl rep' :: TokenSigl
+            mentSigl = map (mkRefSigl snipsigl) norep  :: [TokenSigl]
 
 
 mkRefSigl :: SnipSigl -> Mention0 -> TokenSigl

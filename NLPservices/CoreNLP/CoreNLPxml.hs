@@ -89,21 +89,44 @@ import Data.Maybe
             <dependent idx="1">Bills</dependent>
           </dep>
 
-    <coreference>  -- occurs twice
+    <coreference>
       <coreference>
         <mention representative="true">
-          <sentence>1</sentence>
+          <sentence>2</sentence>
+          <start>1</start>
+          <end>3</end>
+          <head>2</head>
+          <text>The uncle</text>
+        </mention>
+        <mention>
+          <sentence>3</sentence>
+          <start>2</start>
+          <end>3</end>
+          <head>2</head>
+          <text>he</text>
+        </mention>
+        <mention>
+          <sentence>3</sentence>
+          <start>8</start>
+          <end>9</end>
+          <head>8</head>
+          <text>he</text>
+        </mention>
+      </coreference>
+      <coreference>
+        <mention representative="true">
+          <sentence>3</sentence>
+          <start>10</start>
+          <end>12</end>
+          <head>11</head>
+          <text>a book</text>
+        </mention>
+        <mention>
+          <sentence>4</sentence>
           <start>1</start>
           <end>2</end>
           <head>1</head>
-          <text>Alice</text>
-        </mention>
-        <mention>
-          <sentence>1</sentence>
-          <start>11</start>
-          <end>12</end>
-          <head>11</head>
-          <text>her</text>
+          <text>It</text>
         </mention>
       </coreference>
     </coreference>
@@ -138,15 +161,17 @@ getMention  = atTag "mention" >>>
 readRep "true" = True
 readRep _ = False
 
-getCoref = atTag "coreference" >>>   -- occurs twice
+getCorefOuter = atTag "coreference" >>>   -- outer - clusters
+            -- but only one type of coref assumed
+    proc x -> do
+        c <- listA getCorefClusters -< x
+        returnA -< CorefOuter0 c
+
+getCorefClusters = atTag "coreference" >>>   -- inner should have only one true mention
     proc x -> do
         ms <- listA getMention -< x
-        returnA -< Coref0 ms
+        returnA -< CorefCluster0 ms
 
-getCoref0 = atTag "coreference" >>>   -- occurs twice
-    proc x -> do
-        c <- listA getCoref -< x
-        returnA -< c
 
 
 getGov1 = atTag "governor" >>>
@@ -187,7 +212,7 @@ getDoc0 ph = atTag "document" >>>
         s <- getSentences ph  -< x
         c <- getCoref0' -< x
         returnA -< Doc0 s c
-      where getCoref0' = getCoref0 `orElse` (arr (const []))
+      where getCoref0' = getCorefOuter `orElse` (arr $ const zero)
 
 getSentences ph = atTag "sentences" >>>
     proc x -> do
@@ -297,7 +322,7 @@ instance (NLP.POStags postag) => ReadDocXML postag where
                                                 >>> indentDoc
         when showXML $ do
               putIOwords ["the xml formated"]
-              putIOwords  $ map (s2t . take 200) xmlres
+              putIOwords  . map s2t $  xmlres
               putIOwords ["the xml formated ---------------------"]
         if length docs > 1
             then error "multiple document tags"
