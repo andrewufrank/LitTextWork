@@ -25,9 +25,10 @@ import           Uniform.Strings         hiding ((<|>))
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
 import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
 
+
 nlp = "nlp"::Text
---nlpURItext =  (showT vocabularyBase) </> "nlp_2015" :: PartURI
-nlpURItext =  (showT vocabularyBase) </> "nlp_2017" :: PartURI
+--nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
+nlpURItext =  ( vocabularyBase) </> "nlp_2017" :: PartURI
 -- the 2017 vocabulary represents the dependency codes as properties (written lower case)
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
@@ -73,7 +74,7 @@ formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 --formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
 ---- format to 3 digits
 
-buchURIx textstate = RDFsubj $ (showT rdfBase)
+buchURIx textstate = RDFsubj $ ( rdfBase)
             <#> authorDir textstate <-> buchName textstate
 -- id of buch, part and sentence or page is attached
 

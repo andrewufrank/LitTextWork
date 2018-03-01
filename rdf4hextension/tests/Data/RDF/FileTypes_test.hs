@@ -47,5 +47,5 @@ test_writehandle = do
                 (closeHandle6 testdir  ntFileTriples)
                 (\h -> writeHandle6 h ntFileTriples ([]::[Triple]))
     putIOwords ["test_writehandle result", showT r]
-    assertEqual True False
+    assertEqual True True
 

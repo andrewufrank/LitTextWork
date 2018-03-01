@@ -42,9 +42,11 @@ import           Uniform.Error
 import           Uniform.Strings
 import           Uniform.Zero
 ----import           Uniform.Convenience.LitTypes
-type PartURI = Text
+newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord)
+unPartURI (PartURI t) = t
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type - Network.URI, which is checked (and problems with Read class)
+-- conversion from URI to text use uriT (not showT)
 
 --gerastreeURI =    "http://gerastree.at"  :: PartURI
 -- the base url - with no closing
@@ -63,6 +65,7 @@ class RDFproperties p where
 
 newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq)
 -- ^ a type to identify the RDF subject value
+-- is a text, not a URI
 unRDFsubj (RDFsubj a) = a
 instance Zeros RDFsubj where zero = RDFsubj zero
 
