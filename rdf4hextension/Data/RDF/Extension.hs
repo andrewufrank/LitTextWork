@@ -64,6 +64,7 @@ class RDFproperties p where
 newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq)
 -- ^ a type to identify the RDF subject value
 unRDFsubj (RDFsubj a) = a
+instance Zeros RDFsubj where zero = RDFsubj zero
 
 extendHashRDFsubj ::  Text -> RDFsubj ->  RDFsubj
 extendHashRDFsubj e a = RDFsubj .  (<#> e) . unRDFsubj $ a
