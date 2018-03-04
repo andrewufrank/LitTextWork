@@ -88,7 +88,7 @@ main4tripels = do
 
 resTrip = ""
 
-paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP"
+paraSigl1 =  ParaSigl ( extendSlashRDFsubj "test1"
         (RDFsubj $ (unPartURI rdfBase))  )
 sigl1 = mkSnipSigl paraSigl1 (SnipID 1)
 
