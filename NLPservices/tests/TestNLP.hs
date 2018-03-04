@@ -37,8 +37,9 @@ import   Test.Framework
 --import {-@ HTF_TESTS @-} Parser.ProduceDocCallNLP_test
 
 import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
-import {-@ HTF_TESTS @-} CoreNLP.Doc2ToDoc0_test
---import {-@ HTF_TESTS @-} CoreNLP.ProduceNLPtriples2_test
+--import {-@ HTF_TESTS @-} CoreNLP.Doc2ToDoc0_test
+----------import {-@ HTF_TESTS @-} CoreNLP.ProduceNLPtriples2_testX
+            -- uses all memory - must be run in main!
 
 main =  do
     putStrLn "TestNLP.hs:\n"

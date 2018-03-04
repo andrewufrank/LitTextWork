@@ -11,7 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module Lib.ProduceNLPtriples2_test  -- (openMain, htf_thisModuelsTests)
+module CoreNLP.ProduceNLPtriples2_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
@@ -22,9 +22,9 @@ import Uniform.FileIO
 import qualified Data.ByteString.Lazy.UTF8 as B
 import Data.Aeson (eitherDecode)
 
-import Lib.ParseJsonCoreNLP
-import Lib.Doc2ToDoc0
-import Lib.ProduceNLPtriples2
+import CoreNLP.ParseJsonCoreNLP
+import CoreNLP.Doc2ToDoc0
+import CoreNLP.ProduceNLPtriples2
 import qualified NLP.Corpora.Conll  as Conll
 --import Text.Show.Pretty (valToStr)
 --import Text.PrettyPrint.GenericPretty
