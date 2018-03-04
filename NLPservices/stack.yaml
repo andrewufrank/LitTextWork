@@ -19,8 +19,6 @@ packages:
   extra-dep: true
 - location: /home/frank/Workspace8/TreeTagSets
   extra-dep: true
-- location: /home/frank/Workspace8/TreeTagSets
-  extra-dep: true
 - ../LitFoundation
 - ../rdf4hextension
 - '.'

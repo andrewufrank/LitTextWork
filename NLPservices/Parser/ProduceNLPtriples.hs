@@ -18,7 +18,8 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables, MultiParamTypeClasses #-}
+{-# LANGUAGE ScopedTypeVariables, MultiParamTypeClasses
+    , StandaloneDeriving #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
@@ -38,14 +39,17 @@ import NLP.Types.Tags
 import Parser.NLPvocabulary  -- from Foundation
 import Parser.LanguageTypedText
 import Data.List (partition)
-import Data.RDF.Types ()  -- instance Show Triple
+import Data.RDF.Types  (Triple)  -- instance Show Triple
 -- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
 
-newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
+newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show)
 unNLPtriple (NLPtriple t) = t
 
-instance Read Triple where
-    readsPrec t = error "missing in produceNLPtriples"
+
+deriving instance (Read postag, Read Data.RDF.Types.Triple )
+        => Read (NLPtriple postag)
+--instance Read Triple where
+--    readsPrec t = error "missing in produceNLPtriples"
 
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip2 lang = Snip2 { snip2text :: LTtext lang
