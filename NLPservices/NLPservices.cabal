@@ -26,7 +26,6 @@ library
         , rdf4hextension
         , rdf4h
         , text
-        , TreeTagSets >=0.0.2.6.7
             -- is support for POS codes (could use haskell-conll)
                 -- used in  POS module
         , HTF
@@ -37,6 +36,11 @@ library
         , parsec-extra
         , split
         , regex-compat
+        , aeson
+        , unordered-containers
+        , containers
+        , TreeTagSets
+        , litFoundation
 
     exposed-modules:
         -- in order of inclusion
@@ -49,6 +53,9 @@ library
         Parser.ConvertTaggerOutput
         Parser.NLPvocabulary
         CoreNLP.Models
+         CoreNLP.ParseJsonCoreNLP
+         CoreNLP.Doc2ToDoc0
+         CoreNLP.ProduceNLPtriples2
 
     exposed: True
     buildable: True
@@ -71,15 +78,16 @@ Test-Suite nlpTestAuto
     hs-source-dirs: tests
     other-modules:
         Parser.ProduceDocCallNLP_test
-
-
-        CoreNLP.Models_test
-        CoreNLP.Defs0_test
-        CoreNLP.CoreNLPxml_test
---        Parser.CompleteSentence_test
---        Parser.ProduceNLPtriples_test
---        Parser.ConvertTaggerOutput_test
---        Parser.NLPvocabulary_test
+--        CoreNLP.Models_test
+--        CoreNLP.Defs0_test
+--        CoreNLP.CoreNLPxml_test
+         CoreNLP.ParseJsonCoreNLP_test
+         CoreNLP.Doc2ToDoc0_test
+         CoreNLP.ProduceNLPtriples2_test
+        Parser.CompleteSentence_test
+        Parser.ProduceNLPtriples_test
+        Parser.ConvertTaggerOutput_test
+        Parser.NLPvocabulary_test
 
 
 
