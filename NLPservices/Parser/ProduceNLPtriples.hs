@@ -13,7 +13,7 @@
 
 
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -30,8 +30,8 @@ module Parser.ProduceNLPtriples
     , module Parser.NLPvocabulary
     ) where
 
-import           Test.Framework
-import Uniform.TestHarness (testVar3File)
+--import           Test.Framework
+--import Uniform.TestHarness (testVar3File)
 import CoreNLP.Defs0
 import CoreNLP.NERcodes
 import Parser.TextDescriptor
@@ -104,7 +104,8 @@ mkSentenceTriple2 lang snipid sent
 ----------------------------------------- --
 mkTokenTriple2 :: (Show postag, POStags postag) =>
         LanguageCode -> SentSigl-> Token0 postag-> [Triple]
-mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3,  t5] ++ t4 ++ t6 ++ t7
+mkTokenTriple2 lang sentSigl tok =  [t0, t1,  t2a, t3,  t5]
+                                         ++ t4 ++ t6 ++ t7
     -- the language code is to pass to the triple maker ! TODO
     where
         tokensigl = mkTokenSigl sentSigl (tid tok)

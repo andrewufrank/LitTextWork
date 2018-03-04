@@ -141,8 +141,10 @@ test_M_MA1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
 
 -- --  xml2doc    :: postag -> Bool ->  Text ->  ErrIO (Doc0 postag)
 
-testOP_MA_MB :: (Show postag, TaggedTyped postag, LanguageTypedText t0, LanguageTyped2 t0 postag) =>
-         (t0, postag, Text, Int) -> Text -> ErrIO (Doc0 postag)
+testOP_MA_MB :: (Show postag, TaggedTyped postag, LanguageTypedText t0
+        , LanguageTyped2 t0 postag) =>
+            (t0, postag, Text, Int) -> Text -> ErrIO (Doc0 postag)
+
 testOP_MA_MB (langPh, postagPh, text, i) xml1 = do
         xml2doc   postagPh False  xml1
 
