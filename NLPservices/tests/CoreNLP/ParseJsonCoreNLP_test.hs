@@ -11,7 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module Lib.ParseJsonCoreNLP_test  -- (openMain, htf_thisModuelsTests)
+module CoreNLP.ParseJsonCoreNLP_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
@@ -22,7 +22,7 @@ import Uniform.FileIO
 import qualified Data.ByteString.Lazy.UTF8 as B
 import Data.Aeson (eitherDecode)
 
-import Lib.ParseJsonCoreNLP
+import CoreNLP.ParseJsonCoreNLP
 
 test_nlpjson  = do
     res0 <- runErr $ do
