@@ -38,11 +38,14 @@ import NLP.Types.Tags
 import Parser.NLPvocabulary  -- from Foundation
 import Parser.LanguageTypedText
 import Data.List (partition)
+import Data.RDF.Types ()  -- instance Show Triple
 -- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
 
 newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
 unNLPtriple (NLPtriple t) = t
 
+instance Read Triple where
+    readsPrec t = error "missing in produceNLPtriples"
 
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip2 lang = Snip2 { snip2text :: LTtext lang
@@ -61,7 +64,8 @@ processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
             -- TriplesGraph  G -> H
 -- ^ convert the doc0 (which is the analysed xml) and produce the triples
 
-processDoc0toTriples2  lph pph snipsigl  doc0 = map NLPtriple $ t2  : sents ++ corefs
+processDoc0toTriples2  lph pph snipsigl  doc0 =
+    map NLPtriple $ t2  : sents -- ++ corefs
 
     where
         lang = languageCode lph -- tz3lang ntz
@@ -69,8 +73,8 @@ processDoc0toTriples2  lph pph snipsigl  doc0 = map NLPtriple $ t2  : sents ++ c
         t2 = mkTripleText (unSnipSigl snipsigl) (mkRDFproperty LanguageTag) (showT lang)
         sents :: [Triple]
         sents =   concat $ map (mkSentenceTriple2 lang  snipsigl) (docSents doc0)
-        corefs =    (mkCorefTriple1 lang   snipsigl )
-                            (docCorefs doc0)
+--        corefs =    (mkCorefTriple1 lang   snipsigl )
+--                            (docCorefs doc0)
 
 ----------------------
 mkSentenceTriple2 :: (Show postag, POStags postag) =>
@@ -180,47 +184,47 @@ mkDependenceTriple2 lang sentid  dep i  =  [mkTripleRef (unTokenSigl govtokenid)
 ------       t9 = mkTripleLang lang (unDepSigl depidp) (mkRDFproperty DepWordform) wf
 ------       wf = word0 . dword  $ depp
 
------------- coreferences ---------------------
-mkCorefTriple1 :: LanguageCode -> SnipSigl -> CorefOuter0  ->   [Triple]
--- ^ gives a single set of coreferences  - int is to produce id -- not required
--- ^ produces triples from the mention to the representative one
-
-mkCorefTriple1 lang snipsigl coref    =
-        if null . corefCluster $ coref
-            then []
-            else concat $ map (mkCorefTriple2 lang snipsigl) (corefCluster coref)
-
-
-mkCorefTriple2 :: LanguageCode -> SnipSigl -> CorefCluster0  ->  [Triple]
--- ^ gives a single set of coreferences  - int is to produce id -- not required
--- ^ produces triples from the mention to the representative one
-
-mkCorefTriple2 lang snipsigl coref   = if null mentions then []
-                                        else map (mkRefs repSigl) mentSigl
-    where
-
-            mentions = corefMents coref
-
-            (rep,norep) = partition mentRep mentions
-
-            rep' = case length rep of
-                1 -> headNote "mkCorefTriple2 rep not present" rep :: Mention0
-                _ -> errorT ["mkCoreTriple2 - mentions exist, but not a single true rep",
-                        showT mentions, showT rep]
-            heads = map mentHead norep
-                    -- the heads are the references
-
-            repSigl = mkRefSigl snipsigl rep' :: TokenSigl
-            mentSigl = map (mkRefSigl snipsigl) norep  :: [TokenSigl]
-
-
-mkRefSigl :: SnipSigl -> Mention0 -> TokenSigl
-mkRefSigl s m = mkTokenSigl  sentid . mentHead $ m
-    where       sentid = mkSentSigl  s  (mentSent m)
-
-mkRefs :: TokenSigl -> TokenSigl -> Triple
-mkRefs h m = mkTripleRef (unTokenSigl m) (mkRDFproperty Mentions) (unTokenSigl h)
-        -- a is a mention of h
+---------------- coreferences ---------------------
+----mkCorefTriple1 :: LanguageCode -> SnipSigl -> CorefOuter0  ->   [Triple]
+------ ^ gives a single set of coreferences  - int is to produce id -- not required
+------ ^ produces triples from the mention to the representative one
+----
+----mkCorefTriple1 lang snipsigl coref    =
+----        if null . corefCluster $ coref
+----            then []
+----            else concat $ map (mkCorefTriple2 lang snipsigl) (corefCluster coref)
+----
+----
+----mkCorefTriple2 :: LanguageCode -> SnipSigl -> CorefCluster0  ->  [Triple]
+------ ^ gives a single set of coreferences  - int is to produce id -- not required
+------ ^ produces triples from the mention to the representative one
+----
+----mkCorefTriple2 lang snipsigl coref   = if null mentions then []
+----                                        else map (mkRefs repSigl) mentSigl
+----    where
+----
+----            mentions = corefMents coref
+----
+----            (rep,norep) = partition mentRep mentions
+----
+----            rep' = case length rep of
+----                1 -> headNote "mkCorefTriple2 rep not present" rep :: Mention0
+----                _ -> errorT ["mkCoreTriple2 - mentions exist, but not a single true rep",
+----                        showT mentions, showT rep]
+----            heads = map mentHead norep
+----                    -- the heads are the references
+----
+----            repSigl = mkRefSigl snipsigl rep' :: TokenSigl
+----            mentSigl = map (mkRefSigl snipsigl) norep  :: [TokenSigl]
+----
+--
+--mkRefSigl :: SnipSigl -> Mention0 -> TokenSigl
+--mkRefSigl s m = mkTokenSigl  sentid . mentHead $ m
+--    where       sentid = mkSentSigl  s  (mentSent m)
+--
+--mkRefs :: TokenSigl -> TokenSigl -> Triple
+--mkRefs h m = mkTripleRef (unTokenSigl m) (mkRDFproperty Mentions) (unTokenSigl h)
+--        -- a is a mention of h
 
 
 --mkCorefTriple2 :: LanguageCode -> SnipSigl ->     Coref0 -> CorefNr ->  [Triple]

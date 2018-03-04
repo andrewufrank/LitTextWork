@@ -27,7 +27,7 @@ library
         ,uniform-algebras
         ,uniform-http
         ,uniform-convenience
-        ,rdf4h >=3.0.1.1
+        ,rdf4h
 --        ,network-uri
         ,text
 --        , HTF

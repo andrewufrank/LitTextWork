@@ -9,6 +9,8 @@
 -- the structure is a nested data structure, exactly parallel to the produced xml
 
 -- optional fields are lists .. to conform to HXT
+--
+-- all data has 0 suffix
 -----------------------------------------------------------------------------
 {-# LANGUAGE
         ScopedTypeVariables
@@ -65,10 +67,10 @@ mkSentID :: Text -> SentID0
 mkSentID s = SentID0 $ readNoteT "mkSentID" s
 
 data Doc0 postag = Doc0 {docSents:: [Sentence0 postag]
-                 , docCorefs :: CorefOuter0   -- only one
+--                 , docCorefs :: CorefOuter0   -- only one
                        } deriving (Read, Show,  Eq)
 
-instance Zeros (Doc0 postag) where zero = Doc0 [] zero
+instance Zeros (Doc0 postag) where zero = Doc0 []
 
 data Sentence0 postag = Sentence0 {sid :: SentID0
                         , sparse :: Text  -- the parse tree
@@ -107,20 +109,20 @@ data DependencePart0 = DP0 { did :: TokenID0  -- word number in sentence
                         , dword :: Wordform0  -- is word from text, not lemma
                             }   deriving (Show, Read, Eq)
 
-newtype CorefOuter0 = CorefOuter0 {corefCluster:: [CorefCluster0]
-                    }
-  deriving (Show, Read, Eq)
-instance Zeros CorefOuter0 where zero = CorefOuter0 []
+--newtype CorefOuter0 = CorefOuter0 {corefCluster:: [CorefCluster0]
+--                    }
+--  deriving (Show, Read, Eq)
+--instance Zeros CorefOuter0 where zero = CorefOuter0 []
+--
+--
+--newtype CorefCluster0 = CorefCluster0 {corefMents:: [Mention0]  -- a list of coreferences (for a singl subj)
+--                    }
+--  deriving (Show, Read, Eq)
 
-
-newtype CorefCluster0 = CorefCluster0 {corefMents:: [Mention0]  -- a list of coreferences (for a singl subj)
-                    }
-  deriving (Show, Read, Eq)
-
-data Mention0 = Mention0 {mentRep ::  Bool -- , indicates the representative mention
-        , mentSent :: SentID0
-        , mentStart, mentEnd :: TokenID0 -- not used ??
-        , mentHead :: TokenID0  -- the head of the mention
-        , mentText :: Text  -- multiple words, the actual mention - not yet used
-        }
-  deriving (Show, Read, Eq)
+--data Mention0 = Mention0 {mentRep ::  Bool -- , indicates the representative mention
+--        , mentSent :: SentID0
+--        , mentStart, mentEnd :: TokenID0 -- not used ??
+--        , mentHead :: TokenID0  -- the head of the mention
+--        , mentText :: Text  -- multiple words, the actual mention - not yet used
+--        }
+--  deriving (Show, Read, Eq)

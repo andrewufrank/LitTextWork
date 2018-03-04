@@ -142,35 +142,35 @@ text = getChildren >>> getText >>> arr s2t
 
 getAttrValueT t = getAttrValue (t2s t) >>> arr s2t
 
-getMention  = atTag "mention" >>>
-    proc x -> do
-        r <- getAttrValueT "representative" -<  x
-        s <- text <<< atTag "sentence" -< x
-        st <- text <<< atTag "start" -< x
-        e <- text <<< atTag "end" -< x
-        h <- text <<< atTag "head" -< x
-        t <- text <<< atTag "text" -< x
-        returnA -< Mention0 { mentRep = readRep r
-                        , mentSent =   mkSentID s
-                        , mentStart = mkTokenID st
-                        , mentEnd =  mkTokenID e
-                        , mentHead = mkTokenID h
-                        , mentText = t
-                        }
+--getMention  = atTag "mention" >>>
+--    proc x -> do
+--        r <- getAttrValueT "representative" -<  x
+--        s <- text <<< atTag "sentence" -< x
+--        st <- text <<< atTag "start" -< x
+--        e <- text <<< atTag "end" -< x
+--        h <- text <<< atTag "head" -< x
+--        t <- text <<< atTag "text" -< x
+--        returnA -< Mention0 { mentRep = readRep r
+--                        , mentSent =   mkSentID s
+--                        , mentStart = mkTokenID st
+--                        , mentEnd =  mkTokenID e
+--                        , mentHead = mkTokenID h
+--                        , mentText = t
+--                        }
 
 readRep "true" = True
 readRep _ = False
 
-getCorefOuter = atTag "coreference" >>>   -- outer - clusters
-            -- but only one type of coref assumed
-    proc x -> do
-        c <- listA getCorefClusters -< x
-        returnA -< CorefOuter0 c
-
-getCorefClusters = atTag "coreference" >>>   -- inner should have only one true mention
-    proc x -> do
-        ms <- listA getMention -< x
-        returnA -< CorefCluster0 ms
+--getCorefOuter = atTag "coreference" >>>   -- outer - clusters
+--            -- but only one type of coref assumed
+--    proc x -> do
+--        c <- listA getCorefClusters -< x
+--        returnA -< CorefOuter0 c
+--
+--getCorefClusters = atTag "coreference" >>>   -- inner should have only one true mention
+--    proc x -> do
+--        ms <- listA getMention -< x
+--        returnA -< CorefCluster0 ms
 
 
 
@@ -210,9 +210,9 @@ getDependencyType = atTag "dependencies" >>>
 getDoc0 ph = atTag "document" >>>
     proc x -> do
         s <- getSentences ph  -< x
-        c <- getCoref0' -< x
-        returnA -< Doc0 s c
-      where getCoref0' = getCorefOuter `orElse` (arr $ const zero)
+--        c <- getCoref0' -< x
+        returnA -< Doc0 s -- c
+--      where getCoref0' = getCorefOuter `orElse` (arr $ const zero)
 
 getSentences ph = atTag "sentences" >>>
     proc x -> do
