@@ -24,24 +24,8 @@ module Parser.ProduceDocCallNLP_test  where
 
 import              Test.Framework
 import              Uniform.TestHarness
---import Parser.LanguageTypedText
---import Producer.Servers
---import CoreNLP.CoreNLPxml (readDocString)
---import CoreNLP.Defs0 ()
---import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, callHTTP8get, addToURI)
---import Text.Regex (mkRegex, subRegex)
---import Parser.CompleteSentence (completeSentence)
-import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
+import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
 import Parser.LanguageTypedText
---
---import NLP.Corpora.Conll  as Conll -- Conll for english
---import NLP.Corpora.ItalianTinT   as TinT-- for italian
---import NLP.Corpora.German  as German --
---import NLP.Corpora.Spanish as Spanish --
---import NLP.Corpora.French as French --
---import NLP.Corpora.FrenchUD as FrenchUD --
---
---import Data.Text as T b
 
 import Parser.ProduceDocCallNLP
 
@@ -108,17 +92,17 @@ instance  ShowTestHarness (Snip2 a) where
     showTestH = show
     readTestH = readNote "showTestHarness Snip2"
 
---testOP_M_N :: (TaggedTyped t1, LanguageTypedText t0, LanguageTyped2 t0 t1) =>
---         (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO [NLPtriple t1]
---testOP_M_N (langPh, postagPh, text, i) snip2 =
---        convertOneSnip2Triples2 langPh postagPh True snip2 serverBrest
---
-----testVar3File :: (Read a, Eq b, Show b, Read b
-----            , Zeros b, ShowTestHarness b) =>
-----        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
---test_N_1 :: IO ()
---test_N_1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
---                                         "resultM1" "resultN1" testOP_M_N
+testOP_M_N :: (TaggedTyped t1, LanguageTypedText t0, LanguageTyped2 t0 t1) =>
+         (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO [NLPtriple t1]
+testOP_M_N (langPh, postagPh, text, i) snip2 =
+        convertOneSnip2Triples2 langPh postagPh True snip2 serverBrest
+
+--testVar3File :: (Read a, Eq b, Show b, Read b
+--            , Zeros b, ShowTestHarness b) =>
+--        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
+test_N_1 :: IO ()
+test_N_1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
+                                         "resultM1" "resultN1" testOP_M_N
 ----test_N_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultN2" testOP_M_N
 ----test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN3" testOP_M_N
 ----test_N_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultN4" testOP_M_N
@@ -127,29 +111,29 @@ instance  ShowTestHarness (Snip2 a) where
 ----    text2xml :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
 --                    ->  ErrIO Text
 
-testOP_M_MA :: (Show postag, TaggedTyped postag, LanguageTypedText t0, LanguageTyped2 t0 postag) =>
-         (t0, postag, Text, Int) -> Snip2 t0 -> ErrIO Text
-testOP_M_MA (langPh, postagPh, text, i) snip2 = do
-        let vars = nlpParams langPh postagPh
-        let path = nlpPath langPh
-        let server = addPort2URI serverBrest (nlpPort langPh postagPh)
-        text2xml   postagPh True server path vars (unLCtext $ snip2text snip2)
+--testOP_M_MA :: (Show postag, TaggedTyped postag, LanguageTypedText t0, LanguageTyped2 t0 postag) =>
+--         (t0, postag, Text, Int) -> Snip2 t0 -> ErrIO Text
+--testOP_M_MA (langPh, postagPh, text, i) snip2 = do
+--        let vars = nlpParams langPh postagPh
+--        let path = nlpPath langPh
+--        let server = addPort2URI serverBrest (nlpPort langPh postagPh)
+--        text2xml   postagPh True server path vars (unLCtext $ snip2text snip2)
+--
+----test_M_MA1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
+--                                          "resultM1" "resultMA1" testOP_M_MA
+--
+--
+---- --  xml2doc    :: postag -> Bool ->  Text ->  ErrIO (Doc0 postag)
+--
+--testOP_MA_MB :: (Show postag, TaggedTyped postag, LanguageTypedText t0
+--        , LanguageTyped2 t0 postag) =>
+--            (t0, postag, Text, Int) -> Text -> ErrIO (Doc0 postag)
+--
+--testOP_MA_MB (langPh, postagPh, text, i) xml1 = do
+--        xml2doc   postagPh False  xml1
 
-test_M_MA1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
-                                          "resultM1" "resultMA1" testOP_M_MA
-
-
--- --  xml2doc    :: postag -> Bool ->  Text ->  ErrIO (Doc0 postag)
-
-testOP_MA_MB :: (Show postag, TaggedTyped postag, LanguageTypedText t0
-        , LanguageTyped2 t0 postag) =>
-            (t0, postag, Text, Int) -> Text -> ErrIO (Doc0 postag)
-
-testOP_MA_MB (langPh, postagPh, text, i) xml1 = do
-        xml2doc   postagPh False  xml1
-
-test_MA_MB1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
-                                         "resultMA1" "resultMB1" testOP_MA_MB
+--test_MA_MB1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
+--                                         "resultMA1" "resultMB1" testOP_MA_MB
 
 
 ------- processDoc0toTriples2 lph pph snip doc2

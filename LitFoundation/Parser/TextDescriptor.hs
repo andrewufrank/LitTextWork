@@ -35,7 +35,7 @@ import Data.RDF.FileTypes
 --import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Parser.LanguageTypedText
-import Process.UtilsParseArgs (LitTextFlags (..) )
+import Process.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..) )
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"
@@ -268,8 +268,8 @@ fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
         , nlpServer = server
         , authorDir = authordir
         , buchName = buchname
-        , includeText = flagIncludeText flags
-        , txPosTagset = if flagFrenchUD flags then "FrenchUD" else ""
+        , includeText = IncludeTextFlag `elem` flags
+        , txPosTagset =  ""
         , ntdescriptor = fillNTdescriptor ntdir filename True
         }
 --        fillTextState3 litdirs server author buch

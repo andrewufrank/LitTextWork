@@ -96,19 +96,19 @@ class Docs postag where
     -- merger
     -- the path parameter is used for TinT which wants a path "tint" before the paremters
 
-instance (Docs2 postag text1, POStags postag) => Docs postag where
+instance (Docs2 postag, POStags postag) => Docs postag where
     convertTZ2makeNLPCall ph debugNLP  nlpServer path vars text = do
-            xml :: text1 <- text2xml ph debugNLP nlpServer path vars text
+            xml :: Text <- text2xml ph debugNLP nlpServer path vars text
             xml2doc ph debugNLP   xml
 
-class Docs2 postag text where
-    text2xml :: postag -> Bool -> URI -> Text -> HttpVarParams -> text
+class Docs2 postag where
+    text2xml :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
                     ->  ErrIO Text
 --                    ph debugNLP  nlpServer path vars text
-    xml2doc :: postag -> Bool ->  text ->  ErrIO (Doc0 postag)
+    xml2doc :: postag -> Bool ->  Text ->  ErrIO (Doc0 postag)
 --                    ph debugNLP   xml = do
 
-instance (POStags postag) => Docs2 postag Text where
+instance (POStags postag) => Docs2 postag where
 --    convertTZ2makeNLPCall  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)

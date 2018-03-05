@@ -37,6 +37,7 @@ import Text.Regex (mkRegex, subRegex)
 import Parser.CompleteSentence (completeSentence)
 --import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
 import Parser.LanguageTypedText
+--import Parser.ProduceDocCallNLP -- loop
 
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
