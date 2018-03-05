@@ -38,6 +38,7 @@ import qualified Data.HashMap.Strict as HM
 --    return ()
 
 decodeDoc2 :: LazyByteString -> Either String Doc2
+--decodeDoc2 :: ByteString -> Either String Doc2
 decodeDoc2 = eitherDecode
 
 data Doc2 = Doc2 {doc_sentences::  [Sentence2]

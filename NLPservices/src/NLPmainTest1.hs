@@ -61,13 +61,14 @@ main4tripels :: ErrIO ()
 main4tripels = do
         let fn = makeRelFile "short1.json"
         putIOwords ["nlp json decode:", showT fn]
-        f <- readFile2  fn
---        putIOwords ["json input:",showStartJson f]
-        let r = eitherDecode  f  :: Either String Doc2
---        let doc2 :: Doc2
-        doc2 :: Doc2 <- case r of
-                Left msg ->  throwErrorT ["doc2 left",  s2t msg]
-                Right a -> return a
+        doc2 <- readAndDecode fn
+--        f <- readFile2  fn
+----        putIOwords ["json input:",showStartJson f]
+--        let r = eitherDecode  f  :: Either String Doc2
+----        let doc2 :: Doc2
+--        doc2 :: Doc2 <- case r of
+--                Left msg ->  throwErrorT ["doc2 left",  s2t msg]
+--                Right a -> return a
         putIOwords ["doc2:",  showT doc2, "\n\n\n"]
         let doc1 = doc2to1 Conll.undefConll doc2
         putIOwords ["doc1:", showT doc1, "\n\n\n"]
@@ -87,6 +88,17 @@ main4tripels = do
         return ()
 
 resTrip = ""
+
+readAndDecode fn =  do
+        f <- readFile2  fn
+--        putIOwords ["json input:",showStartJson f]
+        let r = eitherDecode  f  :: Either String Doc2
+--        let doc2 :: Doc2
+        doc2 :: Doc2 <- case r of
+                Left msg ->  throwErrorT ["doc2 left",  s2t msg]
+                Right a -> return a
+        return doc2
+
 
 paraSigl1 =  ParaSigl ( extendSlashRDFsubj "test1"
         (RDFsubj $ (unPartURI rdfBase))  )

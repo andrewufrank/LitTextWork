@@ -37,6 +37,27 @@ test_triples1  = do
     res0 <- runErr $ do
         let fn = makeRelFile "short1.json"
         putIOwords ["nlp json decode:", showT fn]
+        doc2 <- readAndDecode fn
+--        f <- readFile2  fn
+----        putIOwords ["json input:",showStartJson f]
+--        let r = eitherDecode  f  :: Either String Doc2
+----        let doc2 :: Doc2
+--        doc2 :: Doc2 <- case r of
+--                Left msg ->  throwErrorT ["doc2 left",  s2t msg]
+--                Right a -> return a
+--        putIOwords ["doc2:", take' 200 $ showT doc2]
+--        let doc1 = doc2to1 Conll.undefConll doc2
+--        putIOwords ["doc1:", take' 200 $ showT doc1]
+--        let trip = processDoc1toTriples2 undefEnglish Conll.undefConll
+--                sigl1 doc1
+        let trip = doc2trip doc2
+--        putIOwords ["trips", showT $ take 20 trip]
+        return trip
+    assertEqual restest_nlpjson2  (show res0)
+
+restest_nlpjson2 = ""
+--
+readAndDecode fn =  do
         f <- readFile2  fn
 --        putIOwords ["json input:",showStartJson f]
         let r = eitherDecode  f  :: Either String Doc2
@@ -44,17 +65,12 @@ test_triples1  = do
         doc2 :: Doc2 <- case r of
                 Left msg ->  throwErrorT ["doc2 left",  s2t msg]
                 Right a -> return a
-        putIOwords ["doc2:", take' 200 $ showT doc2]
-        let doc1 = doc2to1 Conll.undefConll doc2
-        putIOwords ["doc1:", take' 200 $ showT doc1]
-        let trip = processDoc1toTriples2 undefEnglish Conll.undefConll
-                sigl1 doc1
-        putIOwords ["trips", showT $ take 20 trip]
-        return trip
-    assertEqual restest_nlpjson2  (show res0)
+        return doc2
 
-restest_nlpjson2 = ""
---
+doc2trip doc2 = processDoc1toTriples2 undefEnglish Conll.undefConll sigl1
+            . doc2to1 Conll.undefConll $ doc2
+
+
 paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP"
         (RDFsubj $ (unPartURI rdfBase))  )
 sigl1 = mkSnipSigl paraSigl1 (SnipID 1)
