@@ -35,7 +35,7 @@ import qualified NLP.Types.Tags      as NLP
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 import Uniform.Zero
-import Parser.ProduceNLPtriples
+import CoreNLP.ProduceNLPtriples
 import CoreNLP.Defs0
 import CoreNLP.NERcodes
 import Parser.TextDescriptor

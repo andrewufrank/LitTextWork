@@ -70,7 +70,7 @@ instance (Show postag) => ExtractSentences postag where
 ttProcess :: URI -> [Text] ->ErrIO Text
 -- just the call to the server at 17701 ttscottyServer
 ttProcess server toks  = callHTTP10post False "text/plain" server ""
-                (b2bl . t2b . unlines' $ toks) [] Nothing
+                (b2bl . t2b . unlines' $ toks) zero Nothing
 
 tlemma' f t = t{tlemma = f . tlemma $ t}
 tpostt' f t = t{tpostt = f . tpostt $ t}

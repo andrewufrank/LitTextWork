@@ -1,9 +1,9 @@
  -----------------------------------------------------------------------------
 --
--- Module      :  Parser . ProduceDocCallNLP  -- BAE=C -> D
+-- Module      :  Parser . ProduceDocCallNLP  --  main entry
 -- Copyright   :  andrew u frank -
 --
--- | convert the whole text to the selection which will be NLP analyzed
+-- | convert a snip to  nlp triples
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -36,7 +36,7 @@ import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, addToURI)
 import Uniform.Zero  -- should be gotten by some other import
 import Text.Regex (mkRegex, subRegex)
 import Parser.CompleteSentence (completeSentence)
-import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
+import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
 import Parser.LanguageTypedText
 
 import NLP.Corpora.Conll  as Conll -- Conll for english
@@ -49,21 +49,6 @@ import NLP.Corpora.FrenchUD as FrenchUD --
 import Data.Text as T
 import Parser.LanguageSpecific
 
-
---class ( POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag where
---    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
---    -- the nlp process, selected by language and postag
---    snip2doc lph pph debugNLP  text sloc = do
---        let debug2 = debugNLP
---        docs <-  convertTZ2makeNLPCall pph debug2
---                            (addPort2URI sloc (nlpPort lph pph))  -- server uri
---                            (nlpPath lph)   -- path
---                                (nlpParams lph pph)  (unLCtext text)
---        when debug2 $ putIOwords ["NLP end", showT text]
---        return docs
---
---    nlpParams :: lang -> postag -> [(Text,Maybe Text)]
---    nlpPort :: lang -> postag -> Int   -- should be a port type
 
 class  LanguageTyped22 lang postag where
 
@@ -104,65 +89,39 @@ instance (LanguageDependent lang, LanguageTypedText lang
 
 
 class Docs postag where
-    convertTZ2makeNLPCall  :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
+    convertTZ2makeNLPCall  :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
                     ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
     -- the path parameter is used for TinT which wants a path "tint" before the paremters
-    text2xml :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
+
+instance (Docs2 postag text1, POStags postag) => Docs postag where
+    convertTZ2makeNLPCall ph debugNLP  nlpServer path vars text = do
+            xml :: text1 <- text2xml ph debugNLP nlpServer path vars text
+            xml2doc ph debugNLP   xml
+
+class Docs2 postag text where
+    text2xml :: postag -> Bool -> URI -> Text -> HttpVarParams -> text
                     ->  ErrIO Text
 --                    ph debugNLP  nlpServer path vars text
-    xml2doc :: postag -> Bool ->  Text ->  ErrIO (Doc0 postag)
+    xml2doc :: postag -> Bool ->  text ->  ErrIO (Doc0 postag)
 --                    ph debugNLP   xml = do
 
-instance (POStags postag) => Docs postag where
+instance (POStags postag) => Docs2 postag Text where
 --    convertTZ2makeNLPCall  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
     -- call to send text to nlp server and converts xml to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
-    convertTZ2makeNLPCall ph debugNLP  nlpServer path vars text = do
-            xml <- text2xml ph debugNLP nlpServer path vars text
-            xml2doc ph debugNLP   xml
 
---            when debugNLP $
---                putIOwords ["convertTZ2makeNLPCall start"
---                            , showT . lengthChar $ text
---                            , showT . take' 100 $ text ]
---    --        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
---    --                    "multipart/form-data" text
---            xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer path
---                     (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
---        -- german parser seems to understand utf8encoded bytestring
---
-----            when debugNLP  $
---            putIOwords ["convertTZ2makeNLPCall end \n", take' 200 . showT    $  xml]
---
---            doc0 <- readDocString ph True xml                    -- E -> F
---                        -- bool controls production of XML output
-----            when debugNLP  $
---            putIOwords ["convertTZ2makeNLPCall doc0 \n",  take' 200  . showT $ doc0]
---
---            return   doc0
---        `catchError` (\e -> do
---             putIOwords ["convertTZ2makeNLPCall error caught 7",  e
---                            ,  "\n\n the input was \n", text] -- " showT msg])
---             putIOwords ["convertTZ2makeNLPCall",  "text:\n",  showT text ] -- " showT msg])
---    --         splitAndTryAgain debugNLP showXML nlpServer vars text
---             return zero
---                )
 
     text2xml ph debugNLP  nlpServer path vars text = do
             when debugNLP $
                 putIOwords ["text2xml start"
                             , showT . lengthChar $ text
                             , showT . take' 100 $ text ]
-    --        xml ::  Text  <-   makeHttpPost7 debugNLP nlpServer "" vars
-    --                    "multipart/form-data" text
             xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer path
                      (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
-        -- german parser seems to understand utf8encoded bytestring
-
 --            when debugNLP  $
             putIOwords ["text2xml end \n", take' 200 . showT    $  xml]
             return xml
@@ -171,7 +130,6 @@ instance (POStags postag) => Docs postag where
              putIOwords ["text2xml error caught 7",  e
                             ,  "\n\n the input was \n", text] -- " showT msg])
              putIOwords ["text2xml",  "text:\n",  showT text ] -- " showT msg])
-    --         splitAndTryAgain debugNLP showXML nlpServer vars text
              return zero
                 )
 
@@ -181,13 +139,12 @@ instance (POStags postag) => Docs postag where
                             , showT . take' 100 $ xml ]
 
             doc0 <- readDocString ph debugNLP xml                    -- E -> F
-                        -- bool controls production of XML output
 --            when debugNLP  $
             putIOwords ["xml2doc doc0 \n",  take' 200  . showT $ doc0]
 
             return   doc0
         `catchError` (\e -> do
-             putIOwords ["xml2doc error caught 7",  e
+             putIOwords ["xml2doc error caught 8",  e
 --                            ,  "\n\n the input was \n", xml
                             ] -- " showT msg])
              putIOwords ["xml2doc" ] -- " showT msg])

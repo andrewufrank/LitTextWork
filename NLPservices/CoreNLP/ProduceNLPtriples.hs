@@ -24,8 +24,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceNLPtriples
-    (module Parser.ProduceNLPtriples
+module CoreNLP.ProduceNLPtriples
+    (module CoreNLP.ProduceNLPtriples
     , module CoreNLP.Defs0
     , module Parser.NLPvocabulary
     ) where

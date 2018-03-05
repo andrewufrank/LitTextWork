@@ -49,7 +49,7 @@ library
         CoreNLP.CoreNLPxml
         Parser.CompleteSentence
         Parser.LanguageSpecific
-        Parser.ProduceNLPtriples
+        CoreNLP.ProduceNLPtriples
         Parser.ConvertTaggerOutput
         Parser.NLPvocabulary
         CoreNLP.Models
