@@ -32,7 +32,7 @@ import Process.UtilsParseArgs
 import Producer.Servers (serverLocalhost, serverBrest
                     , rdfBase, dirQueries, URI)
 import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI
-                    , callHTTP10post, URI, HttpQueryString)
+                    , callHTTP10post, URI, HttpVarParams)
 import           Uniform.Strings
 
 
@@ -68,7 +68,7 @@ getServer server  = addPort2URI  server  3030 :: URI
 
 
 post2store ::  Bool -> Text -> URI -> Text -> Maybe Text ->  LazyByteString
-            -> HttpQueryString -> Maybe Int ->   ErrIO Text
+            -> HttpVarParams -> Maybe Int ->   ErrIO Text
     -- ^ timeout in sec
 
 -- use post with multipart form to store (see https://www.w3.org/TR/sparql11-http-rdf-update/#http-post)

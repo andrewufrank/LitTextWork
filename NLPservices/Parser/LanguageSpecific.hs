@@ -3,7 +3,7 @@
 -- Module      :  Parser . ProduceDocCallNLP  -- BAE=C -> D
 -- Copyright   :  andrew u frank -
 --
--- | convert the whole text to the selection which will be NLP analyzed
+-- | convert snip to doc
 
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -82,7 +82,7 @@ class ( POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag w
 --        when debug2 $ putIOwords ["NLP end", showT text]
 --        return docs
 
-    nlpParams :: lang -> postag -> [(Text,Maybe Text)]
+    nlpParams :: lang -> postag -> HttpVarParams
     nlpPort :: lang -> postag -> Int   -- should be a port type
 
 instance LanguageDependent EnglishType where
@@ -118,20 +118,21 @@ instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
-    nlpParams _ _ =   [("outputFormat", Just "xml")
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json")
+            -- only use json for english ?? TODO
                 , ("annotators", Just "tokenize,ssplit,pos\
                                         \,lemma,ner,depparse,coref")]
             --                                    coref -coref.algorithm neural")
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman
-    nlpParams _ _ =   [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
 instance LanguageTyped2 ItalianType TinT.POStag where
     nlpPort _ _ = portTinT
-    nlpParams _ _ =   [("format", Just "xml")]
+    nlpParams _ _ =  HttpVarParams [("format", Just "xml")]
 
 --    nlpParams _ _ =   [("outputFormat", Just "xml"),
 --                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
@@ -139,19 +140,19 @@ instance LanguageTyped2 ItalianType TinT.POStag where
 
 instance LanguageTyped2 FrenchType French.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =   [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 FrenchType FrenchUD.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =   [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 SpanishType Spanish.POStag where
     nlpPort _ _ = portSpanish
-    nlpParams _ _ =   [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
