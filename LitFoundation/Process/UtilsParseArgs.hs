@@ -36,12 +36,20 @@ import           Options.Applicative
 import Producer.Servers (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
 import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI, callHTTP10post, URI)
 
-data LitTextFlags = LitTextFlags {flagDebug :: Bool
-                    , flagForce :: Bool
-                    , flagFrenchUD :: Bool
-                    , flagIncludeText :: Bool
-                    , flagXML :: Bool }
-            deriving (Show, Read, Eq)
+data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
+            | OutputNLPflag | XMLflag | JSONflag
+            | LocalNLPserverFlag
+            deriving (Show, Read, Eq, Ord)
+
+-- the
+type LitTextFlags = [LitTextFlag]
+
+--        { LitTextFlags {flagDebug :: Bool
+--                    , flagForce :: Bool
+--                    , flagFrenchUD :: Bool
+--                    , flagIncludeText :: Bool
+--                    , flagXML :: Bool }
+--            deriving (Show, Read, Eq)
 
 -- check all filenames by converting to Path format
 
