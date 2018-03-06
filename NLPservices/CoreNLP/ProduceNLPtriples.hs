@@ -34,10 +34,10 @@ module CoreNLP.ProduceNLPtriples
 --import Uniform.TestHarness (testVar3File)
 import CoreNLP.Defs0
 import CoreNLP.NERcodes
-import Parser.TextDescriptor
+import LitTypes.TextDescriptor
 import NLP.Types.Tags
 import NLP2RDF.NLPvocabulary  -- from Foundation
-import Parser.LanguageTypedText
+import LitTypes.LanguageTypedText
 import Data.List (partition)
 import Data.RDF.Types  (Triple)  -- instance Show Triple
 -- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices

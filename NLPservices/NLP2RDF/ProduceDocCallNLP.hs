@@ -28,7 +28,7 @@ module NLP2RDF.ProduceDocCallNLP
 
 import              Test.Framework
 import              Uniform.TestHarness
-import Parser.LanguageTypedText
+import LitTypes.LanguageTypedText
 import Producer.Servers
 import CoreNLP.CoreNLPxml (readDocString)
 import CoreNLP.Defs0 () -- should only get instances ?
@@ -47,7 +47,7 @@ import NLP.Corpora.FrenchUD as FrenchUD --
 
 import Data.Text as T
 import NLP2RDF.LanguageSpecific
-
+import LitTypes.TextDescriptor
 
 class  LanguageTyped22 lang postag where
 

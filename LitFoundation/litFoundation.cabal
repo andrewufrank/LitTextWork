@@ -30,8 +30,8 @@ library
         -- import all what is lower, to avoid duplications
 
     exposed-modules:
-        Parser.TextDescriptor
-        Parser.LanguageTypedText
+        LitTypes.TextDescriptor
+        LitTypes.LanguageTypedText
         Producer.Servers
         Process.UtilsParseArgs
         Process.UtilsProcessing
@@ -58,8 +58,8 @@ Test-Suite  TestAuto
     hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
-        Parser.TextDescriptor_test
-        Parser.LanguageTypedText_test
+        LitTypes.TextDescriptor_test
+        LitTypes.LanguageTypedText_test
         Producer.Servers_test
         Process.UtilsParseArgs_test
         Process.UtilsProcessing_test

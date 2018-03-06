@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Parser . TextDescriptor
+-- Module      :  LitTypes . TextDescriptor
 -- Copyright   :  andrew u frank -
 --
 -- | the definitions of the descrption of the text and related types (e.g. Language)
@@ -15,23 +15,12 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 
-module Parser.TextDescriptor_test where
+module LitTypes.TextDescriptor_test where
 
--- import           Data.RDF.Extension
---import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
---import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
---import System.IO (Handle)  -- todo include in FileIO exports
 import Uniform.HttpURI (URI, makeURI)
---import Producer.Servers  (serverBrest)  -- for test
---import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
---import Data.RDF.FileTypes
 import           Test.Framework
---import BuchCode.BuchToken hiding ((</>), (<.>))
---import Parser.LanguageTypedText
---import Process.UtilsParseArgs (LitTextFlags (..) )
-import Parser.TextDescriptor
+import LitTypes.TextDescriptor
 import Data.String
---import Path
 import Producer.Servers (serverBrest)
 
 ---- duplicates from Path.hs

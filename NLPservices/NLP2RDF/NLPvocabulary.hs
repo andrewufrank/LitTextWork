@@ -22,7 +22,7 @@ import           CoreNLP.Defs0
 import           Data.RDF.Extension      --(PartURI, RDFproperty)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
-import Parser.TextDescriptor hiding ((</>)) -- from Foundation
+import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
 
 

@@ -27,17 +27,13 @@ module NLP2RDF.LanguageSpecific
 
 import              Test.Framework
 import              Uniform.TestHarness
-import Parser.LanguageTypedText
+import LitTypes.LanguageTypedText
 import Producer.Servers
---import CoreNLP.CoreNLPxml (readDocString)
 import CoreNLP.Defs0   -- should only get instances ?
 import Uniform.HttpCallWithConduit (URI, callHTTP10post, addPort2URI, addToURI)
---import Uniform.Zero  -- should be gotten by some other import
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
---import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
-import Parser.LanguageTypedText
---import Parser.ProduceDocCallNLP -- loop
+import LitTypes.LanguageTypedText
 
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian

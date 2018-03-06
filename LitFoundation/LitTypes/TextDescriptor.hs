@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  Parser . TextDescriptor
+-- Module      :  LitTypes . TextDescriptor
 -- Copyright   :  andrew u frank -
 --
 -- | the definitions of the descrption of the text and related types (e.g. Language)
@@ -12,11 +12,11 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE FlexibleInstances #-}
 
-module Parser.TextDescriptor (
-        module Parser.TextDescriptor
+module LitTypes.TextDescriptor (
+        module LitTypes.TextDescriptor
     , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
-    , module Parser.LanguageTypedText
+    , module LitTypes.LanguageTypedText
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
@@ -34,7 +34,7 @@ import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import Data.RDF.FileTypes
 --import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
-import Parser.LanguageTypedText
+import LitTypes.LanguageTypedText
 import Process.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..) )
 
 -- directories:
@@ -90,6 +90,11 @@ data Snip = Snip { tz3loc :: TextLoc
 --                        , tz3lang :: LanguageCode
                         }
             deriving (Read, Show, Eq )
+
+instance Zeros Snip where zero = Snip zero zero zero zero zero zero
+
+--instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
+-- todo algebra
 
 -------------- definitinos of TZ2
 

@@ -38,10 +38,10 @@ import Uniform.Zero
 import CoreNLP.ProduceNLPtriples
 import CoreNLP.Defs0
 import CoreNLP.NERcodes
-import Parser.TextDescriptor
+import LitTypes.TextDescriptor
 import NLP.Types.Tags
 import NLP2RDF.NLPvocabulary  -- from Foundation
-import Parser.LanguageTypedText
+import LitTypes.LanguageTypedText
 import Data.List (partition)
 import Data.RDF.Types  (Triple)  -- instance Show Triple
 import CoreNLP.Doc2ToDoc0

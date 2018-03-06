@@ -45,13 +45,14 @@ import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHan
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB
-import Parser.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
+import LitTypes.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import NLP2RDF.ProduceDocCallNLP
 import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), Handle)
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
-import Parser.LanguageTypedText -- (LanguageTypedText (..) )
+import LitTypes.LanguageTypedText -- (LanguageTypedText (..) )
 import NLP2RDF.NLPvocabulary (SnipSigl (..))
+
 -- debugNLP1 = False
 
 -- main export
