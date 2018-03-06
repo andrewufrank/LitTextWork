@@ -47,6 +47,8 @@ unPartURI (PartURI t) = t
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type - Network.URI, which is checked (and problems with Read class)
 -- conversion from URI to text use uriT (not showT)
+append2partURI :: PartURI -> Text -> PartURI
+append2partURI u1 t = PartURI $  unPartURI u1  <> t
 
 --gerastreeURI =    "http://gerastree.at"  :: PartURI
 -- the base url - with no closing

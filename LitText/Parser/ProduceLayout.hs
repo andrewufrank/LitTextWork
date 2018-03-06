@@ -45,7 +45,7 @@ import Parser.NLPvocabulary
 --gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
 --gerastreeURI = "http://gerastree.at"
 --layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
-layoutURItext =   (showT rdfBase) </>  "layout_2017" :: PartURI
+layoutURItext =   append2partURI rdfBase  "/layout_2017" :: PartURI
 
 produceLayoutTriples ::  TextDescriptor -> [TZ1] -> [Triple]
 -- test BAD -> J
@@ -62,7 +62,7 @@ data LayoutType = Line | Page
     deriving (Show, Eq, Enum)
 
 instance RDFtypes LayoutType where
-    mkRDFtype p =  RDFtype $ layoutURItext <#> (toTitle . showT $ p)
+    mkRDFtype p =  RDFtype $ unPartURI layoutURItext <#> (toTitle . showT $ p)
 
 data LayoutProperty = TomeNumber | LineNumber
     | PageNumber | LineText
@@ -72,7 +72,7 @@ data LayoutProperty = TomeNumber | LineNumber
 
 instance RDFproperties LayoutProperty where
     mkRDFproperty p = RDFproperty
-            $ layoutURItext <#> (toLowerStart . showT $ p)
+            $ unPartURI layoutURItext <#> (toLowerStart . showT $ p)
 
 --
 newtype LineSigl = LineSigl RDFsubj

@@ -48,8 +48,9 @@ import Producer.Servers  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
 import Parser.NLPvocabulary hiding ((</>), (<.>))
 
-litURItext =   (uriT rdfBase) </> "lit_2014" :: PartURI
-dcURItext = "http://purl.org/dc/elements/1.1" :: PartURI
+--litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: PartURI
+litURItext = append2partURI rdfBase "/lit_2014"
+dcURItext = PartURI "http://purl.org/dc/elements/1.1" :: PartURI
 -- no terminating /
 
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
@@ -84,27 +85,27 @@ data LitProperty =  HasTitle | InWerk | InBuch | InPart
         deriving (Show, Eq, Enum)
 
 instance RDFproperties LitProperty where
-    mkRDFproperty p = RDFproperty $  litURItext <#> (toLowerStart . showT $ p)
+    mkRDFproperty p = RDFproperty $ unPartURI litURItext  <#> (toLowerStart . showT $ p)
 instance RDFproperties BuchToken where
     mkRDFproperty tk =
         case tk of
-            BuchAuthor -> RDFproperty $ dcURItext </> "creator"
-            BuchVerlag -> RDFproperty $ dcURItext </> "publisher"
-            BuchSprache -> RDFproperty $ dcURItext </>  "language"
-            BuchTitel -> RDFproperty $ dcURItext </> "title"
-            BuchOriginalFile -> RDFproperty $ dcURItext </> "source"
-            otherwise -> RDFproperty $  litURItext <#> (toLowerStart . markerPure $ tk)
+            BuchAuthor -> RDFproperty $ unPartURI dcURItext </> "creator"
+            BuchVerlag -> RDFproperty $ unPartURI dcURItext </> "publisher"
+            BuchSprache -> RDFproperty $ unPartURI dcURItext </>  "language"
+            BuchTitel -> RDFproperty $ unPartURI dcURItext </> "title"
+            BuchOriginalFile -> RDFproperty $ unPartURI dcURItext </> "source"
+            otherwise -> RDFproperty $  unPartURI litURItext <#> (toLowerStart . markerPure $ tk)
 
 -- toLowerStart :: Text -> Text
 -- -- convert the first character to lowercase
 -- toLowerStart t = (toLower . T.head $ t ) `cons` (T.tail t)
 
 instance RDFtypes Text where
-    mkRDFtype p =  RDFtype $ litURItext <#> (toTitle p)
+    mkRDFtype p =  RDFtype $ unPartURI litURItext <#> (toTitle p)
 instance RDFtypes RDFtype where
-    mkRDFtype p =  RDFtype $ litURItext <#> (toTitle . showT $ p)
+    mkRDFtype p =  RDFtype $ unPartURI litURItext <#> (toTitle . showT $ p)
 instance RDFtypes BuchToken where
-    mkRDFtype tk = RDFtype $ litURItext <#> (toTitle . markerPure $ tk)
+    mkRDFtype tk = RDFtype $ unPartURI litURItext <#> (toTitle . markerPure $ tk)
 
 
 
