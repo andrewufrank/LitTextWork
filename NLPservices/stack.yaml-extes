@@ -1,0 +1,12 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- ../../rdf4h
+- ../../TreeTagSets
+- ../LitFoundation
+- ../rdf4hextension
+- '.'
+extra-deps:
+
+resolver: /home/frank/Workspace8/uniformSnapshot.yaml
+

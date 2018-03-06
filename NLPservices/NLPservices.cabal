@@ -21,7 +21,7 @@ library
         , uniform-error
         , uniform-algebras
         , uniform-http
-        , litFoundation >=0.1.8.3
+        , litFoundation
         , split
         , rdf4hextension
         , rdf4h

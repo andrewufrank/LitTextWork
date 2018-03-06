@@ -1,0 +1,14 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- /home/frank/Workspace8/rdf4h
+-  /home/frank/Workspace8/LitTextWork/NLPservices
+-  /home/frank/Workspace8/TreeTagSets
+- ../LitFoundation
+- ../rdf4hextension
+- '.'
+extra-deps:
+- hgal-2.0.0.2
+- parsec-extra-0.2.0.0
+- test-invariant-0.4.5.0
+resolver: /home/frank/Workspace8/uniformSnapshot.yaml
