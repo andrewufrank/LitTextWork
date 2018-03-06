@@ -59,7 +59,7 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    nlpTriples <- produceNLPtriples  textstate tzpara -- test D ->
+    nlpTriples <- produceNLPtriples flags textstate tzpara -- test D ->
 
     putIOwords ["mainLitAndNLPproduction: triples stored in .nt file "
 --           , showT . graph $ textstate, " \n"

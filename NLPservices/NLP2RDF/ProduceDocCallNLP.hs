@@ -48,6 +48,7 @@ import NLP.Corpora.FrenchUD as FrenchUD --
 import Data.Text as T
 import NLP2RDF.LanguageSpecific
 import LitTypes.TextDescriptor
+import Process.UtilsParseArgs (LitTextFlags (..))
 
 class  LanguageTyped22 lang postag where
 
@@ -65,7 +66,7 @@ class  LanguageTyped22 lang postag where
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
 
-convertOneSnip2Triples3 :: Flags  -> LanguageCode ->  Snip  ->   ErrIO [Triple]
+convertOneSnip2Triples3 :: LitTextFlags  -> LanguageCode ->  Snip  ->   ErrIO [Triple]
     -- this is  the entry point called from litText
 
 instance (LanguageDependent lang, LanguageTypedText lang

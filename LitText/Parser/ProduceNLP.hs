@@ -31,16 +31,9 @@ module Parser.ProduceNLP
     (module Parser.ProduceNLP
     , module Parser.TextDescriptor
     , Triple, Snip, SnipID (..)
---    , TextDescriptor (..)
     ) where
 
---import           Test.Framework
---import Uniform.TestHarness
---import Parser.FormNLPsnips
---import Parser.FilterTextForNLP
 import NLP2RDF.ProduceDocCallNLP
---import Parser.ProduceNLPtriples hiding ((</>))
---import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
 import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
@@ -53,18 +46,14 @@ import Parser.FormNLPsnips (formSnips)
 import LitTypes.LanguageTypedText -- (LanguageTypedText (..) )
 import NLP2RDF.NLPvocabulary (SnipSigl (..))
 
--- debugNLP1 = False
-
--- main export
-
-produceNLPtriples ::  TextDescriptor ->  [TZ2] -> ErrIO [Triple] -- test C  -> X
-produceNLPtriples  textstate tzs =  do
+produceNLPtriples ::  LitTextFlags -> TextDescriptor ->  [TZ2] -> ErrIO [Triple] -- test C  -> X
+produceNLPtriples  flags -> textstate tzs =  do
     let     snips1 = prepareTZ4nlp posTag tzs :: [Snip]
             snips2 = formSnips snips1  :: [Snip]
             posTag = txPosTagset textstate
             debug = False
     let snips3 = zipWith pushSnipNumber2snip [1..] snips2
-    triples :: [[Triple]] <- mapM (convertOneSnip2Triples debug  textstate)  snips3
+    triples :: [[Triple]] <- mapM (convertOneSnip2Triples flags  textstate)  snips3
 --    ntz1 <- foldM writeHandleTriples (ntdescriptor textstate) triples
     return . concat $ triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
@@ -81,14 +70,14 @@ pushSnipNumber2snip :: Int -> Snip -> Snip
 pushSnipNumber2snip i  snip = snip {tz3snipnr = i}
 
 
-convertOneSnip2Triples :: Bool ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
+convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
 -- calls nlp to convert to doc
 -- the snip should have a type parameter language
 -- internal the text2nlp should have a tag type parameter
 -- the triples (i.e. NLPtriples should have a tag parameter
 
 -- the following is just the bridges, which should go earlier
-convertOneSnip2Triples debugNLP textstate   snip = do
+convertOneSnip2Triples flags textstate   snip = do
     let text = tz3text snip
     let language = getLanguageCode . tz3text $  snip    -- reduce for some special cases _italics_
 
@@ -99,7 +88,7 @@ convertOneSnip2Triples debugNLP textstate   snip = do
     trips2 <- if not . notNullLC $ text
         then return zero
         else do
-            trips <- convertOneSnip2Triples3 zero lang snip
+            trips <- convertOneSnip2Triples3 flags lang snip
             return trips
 
     return $ partOfTriples ++ trips2
