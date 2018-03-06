@@ -42,7 +42,7 @@ import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 --import Uniform.TestHarness
 import Data.RDF.FileTypes hiding ((</>), (<.>))
-import Parser.TextDescriptor hiding ((</>)) -- from Foundation
+import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Producer.Servers  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)

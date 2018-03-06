@@ -41,15 +41,14 @@ data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
             | LocalNLPserverFlag
             deriving (Show, Read, Eq, Ord)
 
--- the
 type LitTextFlags = [LitTextFlag]
 
---        { LitTextFlags {flagDebug :: Bool
---                    , flagForce :: Bool
---                    , flagFrenchUD :: Bool
---                    , flagIncludeText :: Bool
---                    , flagXML :: Bool }
---            deriving (Show, Read, Eq)
+data LitTextFlagsX =   LitTextFlagsX {flagDebug :: Bool
+                    , flagForce :: Bool
+                    , flagFrenchUD :: Bool
+                    , flagIncludeText :: Bool
+                    , flagXML :: Bool }
+            deriving (Show, Read, Eq)
 
 -- check all filenames by converting to Path format
 
@@ -70,7 +69,7 @@ data LitArgs = LitArgs
   , argTimeout  :: String -- ^ the timeout (if any) in minutes
   , argOrigin :: String -- ^ the directoy in which the markup files are
   , argForceFlag :: Bool -- ^ force processing, even if newer exist
-  , argBookNrFile :: String -- ^ a single book (not a full link)
+--  , argBookNrFile :: String -- ^ a single book (not a full link)
 
   } deriving (Show)
 
@@ -151,11 +150,11 @@ cmdArgs = LitArgs
 --            short 'l' <>
 --            metavar "force processing " <>
             help "force processing even when newer exist (default false)" )
-     <*>  strOption
-        (long "input file with the booknumbers " <>   -- must be synced manually to brest?
-            short 'i'  <>
-            value "" <> -- set to in main /home/frank/gutenberg" <>
-            help "input file with the booknumbers - cvs, booknr in first column" )
+--     <*>  strOption
+--        (long "input file with the booknumbers " <>   -- must be synced manually to brest?
+--            short 'i'  <>
+--            value "" <> -- set to in main /home/frank/gutenberg" <>
+--            help "input file with the booknumbers - cvs, booknr in first column" )
 
 setDefaultOriginDir :: LitArgs -> String -> LitArgs
 setDefaultOriginDir args def = if null' $ argOrigin args then  args {argOrigin = def}

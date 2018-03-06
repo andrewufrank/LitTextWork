@@ -24,7 +24,7 @@
 module Lines2para.HandleLayout
     (module Lines2para.HandleLayout
 --    , module Lines2para.MarkupText
-    , module Parser.TextDescriptor
+    , module LitTypes.TextDescriptor
 --    , module Uniform.Error
     ) where
 
@@ -39,7 +39,7 @@ import           Uniform.Error
 --import Data.List (nub)
 --import           Text.Printf         (printf)
 --import Uniform.TestHarness
-import Parser.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
+import LitTypes.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
 
 paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB

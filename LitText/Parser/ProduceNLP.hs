@@ -29,7 +29,7 @@
 
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
-    , module Parser.TextDescriptor
+--    , module Parser.TextDescriptor
     , Triple, Snip, SnipID (..)
     ) where
 
@@ -40,14 +40,16 @@ import Data.Maybe (catMaybes)  -- todo
 import Parser.ReadMarkupAB
 import LitTypes.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
 import NLP2RDF.ProduceDocCallNLP
-import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), Handle)
+--import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), Handle)
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
 import LitTypes.LanguageTypedText -- (LanguageTypedText (..) )
-import NLP2RDF.NLPvocabulary (SnipSigl (..))
+import NLP2RDF.NLPvocabulary -- (SnipSigl (..))
+--import Parser.ProduceLit (ParaSigl (..), unParaSigl)
 
-produceNLPtriples ::  LitTextFlags -> TextDescriptor ->  [TZ2] -> ErrIO [Triple] -- test C  -> X
-produceNLPtriples  flags -> textstate tzs =  do
+produceNLPtriples ::  LitTextFlags -> TextDescriptor ->  [TZ2] -> ErrIO [Triple]
+            -- test C  -> X
+produceNLPtriples  flags textstate tzs =  do
     let     snips1 = prepareTZ4nlp posTag tzs :: [Snip]
             snips2 = formSnips snips1  :: [Snip]
             posTag = txPosTagset textstate
@@ -67,7 +69,7 @@ pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
 pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
 
 pushSnipNumber2snip :: Int -> Snip -> Snip
-pushSnipNumber2snip i  snip = snip {tz3snipnr = i}
+pushSnipNumber2snip i  snip = snip {tz3snipnr = SnipID i}
 
 
 convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
@@ -79,7 +81,8 @@ convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [
 -- the following is just the bridges, which should go earlier
 convertOneSnip2Triples flags textstate   snip = do
     let text = tz3text snip
-    let language = getLanguageCode . tz3text $  snip    -- reduce for some special cases _italics_
+    let lang = getLanguageCode . tz3text $  snip
+            -- reduce for some special cases _italics_
 
     let nlpserver = nlpServer textstate
     let pt = txPosTagset textstate
@@ -88,45 +91,10 @@ convertOneSnip2Triples flags textstate   snip = do
     trips2 <- if not . notNullLC $ text
         then return zero
         else do
-            trips <- convertOneSnip2Triples3 flags lang snip
+            trips <- convertOneSnip2Triples3 flags lang snip snipsigl
             return trips
 
     return $ partOfTriples ++ trips2
-
---            case (language) of
---                (English, "") -> do
---                            t <- convertOneSnip2Triples2 undefEnglish
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (German, "") -> do
---                            t <- convertOneSnip2Triples2 undefGerman undefGermanPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (Italian,"") -> do
---                            t <- convertOneSnip2Triples2 undefItalian undefTinTPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (French, "")-> do
---                            t <-convertOneSnip2Triples2 undefFrench undefFrenchPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (French, "FrenchUD")-> do
---                            t <- convertOneSnip2Triples2 undefFrench undefFrenchUDPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (Spanish,"") -> do
---                            t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                _ -> return zero
---            return trips
-
---        let paranum = tz3para snip
---    let parasigl = paraSigl textstate paranum
---    let snipsigl = mkSnipSigl parasigl snipnr
--- let buchURI = buchURIx   textstate
---    let paratrip = mkTriplePartOf (unSnipSigl snipsigl) (unParaSigl parasigl)
---    let buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
 
 
 mkSnipPartOf :: TextDescriptor -> Snip -> (SnipSigl, [Triple])

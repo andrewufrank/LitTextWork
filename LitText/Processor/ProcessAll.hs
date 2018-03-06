@@ -18,14 +18,14 @@
 
 module Processor.ProcessAll
     (module Processor.ProcessAll
-    , module Parser.TextDescriptor
+    , module LitTypes.TextDescriptor
     , module Processor.Main2sub
     , serverBrest
     ) where
 
 --import           Test.Framework
 
-import Parser.TextDescriptor hiding ((<>) , (</>), (<.>))
+import LitTypes.TextDescriptor hiding ((<>) , (</>), (<.>))
 import Producer.Servers
 import Processor.Main2sub
 --import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
@@ -36,14 +36,14 @@ import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
 import Pipes ((>->), (~>))
 -- todo fileio - export for pipes
-
+import Data.List (delete)
 
 import Uniform.Error
 import Uniform.FileIO
 import Uniform.FileStatus
 --import Uniform.Strings hiding ((</>),(<|>))
 import          Data.RDF.FileTypes  -- (ntFileTriples,ntFileTriplesGZip)
-import Process.UtilsParseArgs ( LitTextFlags (..) )
+import Process.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..) )
 
 --processAll :: Bool ->  LitDirs-> URI -> Path ar File  -> ErrIO ()
 ---- | get all markup files in the partially filled TextState2
@@ -76,7 +76,7 @@ processOneMarkup4 ::  LitTextFlags ->  URI -> Text -> Path Abs Dir -> Path Abs F
 -- process one markup file, if the nt file does not exist
 processOneMarkup4  flags  server authorReplacement ntdir   file = do
     let buchReplacement = s2t $ getNakedFileName file
-        flags2 = flags {flagIncludeText = False}
+        flags2 = delete IncludeTextFlag flags
         textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement flags2
     -- forces gzip in fillTextState4a
     putIOwords ["\n processOneMarkup", showT textstate2  ]
@@ -92,7 +92,7 @@ processOneMarkup4  flags  server authorReplacement ntdir   file = do
                 else
                     return True
 
-            if processNeeded || (flagForce flags2)
+            if processNeeded || (ForceFlag `elem` flags2)
                 then do
                     putIOwords  ["\n processOneMarkup4 - process"
                             , showT $ sourceMarkup textstate2, "\n"]

@@ -34,8 +34,8 @@ import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import Data.RDF.FileTypes
 --import           Test.Framework
 import BuchCode.BuchToken hiding ((</>), (<.>))
-import LitTypes.LanguageTypedText
-import Process.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..) )
+import LitTypes.LanguageTypedText hiding ((</>), (<.>))
+import Process.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"
@@ -78,23 +78,52 @@ instance Zeros Bool where
 instance Zeros NTdescriptor where
     zero = NTdescriptor zero zero
 
--- S N I P
+-- S N I P , SnipID, SnipSigl -- input
 
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
-                        , tz3snipnr ::  Int
+                        , tz3snipnr ::  SnipID
                         , tz3text:: LCtext
                         , tz3textLength :: Int
                         , tz3posTag :: Text
 --                        , tz3lang :: LanguageCode
                         }
             deriving (Read, Show, Eq )
+-- snip sigl uses the paragraph number of the first paragraph
+newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
+unSnipID (SnipID i) = i
 
-instance Zeros Snip where zero = Snip zero zero zero zero zero zero
-
---instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
--- todo algebra
+--
+--instance Zeros Snip where zero = Snip zero zero zero zero zero zero
+--
+----instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
+---- todo algebra
+--
+---- snip sigl uses the paragraph number of the first paragraph
+--newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
+--unSnipID (SnipID i) = i
+----
+--newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+--instance Zeros SnipSigl where zero = SnipSigl zero
+--
+--type ParaID = Int   -- should be typed?
+--
+--newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
+--unParaSigl (ParaSigl t) = t
+--
+--formatParaID :: ParaID -> Text
+--formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
+--
+--mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
+--unSnipSigl (SnipSigl a) = a
+--mkSnipSigl parasigl snipid =  SnipSigl
+--      . extendSlashRDFsubj  (formatSnipID  . unSnipID $    snipid)
+--      . unParaSigl $ parasigl
+--  where
+--    formatSnipID ::Int -> Text
+--    -- format an Int to 2 decimals for Snis
+--    formatSnipID  = ("N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
 
 -------------- definitinos of TZ2
 

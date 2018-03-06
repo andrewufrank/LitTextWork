@@ -34,7 +34,7 @@ import           Data.List.Split
 --import Data.List (nub)
 import           Test.Framework
 --import Uniform.TestHarness
-import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
+import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
 
 text2tz1 :: Text -> [TZ1]  -- test B -> C
 -- ^ the call to Lines2para module

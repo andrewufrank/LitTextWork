@@ -51,13 +51,12 @@ portSpanish = 9004
 portTinT = 9005
 portFrenchUD = 9006
 
-
-undefConll = undef "convertOneSnip2Triples postag conll":: Conll.POStag
-undefGermanPos = undef "convertOneSnip2Triples postag german":: German.POStag
-undefTinTPos = undef "convertOneSnip2Triples postat TinT":: TinT.POStag
-undefFrenchPos = undef "convertOneSnip2Triples postat French":: French.POStag
-undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD":: FrenchUD.POStag
-undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: Spanish.POStag
+-- moved to individual POS tag files
+--undefConll = undef "convertOneSnip2Triples postag conll":: Conll.POStag
+--undefTinTPos = undef "convertOneSnip2Triples postat TinT":: TinT.POStag
+--undefFrenchPos = undef "convertOneSnip2Triples postat French":: French.POStag
+--undefFrenchUDPos = undef "convertOneSnip2Triples postat FrenchUD":: FrenchUD.POStag
+--undefSpanishPos = undef "convertOneSnip2Triples postat spanish":: Spanish.POStag
 
 class LanguageDependent lang where
 

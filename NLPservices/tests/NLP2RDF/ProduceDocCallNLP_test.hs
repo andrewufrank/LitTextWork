@@ -25,9 +25,10 @@ module NLP2RDF.ProduceDocCallNLP_test  where
 import              Test.Framework
 import              Uniform.TestHarness
 import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
-import Parser.LanguageTypedText
+import LitTypes.LanguageTypedText
 
 import NLP2RDF.ProduceDocCallNLP
+import NLP.Corpora.Conll  as Conll -- Conll for english
 
 
 

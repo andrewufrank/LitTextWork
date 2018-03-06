@@ -34,11 +34,11 @@ import           Uniform.Strings
 --import Lines2para.HandleLayout
 import Data.RDF.FileTypes (ntFileTriples)
 -- (parseMarkup, result1B, result2B, result3B, result4B)
-import Process.UtilsParseArgs ( LitTextFlags (..) )
+import Process.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..))
 
 mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction flags  textstate = do
-    let debugLit = flagDebug flags
+    let debugLit = DebugFlag `elem` flags
 
     -- read text input
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
@@ -72,7 +72,7 @@ mainLitAndNLPproduction flags  textstate = do
                 (closeHandleTriples ntdescr )
                 (\h -> do
                     writeHandleTriples ntdescr h layoutTriples
-                    when (flagIncludeText flags) $ writeHandleTriples ntdescr h litTriples
+                    when (IncludeTextFlag `elem` flags) $ writeHandleTriples ntdescr h litTriples
                     writeHandleTriples ntdescr h nlpTriples
                     )
 

@@ -24,6 +24,7 @@ module NLP2RDF.ProduceDocCallNLP
     (module NLP2RDF.ProduceDocCallNLP
     , module Producer.Servers
     , module NLP2RDF.LanguageSpecific
+    , LitTextFlags (..), LitTextFlag (..), SnipID (..),
     ) where
 
 import              Test.Framework
@@ -45,10 +46,10 @@ import NLP.Corpora.Spanish as Spanish --
 import NLP.Corpora.French as French --
 import NLP.Corpora.FrenchUD as FrenchUD --
 
-import Data.Text as T
+--import Data.Text as T
 import NLP2RDF.LanguageSpecific
-import LitTypes.TextDescriptor
-import Process.UtilsParseArgs (LitTextFlags (..))
+import LitTypes.TextDescriptor as TD
+import Process.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..))
 
 class  LanguageTyped22 lang postag where
 
@@ -66,8 +67,45 @@ class  LanguageTyped22 lang postag where
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
 
-convertOneSnip2Triples3 :: LitTextFlags  -> LanguageCode ->  Snip  ->   ErrIO [Triple]
+convertOneSnip2Triples3 :: LitTextFlags  -> LanguageCode -> TD.Snip -> SnipSigl ->   ErrIO [Triple]
     -- this is  the entry point called from litText
+
+convertOneSnip2Triples3 flags lang snip snipsigl = do
+
+    let pt = ""  -- could be in flags
+    let debugNLP = DebugFlag `elem` flags
+    let text = tz3text snip
+    let nlpserver = if LocalNLPserverFlag `elem` flags then serverLocalhost else serverBrest
+    trips <- case (lang, pt) of
+        (English, "") -> do
+                    t <- convertOneSnip2Triples2 undefEnglish undefConll
+                                debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+                    return (map unNLPtriple t)
+        (German, "") -> do
+                    t <- convertOneSnip2Triples2 undefGerman undefGermanPos
+                                debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+                    return (map unNLPtriple t)
+        (Italian,"") -> do
+                    t <- convertOneSnip2Triples2 undefItalian undefTinTPos
+                                debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+                    return (map unNLPtriple t)
+        (French, "")-> do
+                    t <-convertOneSnip2Triples2 undefFrench undefFrenchPos
+                                debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+                    return (map unNLPtriple t)
+        (French, "FrenchUD")-> do
+                    t <- convertOneSnip2Triples2 undefFrench undefFrenchUDPos
+                                debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+                    return (map unNLPtriple t)
+        (Spanish,"") -> do
+                    t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
+                                debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+                    return (map unNLPtriple t)
+        _ -> return zero
+    return trips
+
+
+
 
 instance (LanguageDependent lang, LanguageTypedText lang
         , TaggedTyped postag, POStags postag, LanguageTyped2 lang postag)
@@ -93,33 +131,6 @@ instance (LanguageDependent lang, LanguageTypedText lang
 --    trips2 <- if not . notNullLC $ text
 --        then return zero
 --        else do
---            trips <- case (language, pt) of
---                (English, "") -> do
---                            t <- convertOneSnip2Triples2 undefEnglish undefConll
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (German, "") -> do
---                            t <- convertOneSnip2Triples2 undefGerman undefGermanPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (Italian,"") -> do
---                            t <- convertOneSnip2Triples2 undefItalian undefTinTPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (French, "")-> do
---                            t <-convertOneSnip2Triples2 undefFrench undefFrenchPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (French, "FrenchUD")-> do
---                            t <- convertOneSnip2Triples2 undefFrench undefFrenchUDPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                (Spanish,"") -> do
---                            t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
---                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
---                            return (map unNLPtriple t)
---                _ -> return zero
---            return trips
 
 
 class Docs postag where

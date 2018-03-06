@@ -36,13 +36,15 @@ import Parser.ReadMarkupAB_test
 --import Lines2para.HandleLayout
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
+--import Uniform.FileIO
+--import Path
 import Uniform.TestHarness
 --import Data.RDF.FileTypes
-import Parser.TextDescriptor hiding ((</>)) -- from Foundation
+import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Producer.Servers  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
-import Parser.NLPvocabulary
+import NLP2RDF.NLPvocabulary
 import Parser.ProduceLit
 
 
@@ -68,7 +70,7 @@ test_1CA_H = test3File "resultA1" "resultCA1" "resultH1" produceLitTriples
 
 writeLitTriples :: FilePath -> FilePath ->  IO ()
 writeLitTriples source dest   = do
-    testDataDir <- getAppUserDataDir "LitTextTest" -- :: Path Abs Dir
+    testDataDir <- getAppUserDataDir "LitTextTest"  :: Path Abs Dir
     let source2 =  addFileName testDataDir    source :: Path Abs File
     let dest2 =  addFileName testDataDir     dest :: Path Abs File
     runErr $ do

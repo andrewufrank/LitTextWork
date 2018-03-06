@@ -19,6 +19,8 @@
 
 module LitTypes.LanguageTypedText
     (module LitTypes.LanguageTypedText
+    , module Data.RDF.Extension
+
     ) where
 
 import Uniform.Zero (Zeros (..))

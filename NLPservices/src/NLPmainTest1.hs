@@ -30,11 +30,12 @@ import Uniform.Convenience.StartApp
 import qualified NLP.Corpora.Conll  as Conll
 
 import Data.Aeson (eitherDecode)
-import Parser.LanguageTypedText (undefEnglish)
+import LitTypes.LanguageTypedText (undefEnglish)
 import CoreNLP.ProduceNLPtriples (unNLPtriple)
-import NLP2RDF.NLPvocabulary (ParaSigl (..), SnipID (..), mkSnipSigl)
+import NLP2RDF.NLPvocabulary
 import Data.RDF.Extension
 import Producer.Servers -- (PartURI)
+import LitTypes.TextDescriptor (SnipID (..))
 
 main :: IO ()
 main =  do  -- with tests in other modules
