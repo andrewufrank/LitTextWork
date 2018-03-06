@@ -38,6 +38,8 @@ layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test C -> J
 -- too expensive to map triple2text (at least on oporto)
 layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstate
 
+instance ShowTestHarness TextDescriptor
+
 
 test_1C_J = test3File "resultA1" "resultC1" "resultJ1" layoutTriples
 --test_2C_J = test3File "resultA2" "resultC2" "resultJ2" layoutTriples

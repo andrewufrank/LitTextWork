@@ -34,7 +34,7 @@ import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB
 import Uniform.TestHarness hiding (try)
-import Parser.TextDescriptor hiding (try, (<|>)) -- from Foundation
+import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 import Lines2para.MarkupText
 

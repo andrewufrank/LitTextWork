@@ -37,7 +37,7 @@ import Uniform.FileIO
 import Data.List (nub)
 import           Test.Framework
 import Uniform.TestHarness
-import Parser.TextDescriptor -- (ParaNum (..), unparaNum)
+import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
 import Lines2para.Lines2para
 
 --paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA

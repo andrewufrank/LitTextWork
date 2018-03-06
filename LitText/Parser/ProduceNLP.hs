@@ -31,6 +31,7 @@ module Parser.ProduceNLP
     (module Parser.ProduceNLP
 --    , module Parser.TextDescriptor
     , Triple, Snip, SnipID (..)
+    , TextDescriptor (..)
     ) where
 
 import NLP2RDF.ProduceDocCallNLP

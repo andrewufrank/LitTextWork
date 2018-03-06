@@ -31,16 +31,17 @@ module Parser.ProduceNLP_test where
 
 import           Test.Framework
 import Uniform.TestHarness
+
 import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Parser.ReadMarkupAB_test
 import Parser.ProduceNLP
 import Uniform.Error
-
+import Uniform.FileIO (getAppUserDataDir')
 
 
 
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
-testOP_DA_L textstate = mapM (convertOneSnip2Triples  True textstate (SnipID 0))
+testOP_DA_L textstate = mapM (convertOneSnip2Triples  [] textstate )
 
 --test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
 --test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
@@ -57,7 +58,7 @@ test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
 
 --produceNLPtest ::  TextDescriptor ->  [TZ2] -> ErrIO ()
 produceNLPtest textstate tzs  = do
-    trips <- produceNLPtriples textstate tzs
+    trips <- produceNLPtriples [] textstate tzs
     let ntdescr = (ntdescriptor textstate) {gzipFlag = True}
     putIOwords ["produceNLPtest" , showT ntdescr ]
     bracketErrIO (do
@@ -86,7 +87,7 @@ test_8_BAE_XproduceNLPtriples2 = do
 
 produceNLPtest2::  TextDescriptor ->  FilePath -> FilePath -> ErrIO ()
 produceNLPtest2 textstate startfile resfile  = do
-    testDataDir <-   callIO . getAppUserDataDir $ "LitTextTest"
+    testDataDir <-   getAppUserDataDir' $ "LitTextTest"
     let fn0 =  testDataDir   </> startfile :: Path Abs File
     f0 :: Text <- readFile2 fn0
     putIOwords ["test3 testVar3FileIO A", "resultFile:", s2t resfile, "inputFile:", showT fn0]
