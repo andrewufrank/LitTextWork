@@ -48,6 +48,7 @@ localhost = makeAbsURI "http://127.0.0.1"
 rdfBase, vocabularyBase :: PartURI  -- not a real URI
 rdfBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"
 -- ^ for the text
+
 vocabularyBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"
 -- for the vocabularies
 
