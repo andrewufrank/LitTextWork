@@ -53,6 +53,7 @@ test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
 
 --produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test CA -> H
 
+instance ShowTestHarness TextDescriptor
 
 test_1CA_H = test3File "resultA1" "resultCA1" "resultH1" produceLitTriples
 --test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
@@ -68,31 +69,31 @@ test_1CA_H = test3File "resultA1" "resultCA1" "resultH1" produceLitTriples
 --test_12BAE_H = testVar3File result12A "resultBAE12" "resultH12" produceLitTriples
 
 
-writeLitTriples :: FilePath -> FilePath ->  IO ()
-writeLitTriples source dest   = do
-    testDataDir <- getAppUserDataDir "LitTextTest"  :: Path Abs Dir
-    let source2 =  addFileName testDataDir    source :: Path Abs File
-    let dest2 =  addFileName testDataDir     dest :: Path Abs File
-    runErr $ do
---        putIOwords ["writeLitTriples", "write the triples as nt"]
-        tripstext <- readFile2 source2
-        let trips = readNote "writeLitTriples" tripstext :: [Triple]
-        write6 dest2 ntFileTriples trips
-    assertBool True
-    return ()
-
-
-test_1H_K = writeLitTriples   "resultH1" "resultK1"
---test_2H_K = writeLitTriples   "resultH2" "resultK2"
---test_3H_K = writeLitTriples   "resultH3" "resultK3"
---test_4H_K = writeLitTriples   "resultH4" "resultK4"
---test_5H_K = writeLitTriples   "resultH5" "resultK5"
---test_6H_K = writeLitTriples   "resultH6" "resultK6"
---test_7H_K = writeLitTriples   "resultH7" "resultK7"
---test_8H_K = writeLitTriples   "resultH8" "resultK8"
---test_9H_K = writeLitTriples   "resultH9" "resultK9"
---test_10H_K = writeLitTriples   "resultH10" "resultK10"
---test_11H_K = writeLitTriples   "resultH11" "resultK11"
---test_12H_K = writeLitTriples   "resultH12" "resultK12"
+--writeLitTriples :: FilePath -> FilePath ->  IO ()
+--writeLitTriples source dest   = do
+--    testDataDir <- getAppUserDataDir "LitTextTest"  :: Path Abs Dir
+--    let source2 =  addFileName testDataDir    source :: Path Abs File
+--    let dest2 =  addFileName testDataDir     dest :: Path Abs File
+--    runErr $ do
+----        putIOwords ["writeLitTriples", "write the triples as nt"]
+--        tripstext <- readFile2 source2
+--        let trips = readNote "writeLitTriples" tripstext :: [Triple]
+--        write6 dest2 ntFileTriples trips
+--    assertBool True
+--    return ()
 --
+--
+--test_1H_K = writeLitTriples   "resultH1" "resultK1"
+----test_2H_K = writeLitTriples   "resultH2" "resultK2"
+----test_3H_K = writeLitTriples   "resultH3" "resultK3"
+----test_4H_K = writeLitTriples   "resultH4" "resultK4"
+----test_5H_K = writeLitTriples   "resultH5" "resultK5"
+----test_6H_K = writeLitTriples   "resultH6" "resultK6"
+----test_7H_K = writeLitTriples   "resultH7" "resultK7"
+----test_8H_K = writeLitTriples   "resultH8" "resultK8"
+----test_9H_K = writeLitTriples   "resultH9" "resultK9"
+----test_10H_K = writeLitTriples   "resultH10" "resultK10"
+----test_11H_K = writeLitTriples   "resultH11" "resultK11"
+----test_12H_K = writeLitTriples   "resultH12" "resultK12"
+----
 
