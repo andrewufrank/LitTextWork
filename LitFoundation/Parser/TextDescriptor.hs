@@ -83,6 +83,7 @@ instance Zeros NTdescriptor where
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
+                        , tz3snipnr ::  Int
                         , tz3text:: LCtext
                         , tz3textLength :: Int
                         , tz3posTag :: Text
@@ -215,49 +216,6 @@ data LitDirs = LitDirs {
 
 dirsTest = LitDirs litTestDir1  litNTTestDir1
 dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
---buchnameText = s2t . buchname
---authorText = s2t . authorDir
---originalsDir = sourceDir . source
---serverLoc =  server . source
-
-
---fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
---                -> TextDescriptor
----- construct at text state with authorDir and buchFilename as FilePath
---fillTextState3 litdirs server author buch = TextDescriptor {
---    sourceMarkup = (source litdirs) </> (author </> buch)
---    , destNT = (dest litdirs) </> (author </> buch)
---    , gzipFlag = False
---    , destHandle = Nothing
---    , nlpServer = server
---    , authorDir = s2t author
---    , buchName = s2t buch
---    , includeText = True
---}
---fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
---                -> TextDescriptor
----- construct at text state with authorDir and buchFilename as FilePath
---fillTextState3a litdirs server author buch includeText = TextDescriptor {
---    sourceMarkup = (source litdirs) </> (author </> buch)
---    , destNT = (dest litdirs) </> (author </> buch)
---    , gzipFlag = False
---    , destHandle = Nothing
---    , nlpServer = server
---    , authorDir = s2t author
---    , buchName = s2t buch
---    , includeText =  includeText
---    }
-
---authorName = s2t . authorDir
---buchName = s2t . buchName
-
---fillTextState4 :: LitDirs -> URI -> Path Abs File
---                -> TextDescriptor
----- construct at text state with authorDir and buchFilename as FilePath
---fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
---    where
---            author = getImmediateParentDir fp
---            buch = getNakedFileName fp
 
 fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> LitTextFlags
                 -> TextDescriptor
@@ -384,5 +342,48 @@ fillTextState3a litdirs server author buch includeText = TextDescriptor {
 --
 --
 --     }                     deriving (Show, Eq)
+--buchnameText = s2t . buchname
+--authorText = s2t . authorDir
+--originalsDir = sourceDir . source
+--serverLoc =  server . source
+
+
+--fillTextState3 :: LitDirs -> URI -> FilePath -> FilePath
+--                -> TextDescriptor
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState3 litdirs server author buch = TextDescriptor {
+--    sourceMarkup = (source litdirs) </> (author </> buch)
+--    , destNT = (dest litdirs) </> (author </> buch)
+--    , gzipFlag = False
+--    , destHandle = Nothing
+--    , nlpServer = server
+--    , authorDir = s2t author
+--    , buchName = s2t buch
+--    , includeText = True
+--}
+--fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
+--                -> TextDescriptor
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState3a litdirs server author buch includeText = TextDescriptor {
+--    sourceMarkup = (source litdirs) </> (author </> buch)
+--    , destNT = (dest litdirs) </> (author </> buch)
+--    , gzipFlag = False
+--    , destHandle = Nothing
+--    , nlpServer = server
+--    , authorDir = s2t author
+--    , buchName = s2t buch
+--    , includeText =  includeText
+--    }
+
+--authorName = s2t . authorDir
+--buchName = s2t . buchName
+
+--fillTextState4 :: LitDirs -> URI -> Path Abs File
+--                -> TextDescriptor
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState4 litdirs server fp = fillTextState3 litdirs server author buch
+--    where
+--            author = getImmediateParentDir fp
+--            buch = getNakedFileName fp
 
 

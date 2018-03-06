@@ -39,7 +39,7 @@ module Parser.ProduceNLP
 --import Parser.FormNLPsnips
 --import Parser.FilterTextForNLP
 import Parser.ProduceDocCallNLP
-import Parser.ProduceNLPtriples hiding ((</>))
+--import Parser.ProduceNLPtriples hiding ((</>))
 import Parser.CompleteSentence  (completeSentence, URI, serverBrest)
 import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Data.Maybe (catMaybes)  -- todo
@@ -62,7 +62,8 @@ produceNLPtriples  textstate tzs =  do
             snips2 = formSnips snips1  :: [Snip]
             posTag = txPosTagset textstate
             debug = False
-    triples :: [[Triple]] <-zipWithM (convertOneSnip2Triples debug  textstate) (map SnipID [1..]) snips2
+    let snips3 = zipWith pushSnipNumber2snip [1..] snips2
+    triples :: [[Triple]] <- mapM (convertOneSnip2Triples debug  textstate)  snips3
 --    ntz1 <- foldM writeHandleTriples (ntdescriptor textstate) triples
     return . concat $ triples
 --    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
@@ -75,23 +76,25 @@ produceNLPtriples  textstate tzs =  do
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
 pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
 
+pushSnipNumber2snip :: Int -> Snip -> Snip
+pushSnipNumber2snip i  snip = snip {tz3snipnr = i}
 
 
-convertOneSnip2Triples :: Bool ->   TextDescriptor -> SnipID -> Snip ->  ErrIO [Triple]
+convertOneSnip2Triples :: Bool ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
 -- calls nlp to convert to doc
 -- the snip should have a type parameter language
 -- internal the text2nlp should have a tag type parameter
 -- the triples (i.e. NLPtriples should have a tag parameter
 
 -- the following is just the bridges, which should go earlier
-convertOneSnip2Triples debugNLP textstate snipnr snip = do
+convertOneSnip2Triples debugNLP textstate   snip = do
     let text = tz3text snip
     let language = getLanguageCode . tz3text $  snip    -- reduce for some special cases _italics_
 --    let buchname = buchName textstate
-    let paranum = tz3para snip
-    let parasigl = paraSigl textstate paranum
-    let snipsigl = mkSnipSigl parasigl snipnr
-    let nlpserver = nlpServer textstate
+--    let paranum = tz3para snip
+--    let parasigl = paraSigl textstate paranum
+--    let snipsigl = mkSnipSigl parasigl snipnr
+--    let nlpserver = nlpServer textstate
     let pt = txPosTagset textstate
     trips2 <- if not . notNullLC $ text
         then return zero
@@ -123,12 +126,31 @@ convertOneSnip2Triples debugNLP textstate snipnr snip = do
                             return (map unNLPtriple t)
                 _ -> return zero
             return trips
-    let buchURI = buchURIx   textstate
-    let paratrip = mkTriplePartOf (unSnipSigl snipsigl) (unParaSigl parasigl)
-    let buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
-    return $ buchtrip : paratrip : trips2
+
+--        let paranum = tz3para snip
+--    let parasigl = paraSigl textstate paranum
+--    let snipsigl = mkSnipSigl parasigl snipnr
+    let nlpserver = nlpServer textstate
+    let pt = txPosTagset textstate
+    let (snipsigl, partOfTriples) = mkSnipPartOf textstate snip
+--let buchURI = buchURIx   textstate
+--    let paratrip = mkTriplePartOf (unSnipSigl snipsigl) (unParaSigl parasigl)
+--    let buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
+    return $ partOfTriples ++ trips2
 
 
+mkSnipPartOf :: TextDescriptor -> Snip -> [Triple]
+-- make the triples to state that triple is part of book and part of paragraphs2TZlayout
+mkSnipPartOf textstate snip = (snipsigl, [buchtrip, paratrip])
+    where
+        paranum = tz3para snip
+        parasigl = paraSigl textstate paranum
+        snipsigl = mkSnipSigl parasigl (tz3snipnr snip) -- snipnr
+--        nlpserver = nlpServer textstate
+--        pt = txPosTagset textstate
+        buchURI = buchURIx   textstate
+        paratrip = mkTriplePartOf (unSnipSigl snipsigl) (unParaSigl parasigl)
+        buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
 
 
 
