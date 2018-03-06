@@ -93,6 +93,7 @@ data Snip = Snip { tz3loc :: TextLoc
 -- snip sigl uses the paragraph number of the first paragraph
 newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 unSnipID (SnipID i) = i
+instance Zeros SnipID where zero = SnipID zero
 
 --
 --instance Zeros Snip where zero = Snip zero zero zero zero zero zero

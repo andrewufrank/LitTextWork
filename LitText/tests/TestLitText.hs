@@ -34,7 +34,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test
 import   {-@ HTF_TESTS @-} Parser.ProduceLit_test  -- [TZ2] -> [Triple] CA -> Hx (triples) and H -> K (nt)
 
 
---import {-@ HTF_TESTS @-} Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Snip]
+import {-@ HTF_TESTS @-} Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Snip]
             -- DA is the same as D
         -- and snip4test :: [TZ1] -> [Snip] C -> D
 ---------------- filters literal text, but not ideal snips yet
