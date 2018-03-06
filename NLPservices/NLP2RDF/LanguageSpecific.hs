@@ -20,8 +20,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.LanguageSpecific
-    (module Parser.LanguageSpecific
+module NLP2RDF.LanguageSpecific
+    (module NLP2RDF.LanguageSpecific
 --    , module Producer.Servers
     ) where
 
@@ -34,7 +34,7 @@ import CoreNLP.Defs0   -- should only get instances ?
 import Uniform.HttpCallWithConduit (URI, callHTTP10post, addPort2URI, addToURI)
 --import Uniform.Zero  -- should be gotten by some other import
 import Text.Regex (mkRegex, subRegex)
-import Parser.CompleteSentence (completeSentence)
+import NLP2RDF.CompleteSentence (completeSentence)
 --import Parser.ProduceNLPtriples -- (processDoc0toTriples2)
 import Parser.LanguageTypedText
 --import Parser.ProduceDocCallNLP -- loop

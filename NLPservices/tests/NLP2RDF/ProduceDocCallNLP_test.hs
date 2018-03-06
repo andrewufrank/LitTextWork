@@ -20,14 +20,14 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceDocCallNLP_test  where
+module NLP2RDF.ProduceDocCallNLP_test  where
 
 import              Test.Framework
 import              Uniform.TestHarness
 import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
 import Parser.LanguageTypedText
 
-import Parser.ProduceDocCallNLP
+import NLP2RDF.ProduceDocCallNLP
 
 
 

@@ -11,8 +11,8 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Parser.NLPvocabulary
-    ( module Parser.NLPvocabulary
+module NLP2RDF.NLPvocabulary
+    ( module NLP2RDF.NLPvocabulary
       , module CoreNLP.Defs0
       , module Data.RDF.Extension
       , module Uniform.Strings
@@ -61,28 +61,28 @@ data NLPtype = Doc | Snip | Sentence | Token
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
 
-type ParaID = Int   -- should be typed?
-
-newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
-unParaSigl (ParaSigl t) = t
-
-formatParaID :: ParaID -> Text
-formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
+--type ParaID = Int   -- should be typed?
+--
+--newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
+--unParaSigl (ParaSigl t) = t
+--
+--formatParaID :: ParaID -> Text
+--formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 -- format to 5 digits
 --
 --formatLineID :: Int -> Text
 --formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
 ---- format to 3 digits
 
-buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
-            <#> authorDir textstate <-> buchName textstate
--- id of buch, part and sentence or page is attached
-
-paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
-paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
-                (formatParaID . unparaNum $ pn)
-                      ( buchURIx $ textstate)
-                      )
+--buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
+--            <#> authorDir textstate <-> buchName textstate
+---- id of buch, part and sentence or page is attached
+--
+--paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
+--paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
+--                (formatParaID . unparaNum $ pn)
+--                      ( buchURIx $ textstate)
+--                      )
 
 
 -- snip sigl uses the paragraph number of the first paragraph
@@ -91,6 +91,14 @@ unSnipID (SnipID i) = i
 --
 newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
 instance Zeros SnipSigl where zero = SnipSigl zero
+
+type ParaID = Int   -- should be typed?
+
+newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
+unParaSigl (ParaSigl t) = t
+
+formatParaID :: ParaID -> Text
+formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a

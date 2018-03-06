@@ -21,8 +21,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 --{-# OPTIONS_GHC -w #-}
 
-module Parser.CompleteSentence (
-    module Parser.CompleteSentence
+module NLP2RDF.CompleteSentence (
+    module NLP2RDF.CompleteSentence
     -- completeSentence
 --    , htf_thisModulesTests
     , module Producer.Servers
@@ -31,7 +31,7 @@ module Parser.CompleteSentence (
 --import           Test.Framework
 import Uniform.Error
 import Producer.Servers
-import Parser.ConvertTaggerOutput--import NLP.CallTagger2
+import NLP2RDF.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
 import NLP.Corpora.Conll
 --import BuchCode.BuchToken (LanguageCode(..))

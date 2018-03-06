@@ -27,7 +27,7 @@
 module CoreNLP.ProduceNLPtriples
     (module CoreNLP.ProduceNLPtriples
     , module CoreNLP.Defs0
-    , module Parser.NLPvocabulary
+    , module NLP2RDF.NLPvocabulary
     ) where
 
 --import           Test.Framework
@@ -36,7 +36,7 @@ import CoreNLP.Defs0
 import CoreNLP.NERcodes
 import Parser.TextDescriptor
 import NLP.Types.Tags
-import Parser.NLPvocabulary  -- from Foundation
+import NLP2RDF.NLPvocabulary  -- from Foundation
 import Parser.LanguageTypedText
 import Data.List (partition)
 import Data.RDF.Types  (Triple)  -- instance Show Triple

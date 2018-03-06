@@ -16,7 +16,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 --{-# OPTIONS_GHC -w #-}
 
-module Parser.ConvertTaggerOutput (convertTT
+module NLP2RDF.ConvertTaggerOutput (convertTT
     , TTdata (..)
     , htf_thisModulesTests
     )   where

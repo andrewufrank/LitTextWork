@@ -20,10 +20,10 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceDocCallNLP
-    (module Parser.ProduceDocCallNLP
+module NLP2RDF.ProduceDocCallNLP
+    (module NLP2RDF.ProduceDocCallNLP
     , module Producer.Servers
-    , module Parser.LanguageSpecific
+    , module NLP2RDF.LanguageSpecific
     ) where
 
 import              Test.Framework
@@ -35,9 +35,8 @@ import CoreNLP.Defs0 () -- should only get instances ?
 import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, addToURI)
 import Uniform.Zero  -- should be gotten by some other import
 import Text.Regex (mkRegex, subRegex)
-import Parser.CompleteSentence (completeSentence)
+import NLP2RDF.CompleteSentence (completeSentence)
 import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
-import Parser.LanguageTypedText
 
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
@@ -47,7 +46,7 @@ import NLP.Corpora.French as French --
 import NLP.Corpora.FrenchUD as FrenchUD --
 
 import Data.Text as T
-import Parser.LanguageSpecific
+import NLP2RDF.LanguageSpecific
 
 
 class  LanguageTyped22 lang postag where
@@ -65,6 +64,9 @@ class  LanguageTyped22 lang postag where
     -- the snip should have a type parameter language
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
+
+convertOneSnip2Triples3 :: Flags  -> LanguageCode ->  Snip  ->   ErrIO [Triple]
+    -- this is  the entry point called from litText
 
 instance (LanguageDependent lang, LanguageTypedText lang
         , TaggedTyped postag, POStags postag, LanguageTyped2 lang postag)
@@ -86,6 +88,37 @@ instance (LanguageDependent lang, LanguageTypedText lang
                 let trips = processDoc0toTriples2 lph pph snipSigl doc2
 
                 return trips
+
+--    trips2 <- if not . notNullLC $ text
+--        then return zero
+--        else do
+--            trips <- case (language, pt) of
+--                (English, "") -> do
+--                            t <- convertOneSnip2Triples2 undefEnglish undefConll
+--                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+--                            return (map unNLPtriple t)
+--                (German, "") -> do
+--                            t <- convertOneSnip2Triples2 undefGerman undefGermanPos
+--                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+--                            return (map unNLPtriple t)
+--                (Italian,"") -> do
+--                            t <- convertOneSnip2Triples2 undefItalian undefTinTPos
+--                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+--                            return (map unNLPtriple t)
+--                (French, "")-> do
+--                            t <-convertOneSnip2Triples2 undefFrench undefFrenchPos
+--                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+--                            return (map unNLPtriple t)
+--                (French, "FrenchUD")-> do
+--                            t <- convertOneSnip2Triples2 undefFrench undefFrenchUDPos
+--                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+--                            return (map unNLPtriple t)
+--                (Spanish,"") -> do
+--                            t <- convertOneSnip2Triples2 undefSpanish undefSpanishPos
+--                                        debugNLP   (Snip2 (convertLC2LT text) snipsigl) nlpserver
+--                            return (map unNLPtriple t)
+--                _ -> return zero
+--            return trips
 
 
 class Docs postag where

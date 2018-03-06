@@ -32,7 +32,7 @@ import qualified NLP.Corpora.Conll  as Conll
 import Data.Aeson (eitherDecode)
 import Parser.LanguageTypedText (undefEnglish)
 import CoreNLP.ProduceNLPtriples (unNLPtriple)
-import Parser.NLPvocabulary (ParaSigl (..), SnipID (..), mkSnipSigl)
+import NLP2RDF.NLPvocabulary (ParaSigl (..), SnipID (..), mkSnipSigl)
 import Data.RDF.Extension
 import Producer.Servers -- (PartURI)
 

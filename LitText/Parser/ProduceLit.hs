@@ -46,12 +46,30 @@ import Parser.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import Producer.Servers  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
-import Parser.NLPvocabulary hiding ((</>), (<.>))
+--import Parser.NLPvocabulary hiding ((</>), (<.>))
 
 --litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: PartURI
 litURItext = append2partURI rdfBase "/lit_2014"
 dcURItext = PartURI "http://purl.org/dc/elements/1.1" :: PartURI
 -- no terminating /
+
+buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
+            <#> authorDir textstate <-> buchName textstate
+-- id of buch, part and sentence or page is attached
+
+type ParaID = Int   -- should be typed?
+
+newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
+unParaSigl (ParaSigl t) = t
+
+formatParaID :: ParaID -> Text
+formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
+
+paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
+paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
+                (formatParaID . unparaNum $ pn)
+                      ( buchURIx $ textstate)
+                      )
 
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main function for the conversion

@@ -40,7 +40,9 @@ import           Uniform.Error           (errorT)
 --import Uniform.TestHarness
 import Producer.Servers (rdfBase)  -- from Foundation
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
-import Parser.NLPvocabulary
+--import Parser.NLPvocabulary
+import Data.RDF.Extension --  (PartURI (..), Triple (..))
+import Parser.ProduceLit (buchURIx)
 
 --gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
 --gerastreeURI = "http://gerastree.at"
