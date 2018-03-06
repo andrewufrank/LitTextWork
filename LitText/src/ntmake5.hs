@@ -30,12 +30,13 @@ import           Data.Semigroup               ((<>))
 --import           Options.Applicative.Builder
 import           Options.Applicative
 import Producer.Servers
-import Parser.TextDescriptor hiding ((<>))
+import LitTypes.TextDescriptor hiding ((<>))
 import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import Processor.Main2sub (mainLitAndNLPproduction)
 
 import Process.UtilsProcessing (processAll)
-import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer, LitTextFlags (..) )
+import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer
+            , LitTextFlag (..), LitTextFlags )
 import Processor.ProcessAll
 --import qualified System.Directory as S (getHomeDirectory)
 
@@ -66,12 +67,13 @@ parseAndExecute t1 t2    = do
         let resultFile = makeAbsFile "/home/frank/ntstore4.txt" :: Path Abs File
         writeFileOrCreate2 resultFile ("" :: Text)  -- to make sure it exist
         -- not really interesting
-        let flags = LitTextFlags {flagForce = argForceFlag args
-                    , flagFrenchUD = argFrenchUDFlag args
-                    , flagIncludeText = False
-                    , flagDebug = argDebug args
-                    , flagXML = argXML args}
+--        let flags = LitTextFlags {flagForce = argForceFlag args
+--                    , flagFrenchUD = argFrenchUDFlag args
+--                    , flagIncludeText = False
+--                    , flagDebug = argDebug args
+--                    , flagXML = argXML args}
         let
+             flags = args2flags args
              originDir = makeAbsDir  $  addDir homeDirX (argOrigin args) :: Path Abs Dir
              destinationDir = makeAbsDir $  addDir homeDirX ( argDestination args) :: Path Abs Dir
              authorReplacement = s2t . getNakedDir $ originDir
@@ -163,6 +165,22 @@ ntcmdArgs = NtmakeArgs
           ( long "XML" <>
             help "print xml" )
 
+convertFlags2list :: NtmakeArgs -> LitTextFlags
+-- convert the flags to a list of LitTextFlag values
+convertFlags2list _ = []
+
+flag2bool :: [(NtmakeArgs -> Bool)] -> NtmakeArgs -> [Bool]
+flag2bool fs args = map (\f -> f args) fs
+
+args2flags :: NtmakeArgs -> LitTextFlags
+-- find the flags set to true and put into list of flags
+args2flags args = selFlag [LocalNLPserverFlag, ForceFlag, DebugFlag, XMLflag]
+                $ flag2bool [argLocalhost, argForceFlag, argDebug, argXML] args
+
+selFlag :: [LitTextFlag] -> [Bool] -> [LitTextFlag]
+selFlag [] _  = []
+selFlag _ []  = []
+selFlag (a:as) (b:bs)  = if b then a : (selFlag as bs)  else selFlag as bs
 
 
 
