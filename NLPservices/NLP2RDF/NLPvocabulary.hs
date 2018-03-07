@@ -24,7 +24,6 @@ import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import LitTypes.ServerNames
---import LitTypes.ServerNames (rdfBase, vocabularyBase, PartURI (..), unPartURI)  -- from Foundation
 import LitTypes.TextDescriptor
 
 
@@ -73,9 +72,9 @@ formatParaID :: ParaID -> Text
 formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 --  format to 5 digits
 
-formatLineID :: Int -> Text
-formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
--- format to 3 digits
+--formatLineID :: Int -> Text
+--formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
+---- format to 3 digits
 
 buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
             <#> authorDir textstate <-> buchName textstate

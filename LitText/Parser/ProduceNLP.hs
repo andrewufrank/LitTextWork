@@ -34,19 +34,12 @@ module Parser.ProduceNLP
     , TextDescriptor (..)
     ) where
 
+import LitTypes.TextDescriptor
+import NLP2RDF.NLPvocabulary
+import Uniform.Zero
 import NLP2RDF.ProduceDocCallNLP
-import          Data.RDFext.Extension -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
-import Data.Maybe (catMaybes)  -- todo
--- for tests:
-import Parser.ReadMarkupAB
-import LitTypes.TextDescriptor -- (TextDescriptor(..), serverLoc, originalsDir)
-import NLP2RDF.ProduceDocCallNLP
---import Uniform.FileIO (Path(..), Abs, File, TypedFiles5(..), Handle)
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
-import LitTypes.LanguageTypedText -- (LanguageTypedText (..) )
-import NLP2RDF.NLPvocabulary -- (SnipSigl (..))
---import Parser.ProduceLit (ParaSigl (..), unParaSigl)
 
 produceNLPtriples ::  LitTextFlags -> TextDescriptor ->  [TZ2] -> ErrIO [Triple]
             -- test C  -> X
@@ -90,7 +83,7 @@ convertOneSnip2Triples flags textstate   snip = do
     let (snipsigl, partOfTriples) = mkSnipPartOf textstate snip
 
     trips2 <- if not . notNullLC $ text
-        then return zero
+        then return []
         else do
             trips <- convertOneSnip2Triples3 flags lang snip snipsigl
             return trips
@@ -112,6 +105,6 @@ mkSnipPartOf textstate snip = (snipsigl, [buchtrip, paratrip])
         buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
 
 
-
+--instance Zeros [Triple] where zero = []
 
 

@@ -21,23 +21,14 @@
 
 module Data.RDFext.FileTypes (
    module Data.RDFext.FileTypes
---   , module Uniform.Error
    , module Uniform.FileIO
    , Triple
--- RDFgraph (..), unRDFgraph
--- , ntFile, ntFileTriples)
   ) where
 
 import qualified Data.RDF        as RDF
 import Data.RDFext.Triple2text (triple2text, Triple)
 import qualified          System.IO as S
 import           Uniform.FileIO
---import           Uniform.FileIO -- (EpochTime, getFileModificationTime)
---import Uniform.Error
---import           Uniform.Strings hiding ((<.>), (</>))
-
-import Uniform.FileIO
---import Uniform.Filenames
 
 import qualified Codec.Compression.GZip as GZip
 import qualified Data.Text.IO           as TIO (hGetLine, hPutStr)

@@ -19,27 +19,9 @@
 {-# OPTIONS_GHC -w #-}
 
 module Parser.FilterTextForNLP
---    (module Parser.ProduceDocCallNLP
---    , module CoreNLP.Defs0
---    , module Lines2para.Lines2para
---    , module LitTypes.ServerNames
---    )
     where
 
---import           Test.Framework
---import Uniform.TestHarness
-import Data.Maybe -- todo
-import Lines2para.Lines2para
---import Lines2para.HandleLayout
-import Parser.ReadMarkupAB  -- todo  -- for test
-import LitTypes.ServerNames
-import           CoreNLP.Defs0
-import CoreNLP.CoreNLPxml (readDocString)
-import Data.List.Split
-import Uniform.HttpCall (makeHttpPost7, addPort2URI)
-import Text.Regex (mkRegex, subRegex)
---import BuchCode.BuchToken
---import Lines2para.MarkupText (combine2linesWithHyphenation)
+import Data.Maybe (catMaybes) -- todo
 import BuchCode.Classes4text
 import LitTypes.TextDescriptor
 

@@ -18,18 +18,10 @@
 
 module Data.RDFext.Codes (
     module Data.RDFext.Codes
---    , module Data.RDF
---    , module Data.RDFext.Prefs
---    , module Data.RDFext.FileTypes
---    , module Data.RDFext.Predicates
---    , module  Data.RDFext.Triple2text
-
---    , module Uniform.Convenience.LitTypes
     , (</>)
     )     where
 
 
---import           Test.Framework
 import Text.Printf
 import           Data.Map            as Map (fromList)
 import           Data.RDF            (Node, Triple (..), lnode, objectOf,
@@ -37,23 +29,14 @@ import           Data.RDF            (Node, Triple (..), lnode, objectOf,
 import           Data.RDF            as RDF
 import qualified Data.RDF            as RDF
 
--- from rdf4hextensionsimport           Data.RDF.Prefs
---import Data.RDFext.Prefs
---import Data.RDFext.FileTypes -- hiding ((<>) , (</>), (<.>))
---import Data.RDFext.Predicates
---import Data.RDFext.Triple2text
-
 
 import qualified Data.RDF.Types      as RDF (RDF (..), RdfSerializer (..))
-
--- import           Data.Text           hiding (map)
--- import qualified Data.Text           as T (append, concat, null, strip)
 import           Uniform.Error
--- import           Uniform.FileIO      (thd3)
--- import           Uniform.StringInfix ((</>))
 import           Uniform.Strings ((</>))
 import           Uniform.Zero
-----import           Uniform.Convenience.LitTypes
+
+
+
 newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord)
 unPartURI (PartURI t) = t
 -- ^ TOOD should be used wherever a Text string is a URI code

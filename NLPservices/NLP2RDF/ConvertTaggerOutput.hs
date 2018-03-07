@@ -18,17 +18,12 @@
 
 module NLP2RDF.ConvertTaggerOutput (convertTT
     , TTdata (..)
-    , htf_thisModulesTests
     )   where
 
 import           Test.Framework
---import           Test.Invariant
---import Uniform.Strings
 import Uniform.Error
 import Uniform.Zero
 import qualified System.IO as IO
---import NLP.CallTagger2
-
 
 data TTdata = TTdata {ttwf::Text  -- the input wordform
                       , ttpos :: Text  -- the tree tager POS value

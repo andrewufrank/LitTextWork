@@ -21,32 +21,12 @@ module Parser.ProduceLayout (module Parser.ProduceLayout
     , TextDescriptor (..), TZ1 (..)
     ) where
 
---import           Test.Framework
-import           Data.Char               (toLower)
---import           Data.RDF  ()
---import Data.RDFext.Triple2text (triple2text)
---import           Data.RDF.Extension
-import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
---import           Parser.TextDescriptor  hiding ((</>))
---import Uniform.Strings ((</>))  -- for PartURI
-import Parser.ReadMarkupAB    -- result1A etc.
---import Lines2para.HandleLayout
-    -- (RDFtypes (..), RDFproperties (..), TZ (..)
---      , TextDescriptor, PartURI, RDFsubj, Triple) -- TZ
---import Lines2para.Lines2ignore
---import Lines2para.Lines2para -- hiding ((</>))
+import LitTypes.TextDescriptor
+import Data.RDFext.Extension
+import NLP2RDF.NLPvocabulary
 import           Text.Printf         (printf)
-import           Uniform.Error      --     (errorT)
---import Uniform.TestHarness
 import LitTypes.ServerNames (rdfBase)  -- from Foundation
-import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
---import Parser.NLPvocabulary
-import Data.RDFext.Extension --  (PartURI (..), Triple (..))
-import Parser.ProduceLit (buchURIx)
 
---gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"
---gerastreeURI = "http://gerastree.at"
---layoutURItext =   gerastreeURI </> "layout_2017" :: PartURI
 layoutURItext =   append2partURI rdfBase  "/layout_2017" :: PartURI
 
 produceLayoutTriples ::  TextDescriptor -> [TZ1] -> [Triple]
@@ -91,18 +71,6 @@ lineSigl textstate pn = LineSigl ( extendSlashRDFsubj
                       ( buchURIx $ textstate)
                       )
 
---newtype PageSigl = PageSigl RDFsubj
---unPageSigl (PageSigl t) = t
---
---formatPageID :: Text -> Text
---formatPageID nrtext =   "P" <> nrtext
----- format to 5 digits
-----
---pageSigl :: TextState2 -> Text -> PageSigl
---pageSigl textstate pn = PageSigl ( extendSlashRDFsubj
---                (formatPageID  $ pn)
---                      ( buchURIx $ textstate)
---                      )
 
 newtype InLineMarkerSigl = InLineMarkerSigl RDFsubj
 unInLineMarkerSigl (InLineMarkerSigl t) = t

@@ -25,13 +25,8 @@ module Data.RDFext.Extension (
     , module  Data.RDFext.Triple2text
     , module Data.RDFext.Codes
     , module Uniform.FileIO
-
     )     where
 
-
---import           Test.Framework
---import Text.Printf
---import           Data.Map            as Map (fromList)
 import           Data.RDF            (Node, Triple (..), lnode, objectOf,
                                       plainL, plainLL, triple, typedL, unode)
 import           Data.RDF            as RDF
@@ -44,15 +39,4 @@ import Data.RDFext.Predicates
 import Data.RDFext.Triple2text
 import Data.RDFext.Codes
 import Uniform.FileIO hiding ((<>) , (</>), (<.>))
-
---import qualified Data.RDF.Types      as RDF (RDF (..), RdfSerializer (..))
-
--- import           Data.Text           hiding (map)
--- import qualified Data.Text           as T (append, concat, null, strip)
---import           Uniform.Error
--- import           Uniform.FileIO      (thd3)
--- import           Uniform.StringInfix ((</>))
---import           Uniform.Strings ((</>))
---import           Uniform.Zero
-----import           Uniform.Convenience.LitTypes
 

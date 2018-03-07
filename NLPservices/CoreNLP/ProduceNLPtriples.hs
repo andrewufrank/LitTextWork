@@ -30,8 +30,6 @@ module CoreNLP.ProduceNLPtriples
     , module NLP2RDF.NLPvocabulary
     ) where
 
---import           Test.Framework
---import Uniform.TestHarness (testVar3File)
 import CoreNLP.Defs0
 import CoreNLP.NERcodes
 import LitTypes.TextDescriptor

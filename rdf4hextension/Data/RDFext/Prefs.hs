@@ -16,17 +16,11 @@
 -- {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 
 module Data.RDFext.Prefs
-(module Data.RDFext.Prefs
--- , module Uniform.HttpGet
---, module Uniform.Strings
-, module Uniform.Error)  where
+    (module Data.RDFext.Prefs
+    , module Uniform.Error)  where
 
--- import           Safe
 import           Uniform.Error   -- (fromJustNote)
---import           Uniform.Strings
 import           Uniform.Zero
--- import Uniform.HttpGet  -- for URI
--- the URI here is just text - URItext
 
 import qualified Data.Map        as Map (fromList)
 import           Data.Maybe      (listToMaybe)

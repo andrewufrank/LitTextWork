@@ -18,15 +18,18 @@ module LitTypes.TextDescriptor (
     , module LitTypes.LanguageTypedText
 --    , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
+    , module Uniform.Error
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
     , LitTextFlag (..), LitTextFlags
+    , PartURI (..), unPartURI
 --    , module Path   -- to export IsString
     ) where
 
 import Uniform.FileIO  ((</>), Path (..), Abs, Dir, File )
+import Uniform.Error
 import LitTypes.ServerNames  (URI, makeURI, serverBrest)  -- for test
 import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import BuchCode.BuchToken hiding ((</>), (<.>))

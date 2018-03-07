@@ -6,7 +6,6 @@
 -- | convert a snip to  nlp triples
 
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -27,29 +26,22 @@ module NLP2RDF.ProduceDocCallNLP
     , LitTextFlags (..), LitTextFlag (..), SnipID (..),
     ) where
 
-import              Test.Framework
-import              Uniform.TestHarness
-import LitTypes.LanguageTypedText
-import LitTypes.ServerNames
 import CoreNLP.CoreNLPxml (readDocString)
-import CoreNLP.Defs0 () -- should only get instances ?
-import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI)
-import Uniform.Zero  -- should be gotten by some other import
-import Text.Regex (mkRegex, subRegex)
-import NLP2RDF.CompleteSentence (completeSentence)
+import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI, URI, HttpVarParams(..))
 import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
-
+--
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
 import NLP.Corpora.German  as German --
 import NLP.Corpora.Spanish as Spanish --
 import NLP.Corpora.French as French --
 import NLP.Corpora.FrenchUD as FrenchUD --
-
---import Data.Text as T
+import NLP.Types.Tags
+----import Data.Text as T
 import NLP2RDF.LanguageSpecific
-import LitTypes.TextDescriptor as TD
-import LitTypes.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..))
+import LitTypes.TextDescriptor  as TD
+import LitTypes.ServerNames
+import Data.RDFext.Codes
 
 class  LanguageTyped22 lang postag where
 

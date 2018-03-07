@@ -23,12 +23,12 @@ module Parser.FormNLPsnips
 --import Lines2para.HandleLayout
 --import Parser.ReadMarkupAB  -- todo  -- for test
 --import LitTypes.ServerNames
-import           CoreNLP.Defs0
-import CoreNLP.CoreNLPxml (readDocString)
-import Data.List.Split
+--import           CoreNLP.Defs0
+--import CoreNLP.CoreNLPxml (readDocString)
+--import Data.List.Split
 --import Uniform.HttpCall (makeHttpPost7, addPort2URI)
-import Text.Regex (mkRegex, subRegex)
-import Parser.FilterTextForNLP
+--import Text.Regex (mkRegex, subRegex)
+--import Parser.FilterTextForNLP
 import Uniform.Error (fromJustNote)
 import LitTypes.TextDescriptor
 
