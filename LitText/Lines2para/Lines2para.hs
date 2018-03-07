@@ -26,24 +26,15 @@
 
 module Lines2para.Lines2para
     (module Lines2para.Lines2para
-     , module LitTypes.TextDescriptor -- (ParaNum, unparaNum)
---    , module Lines2para.Lines2ignore
---    , module Lines2para.HandleLayout
         ) where
 
---import Lines2para.Lines2ignore
---import  Lines2para.HandleLayout -- TZ
 
 import           Data.List.Split
---import           Uniform.Error
---import           Uniform.Strings     hiding ((<|>), (</>))
-import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)
---import           Test.Framework
---import Uniform.TestHarness
 import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
-import Lines2para.Lines2text
+import BuchCode.Classes4text
+import Lines2para.HandleLayout ()  -- instance for zeilen TZ1
 
 paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA
 -- ^ produce the text files (ignores removed, language marked)

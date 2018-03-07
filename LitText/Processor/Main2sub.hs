@@ -16,25 +16,28 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
+-- import the fundamental types from TextDescriptor, not from processing steps
+
 module Processor.Main2sub (mainLitAndNLPproduction
         ) where
 
---import           Test.Framework
-import Parser.ReadMarkupAB
---import           Lines2para.MarkupText
-import Parser.ProduceLayout
-import           Lines2para.Lines2para hiding ((</>))
-import           Lines2para.Lines2text
+import            Parser.ReadMarkupAB (textstate2Text)
+import           Lines2para.Lines2text  (text2tz1, Zeilen (..) , BuchToken (..))
 
-import           Parser.ProduceLit
-import           Parser.ProduceNLP
+import           Parser.ProduceLayout (produceLayoutTriples)
+
+import           Lines2para.Lines2para (TZ1, TZ2, paragraphsTZ2TZ2) -- hiding ((</>))
+
+import           Parser.ProduceLit (produceLitTriples)
+import           Parser.ProduceNLP (produceNLPtriples)
+
+import Data.RDFext.FileTypes -- (ntFileTriples)
 
 import           Uniform.FileIO (when, errorT)
---import           Uniform.Strings
---import Lines2para.HandleLayout
-import Data.RDFext.FileTypes (ntFileTriples)
--- (parseMarkup, result1B, result2B, result3B, result4B)
-import LitTypes.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..))
+import           Uniform.Error
+
+--import LitTypes.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..))
+import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction flags  textstate = do
@@ -42,10 +45,13 @@ mainLitAndNLPproduction flags  textstate = do
 
     -- read text input
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
+    -- use Parser.ReadMarkup
     ttext <- textstate2Text textstate -- test A - B (in this module)
 
 --        -- ignore line, allCaps, language
 --        -- missing footnotes?
+
+    -- use Lines2para.Line2text
     let tzlayout1 = text2tz1 ttext :: [TZ1]  -- B -> C
 
     -- produce triples
@@ -53,8 +59,9 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
-
+    -- use Lines2para.Lines2para
     let tzpara = paragraphsTZ2TZ2  tzlayout1  :: [TZ2] -- test BAD -> BAE   in LinesToParagraph
+
     let litTriples = produceLitTriples textstate   tzpara  -- test BAE=C -> H and K (nt)
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]

@@ -24,35 +24,17 @@
 
 module Lines2para.MarkupText
     (module Lines2para.MarkupText
-    , module BuchCode.BuchToken
+    , module BuchCode.Classes4text
+--    , module LitTypes.TextDescriptor
     ) where
 
 
-import           BuchCode.BuchToken hiding (try, (<|>), (</>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
---import           Uniform.Error hiding (try, (<|>))
-import           Uniform.FileIO   hiding (try, (<|>))
---import           Test.Framework
-import Parser.ReadMarkupAB
-import Uniform.TestHarness hiding (try, (<|>))
+--import Parser.ReadMarkupAB
 import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
-
-class Zeilen z where
--- ^ ops on zeilen
-    isLeerzeile
-        , isSeitenzahl
-        , isTextZeile   -- ^ any line containing lit text
-        , isTextZeileIncludeInPara -- ^ only the text lines which can aggregate in paragraph
-        , isNeueSeite
-        , isMarkupZeile
-        , isKurzeZeile  :: z -> Bool
-    isMarkupX :: BuchToken -> z -> Bool
-    zeilenText :: z -> Text
-    -- returns just the text field
-
-    renderZeile :: z -> Text -- ^ gives the literary text
+import BuchCode.Classes4text -- (Zeilen (..), BuchToken (..))
 
 type TextParsec a = Parsec Text () a
 type TextParsecBuch = Parsec Text () [MarkupElement]
@@ -232,9 +214,6 @@ caseInsensitiveChar c = do
 caseInsensitiveString :: Text -> TextParsec Text
 caseInsensitiveString = fmap s2t . sequence . map caseInsensitiveChar . t2s
 
-combine2linesWithHyphenation :: Text -> Text -> Text
--- combine two words or parts of words
-combine2linesWithHyphenation a b = maybe (unwordsT [a,b])  (<>b)  $ stripSuffix' "-" a
 
 
 countSeiten :: [TextZeile] -> Int

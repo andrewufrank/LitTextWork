@@ -36,6 +36,8 @@ library
         LitTypes.UtilsParseArgs
         LitTypes.UtilsProcessing
         BuchCode.BuchToken
+        BuchCode.Classes4text
+
 
     exposed: True
     buildable: True

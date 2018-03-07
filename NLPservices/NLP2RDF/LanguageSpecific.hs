@@ -31,7 +31,7 @@ import LitTypes.LanguageTypedText
 import LitTypes.ServerNames
 
 import CoreNLP.Defs0   -- should only get instances ?
-import Uniform.HttpCall (URI, callHTTP10post)
+import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
 import LitTypes.LanguageTypedText

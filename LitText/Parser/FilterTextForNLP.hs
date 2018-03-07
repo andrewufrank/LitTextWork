@@ -38,8 +38,10 @@ import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
 import Uniform.HttpCall (makeHttpPost7, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
-import BuchCode.BuchToken
-import Lines2para.MarkupText (combine2linesWithHyphenation)
+--import BuchCode.BuchToken
+--import Lines2para.MarkupText (combine2linesWithHyphenation)
+import BuchCode.Classes4text
+import LitTypes.TextDescriptor
 
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 

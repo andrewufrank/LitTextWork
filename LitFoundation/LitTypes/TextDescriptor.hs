@@ -14,14 +14,15 @@
 
 module LitTypes.TextDescriptor (
         module LitTypes.TextDescriptor
+    , module LitTypes.ServerNames
+    , module LitTypes.LanguageTypedText
 --    , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
-    , module LitTypes.LanguageTypedText
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
-    , module LitTypes.ServerNames
+    , LitTextFlag (..), LitTextFlags
 --    , module Path   -- to export IsString
     ) where
 

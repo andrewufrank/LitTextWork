@@ -26,8 +26,8 @@ module BuchCode.BuchToken (module BuchCode.BuchToken
             -- , LanguageCode (..)
             ) where
 
-import           Data.RDFext.Extension -- (LanguageCode (..), PartURI)
-import           Uniform.Error hiding ((</>), (<.>))
+import           Data.RDFext.Extension hiding ((</>), (<.>), (<|>))-- (LanguageCode (..), PartURI)
+import           Uniform.Error hiding ((</>), (<.>), (<|>))
 --import           Uniform.Strings
 --import Safe  -- is export from Error
 --import Parser.TextDescriptor hiding ((</>), (<.>))

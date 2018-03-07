@@ -24,21 +24,13 @@
 module Lines2para.HandleLayout
     (module Lines2para.HandleLayout
 --    , module Lines2para.MarkupText
-    , module LitTypes.TextDescriptor
+--    , module LitTypes.TextDescriptor
 --    , module Uniform.Error
     ) where
 
---import Test.Framework
 import Lines2para.MarkupText
 import           Data.List.Split
--- todo strings
-import           Uniform.Error
---import Uniform.Zero
--- todo include zero  in error and strings
--- TODO string s
---import Data.List (nub)
---import           Text.Printf         (printf)
---import Uniform.TestHarness
+--import           Uniform.Error
 import LitTypes.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
 

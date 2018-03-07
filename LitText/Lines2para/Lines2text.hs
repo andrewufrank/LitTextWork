@@ -18,23 +18,21 @@
 
 module Lines2para.Lines2text
     (module Lines2para.Lines2text
-    , Zeilen (..)
-    , BuchToken (..)
+--    , Zeilen (..)
+--    , BuchToken (..)
 --    , module Lines2para.HandleLayout
 
     ) where
 
 
-import Lines2para.MarkupText
-import BuchCode.BuchToken
-import Lines2para.HandleLayout
+import Lines2para.MarkupText (parseMarkup)
+import BuchCode.Classes4text
+import Lines2para.HandleLayout (paragraphs2TZlayout)
 
 import           Data.List.Split
--- TODO string s
---import Data.List (nub)
-import           Test.Framework
---import Uniform.TestHarness
+--import           Test.Framework
 import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
+
 
 text2tz1 :: Text -> [TZ1]  -- test B -> C
 -- ^ the call to Lines2para module
