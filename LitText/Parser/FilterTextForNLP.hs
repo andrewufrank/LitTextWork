@@ -18,8 +18,10 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.FilterTextForNLP
-    where
+module Parser.FilterTextForNLP (
+     prepareTZ4nlp
+    , TZ2, Snip
+    ) where
 
 import Data.Maybe (catMaybes) -- todo
 import BuchCode.Classes4text
@@ -28,7 +30,8 @@ import LitTypes.TextDescriptor
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 
 
----- | a single language piece of text with lanuage code, length and start para number
+---- | a single language piece of text with lanuage code,
+--             length and start para number
 --data Snip = Snip { tz3loc :: TextLoc
 --                        , tz3para :: ParaNum
 --                        , tz3text:: Text
@@ -43,7 +46,8 @@ tz3fillLength n = n{tz3textLength = getLengthLC . tz3text $ n}
 
 prepareTZ4nlp :: Text -> [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
-prepareTZ4nlp postag tz2s = map tz3fillLength . catMaybes . map (prepareTZ4nlpOne postag) $ tz2s
+prepareTZ4nlp postag tz2s = map tz3fillLength . catMaybes
+        . map (prepareTZ4nlpOne postag) $ tz2s
 
 
 prepareTZ4nlpOne :: Text -> TZ2 -> Maybe Snip  -- test C  -> D

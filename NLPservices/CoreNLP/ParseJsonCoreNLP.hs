@@ -24,7 +24,6 @@ import Uniform.FileIO
 import Data.Aeson
 import Data.Aeson.Types  -- for modifying the labels
 import GHC.Generics
---import qualified Data.ByteString.Lazy as B
 import Control.Monad (mzero)
 import qualified Data.HashMap.Strict as HM
 

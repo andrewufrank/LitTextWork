@@ -24,18 +24,12 @@ module CoreNLP.Doc2ToDoc0 -- (openMain, htf_thisModuelsTests)
      where
 
 import           Uniform.Strings
---import Uniform.FileIO
 import CoreNLP.Defs0
 import CoreNLP.ParseJsonCoreNLP
 import qualified NLP.Types.Tags      as NLP
---import qualified NLP.Corpora.Conll  as Conll
---import qualified NLP.Corpora.UD  as UD
---            Uniform.FileIO
---import              LitNLP.Tools
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 import Uniform.Zero
---parseNLP :: ErrIO ()
 
 data Doc1 postag = Doc1 {doc1Sents:: [Sentence1 postag]
                  , doc1Corefs :: Coreferences1   -- only one

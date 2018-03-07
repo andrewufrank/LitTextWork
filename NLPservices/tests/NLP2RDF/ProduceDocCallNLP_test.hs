@@ -82,7 +82,8 @@ testOP_Snip_N (langPh, postagPh, text, i)= do
         return snip
 
 --test_N_1 :: IO ()
---test_M_1 = testVar2File (undefEnglish, undefConll, entz3text, 1)        "resultM1" testOP_Snip_N
+test_M_1 = testVar2File (undefEnglish, undefConll, entz3text, 1)
+                                 "resultM1" testOP_Snip_N
 --test_M_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultM2" testOP_Snip_N
 --test_M_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultM3" testOP_Snip_N
 --test_M_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultM4" testOP_Snip_N

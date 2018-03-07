@@ -52,7 +52,7 @@ library
         CoreNLP.ProduceNLPtriples
         NLP2RDF.ConvertTaggerOutput
         NLP2RDF.NLPvocabulary
-        CoreNLP.Models
+--        CoreNLP.Models
          CoreNLP.ParseJsonCoreNLP
          CoreNLP.Doc2ToDoc0
          CoreNLP.ProduceNLPtriples2

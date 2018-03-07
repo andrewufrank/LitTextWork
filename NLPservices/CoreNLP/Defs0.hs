@@ -35,11 +35,8 @@ module CoreNLP.Defs0 (
 import              Uniform.Strings
 import Uniform.Zero
 import   NLP.Corpora.Conll
---            Uniform.FileIO
---import              LitNLP.Tools
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
--- import           Text.XML.HXT.Core       hiding (when)
 
 
 newtype  Wordform0 = Wordform0 {word0 :: Text} deriving (Show, Read, Eq, Ord, Zeros)

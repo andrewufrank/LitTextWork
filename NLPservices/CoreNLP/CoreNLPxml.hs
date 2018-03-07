@@ -38,7 +38,6 @@
 module CoreNLP.CoreNLPxml (
             module CoreNLP.CoreNLPxml
             , module CoreNLP.Defs0
-            -- , module CoreNLP.DependencyCodes
             ) where
 
 import           Test.Framework

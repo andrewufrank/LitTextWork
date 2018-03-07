@@ -3,7 +3,7 @@
 , ScopedTypeVariables #-}
 -- | Data types representing the tagsets used in a model
 
-module CoreNLP.Models (
+module xxCoreNLP.Models (
     module CoreNLP.Models
     ) where
 
