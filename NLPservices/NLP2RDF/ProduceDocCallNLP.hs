@@ -68,7 +68,7 @@ convertOneSnip2Triples3 :: LitTextFlags  -> LanguageCode -> TD.Snip -> SnipSigl 
 convertOneSnip2Triples3 flags lang snip snipsigl = do
 
     let pt = ""  -- could be in flags
-    let debugNLP = DebugFlag `elem` flags
+    let debugNLP = True --  DebugFlag `elem` flags
     let text = tz3text snip
     let nlpserver = if LocalNLPserverFlag `elem` flags then serverLocalhost else serverBrest
     trips <- case (lang, pt) of

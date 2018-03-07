@@ -30,7 +30,7 @@
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
 --    , module Parser.TextDescriptor
-    , Triple, Snip, SnipID (..)
+    , Triple, Snip, SnipID (..), TZ2
     , TextDescriptor (..)
     ) where
 

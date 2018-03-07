@@ -51,16 +51,16 @@ parseMarkupTest t =  parseMarkup    t
 --test_0B_BA = testFile2File "resultB0" "resultBA0" parseMarkupTest
 ----test_1B_BA :: IO ()
 test_1B_BA = testFile2File "resultB1" "resultBA1" parseMarkupTest
---test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkupTest
---test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkupTest
---test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkupTest
---test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkupTest
---test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkupTest
---test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkupTest  -- aesop
---test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkupTest  -- tawada
---test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkupTest  -- boccaccio
---test_11B_BA = testFile2File "resultB11" "resultBA11" parseMarkupTest  -- italian testing
---test_12B_BA = testFile2File "resultB12" "resultBA12" parseMarkupTest  -- italian testing
+test_2B_BA = testFile2File "resultB2" "resultBA2" parseMarkupTest
+test_3B_BA = testFile2File "resultB3" "resultBA3" parseMarkupTest
+test_4B_BA = testFile2File "resultB4" "resultBA4" parseMarkupTest
+test_5B_BA = testFile2File "resultB5" "resultBA5" parseMarkupTest
+test_6B_BA = testFile2File "resultB6" "resultBA6" parseMarkupTest
+test_8B_BA = testFile2File "resultB8" "resultBA8" parseMarkupTest  -- aesop
+test_9B_BA = testFile2File "resultB9" "resultBA9" parseMarkupTest  -- tawada
+test_10B_BA = testFile2File "resultB10" "resultBA10" parseMarkupTest  -- boccaccio
+test_11B_BA = testFile2File "resultB11" "resultBA11" parseMarkupTest  -- italian testing
+test_12B_BA = testFile2File "resultB12" "resultBA12" parseMarkupTest  -- italian testing
 
 
 

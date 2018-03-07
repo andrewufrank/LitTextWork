@@ -41,22 +41,23 @@ import Uniform.FileIO (getAppUserDataDir')
 
 
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
-testOP_DA_L textstate = mapM (convertOneSnip2Triples  [] textstate )
+testOP_DA_L textstate =  mapM (convertOneSnip2Triples  [] textstate )
+          --   fmap concat .
 
 test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
---test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
---test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
---test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
---test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
---test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
---test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
-----test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L  -- multiple language - not a single head
---test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
---test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
---test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
---test_13_DA_L = testVar3FileIO result12A "resultDA12" "resultE12UD" testOP_DA_L
+test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
+test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
+test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
+test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
+test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
+test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
+test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L  -- multiple language - not a single head
+test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
+test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
+test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
+test_13_DA_L = testVar3FileIO result12A "resultDA12" "resultE12UD" testOP_DA_L
 
---produceNLPtest ::  TextDescriptor ->  [TZ2] -> ErrIO ()
+produceNLPtest ::  TextDescriptor ->  [TZ2] -> ErrIO ()
 produceNLPtest textstate tzs  = do
     trips <- produceNLPtriples [] textstate tzs
     let ntdescr = (ntdescriptor textstate) {gzipFlag = True}
@@ -77,9 +78,10 @@ produceNLPtest textstate tzs  = do
                     )
 
     return ()
-test_8_BAE_XproduceNLPtriples2 = do
-    r <- runErr $ produceNLPtest2 result10A "resultE8" "resultX8"
-    assertEqual "Right ()" (showT r)
+
+--test_8_BAE_XproduceNLPtriples2 = do
+--    r <- runErr $ produceNLPtest2 result10A "resultE8" "resultX8"
+--    assertEqual "Right ()" (showT r)
 
 --test_10_BAE_XproduceNLPtriples2 = do
 --    r <- runErr $ produceNLPtest2 result10A "resultE10" "resultX10"
@@ -113,27 +115,60 @@ produceNLPtest2 textstate startfile resfile  = do
 
     return ()
 
---test_1_BAE_XproduceNLPtriples :: IO ()
-test_1_BAE_XproduceNLPtriples = testVar3FileIO result1A "resultBAE1" "resultX1" produceNLPtest
---test_2_BAE_XproduceNLPtriples = testVar3FileIO result2A "resultBAE2" "resultX2" produceNLPtest
---test_3_BAE_XproduceNLPtriples = testVar3FileIO result3A "resultBAE3" "resultX3" produceNLPtest
---test_4_BAE_XproduceNLPtriples = testVar3FileIO result4A "resultBAE4" "resultX4" produceNLPtest
---test_5_BAE_XproduceNLPtriples = testVar3FileIO result5A "resultBAE5" "resultX5" produceNLPtest
---test_6_BAE_XproduceNLPtriples = testVar3FileIO result6A "resultBAE6" "resultX6" produceNLPtest
---test_8_BAE_XproduceNLPtriples = testVar3FileIO result8A "resultBAE8" "resultX8" produceNLPtest
---test_9_BAE_XproduceNLPtriples = testVar3FileIO result9A "resultBAE9" "resultX9" produceNLPtest
---test_10_BAE_XproduceNLPtriples = testVar3FileIO result10A "resultBAE10" "resultX10" produceNLPtest
---test_11_BAE_XproduceNLPtriples = testVar3FileIO result11A "resultBAE11" "resultX11" produceNLPtest
---test_12_BAE_XproduceNLPtriples = testVar3FileIO result12A "resultBAE12" "resultX12" produceNLPtest
+
+-- (base -> a-> ErrIO  b)
+produceNLPtest4::  TextDescriptor ->  [[Triple]] ->   ErrIO  Text
+produceNLPtest4 textstate trips2  = do
+--    testDataDir <-   getAppUserDataDir' $ "LitTextTest"
+--    let fn0 =  testDataDir   </> startfile :: Path Abs File
+--    f0 :: Text <- readFile2 fn0
+--    putIOwords ["test3 testVar3FileIO A", "resultFile:", s2t resfile, "inputFile:", showT fn0]
+--    let trips = readNote "produceNLPtest2 read trips asdwer" . t2s $ f0
+    putIOwords ["testVar3FileIO  trips",   showT trips2]
+    let trips = concat trips2
+--    trips <- produceNLPtriples textstate tzs
+    let ntdescr = (ntdescriptor textstate) {gzipFlag = True}
+    putIOwords ["produceNLPtest" , showT ntdescr ]
+    bracketErrIO (do
+                    putIOwords ["produceNLPtest open1"]
+                    openHandleTriples ntdescr )
+                (\h -> do closeHandleTriples ntdescr h
+                          putIOwords ["produceNLPtest close" ]
+                    )
+                (\h -> do
+                    putIOwords ["produceNLPtest write 1" ]
+                    writeHandleTriples ntdescr h trips
+--                    putIOwords ["produceNLPtest write - close" ]  -- never reached?
+                                -- the testing throws an exception
+                                -- HUnit... but this is not caught by bracketErrIO
+--                    closeHandleTriples ntdescr h
+                    )
+
+    return "produceNLPtriples4 ok"
+
+--test_1_E_XproduceNLPtriples :: IO ()
+test_1_E_XproduceNLPtriples = testVar3FileIO result1A "resultE1" "resultX1"
+             produceNLPtest4
+test_2_E_XproduceNLPtriples = testVar3FileIO result2A "resultE2" "resultX2" produceNLPtest4
+test_3_E_XproduceNLPtriples = testVar3FileIO result3A "resultE3" "resultX3" produceNLPtest4
+test_4_E_XproduceNLPtriples = testVar3FileIO result4A "resultE4" "resultX4" produceNLPtest4
+test_5_E_XproduceNLPtriples = testVar3FileIO result5A "resultE5" "resultX5" produceNLPtest4
+test_6_E_XproduceNLPtriples = testVar3FileIO result6A "resultE6" "resultX6" produceNLPtest4
+test_8_E_XproduceNLPtriples = testVar3FileIO result8A "resultE8" "resultX8" produceNLPtest4
+test_9_E_XproduceNLPtriples = testVar3FileIO result9A "resultE9" "resultX9" produceNLPtest4
+test_10_E_XproduceNLPtriples = testVar3FileIO result10A "resultE10" "resultX10" produceNLPtest4
+test_11_E_XproduceNLPtriples = testVar3FileIO result11A "resultE11" "resultX11" produceNLPtest4
+test_12_E_XproduceNLPtriples = testVar3FileIO result12A "resultE12" "resultX12" produceNLPtest4
 ------ no result file is necessary, because result is zero
 ------ but results are found in LitTest/test
 --
 
+test_produceNLPtest :: IO ()
 test_produceNLPtest    = do
     r <- runErr $
         do
             let trips = []
-            let dir = makeAbsFile "/home/frank/test_produceNLP"
+            let dir = makeAbsFile "/home/frank/.LitTextTest/X1"
             let ntdescr = NTdescriptor {gzipFlag = True, destNT = dir }
             putIOwords ["produceNLPtest" , showT ntdescr ]
             r <- bracketErrIO (do
