@@ -23,7 +23,7 @@ import           Test.Framework
 import Uniform.TestHarness
 
 import           LitTypes.TextDescriptor        hiding ((</>), (<.>))
-import          Producer.Servers
+import          LitTypes.ServerNames
 import           Uniform.FileIO
 import Uniform.TestHarnessUtilities.Utils
 import Parser.ReadMarkupAB

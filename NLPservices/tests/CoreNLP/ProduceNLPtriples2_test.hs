@@ -16,7 +16,7 @@ module CoreNLP.ProduceNLPtriples2_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
-import           Uniform.Strings
+--import           Uniform.Strings
 import Uniform.FileIO
 --import qualified Data.ByteString.Lazy as B
 import qualified Data.ByteString.Lazy.UTF8 as B
@@ -30,8 +30,8 @@ import qualified NLP.Corpora.Conll  as Conll
 --import Text.PrettyPrint.GenericPretty
 import Parser.LanguageTypedText
 import Parser.NLPvocabulary (ParaSigl (..), SnipID (..), mkSnipSigl)
-import Data.RDF.Extension
-import Producer.Servers
+import Data.RDFext.Extension
+import LitTypes.ServerNames
 
 test_triples1  = do
     res0 <- runErr $ do

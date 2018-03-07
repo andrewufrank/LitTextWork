@@ -32,9 +32,9 @@ library
     exposed-modules:
         LitTypes.TextDescriptor
         LitTypes.LanguageTypedText
-        Producer.Servers
-        Process.UtilsParseArgs
-        Process.UtilsProcessing
+        LitTypes.ServerNames
+        LitTypes.UtilsParseArgs
+        LitTypes.UtilsProcessing
         BuchCode.BuchToken
 
     exposed: True
@@ -60,7 +60,7 @@ Test-Suite  TestAuto
     other-modules:
         LitTypes.TextDescriptor_test
         LitTypes.LanguageTypedText_test
-        Producer.Servers_test
-        Process.UtilsParseArgs_test
-        Process.UtilsProcessing_test
+        LitTypes.ServerNames_test
+        LitTypes.UtilsParseArgs_test
+        LitTypes.UtilsProcessing_test
         BuchCode.BuchToken_test

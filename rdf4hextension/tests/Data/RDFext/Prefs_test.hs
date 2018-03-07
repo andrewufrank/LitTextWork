@@ -15,15 +15,15 @@
 {-# LANGUAGE TypeSynonymInstances       #-}
 -- {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 
-module Data.RDF.Prefs
-(module Data.RDF.Prefs
+module Data.RDFext.Prefs
+(module Data.RDFext.Prefs
 -- , module Uniform.HttpGet
 , module Uniform.Strings
 , module Uniform.Error)  where
 
 -- import           Safe
 import           Uniform.Error   -- (fromJustNote)
-import           Uniform.Strings
+--import           Uniform.Strings
 import           Uniform.Zero
 -- import Uniform.HttpGet  -- for URI
 -- the URI here is just text - URItext

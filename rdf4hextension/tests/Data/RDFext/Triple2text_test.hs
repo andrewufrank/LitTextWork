@@ -13,8 +13,8 @@
 --{-# LANGUAGE TypeSynonymInstances       #-}
 -- {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 
-module Data.RDF.Triple2text
-    (module Data.RDF.Triple2text
+module Data.RDFext.Triple2text
+    (module Data.RDFext.Triple2text
     , RDF.Triple
     -- , module Data.RDF   -- is imported qualified
     ) where

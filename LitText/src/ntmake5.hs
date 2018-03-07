@@ -29,13 +29,14 @@ import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import           Data.Semigroup               ((<>))
 --import           Options.Applicative.Builder
 import           Options.Applicative
-import Producer.Servers
+
+import LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 import LitTypes.TextDescriptor hiding ((<>))
-import          Data.RDF.FileTypes (ntFileTriples,ntFileTriplesGZip)
+import Data.RDFext.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import Processor.Main2sub (mainLitAndNLPproduction)
 
-import Process.UtilsProcessing (processAll)
-import Process.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer
+import LitTypes.UtilsProcessing (processAll)
+import LitTypes.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer
             , LitTextFlag (..), LitTextFlags )
 import Processor.ProcessAll
 --import qualified System.Directory as S (getHomeDirectory)

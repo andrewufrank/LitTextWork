@@ -14,22 +14,19 @@
 module NLP2RDF.NLPvocabulary
     ( module NLP2RDF.NLPvocabulary
       , module CoreNLP.Defs0
-      , module Data.RDF.Extension
+      , module Data.RDFext.Extension
       , module Uniform.Strings
     ) where
 
 import           CoreNLP.Defs0
-import           Data.RDF.Extension      --(PartURI, RDFproperty)
+import           Data.RDFext.Extension  -- (RDFproperty)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
-import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
+import LitTypes.ServerNames
+--import LitTypes.ServerNames (rdfBase, vocabularyBase, PartURI (..), unPartURI)  -- from Foundation
 
 
-nlp = "nlp"::Text
---nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
-nlpURItext = PartURI $ (unPartURI vocabularyBase) </> "nlp_2017" :: PartURI
--- the 2017 vocabulary represents the dependency codes as properties (written lower case)
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker

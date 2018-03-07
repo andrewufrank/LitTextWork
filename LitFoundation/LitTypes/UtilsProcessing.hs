@@ -16,9 +16,9 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Process.UtilsProcessing
-    (module Process.UtilsProcessing
---        , module Process.UtilsParseArgs
+module LitTypes.UtilsProcessing
+    (module LitTypes.UtilsProcessing
+--        , module LitTypes.UtilsParseArgs
         , getTimeout
         , dirQueries, URI
 
@@ -28,12 +28,11 @@ module Process.UtilsProcessing
 
 --import           Test.Framework
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
-import Process.UtilsParseArgs
-import Producer.Servers (serverLocalhost, serverBrest
-                    , rdfBase, dirQueries, URI)
-import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI
-                    , callHTTP10post, URI, HttpVarParams)
-import           Uniform.Strings
+import LitTypes.UtilsParseArgs
+import LitTypes.ServerNames -- (serverLocalhost, serverBrest
+--                    , rdfBase, dirQueries, URI, HttpVarParams)
+import Uniform.HttpCall (callHTTP10post)
+import Uniform.Strings  ((<>))
 
 
 import qualified Pipes as Pipe

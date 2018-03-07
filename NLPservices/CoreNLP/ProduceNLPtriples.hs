@@ -45,9 +45,9 @@ import Data.RDF.Types  (Triple)  -- instance Show Triple
 newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show)
 unNLPtriple (NLPtriple t) = t
 
-
 deriving instance (Read postag, Read Data.RDF.Types.Triple )
         => Read (NLPtriple postag)
+
 --instance Read Triple where
 --    readsPrec t = error "missing in produceNLPtriples"
 

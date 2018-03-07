@@ -24,8 +24,8 @@ module Parser.ReadMarkupAB
 --import           Test.Framework
 --import Uniform.TestHarness
 
-import           LitTypes.TextDescriptor        hiding ((</>), (<.>))
-import          Producer.Servers
+import           LitTypes.TextDescriptor
+import          LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 import           Uniform.FileIO
 import Uniform.TestHarnessUtilities.Utils
 

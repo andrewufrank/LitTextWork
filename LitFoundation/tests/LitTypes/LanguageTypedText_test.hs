@@ -22,9 +22,9 @@ module Parser.LanguageTypedText_test where
 import           Test.Framework
 --import Uniform.TestHarness (testVar3File)
 import Uniform.Zero (Zeros (..))
-import Uniform.Strings
-import Uniform.Error (undef)
-import Data.RDF.Extension -- (LanguageCode (..))
+--import Uniform.Strings
+import Uniform.Error--  (undef)
+--import Data.RDF.Extension -- (LanguageCode (..))
 --import CoreNLP.Defs0
 --import Parser.TextDescriptor
 --import NLP.Types.Tags

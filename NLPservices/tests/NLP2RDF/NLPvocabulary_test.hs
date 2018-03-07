@@ -18,7 +18,7 @@ import           Data.RDF.Extension      --(PartURI, RDFproperty)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
 import Parser.TextDescriptor hiding ((</>)) -- from Foundation
-import Producer.Servers (rdfBase, vocabularyBase)  -- from Foundation
+import LitTypes.ServerNames (rdfBase, vocabularyBase)  -- from Foundation
 import Parser.NLPvocabulary
 
 test_emtpy = assertEqual 1 1

@@ -25,18 +25,18 @@ module NLP2RDF.CompleteSentence (
     module NLP2RDF.CompleteSentence
     -- completeSentence
 --    , htf_thisModulesTests
-    , module Producer.Servers
+    , module LitTypes.ServerNames
     )   where
 
 --import           Test.Framework
 import Uniform.Error
-import Producer.Servers
+import LitTypes.ServerNames
 import NLP2RDF.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
 import NLP.Corpora.Conll
 --import BuchCode.BuchToken (LanguageCode(..))
 
-import Uniform.HttpCallWithConduit
+import Uniform.HttpCall
 
 class ExtractSentences postag where
     extractTokens :: Sentence0 postag -> [Text]

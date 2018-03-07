@@ -11,23 +11,21 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Producer.Servers (
-    module Producer.Servers
-    , module Uniform.HttpURI
-    , module Uniform.HttpCallWithConduit
+module LitTypes.ServerNames (
+    module LitTypes.ServerNames
+--    , module Uniform.HttpURI
+--    , module Uniform.HttpCall
+    , PartURI (..), unPartURI
+    , URI, makeURI, makeAbsURI, parseAbsoluteURI
+    , addPort2URI, addToURI, HttpVarParams (..)
     ) where
 
 
--- import           Data.RDF.Extension
-import Uniform.Strings
-import Uniform.Error
 import Uniform.FileIO (makeAbsDir, makeRelDir)
-import Uniform.HttpCallWithConduit
-import Uniform.HttpURI
---import Network.URI
---import           Test.Framework
---import Text.Read (Read (..))
-import Data.RDF.Extension (PartURI (..))
+import Uniform.HttpURI -- hiding ((</>), (<.>))
+import Data.RDFext.Codes (PartURI (..), unPartURI)
+
+
 ---- an attempt to have a read for URI  ReadS
 --instance Read URI where
 --    readsPrec _  = readS'
@@ -58,6 +56,11 @@ dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"
 ntDirsRel = makeRelDir "NT"  -- where it is for testing (can be expanded
 
 treeTaggerPort = 9010 :: Int -- current range 9000 - 9010  -- is Wai warp port = Int
+
+nlp = "nlp"::Text
+--nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
+nlpURItext = PartURI $ (unPartURI vocabularyBase) </> "nlp_2017" :: PartURI
+-- the 2017 vocabulary represents the dependency codes as properties (written lower case)
 
 -- -- todo move to uniform-http
 -- makeAbsURI :: Text -> URI

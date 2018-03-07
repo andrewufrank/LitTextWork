@@ -26,7 +26,7 @@ module Processor.ProcessAll
 --import           Test.Framework
 
 import LitTypes.TextDescriptor hiding ((<>) , (</>), (<.>))
-import Producer.Servers
+import LitTypes.ServerNames
 import Processor.Main2sub
 --import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
 
@@ -38,12 +38,12 @@ import Pipes ((>->), (~>))
 -- todo fileio - export for pipes
 import Data.List (delete)
 
-import Uniform.Error
+--import Uniform.Error
 import Uniform.FileIO
-import Uniform.FileStatus
+--import Uniform.FileStatus
 --import Uniform.Strings hiding ((</>),(<|>))
-import          Data.RDF.FileTypes  -- (ntFileTriples,ntFileTriplesGZip)
-import Process.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..) )
+import          Data.RDFext.FileTypes  -- (ntFileTriples,ntFileTriplesGZip)
+import LitTypes.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..) )
 
 --processAll :: Bool ->  LitDirs-> URI -> Path ar File  -> ErrIO ()
 ---- | get all markup files in the partially filled TextState2

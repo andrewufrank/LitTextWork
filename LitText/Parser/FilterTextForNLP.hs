@@ -22,7 +22,7 @@ module Parser.FilterTextForNLP
 --    (module Parser.ProduceDocCallNLP
 --    , module CoreNLP.Defs0
 --    , module Lines2para.Lines2para
---    , module Producer.Servers
+--    , module LitTypes.ServerNames
 --    )
     where
 
@@ -32,11 +32,11 @@ import Data.Maybe -- todo
 import Lines2para.Lines2para
 --import Lines2para.HandleLayout
 import Parser.ReadMarkupAB  -- todo  -- for test
-import Producer.Servers
+import LitTypes.ServerNames
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
-import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
+import Uniform.HttpCall (makeHttpPost7, addPort2URI)
 import Text.Regex (mkRegex, subRegex)
 import BuchCode.BuchToken
 import Lines2para.MarkupText (combine2linesWithHyphenation)

@@ -21,16 +21,16 @@
 
 module Parser.ProduceLit (module Parser.ProduceLit
         , Text, Triple, Path (..), Abs, Rel, Dir, File
-        , module Data.RDF.FileTypes
+        , module Data.RDFext.Extension
     ) where
 
 --import           Test.Framework
 import           Data.Char               (toLower)
 import           Data.Maybe               (isNothing)
-import           Data.RDF
-import           Data.RDF.Extension
+--import           Data.RDF
+import           Data.RDFext.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
-import Uniform.Strings ((</>))  -- for PartURI
+--import Uniform.Strings ((</>))  -- for PartURI
 import Uniform.HttpURI (uriT)
 --import Parser.ReadMarkupAB
 --import Parser.ProduceLayout
@@ -39,12 +39,12 @@ import Uniform.HttpURI (uriT)
 --import Lines2para.Lines2para -- hiding ((</>))
 --import Lines2para.HandleLayout
 import           Text.Printf         (printf)
-import           Uniform.Error           (errorT)
+import           Uniform.Error      --     (errorT)
 --import Uniform.TestHarness
-import Data.RDF.FileTypes hiding ((</>), (<.>))
+--import Data.RDF.FileTypes hiding ((</>), (<.>))
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
-import Producer.Servers  (rdfBase)  -- for test
+import LitTypes.ServerNames  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
 --import Parser.NLPvocabulary hiding ((</>), (<.>))
 

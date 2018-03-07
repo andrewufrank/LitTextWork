@@ -43,7 +43,7 @@ import NLP.Types.Tags
 import NLP2RDF.NLPvocabulary  -- from Foundation
 import LitTypes.LanguageTypedText
 import Data.List (partition)
-import Data.RDF.Types  (Triple)  -- instance Show Triple
+--import Data.RDFext.Types  (Triple)  -- instance Show Triple
 import CoreNLP.Doc2ToDoc0
 
 processDoc1toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)

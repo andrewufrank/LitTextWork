@@ -35,7 +35,7 @@ module Parser.ProduceNLP
     ) where
 
 import NLP2RDF.ProduceDocCallNLP
-import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
+import          Data.RDFext.Extension -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Data.Maybe (catMaybes)  -- todo
 -- for tests:
 import Parser.ReadMarkupAB

@@ -32,10 +32,10 @@ module Parser.ProduceNLP_test where
 import           Test.Framework
 import Uniform.TestHarness
 
-import          Data.RDF.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
+import          Data.RDFext.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Parser.ReadMarkupAB_test
 import Parser.ProduceNLP
-import Uniform.Error
+--import Uniform.Error
 import Uniform.FileIO (getAppUserDataDir')
 
 

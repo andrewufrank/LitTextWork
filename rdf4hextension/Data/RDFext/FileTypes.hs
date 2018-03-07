@@ -19,9 +19,9 @@
 {-# LANGUAGE TypeFamilies  #-}
 --{-# Option -w #-}
 
-module Data.RDF.FileTypes (
-   module Data.RDF.FileTypes
-   , module Uniform.Error
+module Data.RDFext.FileTypes (
+   module Data.RDFext.FileTypes
+--   , module Uniform.Error
    , module Uniform.FileIO
    , Triple
 -- RDFgraph (..), unRDFgraph
@@ -29,15 +29,15 @@ module Data.RDF.FileTypes (
   ) where
 
 import qualified Data.RDF        as RDF
-import Data.RDF.Triple2text (triple2text, Triple)
+import Data.RDFext.Triple2text (triple2text, Triple)
 import qualified          System.IO as S
 import           Uniform.FileIO
 --import           Uniform.FileIO -- (EpochTime, getFileModificationTime)
-import Uniform.Error
-import           Uniform.Strings hiding ((<.>), (</>))
+--import Uniform.Error
+--import           Uniform.Strings hiding ((<.>), (</>))
 
-import Uniform.FileStrings
-import Uniform.Filenames
+import Uniform.FileIO
+--import Uniform.Filenames
 
 import qualified Codec.Compression.GZip as GZip
 import qualified Data.Text.IO           as TIO (hGetLine, hPutStr)

@@ -9,8 +9,8 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module Data.RDF.Predicates
-    (module Data.RDF.Predicates
+module Data.RDFext.Predicates
+    (module Data.RDFext.Predicates
     -- isP
     -- , getURI4Node, getText4node
 --    , nlp, t2o -- export only the prefixes, because ntriple are construcyted
@@ -39,7 +39,7 @@ import           Data.RDF
 import qualified Data.RDF        as RDF
 import qualified Data.RDF.Types  as RDF (RDF (..), RdfSerializer (..))
 -- import qualified System.IO as S (hClose, IOMode(..), openFile)
-import           Data.RDF.Prefs
+import           Data.RDFext.Prefs
 
 
 -- a set of tests for s, p and o of a triple

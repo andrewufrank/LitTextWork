@@ -17,11 +17,12 @@
 
 module LitTypes.TextDescriptor_test where
 
-import Uniform.HttpURI (URI, makeURI)
+--import Uniform.HttpURI (URI, makeURI)
+import Uniform.FileIO
 import           Test.Framework
 import LitTypes.TextDescriptor
 import Data.String
-import Producer.Servers (serverBrest)
+--import LitTypes.ServerNames (serverBrest)
 
 ---- duplicates from Path.hs
 --instance IsString (Path Abs File) where

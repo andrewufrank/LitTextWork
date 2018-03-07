@@ -35,8 +35,8 @@ module Lines2para.Lines2para
 --import  Lines2para.HandleLayout -- TZ
 
 import           Data.List.Split
-import           Uniform.Error
-import           Uniform.Strings     hiding ((<|>), (</>))
+--import           Uniform.Error
+--import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)

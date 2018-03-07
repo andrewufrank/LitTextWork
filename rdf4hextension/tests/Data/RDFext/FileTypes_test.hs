@@ -20,24 +20,10 @@
 {-# LANGUAGE TypeFamilies  #-}
 --{-# Option -w #-}
 
-module Data.RDF.FileTypes_test  where
+module Data.RDFext.FileTypes_test  where
 import           Test.Framework
-import Data.RDF.FileTypes
+import Data.RDFext.FileTypes
 
---import Data.RDF.FileTypes
---import qualified Data.RDF        as RDF
---import Data.RDF.Triple2text (triple2text, Triple)
---import qualified          System.IO as S
---import           Uniform.FileIO
---import           Uniform.FileIO (EpochTime, getFileModificationTime)
---import Uniform.Error
---import           Uniform.Strings hiding ((<.>), (</>))
---
---import Uniform.FileStrings
---import Uniform.Filenames
---
---import qualified Codec.Compression.GZip as GZip
---import qualified Data.Text.IO           as TIO (hGetLine, hPutStr)
 
 testdir = makeAbsFile  "/home/frank/test/empty"
 test_writehandle = do

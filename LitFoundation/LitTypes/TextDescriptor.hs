@@ -14,28 +14,23 @@
 
 module LitTypes.TextDescriptor (
         module LitTypes.TextDescriptor
-    , module Uniform.Strings  -- cannot export FileIO as well
+--    , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
     , module LitTypes.LanguageTypedText
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
+    , module LitTypes.ServerNames
 --    , module Path   -- to export IsString
     ) where
 
--- import           Data.RDF.Extension
-import           Uniform.FileIO  -- (Path (..), Abs, Dir, File)
-import           Uniform.Strings hiding ((</>), (<.>))   -- hiding ((<|>))
-import System.IO (Handle)  -- todo include in FileIO exports
-import Uniform.HttpURI (URI, makeURI)
-import Producer.Servers  (serverBrest)  -- for test
-import Data.RDF.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
-import Data.RDF.FileTypes
---import           Test.Framework
+import Uniform.FileIO  ((</>), Path (..), Abs, Dir, File )
+import LitTypes.ServerNames  (URI, makeURI, serverBrest)  -- for test
+import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
-import Process.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )
+import LitTypes.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"

@@ -22,9 +22,9 @@ module Processor.CheckServers_test
 import           Test.Framework
 
 --import Uniform.HttpURI
-import Uniform.HttpCallWithConduit
+import Uniform.HttpCall
 import Parser.TextDescriptor
-import Producer.Servers
+import LitTypes.ServerNames
 import
 
 test_checkAll = do

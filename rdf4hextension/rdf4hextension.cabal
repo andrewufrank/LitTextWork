@@ -13,11 +13,12 @@ author: andrew frank
 
 library
     exposed-modules:
-        Data.RDF.Extension
-        Data.RDF.Prefs
-        Data.RDF.FileTypes
-        Data.RDF.Predicates
-        Data.RDF.Triple2text
+        Data.RDFext.Extension
+        Data.RDFext.Prefs
+        Data.RDFext.FileTypes
+        Data.RDFext.Predicates
+        Data.RDFext.Triple2text
+        Data.RDFext.Codes
     build-depends:
         base
         ,containers
@@ -26,7 +27,7 @@ library
         ,uniform-fileio
         ,uniform-algebras
         ,uniform-http
-        ,uniform-convenience
+--        ,uniform-convenience
         ,rdf4h
 --        ,network-uri
         ,text
@@ -54,8 +55,8 @@ Test-Suite  TestAuto
     hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
-        Data.RDF.Extension_test
---        Data.RDF.Prefs_test
-        Data.RDF.FileTypes_test
---        Data.RDF.Predicates_test
---        Data.RDF.Triple2text_test
+        Data.RDFext.Extension_test
+--        Data.RDFext.Prefs_test
+        Data.RDFext.FileTypes_test
+--        Data.RDFext.Predicates_test
+--        Data.RDFext.Triple2text_test

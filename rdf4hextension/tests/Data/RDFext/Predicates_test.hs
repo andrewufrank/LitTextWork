@@ -9,8 +9,8 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module Data.RDF.Predicates
-    (module Data.RDF.Predicates
+module Data.RDFext.Predicates
+    (module Data.RDFext.Predicates
     -- isP
     -- , getURI4Node, getText4node
 --    , nlp, t2o -- export only the prefixes, because ntriple are construcyted

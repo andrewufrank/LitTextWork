@@ -16,7 +16,7 @@
 module Main     where      -- must have Main (main) or Main where
 
 import Uniform.FileIO
-import Data.RDF.FileTypes
+--import Data.RDF.FileTypes
 --import System.Exit
 
 --import           ClosedClass
@@ -33,8 +33,8 @@ import Data.Aeson (eitherDecode)
 import LitTypes.LanguageTypedText (undefEnglish)
 import CoreNLP.ProduceNLPtriples (unNLPtriple)
 import NLP2RDF.NLPvocabulary
-import Data.RDF.Extension
-import Producer.Servers -- (PartURI)
+import Data.RDFext.Extension
+import LitTypes.ServerNames -- (PartURI)
 import LitTypes.TextDescriptor (SnipID (..))
 
 main :: IO ()

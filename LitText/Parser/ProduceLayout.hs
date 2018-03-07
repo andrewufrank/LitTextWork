@@ -24,11 +24,11 @@ module Parser.ProduceLayout (module Parser.ProduceLayout
 --import           Test.Framework
 import           Data.Char               (toLower)
 --import           Data.RDF  ()
-import Data.RDF.Triple2text (triple2text)
+--import Data.RDFext.Triple2text (triple2text)
 --import           Data.RDF.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 --import           Parser.TextDescriptor  hiding ((</>))
-import Uniform.Strings ((</>))  -- for PartURI
+--import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB    -- result1A etc.
 --import Lines2para.HandleLayout
     -- (RDFtypes (..), RDFproperties (..), TZ (..)
@@ -36,12 +36,12 @@ import Parser.ReadMarkupAB    -- result1A etc.
 --import Lines2para.Lines2ignore
 --import Lines2para.Lines2para -- hiding ((</>))
 import           Text.Printf         (printf)
-import           Uniform.Error           (errorT)
+import           Uniform.Error      --     (errorT)
 --import Uniform.TestHarness
-import Producer.Servers (rdfBase)  -- from Foundation
+import LitTypes.ServerNames (rdfBase)  -- from Foundation
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 --import Parser.NLPvocabulary
-import Data.RDF.Extension --  (PartURI (..), Triple (..))
+import Data.RDFext.Extension --  (PartURI (..), Triple (..))
 import Parser.ProduceLit (buchURIx)
 
 --gerastreeURI = "http://nlp.gerastree.at:9001/xtestx"

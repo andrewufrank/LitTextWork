@@ -52,9 +52,9 @@ import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 
 
-import           Uniform.Error
+--import           Uniform.Error
 import           Uniform.FileIO
-import           Uniform.Strings
+--import           Uniform.Strings
 
 import           Text.XML.HXT.Core hiding (when)
 

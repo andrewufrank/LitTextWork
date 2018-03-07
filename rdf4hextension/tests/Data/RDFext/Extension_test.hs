@@ -16,12 +16,12 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module Data.RDF.Extension_test  where
+module Data.RDFext.Extension_test  where
 
 
 import           Test.Framework
 import Text.Printf
-import Data.RDF.Extension
+import Data.RDFext.Extension
 
 --import           Data.Map            as Map (fromList)
 --import           Data.RDF            (Node, Triple (..), lnode, objectOf,

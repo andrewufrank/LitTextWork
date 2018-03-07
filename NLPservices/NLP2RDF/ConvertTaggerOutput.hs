@@ -23,7 +23,7 @@ module NLP2RDF.ConvertTaggerOutput (convertTT
 
 import           Test.Framework
 --import           Test.Invariant
-import Uniform.Strings
+--import Uniform.Strings
 import Uniform.Error
 import Uniform.Zero
 import qualified System.IO as IO

@@ -22,15 +22,16 @@
 
 module NLP2RDF.LanguageSpecific
     (module NLP2RDF.LanguageSpecific
---    , module Producer.Servers
+--    , module LitTypes.ServerNames
     ) where
 
 import              Test.Framework
 import              Uniform.TestHarness
 import LitTypes.LanguageTypedText
-import Producer.Servers
+import LitTypes.ServerNames
+
 import CoreNLP.Defs0   -- should only get instances ?
-import Uniform.HttpCallWithConduit (URI, callHTTP10post, addPort2URI, addToURI)
+import Uniform.HttpCall (URI, callHTTP10post)
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
 import LitTypes.LanguageTypedText
@@ -184,5 +185,4 @@ cleanTextspanish    = subRegex' "_([a-zA-Z ]+)_" "\\1"  -- italics even multiple
 subRegex' :: Text -> Text -> Text -> Text
 -- replace the in the t the regex with the replacement
 subRegex' reg rep t = s2t $ subRegex (mkRegex . t2s $ reg) (t2s t) (t2s rep)
-
 

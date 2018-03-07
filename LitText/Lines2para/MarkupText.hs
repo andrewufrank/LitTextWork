@@ -32,11 +32,11 @@ import           BuchCode.BuchToken hiding (try, (<|>), (</>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
-import           Uniform.Error hiding (try, (<|>))
+--import           Uniform.Error hiding (try, (<|>))
 import           Uniform.FileIO   hiding (try, (<|>))
 --import           Test.Framework
 import Parser.ReadMarkupAB
-import Uniform.TestHarness hiding (try)
+import Uniform.TestHarness hiding (try, (<|>))
 import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 class Zeilen z where

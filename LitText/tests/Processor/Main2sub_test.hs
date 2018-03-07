@@ -27,11 +27,11 @@ import           Lines2para.Lines2ignore
 import           Parser.ProduceLit
 import           Parser.ProduceNLP
 import           Uniform.FileIO (when, errorT)
-import           Uniform.Strings
+--import           Uniform.Strings
 import Lines2para.HandleLayout
-import Data.RDF.FileTypes (ntFileTriples)
+import Data.RDFext.FileTypes (ntFileTriples)
 -- (parseMarkup, result1B, result2B, result3B, result4B)
-import Process.UtilsParseArgs ( LitTextFlags (..) )
+import LitTypes.UtilsParseArgs ( LitTextFlags (..) )
 import Processor.Main2sub
 
 

@@ -22,7 +22,7 @@
 
 module NLP2RDF.ProduceDocCallNLP
     (module NLP2RDF.ProduceDocCallNLP
-    , module Producer.Servers
+    , module LitTypes.ServerNames
     , module NLP2RDF.LanguageSpecific
     , LitTextFlags (..), LitTextFlag (..), SnipID (..),
     ) where
@@ -30,10 +30,10 @@ module NLP2RDF.ProduceDocCallNLP
 import              Test.Framework
 import              Uniform.TestHarness
 import LitTypes.LanguageTypedText
-import Producer.Servers
+import LitTypes.ServerNames
 import CoreNLP.CoreNLPxml (readDocString)
 import CoreNLP.Defs0 () -- should only get instances ?
-import Uniform.HttpCallWithConduit (callHTTP10post, addPort2URI, addToURI)
+import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI)
 import Uniform.Zero  -- should be gotten by some other import
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
@@ -49,7 +49,7 @@ import NLP.Corpora.FrenchUD as FrenchUD --
 --import Data.Text as T
 import NLP2RDF.LanguageSpecific
 import LitTypes.TextDescriptor as TD
-import Process.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..))
+import LitTypes.UtilsParseArgs (LitTextFlags (..), LitTextFlag (..))
 
 class  LanguageTyped22 lang postag where
 

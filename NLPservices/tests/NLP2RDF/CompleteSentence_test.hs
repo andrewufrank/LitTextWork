@@ -25,13 +25,13 @@ module Parser.CompleteSentence_test   where
 
 import           Test.Framework
 import Uniform.Error
-import Producer.Servers
+import LitTypes.ServerNames
 import Parser.ConvertTaggerOutput--import NLP.CallTagger2
 import CoreNLP.Defs0
 import NLP.Corpora.Conll
 --import BuchCode.BuchToken (LanguageCode(..))
 
-import Uniform.HttpCallWithConduit
+import Uniform.HttpCall
 import Parser.CompleteSentence
 
 test_emtpty = assertEqual 1 1

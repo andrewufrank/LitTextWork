@@ -10,7 +10,7 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Strings
 import           Test.Framework
-import {-@ HTF_TESTS @-} Producer.Servers_test
+import {-@ HTF_TESTS @-} LitTypes.ServerNames_test
 import {-@ HTF_TESTS @-} LitTypes.TextDescriptor_test
 
 main =  do

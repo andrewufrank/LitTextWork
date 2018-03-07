@@ -16,25 +16,20 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Process.UtilsParseArgs
-    (module Process.UtilsParseArgs
+module LitTypes.UtilsParseArgs
+    (module LitTypes.UtilsParseArgs
         , dirQueries, URI
-
---    , URI, serverBrest, serverLocalhost
     )
     where
 
---import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
---import           Uniform.Strings
---import           Uniform.Error
 
 import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
 import           Options.Applicative
 
-import Producer.Servers (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
-import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI, callHTTP10post, URI)
+import LitTypes.ServerNames (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
+
 
 data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
             | OutputNLPflag | XMLflag | JSONflag

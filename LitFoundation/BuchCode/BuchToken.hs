@@ -17,7 +17,7 @@
 
 module BuchCode.BuchToken (module BuchCode.BuchToken
         , module Uniform.Error
-        , module Data.RDF.Extension
+        , module Data.RDFext.Extension
 --        , module Parser.TextDescriptor
             --     BuchTokenized(..)
             -- , BuchToken (..), unusedTokens, tokenNLPanalysed
@@ -26,7 +26,7 @@ module BuchCode.BuchToken (module BuchCode.BuchToken
             -- , LanguageCode (..)
             ) where
 
-import           Data.RDF.Extension -- (LanguageCode (..), PartURI)
+import           Data.RDFext.Extension -- (LanguageCode (..), PartURI)
 import           Uniform.Error hiding ((</>), (<.>))
 --import           Uniform.Strings
 --import Safe  -- is export from Error

@@ -16,19 +16,19 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Process.UtilsParseArgs_test  where
+module LitTypes.UtilsProcessing_test
+    where
 
 import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
---import           Uniform.Strings
---import           Uniform.Error
+import LitTypes.UtilsParseArgs
+import LitTypes.ServerNames (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
+import Uniform.HttpCall (callHTTP8post, addPort2URI, callHTTP10post, URI, HttpQueryString)
+import           Uniform.Strings
+import LitTypes.UtilsProcessing
 
-import           Data.Semigroup               ((<>))
-import           Options.Applicative.Builder
-import           Options.Applicative
-
-import Producer.Servers (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
-import Uniform.HttpCallWithConduit (callHTTP8post, addPort2URI, callHTTP10post, URI)
-import Process.UtilsParseArgs
-
+import qualified Pipes as Pipe
+import qualified Pipes.Prelude as Pipe
+import Pipes ((>->), (~>))
+-- todo fileio - export for pipes
 

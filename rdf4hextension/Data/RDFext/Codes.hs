@@ -16,10 +16,14 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module Data.RDF.Extension (
-    module Data.RDF.Extension
-    , module Data.RDF
-    , module Data.RDF.Prefs
+module Data.RDFext.Codes (
+    module Data.RDFext.Codes
+--    , module Data.RDF
+--    , module Data.RDFext.Prefs
+--    , module Data.RDFext.FileTypes
+--    , module Data.RDFext.Predicates
+--    , module  Data.RDFext.Triple2text
+
 --    , module Uniform.Convenience.LitTypes
     , (</>)
     )     where
@@ -32,14 +36,22 @@ import           Data.RDF            (Node, Triple (..), lnode, objectOf,
                                       plainL, plainLL, triple, typedL, unode)
 import           Data.RDF            as RDF
 import qualified Data.RDF            as RDF
-import           Data.RDF.Prefs
+
+-- from rdf4hextensionsimport           Data.RDF.Prefs
+--import Data.RDFext.Prefs
+--import Data.RDFext.FileTypes -- hiding ((<>) , (</>), (<.>))
+--import Data.RDFext.Predicates
+--import Data.RDFext.Triple2text
+
+
 import qualified Data.RDF.Types      as RDF (RDF (..), RdfSerializer (..))
+
 -- import           Data.Text           hiding (map)
 -- import qualified Data.Text           as T (append, concat, null, strip)
 import           Uniform.Error
 -- import           Uniform.FileIO      (thd3)
 -- import           Uniform.StringInfix ((</>))
-import           Uniform.Strings
+import           Uniform.Strings ((</>))
 import           Uniform.Zero
 ----import           Uniform.Convenience.LitTypes
 newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord)

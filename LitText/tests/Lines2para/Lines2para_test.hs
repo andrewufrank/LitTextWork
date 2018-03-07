@@ -31,7 +31,7 @@ module Lines2para.Lines2para_test  where
 
 --import           Data.List.Split
 import           Uniform.Error
-import           Uniform.Strings     hiding ((<|>), (</>))
+--import           Uniform.Strings     hiding ((<|>), (</>))
 import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)
