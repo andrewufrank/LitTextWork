@@ -22,11 +22,11 @@ module Processor.Main2sub (mainLitAndNLPproduction
         ) where
 
 import            Parser.ReadMarkupAB (textstate2Text)
-import           Lines2para.Lines2text  (text2tz1, Zeilen (..) , BuchToken (..))
+import           Lines2para.Lines2text  (text2tz1)
 
 import           Parser.ProduceLayout (produceLayoutTriples)
 
-import           Lines2para.Lines2para (TZ1, TZ2, paragraphsTZ2TZ2) -- hiding ((</>))
+import           Lines2para.Lines2para (paragraphsTZ2TZ2) -- hiding ((</>))
 
 import           Parser.ProduceLit (produceLitTriples)
 import           Parser.ProduceNLP (produceNLPtriples)

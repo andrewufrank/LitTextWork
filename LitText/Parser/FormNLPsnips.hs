@@ -17,21 +17,12 @@
 {-# OPTIONS_GHC -w #-}
 
 module Parser.FormNLPsnips
---    (module Parser.ProduceDocCallNLP
---    , module CoreNLP.Defs0
---    , module Lines2para.Lines2para
---    , module LitTypes.ServerNames
---    , module Parser.FilterTextForNLP
---    )
     where
 
---import           Test.Framework
---import Uniform.TestHarness
---import Data.Maybe () -- todo
-import Lines2para.Lines2para
+--import Lines2para.Lines2para
 --import Lines2para.HandleLayout
-import Parser.ReadMarkupAB  -- todo  -- for test
-import LitTypes.ServerNames
+--import Parser.ReadMarkupAB  -- todo  -- for test
+--import LitTypes.ServerNames
 import           CoreNLP.Defs0
 import CoreNLP.CoreNLPxml (readDocString)
 import Data.List.Split
@@ -39,6 +30,7 @@ import Data.List.Split
 import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 import Uniform.Error (fromJustNote)
+import LitTypes.TextDescriptor
 
 formSnips :: [Snip] -> [Snip]
 -- collect paragraphis in reasonalbe snips for NLP processing

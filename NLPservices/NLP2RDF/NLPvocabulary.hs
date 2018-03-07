@@ -25,7 +25,7 @@ import           Uniform.Strings         hiding ((<|>))
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import LitTypes.ServerNames
 --import LitTypes.ServerNames (rdfBase, vocabularyBase, PartURI (..), unPartURI)  -- from Foundation
-
+import LitTypes.TextDescriptor
 
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
