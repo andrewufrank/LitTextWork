@@ -59,6 +59,9 @@ class  LanguageTyped22 lang postag where
     -- internal the text2nlp should have a tag type parameter
     -- the triples (i.e. NLPtriples should have a tag parameter
 
+    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
+    -- the nlp process, selected by language and postag
+
 convertOneSnip2Triples3 :: LitTextFlags  -> LanguageCode -> TD.Snip -> SnipSigl ->   ErrIO [Triple]
     -- this is  the entry point called from litText
 
@@ -119,6 +122,16 @@ instance (LanguageDependent lang, LanguageTypedText lang
                 let trips = processDoc0toTriples2 lph pph snipSigl doc2
 
                 return trips
+
+    snip2doc lph pph debugNLP  text sloc = do
+        let debug2 = debugNLP
+        docs <-  convertTZ2makeNLPCall pph debug2
+                            (addPort2URI sloc (nlpPort lph pph))  -- server uri
+                            (nlpPath lph)   -- path
+                                (nlpParams lph pph)  (unLCtext text)
+        when debug2 $ putIOwords ["NLP end", showT text]
+        return docs
+
 
 --    trips2 <- if not . notNullLC $ text
 --        then return zero
