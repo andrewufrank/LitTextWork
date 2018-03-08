@@ -62,12 +62,12 @@ class  LanguageTyped22 lang postag where
     snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
     -- the nlp process, selected by language and postag
 
-convertOneSnip2Triples3 :: LitTextFlags  ->   TD.Snip -> SnipSigl ->   ErrIO [Triple]
+convertOneSnip2Triples3 :: LitTextFlags  ->   TD.Snip ->    ErrIO [Triple]
     -- this is  the entry point called from litText
 
-convertOneSnip2Triples3 flags snip snipsigl = do
+convertOneSnip2Triples3 flags snip = do
     let lang = getLanguageCode . tz3text $  snip
-
+    let snipsigl = tz3snipsigl snip   -- remove later
     let pt = ""  -- could be in flags
     let debugNLP = True --  DebugFlag `elem` flags
     let text = tz3text snip

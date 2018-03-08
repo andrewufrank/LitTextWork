@@ -62,6 +62,9 @@ pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
 pushSnipNumber2snip :: Int -> Snip -> Snip
 pushSnipNumber2snip i  snip = snip {tz3snipnr = SnipID i}
 
+pushSnipSigl2snip :: SnipSigl -> Snip -> Snip
+pushSnipSigl2snip s  snip = snip {tz3snipsigl = s}
+
 
 convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
 -- calls nlp to convert to doc
@@ -70,7 +73,7 @@ convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [
 -- the triples (i.e. NLPtriples should have a tag parameter
 
 -- the following is just the bridges, which should go earlier
-convertOneSnip2Triples flags textstate   snip = do
+convertOneSnip2Triples flags textstate snip = do
     let text = tz3text snip
     let lang = getLanguageCode . tz3text $  snip
             -- reduce for some special cases _italics_
@@ -82,7 +85,8 @@ convertOneSnip2Triples flags textstate   snip = do
     trips2 <- if not . notNullLC $ text
         then return []
         else do
-            trips <- convertOneSnip2Triples3 flags  snip snipsigl
+            let snip2 = pushSnipSigl2snip snipsigl snip
+            trips <- convertOneSnip2Triples3 flags  snip2
             return trips
 
     return $ partOfTriples ++ trips2
