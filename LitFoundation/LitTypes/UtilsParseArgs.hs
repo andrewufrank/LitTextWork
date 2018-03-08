@@ -38,12 +38,12 @@ data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
 
 type LitTextFlags = [LitTextFlag]
 
-data LitTextFlagsX =   LitTextFlagsX {flagDebug :: Bool
-                    , flagForce :: Bool
-                    , flagFrenchUD :: Bool
-                    , flagIncludeText :: Bool
-                    , flagXML :: Bool }
-            deriving (Show, Read, Eq)
+--data LitTextFlagsX =   LitTextFlagsX {flagDebug :: Bool
+--                    , flagForce :: Bool
+--                    , flagFrenchUD :: Bool
+--                    , flagIncludeText :: Bool
+--                    , flagXML :: Bool }
+--            deriving (Show, Read, Eq)
 
 -- check all filenames by converting to Path format
 
