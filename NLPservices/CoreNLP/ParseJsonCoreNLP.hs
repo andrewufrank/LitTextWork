@@ -50,7 +50,7 @@ doc2ops = defaultOptions {
                 fieldLabelModifier = drop 4 }
 
 data Sentence2 = Sentence2 {s_index :: Int
-                        , s_parse :: Text  -- the parse tree
+                        , s_parse :: Maybe Text  -- the parse tree
                         , s_basicDependencies :: Maybe [Dependency2]
                         , s_enhancedDependencies :: Maybe [Dependency2]
                         , s_enhancedPlusPlusDependencies :: Maybe [Dependency2]

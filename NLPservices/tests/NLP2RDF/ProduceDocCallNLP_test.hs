@@ -188,6 +188,12 @@ testOP_MA_MBB (langPh, postagPh, text, i) xml1 = do
 
 test_MA_MBB_1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
                                          "resultMA1" "resultMBB1" testOP_MA_MBB
+test_M_MBB2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
+                                          "resultMA2" "resultMBB2" testOP_MA_MBB
+test_M_MBB3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
+                                          "resultMA3" "resultMBB3" testOP_MA_MBB
+test_M_MBB4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
+                                          "resultMA4" "resultMBB4" testOP_MA_MBB
 test_MA_MBB_5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
                                          "resultMA5" "resultMBB5" testOP_MA_MBB
 

@@ -72,11 +72,11 @@ mkSentence1Triple2 :: (Show postag, POStags postag) =>
         LanguageCode ->  SnipSigl  ->    Sentence1 postag ->  ( [Triple])
 -- ^ produce the   triples for a sentence
 mkSentence1Triple2 lang snipid Sentence1 {..}
-       =      t0 : t1 : t2 :  sentenceForm :  (toktrips ++ depsTrips)
+       =      t0 : t2 :   sentenceForm :  (t1 ++ toktrips ++ depsTrips)
     where
         sentSigl = mkSentSigl snipid s1id
         t0 = mkTripleType (unSentSigl sentSigl) (mkRDFtype Sentence)
-        t1 = mkTripleText   (unSentSigl sentSigl) (mkRDFproperty Parse)
+        t1 = maybe [] (\p -> [mkTripleText   (unSentSigl sentSigl) (mkRDFproperty Parse) p])
                                  s1parse
         t2 = mkTriplePartOf (unSentSigl sentSigl) --`buchuri
                              (unSnipSigl snipid)

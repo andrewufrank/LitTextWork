@@ -40,7 +40,7 @@ data Doc1 postag = Doc1 {doc1Sents:: [Sentence1 postag]
 instance Zeros (Doc1 postag) where zero = Doc1 [] zero
 
 data Sentence1 postag = Sentence1 {s1id :: SentID0
-                        , s1parse :: Text  -- the parse tree
+                        , s1parse :: Maybe Text  -- the parse tree
                         , s1toks :: [Token0 postag]
                         , s1deps :: Maybe [Dependence1]
                         -- should be only one or none
