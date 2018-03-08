@@ -75,14 +75,14 @@ convertOneSnip2Triples flags textstate   snip = do
     let lang = getLanguageCode . tz3text $  snip
             -- reduce for some special cases _italics_
 
-    let nlpserver = nlpServer textstate
-    let pt = txPosTagset textstate
+--    let nlpserver = nlpServer textstate
+--    let pt = txPosTagset textstate
     let (snipsigl, partOfTriples) = mkSnipPartOf textstate snip
 
     trips2 <- if not . notNullLC $ text
         then return []
         else do
-            trips <- convertOneSnip2Triples3 flags lang snip snipsigl
+            trips <- convertOneSnip2Triples3 flags  snip snipsigl
             return trips
 
     return $ partOfTriples ++ trips2
