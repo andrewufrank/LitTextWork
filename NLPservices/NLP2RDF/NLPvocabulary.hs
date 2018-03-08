@@ -83,8 +83,8 @@ buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
 
 
 --
-newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
-instance Zeros SnipSigl where zero = SnipSigl zero
+--newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+--instance Zeros SnipSigl where zero = SnipSigl zero
 
 
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl

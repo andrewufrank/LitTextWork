@@ -78,6 +78,7 @@ formatParaText postag tz@TZ2para{} = Snip {
                 , tz3para = tz2para tz
                 , tz3snipnr = zero  -- not acceptable snip nr, cannot be undef
                                 -- would not work with test harness
+                , tz3snipsigl = zero
         , tz3posTag = postag
                 , tz3text = codeText lang (foldl1 combine2linesWithHyphenation
             . map (getText . twm1 . tztext1) $ (tz2tzs tz))
@@ -90,6 +91,7 @@ formatParaText postag tz@TZ2markup {} = Snip {tz3loc = tz2loc tz
 --        , tz3lang = tz2lang tz
         , tz3para = tz2para tz
         , tz3snipnr = zero
+        , tz3snipsigl = zero
         , tz3text = codeText lang $ tx <> ". "     -- to make sure these are sentences for NLP
                                       --    risk of two ..
         , tz3posTag = postag

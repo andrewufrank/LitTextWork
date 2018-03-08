@@ -83,6 +83,7 @@ instance Zeros NTdescriptor where
 data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3snipnr ::  SnipID
+                        , tz3snipsigl :: SnipSigl
                         , tz3text:: LCtext
                         , tz3textLength :: Int
                         , tz3posTag :: Text
@@ -104,8 +105,8 @@ instance Zeros SnipID where zero = SnipID zero
 --newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 --unSnipID (SnipID i) = i
 ----
---newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
---instance Zeros SnipSigl where zero = SnipSigl zero
+newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+instance Zeros SnipSigl where zero = SnipSigl zero
 --
 --type ParaID = Int   -- should be typed?
 --
