@@ -44,7 +44,7 @@ prepareTZ4nlpTest  = prepareTZ4nlp ""
 
 
 
-test_1_CA_DA = testFile2File "resultCA1" "resultDA1" prepareTZ4nlpTest
+test_1_CA_DA = testFile2File "resultCA1" "resultD1" prepareTZ4nlpTest
 test_2_C_D = testFile2File "resultCA2" "resultD2" prepareTZ4nlpTest
 test_3_C_D = testFile2File "resultCA3" "resultD3" prepareTZ4nlpTest
 test_4_C_D = testFile2File "resultCA4" "resultD4" prepareTZ4nlpTest

@@ -37,7 +37,7 @@ import Parser.FormNLPsnips
 
 
 
-test_1_D_DA = testFile2File "resultD1" "resultDB1" formSnips
+test_1_D_DA = testFile2File "resultD1" "resultDA1" formSnips
 test_2_D_DA = testFile2File "resultD2" "resultDA2" formSnips
 test_3_D_DA = testFile2File "resultD3" "resultDA3" formSnips
 test_4_D_DA = testFile2File "resultD4" "resultDA4" formSnips

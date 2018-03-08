@@ -152,8 +152,8 @@ test_M_MA3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
                                           "resultM3" "resultMA3" testOP_M_MA
 test_M_MA4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
                                           "resultM4" "resultMA4" testOP_M_MA
-test_M_MA5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
-                                          "resultM5" "resultMA5" testOP_M_MA
+--test_M_MA5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
+--                                          "resultM5" "resultMA5" testOP_M_MA
 --fails always, because it contains timing info
 
 
@@ -198,8 +198,8 @@ test_M_MBB3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
                                           "resultMA3" "resultMBB3" testOP_MA_MBB
 test_M_MBB4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
                                           "resultMA4" "resultMBB4" testOP_MA_MBB
-test_MA_MBB_5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
-                                         "resultMA5" "resultMBB5" testOP_MA_MBB
+--test_MA_MBB_5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
+--                                         "resultMA5" "resultMBB5" testOP_MA_MBB
 
 
 ------- processDoc0toTriples2 lph pph snip doc2
