@@ -32,7 +32,8 @@ module Parser.ProduceNLP_test where
 import           Test.Framework
 import Uniform.TestHarness
 
-import          Data.RDFext.FileTypes -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
+import          Data.RDFext.FileTypes
+        -- (ntFileTriples, ntFileTriplesGZip,writeHandleTriples)
 import Parser.ReadMarkupAB_test
 import Parser.ProduceNLP
 --import Uniform.Error
@@ -48,18 +49,20 @@ test_1_DA_L = testVar3FileIO result1A "resultDA1" "resultE1" testOP_DA_L
 test_2_DA_L = testVar3FileIO result2A "resultDA2" "resultE2" testOP_DA_L
 test_3_DA_L = testVar3FileIO result3A "resultDA3" "resultE3" testOP_DA_L
 test_4_DA_L = testVar3FileIO result4A "resultDA4" "resultE4" testOP_DA_L
-test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L  -- lafayette
+test_5_DA_L = testVar3FileIO result5A "resultDA5" "resultE5" testOP_DA_L
+            -- lafayette
 test_6_DA_L = testVar3FileIO result6A "resultDA6" "resultE6" testOP_DA_L
 test_8_DA_L = testVar3FileIO result8A "resultDA8" "resultE8" testOP_DA_L
-test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L  -- multiple language - not a single head
+test_9_DA_L = testVar3FileIO result9A "resultDA9" "resultE9" testOP_DA_L
+            -- multiple language - not a single head
 test_10_DA_L = testVar3FileIO result10A "resultDA10" "resultE10" testOP_DA_L
 test_11_DA_L = testVar3FileIO result11A "resultDA11" "resultE11" testOP_DA_L
 test_12_DA_L = testVar3FileIO result12A "resultDA12" "resultE12" testOP_DA_L
 test_13_DA_L = testVar3FileIO result12A "resultDA12" "resultE12UD" testOP_DA_L
 
-produceNLPtest ::  TextDescriptor ->  [TZ2] -> ErrIO ()
-produceNLPtest textstate tzs  = do
-    trips <- produceNLPtriples [] textstate tzs
+produceNLPtest ::  TextDescriptor ->  [Snip] -> ErrIO Text
+produceNLPtest textstate snips  = do
+    trips <- produceNLPtriples [] textstate snips
     let ntdescr = (ntdescriptor textstate) {gzipFlag = True}
     putIOwords ["produceNLPtest" , showT ntdescr ]
     bracketErrIO (do
@@ -77,14 +80,14 @@ produceNLPtest textstate tzs  = do
                     closeHandleTriples ntdescr h
                     )
 
-    return ()
+    return "OK"
 
---test_8_BAE_XproduceNLPtriples2 = do
---    r <- runErr $ produceNLPtest2 result10A "resultE8" "resultX8"
---    assertEqual "Right ()" (showT r)
+test_8_DA_X_produceNLPtriples2 = testVar3FileIO result8A "resultDA8" "resultX8"
+            produceNLPtest
 
---test_10_BAE_XproduceNLPtriples2 = do
---    r <- runErr $ produceNLPtest2 result10A "resultE10" "resultX10"
+test_10_DA_X_produceNLPtriples2 = testVar3FileIO result10A "resultDA10" "resultX10"
+            produceNLPtest
+--    r <- runErr $ produceNLPtest2 result10A "resultDA10" "resultX10"
 --    assertEqual "Right ()" (showT r)
 
 produceNLPtest2::  TextDescriptor ->  FilePath -> FilePath -> ErrIO ()

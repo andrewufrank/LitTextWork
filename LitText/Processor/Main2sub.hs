@@ -29,7 +29,7 @@ import           Parser.ProduceLayout (produceLayoutTriples)
 import           Lines2para.Lines2para (paragraphsTZ2TZ2) -- hiding ((</>))
 
 import           Parser.ProduceLit (produceLitTriples)
-import           Parser.ProduceNLP (produceNLPtriples)
+import           Parser.ProduceNLP (produceNLPtriples, tz2toSnip)
 
 import Data.RDFext.FileTypes -- (ntFileTriples)
 
@@ -66,7 +66,8 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    nlpTriples <- produceNLPtriples flags textstate tzpara -- test D ->
+    let snips = tz2toSnip flags textstate tzpara
+    nlpTriples <- produceNLPtriples flags textstate snips -- test D ->
 
     putIOwords ["mainLitAndNLPproduction: triples stored in .nt file "
 --           , showT . graph $ textstate, " \n"

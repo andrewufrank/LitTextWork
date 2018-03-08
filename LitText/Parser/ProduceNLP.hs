@@ -41,23 +41,20 @@ import NLP2RDF.ProduceDocCallNLP
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
 
-produceNLPtriples ::  LitTextFlags -> TextDescriptor ->  [TZ2] -> ErrIO [Triple]
+produceNLPtriples :: LitTextFlags -> TextDescriptor -> [Snip] -> ErrIO [Triple]
             -- test C  -> X
-produceNLPtriples  flags textstate tzs =  do
-    let     snips1 = prepareTZ4nlp posTag tzs :: [Snip]
-            snips2 = formSnips snips1  :: [Snip]
-            posTag = txPosTagset textstate
-            debug = False
-    let snips3 = zipWith pushSnipNumber2snip [1..] snips2
+produceNLPtriples  flags textstate snips3 =  do
     triples :: [[Triple]] <- mapM (convertOneSnip2Triples flags  textstate)  snips3
---    ntz1 <- foldM writeHandleTriples (ntdescriptor textstate) triples
     return . concat $ triples
---    putIOwords ["\n\nproduceOneParaNLP nlp triples ", "one snip done"
---            ,"snip size", showT $ tz3textLength snip
---            ,"from text", buchName textstate
---            ]
---    return (textstate{ntdescriptor= ntz1})
 
+tz2toSnip :: LitTextFlags -> TextDescriptor ->  [TZ2] ->  [Snip]
+-- convert the text to sinle language snips
+tz2toSnip flags textstate tzs = snips3
+   where
+        posTag = txPosTagset textstate
+        snips1 = prepareTZ4nlp posTag tzs :: [Snip]
+        snips2 = formSnips snips1  :: [Snip]
+        snips3 = zipWith pushSnipNumber2snip [1..] snips2
 
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
 pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
