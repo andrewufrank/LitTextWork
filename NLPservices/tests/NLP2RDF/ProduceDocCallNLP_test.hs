@@ -116,12 +116,16 @@ testOP_M_N (langPh, postagPh, text, i) snip2 =
 --            , Zeros b, ShowTestHarness b) =>
 --        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
 --test_N_1 :: IO ()
---test_N_1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
---                                         "resultM1" "resultN1" testOP_M_N
-----test_N_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)    "resultN2" testOP_M_N
-----test_N_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)    "resultN3" testOP_M_N
-----test_N_4 = testVar2File (undefSpanish, undefSpanishPos, spantz3text, 4) "resultN4" testOP_M_N
-----test_N_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)      "resultN5" testOP_M_N
+test_M_N1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
+                                         "resultM1" "resultN1" testOP_M_N
+test_M_N2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
+                                          "resultM2" "resultN2" testOP_M_N
+test_M_N3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
+                                          "resultM3" "resultN3" testOP_M_N
+test_M_N4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
+                                          "resultM4" "resultN4" testOP_M_N
+test_M_N5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
+                                          "resultM5" "resultN5" testOP_M_N
 
 ----    text2xml :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
 --                    ->  ErrIO Text
@@ -165,14 +169,14 @@ testOP_M_MB (langPh, postagPh, text, i) snip2 =
 --        code <_ text2nlpCode   postagPh True server path vars
 --                        (unLCtext $ snip2text snip2)
 
---test_M_MB1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
---                                          "resultM1" "resultMB1" testOP_M_MB
---test_M_MB2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
---                                          "resultM2" "resultMB2" testOP_M_MB
---test_M_MB3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
---                                          "resultM3" "resultMB3" testOP_M_MB
---test_M_MB4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
---                                          "resultM4" "resultMB4" testOP_M_MB
+test_M_MB1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
+                                          "resultM1" "resultMB1" testOP_M_MB
+test_M_MB2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
+                                          "resultM2" "resultMB2" testOP_M_MB
+test_M_MB3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
+                                          "resultM3" "resultMB3" testOP_M_MB
+test_M_MB4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
+                                          "resultM4" "resultMB4" testOP_M_MB
 test_M_MB5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
                                           "resultM5" "resultMB5" testOP_M_MB
 --
