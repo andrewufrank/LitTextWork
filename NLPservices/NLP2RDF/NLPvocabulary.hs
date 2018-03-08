@@ -25,6 +25,7 @@ import           Uniform.Strings         hiding ((<|>))
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import LitTypes.ServerNames
 import LitTypes.TextDescriptor
+import LitTypes.TextDescriptor (SnipSigl)
 
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3

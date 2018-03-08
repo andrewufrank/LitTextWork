@@ -21,30 +21,36 @@
 --and all functions used for default otions imported (not local defined)
 
 module CoreNLP.ProduceNLPtriples2 -- (openMain, htf_thisModuelsTests)
-     where
+    (module CoreNLP.ProduceNLPtriples2
+    , module CoreNLP.Doc2ToDoc1
+    , module NLP2RDF.NLPvocabulary
+    , Snip2 (..), snipIsNull
+    , NLPtriple (..), unNLPtriple
+    ) where
 
-import           Uniform.Strings
---import Uniform.FileIO
-import CoreNLP.Defs0
-import CoreNLP.ParseJsonCoreNLP
-import qualified NLP.Types.Tags      as NLP
---import qualified NLP.Corpora.Conll  as Conll
---import qualified NLP.Corpora.UD  as UD
---            Uniform.FileIO
---import              LitNLP.Tools
-import              CoreNLP.DEPcodes
-import              CoreNLP.NERcodes
-import Uniform.Zero
+----import           Uniform.Strings
+----import Uniform.FileIO
+import CoreNLP.Doc2ToDoc1
+--import CoreNLP.ParseJsonCoreNLP
+--import qualified NLP.Types.Tags      as NLP
+----import qualified NLP.Corpora.Conll  as Conll
+----import qualified NLP.Corpora.UD  as UD
+----            Uniform.FileIO
+----import              LitNLP.Tools
+--import              CoreNLP.DEPcodes
+--import              CoreNLP.NERcodes
+--import Uniform.Zero
 import CoreNLP.ProduceNLPtriples
-import CoreNLP.Defs0
+--import CoreNLP.Defs0
 import CoreNLP.NERcodes
 import LitTypes.TextDescriptor
 import NLP.Types.Tags
 import NLP2RDF.NLPvocabulary  -- from Foundation
 import LitTypes.LanguageTypedText
 import Data.List (partition)
---import Data.RDFext.Types  (Triple)  -- instance Show Triple
-import CoreNLP.Doc2ToDoc0
+import Data.RDFext.Extension (Triple)  -- instance Show Triple
+import CoreNLP.Doc2ToDoc1
+
 
 processDoc1toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
             => lang ->  postag -> SnipSigl  -> Doc1 postag -> [NLPtriple postag]

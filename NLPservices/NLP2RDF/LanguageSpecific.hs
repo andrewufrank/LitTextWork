@@ -30,10 +30,11 @@ import              Uniform.TestHarness
 import LitTypes.LanguageTypedText
 import LitTypes.ServerNames
 
-import CoreNLP.Defs0   -- should only get instances ?
+-- import CoreNLP.Defs0   -- should only get instances ?
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
+import CoreNLP.Doc2ToDoc1  -- for Doc1
 import LitTypes.LanguageTypedText
 
 import NLP.Corpora.Conll  as Conll -- Conll for english
@@ -94,7 +95,7 @@ instance LanguageDependent ItalianType where
 
 
 class TaggedTyped postag where
-    postNLP :: Bool -> URI -> Doc0 postag -> ErrIO (Doc0 postag)
+    postNLP :: Bool -> URI -> Doc1 postag -> ErrIO (Doc1 postag)
     -- postprocessing (e.g. adding POS to german)
     postNLP _ _ = return
 
@@ -103,9 +104,10 @@ class TaggedTyped postag where
 instance TaggedTyped Conll.POStag
 instance TaggedTyped German.POStag where
     postNLP debug sloc doc1  = do
-        let sents1 = docSents doc1
-        sents2 <- mapM (completeSentence False (addPort2URI sloc treeTaggerPort ) ) sents1
-        let docs2 = doc1{docSents = sents2}
+        let sents1 = doc1Sents doc1
+        sents2 <- mapM (completeSentence False
+                    (addPort2URI sloc treeTaggerPort ) ) sents1
+        let docs2 = doc1{doc1Sents = sents2}
         return docs2
 
 instance TaggedTyped TinT.POStag

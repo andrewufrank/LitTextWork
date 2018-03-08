@@ -32,26 +32,27 @@ module NLP2RDF.CompleteSentence (
 import Uniform.Error
 import LitTypes.ServerNames
 import NLP2RDF.ConvertTaggerOutput--import NLP.CallTagger2
-import CoreNLP.Defs0
+-- import CoreNLP.Defs0
+import CoreNLP.Doc2ToDoc1
 import NLP.Corpora.Conll
 --import BuchCode.BuchToken (LanguageCode(..))
 
 import Uniform.HttpCall
 
 class ExtractSentences postag where
-    extractTokens :: Sentence0 postag -> [Text]
+    extractTokens :: Sentence1 postag -> [Text]
 
     putTags2token :: TTdata -> Token0 postag -> Token0 postag
 -- insert the tag value to the token
 
-    completeSentence :: Bool -> URI ->   (Sentence0 postag) -> ErrIO (Sentence0 postag)
+    completeSentence :: Bool -> URI ->   (Sentence1 postag) -> ErrIO (Sentence1 postag)
 
 instance (Show postag) => ExtractSentences postag where
     putTags2token tt tok =  if (word0 . tword $ tok) == ttwf tt
                 then tlemma' (const . Lemma0 . ttlemma $ tt) . tpostt' (const . ttpos $ tt) $ tok
                 else errorT ["putTags2token", "not the same wordform", word0 . tword $ tok, "tagger gives", ttwf tt]
 
-    extractTokens  =   map (word0 . tword) . stoks
+    extractTokens  =   map (word0 . tword) . s1toks
 
     completeSentence debugCS server   sent1 = do
         when debugCS $ putIOwords ["completeSentence start", showT sent1]
@@ -59,8 +60,8 @@ instance (Show postag) => ExtractSentences postag where
                     -- may resolve problem of error in accept (limit 5 caller)
         ttres <- ttProcess server   toks   -- replace by httpcall
         let tags = convertTT ttres
-        let toks2 = zipWith putTags2token tags (stoks sent1)
-        let sent2 = sent1{stoks = toks2}
+        let toks2 = zipWith putTags2token tags (s1toks sent1)
+        let sent2 = sent1{s1toks = toks2}
 
         let sent5 = sent2
         when debugCS $ putIOwords ["completeSentence end", showT sent5]

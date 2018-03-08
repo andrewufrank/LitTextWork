@@ -11,7 +11,7 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module CoreNLP.Doc2ToDoc0_test  -- (openMain, htf_thisModuelsTests)
+module CoreNLP.Doc2ToDoc1_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
@@ -23,7 +23,7 @@ import qualified Data.ByteString.Lazy.UTF8 as B
 import Data.Aeson (eitherDecode)
 
 import CoreNLP.ParseJsonCoreNLP
-import CoreNLP.Doc2ToDoc0
+import CoreNLP.Doc2ToDoc1
 import qualified NLP.Corpora.Conll  as Conll
 --import Text.Show.Pretty (valToStr)
 --import Text.PrettyPrint.GenericPretty

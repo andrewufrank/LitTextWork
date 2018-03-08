@@ -97,7 +97,7 @@ instance  ShowTestHarness (Snip2 a) where
 testOP_M_N :: (TaggedTyped t1, LanguageTypedText t0, LanguageTyped2 t0 t1) =>
          (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO [NLPtriple t1]
 testOP_M_N (langPh, postagPh, text, i) snip2 =
-        convertOneSnip2Triples2 langPh postagPh True snip2 serverBrest
+        convertOneSnip2Triples2 langPh postagPh [DebugFlag] snip2 serverBrest
 
 --testVar3File :: (Read a, Eq b, Show b, Read b
 --            , Zeros b, ShowTestHarness b) =>

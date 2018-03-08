@@ -25,6 +25,7 @@ module LitTypes.TextDescriptor (
     , NTdescriptor (..)
     , LitTextFlag (..), LitTextFlags
     , PartURI (..), unPartURI
+    , SnipSigl (..)
 --    , module Path   -- to export IsString
     ) where
 

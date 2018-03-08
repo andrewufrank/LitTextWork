@@ -23,7 +23,7 @@ import Uniform.FileIO
 --import           Lib.BlogExample
 --import  Lib.Tutorial1
 import CoreNLP.ParseJsonCoreNLP
-import CoreNLP.Doc2ToDoc0
+import CoreNLP.Doc2ToDoc1
 import CoreNLP.ProduceNLPtriples2
 
 import Uniform.Convenience.StartApp
@@ -75,7 +75,7 @@ main4tripels = do
         putIOwords ["doc1:", showT doc1, "\n\n\n"]
         let trip = processDoc1toTriples2 undefEnglish Conll.undefConll
                 sigl1 doc1
-        putIOwords ["trips", showT  trip]
+--        putIOwords ["trips", showT  trip]
         let succ = (showT trip == resTrip)
         putIOwords ["success", showT succ]
         let fp = (makeAbsFile "/home/frank/Workspace8/LitTextWork/NLPservices/triples")

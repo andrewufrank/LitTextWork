@@ -26,9 +26,11 @@ module NLP2RDF.ProduceDocCallNLP
     , LitTextFlags (..), LitTextFlag (..), SnipID (..),
     ) where
 
-import CoreNLP.CoreNLPxml (readDocString)
+--import CoreNLP.CoreNLPxml (readDocString)
+import CoreNLP.ParseJsonCoreNLP (decodeDoc2, Doc2 (..))
 import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI, URI, HttpVarParams(..))
-import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
+--import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
+import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
 --
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
@@ -43,25 +45,9 @@ import LitTypes.TextDescriptor  as TD
 import LitTypes.ServerNames
 import Data.RDFext.Codes
 
-class  LanguageTyped22 lang postag where
+import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
-    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlags ->  Snip2 lang -> URI
-                -> ErrIO [NLPtriple postag]
-    -- this should be the entry point for conversion of a text to nlp
-    -- typed in and output
-    -- calls nlp to convert to doc
-    -- the snip should have a type parameter language
-    -- internal the text2nlp should have a tag type parameter
-    -- the triples (i.e. NLPtriples should have a tag parameter
 
-    -- convertOneSnip2Triples2 :: Bool -> Bool -> TextDescriptor -> LTtext lang -> ErrIO [NLPtriple postag]
-    -- calls nlp to convert to doc
-    -- the snip should have a type parameter language
-    -- internal the text2nlp should have a tag type parameter
-    -- the triples (i.e. NLPtriples should have a tag parameter
-
-    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
-    -- the nlp process, selected by language and postag
 
 convertOneSnip2Triples3 :: LitTextFlags  ->   TD.Snip ->    ErrIO [Triple]
     -- this is  the entry point called from litText
@@ -101,6 +87,25 @@ convertOneSnip2Triples3 flags snip = do
         _ -> return zero
     return trips
 
+class  LanguageTyped22 lang postag where
+
+    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlags ->  Snip2 lang -> URI
+                -> ErrIO [NLPtriple postag]
+    -- this should be the entry point for conversion of a text to nlp
+    -- typed in and output
+    -- calls nlp to convert to doc
+    -- the snip should have a type parameter language
+    -- internal the text2nlp should have a tag type parameter
+    -- the triples (i.e. NLPtriples should have a tag parameter
+
+    -- convertOneSnip2Triples2 :: Bool -> Bool -> TextDescriptor -> LTtext lang -> ErrIO [NLPtriple postag]
+    -- calls nlp to convert to doc
+    -- the snip should have a type parameter language
+    -- internal the text2nlp should have a tag type parameter
+    -- the triples (i.e. NLPtriples should have a tag parameter
+
+    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc1 postag)
+    -- the nlp process, selected by language and postag
 
 
 
@@ -122,85 +127,84 @@ instance (LanguageDependent lang, LanguageTypedText lang
 
                 doc2 <- postNLP debugNLP  sloc doc1
                 let snipSigl = snip2sigl snip
-                let trips = processDoc0toTriples2 lph pph snipSigl doc2
+                let trips = processDoc1toTriples2 lph pph snipSigl doc2
 
                 return trips
 
     snip2doc lph pph debugNLP  text sloc = do
         let debug2 = debugNLP
-        docs <-  convertTZ2makeNLPCall pph debug2
+        code1 <-  text2nlpCode pph debug2
                             (addPort2URI sloc (nlpPort lph pph))  -- server uri
                             (nlpPath lph)   -- path
                                 (nlpParams lph pph)  (unLCtext text)
-        when debug2 $ putIOwords ["NLP end", showT text]
+        docs <- nlpCode2doc1 pph debugNLP code1
+        when debug2 $ putIOwords ["NLP end", showT docs]
         return docs
 
 
---    trips2 <- if not . notNullLC $ text
---        then return zero
---        else do
-
-
-class Docs postag where
-    convertTZ2makeNLPCall  :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
-                    ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
-    -- call to send text to nlp server and converts xml to Doc0
-    -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
-    -- merger
-    -- the path parameter is used for TinT which wants a path "tint" before the paremters
-
-instance (Docs2 postag, POStags postag) => Docs postag where
-    convertTZ2makeNLPCall ph debugNLP  nlpServer path vars text = do
-            xml :: Text <- text2xml ph debugNLP nlpServer path vars text
-            xml2doc ph debugNLP   xml
+--class Docs postag where
+--    text2nlpcode  :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
+--                    ->  ErrIO (Doc1 postag)    -- the nlpCode to analyzse  D -> E
+--    -- call to send text to nlp server and converts xml to Doc0
+--    -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
+--    -- merger
+--    -- the path parameter is used for TinT which wants a path "tint" before the paremters
+--
+--instance (Docs2 postag, POStags postag) => Docs postag where
+--    text2nlpcode ph debugNLP  nlpServer path vars text = do
+--            nlpCode :: Text <- text2nlpCode ph debugNLP nlpServer path vars text
+--            nlpCode2doc ph debugNLP   nlpCode
 
 class Docs2 postag where
-    text2xml :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
+    text2nlpCode :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
                     ->  ErrIO Text
 --                    ph debugNLP  nlpServer path vars text
-    xml2doc :: postag -> Bool ->  Text ->  ErrIO (Doc0 postag)
---                    ph debugNLP   xml = do
+    nlpCode2doc1 :: postag -> Bool ->  Text ->  ErrIO (Doc1 postag)
+--                    ph debugNLP   nlpCode = do
 
 instance (POStags postag) => Docs2 postag where
---    convertTZ2makeNLPCall  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the xml to analyzse  D -> E
-    -- call to send text to nlp server and converts xml to Doc0
+--    text2nlpcode  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the nlpCode to analyzse  D -> E
+    -- call to send text to nlp server and converts nlpCode to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
 
 
-    text2xml ph debugNLP  nlpServer path vars text = do
+    text2nlpCode ph debugNLP  nlpServer path vars text = do
             when debugNLP $
-                putIOwords ["text2xml start"
+                putIOwords ["text2nlpCode start"
                             , showT . lengthChar $ text
                             , showT . take' 100 $ text ]
-            xml :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer path
+            nlpCode :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer path
                      (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
 --            when debugNLP  $
-            putIOwords ["text2xml end \n", take' 200 . showT    $  xml]
-            return xml
+            putIOwords ["text2nlpCode end \n", take' 200 . showT    $  nlpCode]
+            return nlpCode
 
         `catchError` (\e -> do
-             putIOwords ["text2xml error caught 7",  e
+             putIOwords ["text2nlpCode error caught 7",  e
                             ,  "\n\n the input was \n", text] -- " showT msg])
-             putIOwords ["text2xml",  "text:\n",  showT text ] -- " showT msg])
+             putIOwords ["text2nlpCode",  "text:\n",  showT text ] -- " showT msg])
              return zero
                 )
 
-    xml2doc ph debugNLP   xml = do
+    nlpCode2doc1 ph debugNLP   nlpCode = do
             when debugNLP $
-                putIOwords ["xml2doc start"
-                            , showT . take' 100 $ xml ]
+                putIOwords ["nlpCode2doc start"
+                            , showT . take' 100 $ nlpCode ]
 
-            doc0 <- readDocString ph debugNLP xml                    -- E -> F
+--            doc0 <- readDocString ph debugNLP nlpCode                    -- E -> F
+            let doc2e = decodeDoc2 . fromStrict . t2b $ nlpCode
+            doc2 <- either (throwError  . s2t) (return ) doc2e     -- :: Doc2                                     -- E -> F
+            let doc1 = doc2to1 ph doc2
 --            when debugNLP  $
-            putIOwords ["xml2doc doc0 \n",  take' 200  . showT $ doc0]
+            putIOwords ["nlpCode2doc doc0 \n",  take' 200  . showT $ doc1]
 
-            return   doc0
+            return   doc1
         `catchError` (\e -> do
-             putIOwords ["xml2doc error caught 8",  e
---                            ,  "\n\n the input was \n", xml
+             putIOwords ["nlpCode2doc error caught 8",  e
+--                            ,  "\n\n the input was \n", nlpCode
                             ] -- " showT msg])
-             putIOwords ["xml2doc" ] -- " showT msg])
+             putIOwords ["nlpCode2doc" ] -- " showT msg])
     --         splitAndTryAgain debugNLP showXML nlpServer vars text
              return zero
                 )

@@ -37,7 +37,7 @@ import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test
 --import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test
 
 --import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
---import {-@ HTF_TESTS @-} CoreNLP.Doc2ToDoc0_test
+--import {-@ HTF_TESTS @-} CoreNLP.Doc2ToDoc1_test
 ----------import {-@ HTF_TESTS @-} CoreNLP.ProduceNLPtriples2_testX
             -- uses all memory - must be run in main!
 

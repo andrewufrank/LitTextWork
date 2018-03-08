@@ -37,14 +37,14 @@ import NLP.Types.Tags
 import NLP2RDF.NLPvocabulary  -- from Foundation
 import LitTypes.LanguageTypedText
 import Data.List (partition)
-import Data.RDF.Types  (Triple)  -- instance Show Triple
+import Data.RDFext.Extension (Triple)  -- instance Show Triple
 -- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
 
-newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show)
+newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
 unNLPtriple (NLPtriple t) = t
 
-deriving instance (Read postag, Read Data.RDF.Types.Triple )
-        => Read (NLPtriple postag)
+--deriving instance (Read postag, Read Data.RDF.Types.Triple )
+--        => Read (NLPtriple postag)
 
 --instance Read Triple where
 --    readsPrec t = error "missing in produceNLPtriples"

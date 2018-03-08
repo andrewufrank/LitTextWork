@@ -20,8 +20,10 @@
 -- template haskell requires reordering of data types
 --and all functions used for default otions imported (not local defined)
 
-module CoreNLP.Doc2ToDoc0 -- (openMain, htf_thisModuelsTests)
-     where
+module CoreNLP.Doc2ToDoc1
+    ( module CoreNLP.Doc2ToDoc1
+    ,  module CoreNLP.Defs0
+    ) where
 
 import           Uniform.Strings
 import CoreNLP.Defs0

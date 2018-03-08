@@ -23,7 +23,7 @@ import qualified Data.ByteString.Lazy.UTF8 as B
 import Data.Aeson (eitherDecode)
 
 import CoreNLP.ParseJsonCoreNLP
-import CoreNLP.Doc2ToDoc0
+import CoreNLP.Doc2ToDoc1
 import CoreNLP.ProduceNLPtriples2
 import qualified NLP.Corpora.Conll  as Conll
 --import Text.Show.Pretty (valToStr)
