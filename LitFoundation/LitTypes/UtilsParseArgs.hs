@@ -33,7 +33,7 @@ import LitTypes.ServerNames (serverLocalhost, serverBrest, rdfBase, dirQueries, 
 
 data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
             | OutputNLPflag | XMLflag | JSONflag
-            | LocalNLPserverFlag
+            | LocalNLPserverFlag | SnipSet Int
             deriving (Show, Read, Eq, Ord)
 
 type LitTextFlags = [LitTextFlag]
