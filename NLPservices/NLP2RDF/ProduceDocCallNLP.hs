@@ -23,7 +23,7 @@ module NLP2RDF.ProduceDocCallNLP
     (module NLP2RDF.ProduceDocCallNLP
     , module LitTypes.ServerNames
     , module NLP2RDF.LanguageSpecific
-    , LitTextFlags (..), LitTextFlag (..), SnipID (..),
+    , LitTextFlags (..), LitTextFlag (..), SnipID (..)
     ) where
 
 --import CoreNLP.CoreNLPxml (readDocString)
@@ -111,7 +111,8 @@ class  LanguageTyped22 lang postag where
 
 instance (LanguageDependent lang, LanguageTypedText lang
         , TaggedTyped postag, POStags postag, LanguageTyped2 lang postag)
-    =>  LanguageTyped22 lang postag where
+    =>
+    LanguageTyped22 lang postag where
     convertOneSnip2Triples2 lph pph flags snip sloc = do
         let debugNLP = DebugFlag `elem` flags
         if  snipIsNull snip
@@ -181,7 +182,7 @@ instance (POStags postag) => Docs2 postag where
             return nlpCode
 
         `catchError` (\e -> do
-             putIOwords ["text2nlpCode error caught 7",  e
+             putIOwords ["text2nlpCode error caught 7 -- nlp service issue ",  e
                             ,  "\n\n the input was \n", text] -- " showT msg])
              putIOwords ["text2nlpCode",  "text:\n",  showT text ] -- " showT msg])
              return zero
@@ -201,7 +202,7 @@ instance (POStags postag) => Docs2 postag where
 
             return   doc1
         `catchError` (\e -> do
-             putIOwords ["nlpCode2doc error caught 8",  e
+             putIOwords ["nlpCode2doc error caught 8 - parse issue ",  e
 --                            ,  "\n\n the input was \n", nlpCode
                             ] -- " showT msg])
              putIOwords ["nlpCode2doc" ] -- " showT msg])
