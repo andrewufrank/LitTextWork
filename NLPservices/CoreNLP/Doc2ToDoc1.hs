@@ -32,9 +32,10 @@ import qualified NLP.Types.Tags      as NLP
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 import Uniform.Zero
+import Data.Maybe
 
 data Doc1 postag = Doc1 {doc1Sents:: [Sentence1 postag]
-                 , doc1Corefs :: Coreferences1   -- only one
+                 , doc1Corefs :: Maybe Coreferences1   -- only one
                        } deriving (Read, Show,  Eq)
 instance Zeros (Doc1 postag) where zero = Doc1 [] zero
 
@@ -91,7 +92,8 @@ token2to0 posPh (Token2 {..}) = Token0 {..}
         tpostt = zero
         tner = parseNERtagList [tok_ner] -- when is this a list?
                         -- use the Ner2 values?
-        tspeaker = parseSpeakerTagList [tok_speaker]
+        tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
+--                    maybe [] (\a -> [a]) $ tok_speaker
         tbegin = tok_characterOffsetBegin
         tend = tok_characterOffsetEnd
 
@@ -147,7 +149,7 @@ doc2to1 ::(NLP.POStags postag) => postag -> Doc2 -> Doc1 postag
 doc2to1 posPh Doc2{..} = Doc1 {..}
     where
         doc1Sents = map (sentence2to1 posPh) doc_sentences
-        doc1Corefs = coreferences2to0 doc_corefs
+        doc1Corefs =  fmap coreferences2to0 doc_corefs
                 -- chains of mentions
 
 --

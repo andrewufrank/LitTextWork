@@ -117,22 +117,22 @@ instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json")
+    nlpParams _ _ =  HttpVarParams [
             -- only use json for english ?? TODO
-                , ("annotators", Just "tokenize,ssplit,parse,pos\
+                  ("annotators", Just "tokenize,ssplit,parse,pos\
                                         \,lemma,ner,depparse,coref")]
             --                                    coref -coref.algorithm neural")
 --                  attention - no blanks between parameters!!!
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
 instance LanguageTyped2 ItalianType TinT.POStag where
     nlpPort _ _ = portTinT
-    nlpParams _ _ =  HttpVarParams [("format", Just "xml")]
+    nlpParams _ _ =  HttpVarParams []
 
 --    nlpParams _ _ =   [("outputFormat", Just "xml"),
 --                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
@@ -140,19 +140,19 @@ instance LanguageTyped2 ItalianType TinT.POStag where
 
 instance LanguageTyped2 FrenchType French.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 FrenchType FrenchUD.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 SpanishType Spanish.POStag where
     nlpPort _ _ = portSpanish
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "xml"),
+    nlpParams _ _ =  HttpVarParams [
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 

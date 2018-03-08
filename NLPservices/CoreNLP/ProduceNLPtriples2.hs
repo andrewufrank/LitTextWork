@@ -64,8 +64,8 @@ processDoc1toTriples2  lph pph snipsigl  Doc1{..} =
         t2 = mkTripleText (unSnipSigl snipsigl) (mkRDFproperty LanguageTag) (showT lang)
         sents :: [Triple]
         sents =   concat $ map (mkSentence1Triple2 lang  snipsigl) (doc1Sents)
-        corefs =   concat $ map  (mkCorefTriple2 lang   snipsigl )
-                            (coChains doc1Corefs )
+        corefs =   maybe [] (\cr -> concat $   (map  (mkCorefTriple2 lang   snipsigl )
+                            (coChains cr ))) doc1Corefs
 
 ----------------------
 mkSentence1Triple2 :: (Show postag, POStags postag) =>

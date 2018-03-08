@@ -28,7 +28,8 @@ module NLP2RDF.ProduceDocCallNLP
 
 --import CoreNLP.CoreNLPxml (readDocString)
 import CoreNLP.ParseJsonCoreNLP (decodeDoc2, Doc2 (..))
-import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI, URI, HttpVarParams(..))
+import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
+            , URI, HttpVarParams(..), combineHttpVarParams)
 --import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
 import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
 --
@@ -142,20 +143,6 @@ instance (LanguageDependent lang, LanguageTypedText lang
         when debug2 $ putIOwords ["NLP end", showT docs]
         return docs
 
-
---class Docs postag where
---    text2nlpcode  :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
---                    ->  ErrIO (Doc1 postag)    -- the nlpCode to analyzse  D -> E
---    -- call to send text to nlp server and converts xml to Doc0
---    -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
---    -- merger
---    -- the path parameter is used for TinT which wants a path "tint" before the paremters
---
---instance (Docs2 postag, POStags postag) => Docs postag where
---    text2nlpcode ph debugNLP  nlpServer path vars text = do
---            nlpCode :: Text <- text2nlpCode ph debugNLP nlpServer path vars text
---            nlpCode2doc ph debugNLP   nlpCode
-
 class Docs2 postag where
     text2nlpCode :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
                     ->  ErrIO Text
@@ -175,6 +162,8 @@ instance (POStags postag) => Docs2 postag where
                 putIOwords ["text2nlpCode start"
                             , showT . lengthChar $ text
                             , showT . take' 100 $ text ]
+            let vars2 = combineHttpVarParams vars (HttpVarParams [("outputFormat", Just "json")])
+            -- alternative ("outputFormat", Just "xml"),
             nlpCode :: Text <- callHTTP10post debugNLP "multipart/form-data"  nlpServer path
                      (b2bl . t2b $ text) vars  (Just 300)   -- timeout in seconds
 --            when debugNLP  $

@@ -41,7 +41,7 @@ decodeDoc2 :: LazyByteString -> Either String Doc2
 decodeDoc2 = eitherDecode
 
 data Doc2 = Doc2 {doc_sentences::  [Sentence2]
-                  , doc_corefs :: Coreferences2-- [CorefChain2]
+                  , doc_corefs :: Maybe Coreferences2-- [CorefChain2]
                        } deriving (Read, Show,  Eq, Ord, Generic)
 
 instance FromJSON Doc2 where
@@ -54,13 +54,21 @@ data Sentence2 = Sentence2 {s_index :: Int
                         , s_basicDependencies :: Maybe [Dependency2]
                         , s_enhancedDependencies :: Maybe [Dependency2]
                         , s_enhancedPlusPlusDependencies :: Maybe [Dependency2]
-                        , s_entitymentions :: [Ner2]
+                        , s_collapse_ccprocessed_dependencies :: Maybe [Dependency2]
+                                -- collapsed-ccprocessed-dependencies
+                        , s_entitymentions :: Maybe [Ner2]
                         , s_tokens :: [Token2]
                         } deriving (Read, Show,  Eq, Ord, Generic)
 
 instance FromJSON Sentence2 where
     parseJSON = genericParseJSON defaultOptions {
-                fieldLabelModifier = drop 2 }
+                fieldLabelModifier = drop 2 } . fieldlabels2filtered
+
+fieldlabels2filtered  (Object o) = Object . HM.fromList . map filterLabel . HM.toList $ o
+    where
+        filterLabel :: (Text, Value) -> (Text, Value)
+        filterLabel (key,value) = (filterChar (/='-') key, value)
+fieldlabels2filtered x = x
 
 data Dependency2 = Dependency2 {dep_dep ::  Text -- the tag
                         , dep_governor :: Int
@@ -95,9 +103,9 @@ data Token2 = Token2 {tok_index :: Int
                 , tok_characterOffsetEnd :: Int
                 , tok_pos :: Text
                 , tok_ner :: Text  -- missing NormalizedNER ?
-                , tok_speaker :: Text
-                , tok_before :: Text
-                , tok_after :: Text
+                , tok_speaker :: Maybe Text
+                , tok_before :: Maybe Text
+                , tok_after :: Maybe Text
                 } deriving (Read, Show,  Eq, Ord, Generic)
 
 instance FromJSON Token2 where
