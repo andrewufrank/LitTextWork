@@ -259,7 +259,7 @@ fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> LitTe
 -- output is gzip, text is not included
 fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
         sourceMarkup = file
-        , nlpServer = server
+        , nlpServer = server  -- could use/set the server flag
         , authorDir = authordir
         , buchName = buchname
         , includeText = IncludeTextFlag `elem` flags
