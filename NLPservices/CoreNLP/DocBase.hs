@@ -13,6 +13,7 @@
     , OverloadedStrings
     ,Arrows
 --    , GeneralizedNewtypeDeriving
+    , DeriveGeneric
     , DeriveAnyClass
     , TypeSynonymInstances
     #-}
@@ -34,6 +35,7 @@ import   NLP.Corpora.Conll
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 import           Text.Printf             (printf)
+import GHC.Generics
 
 
 newtype  Wordform0 = Wordform0 {word0 :: Text} deriving (Show, Read, Eq, Ord, Zeros)
@@ -43,31 +45,31 @@ newtype  Wordform0 = Wordform0 {word0 :: Text} deriving (Show, Read, Eq, Ord, Ze
 newtype  Lemma0 = Lemma0 {lemma0 :: Text} deriving (Show, Read, Eq, Ord, Zeros)
 -- ^ a single word as lemma
 
-newtype TokenID0 = TokenID0 {untid0 :: Int} deriving (Show, Read, Eq, Ord, Zeros)
---instance Zeros TokenID0 where zero = TID0 zero
-instance NiceStrings TokenID0 where
-    shownice   = show' . untid0
+--newtype TokenID0 = TokenID0 {untid0 :: Int} deriving (Show, Read, Eq, Ord, Zeros)
+----instance Zeros TokenID0 where zero = TID0 zero
+--instance NiceStrings TokenID0 where
+--    shownice   = show' . untid0
 
-mkTokenID :: Text -> TokenID0
+mkTokenID :: Text -> TokenID
 -- to make a sentence id, consist of coll id and number
-mkTokenID s = TokenID0 $ readNoteT "mkTokenID" s
+mkTokenID s = TokenID  $ readNoteT "mkTokenID" s
 
-newtype  SentID0 = SentID0 {unSentID0 :: Int} deriving (Show, Read, Eq, Ord, Zeros)
---instance Zeros SentID0 where zero = SentID0 zero
-instance NiceStrings SentID0 where
-    shownice   = show' . unSentID0
+--newtype  SentID0 = SentID0 {unSentID0 :: Int} deriving (Show, Read, Eq, Ord, Zeros)
+----instance Zeros SentID0 where zero = SentID0 zero
+--instance NiceStrings SentID0 where
+--    shownice   = show' . unSentID0
 
-mkSentID :: Text -> SentID0
+mkSentID :: Text -> SentenceID
 -- to make a sentence id, consist of coll id and number
-mkSentID s = SentID0 $ readNoteT "mkSentID" s
+mkSentID s = SentenceID $ readNoteT "mkSentID" s
 
-newtype ParaID = ParaID  Int
-newtype CorefID = CorefID Int
-newtype MentionID = MentionID Int
-newtype SnipID = SnipID Int
-newtype SentenceID = SentenceID Int
-newtype TokenID = TokenID Int
-newtype DepID = DepID Int
+newtype ParaID = ParaID  Int  deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype CorefID = CorefID Int deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype MentionID = MentionID Int deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype SnipID = SnipID Int deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype SentenceID = SentenceID Int deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype TokenID = TokenID Int deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype DepID = DepID Int deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 
 
