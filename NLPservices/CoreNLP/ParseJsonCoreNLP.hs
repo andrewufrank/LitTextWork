@@ -78,6 +78,8 @@ data Doc2 = Doc2 {doc_sentences::  [Sentence2]
                   , doc_corefs :: Maybe Coreferences2-- [CorefChain2]
                        }
            deriving (Show, Read, Eq, Ord, Generic, ToJSON)
+--instance Zeros (Maybe a) where zero = Nothing
+
 
 instance FromJSON Doc2 where
     parseJSON = genericParseJSON doc2ops
