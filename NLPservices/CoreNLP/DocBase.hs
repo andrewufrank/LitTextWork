@@ -2,10 +2,10 @@
 --
 -- Module      :  Defs0
 --
--- | the base data types for the Doc2 which results from reading the JSONflag
+-- | the base data types for the
 -- output from NLP
 
--- all data has 0 suffix
+
 -----------------------------------------------------------------------------
 {-# LANGUAGE
         ScopedTypeVariables
@@ -14,6 +14,7 @@
     ,Arrows
 --    , GeneralizedNewtypeDeriving
     , DeriveAnyClass
+    , TypeSynonymInstances
     #-}
 
 module CoreNLP.DocBase (
@@ -32,6 +33,7 @@ import Uniform.Zero
 import   NLP.Corpora.Conll
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
+import           Text.Printf             (printf)
 
 
 newtype  Wordform0 = Wordform0 {word0 :: Text} deriving (Show, Read, Eq, Ord, Zeros)
@@ -59,34 +61,71 @@ mkSentID :: Text -> SentID0
 -- to make a sentence id, consist of coll id and number
 mkSentID s = SentID0 $ readNoteT "mkSentID" s
 
-data Token0 postag = Token0 { tid :: TokenID0
-                    , tword :: Wordform0
-                    , tlemma :: Lemma0
-                    , tbegin, tend :: Int  -- not used
-                    , tpos :: postag --  the pos tag recognized
-                    , tposOrig :: Text -- the pos tag received
-                    , tpostt :: Text -- the pos from the tree tagger
-                    , tner :: [NERtag] -- [Text] -- String
-                    , tspeaker :: [SpeakerTag] -- Text -- String
-                    }   deriving (Read, Show, Eq)
+newtype ParaID = ParaID  Int
+newtype CorefID = CorefID Int
+newtype MentionID = MentionID Int
+newtype SnipID = SnipID Int
+newtype SentenceID = SentenceID Int
+newtype TokenID = TokenID Int
+newtype DepID = DepID Int
 
 
-type DepTypeID0 = Text
 
-data DependenceType0 = DependenceType0 { dtt :: DepTypeID0
-                -- not used - whatever the last depType produced is taken
-            , dtd :: [Dependence0]
-            } deriving (Show, Read, Eq, Zeros)
+class FormatID i where
+    formatID :: i -> Text
+    unID :: i -> Int
+
+formatInt :: Int -> Int -> Text
+formatInt n  = s2t . case n of
+        6 -> printf  ('%' : '0' : '6' : 'd' :[])
+        5 ->  printf  ('%' : '0' : '5' : 'd' :[])
+        3 -> printf  ('%' : '0' : '3' : 'd' :[])
+        2 ->  printf  ('%' : '0' : '2' : 'd' :[])
+
+formatID' :: FormatID a =>   Text -> Int -> a -> Text
+formatID' t i =  append  t .  formatInt i . unID
+
+instance FormatID ParaID where
+--  format to 5 digits
+    formatID   =  formatID' "P" 5 -- append  "P" .  formatInt 5 . unID
+    unID (ParaID i) = i
+
+--formatLineID :: Int -> Text
+--formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
+---- format to 3 digits
+instance FormatID MentionID where
+--formatMentionID ::MentionID  -> Text
+-- format an Int to 3 decimals for tokens in sentence
+    formatID  =  formatID' "Mention" 3 -- <>  formatInt3 $ unID
+    unID (MentionID i) = i
+
+instance FormatID CorefID where
+--formatCorefID ::Int -> Text
+-- format an Int to 3 decimals for tokens in sentence
+    formatID  =  formatID' "Coref" 3 -- <>  formatInt3 $ unID
+    unID (CorefID i) = i
+
+instance FormatID DepID where
+    formatID  = formatID' "Dep" 2
+    unID (DepID i) = i
+
+instance FormatID TokenID where
+--formatTokenID ::Int -> Text
+-- format an Int to 3 decimals for tokens in sentence
+    formatID  = formatID' "T" 3 -- <>) .s2t . printf ('%' : '0' : '3' : 'd' :[])
+    unID(TokenID i) = i
+
+instance FormatID SentenceID where
+--    formatSentenceID ::Int -> Text
+-- format an Int to 6 decimals for sentences
+    formatID  = formatID' "S" 6 -- <>) . s2t . printf ('%' : '0' : '6' : 'd' :[])
+    unID (SentenceID i) = i
+
+instance FormatID SnipID where
+--formatSnipID ::Int -> Text
+-- format an Int to 2 decimals for Snis
+    formatID  = formatID' "Snip" 5 -- "N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
+    unID (SnipID i) = i
 
 
-data Dependence0 = Dependence0 {dtype :: DepCode -- Text -- String
-                        , dorig :: Text -- the value given in the XML
-                        , dgov :: DependencePart0
-                        , ddep :: DependencePart0
-                        }   deriving (Show, Read, Eq)
-
-data DependencePart0 = DP0 { did :: TokenID0  -- word number in sentence
-                        , dword :: Wordform0  -- is word from text, not lemma
-                            }   deriving (Show, Read, Eq)
-
-
+    --
