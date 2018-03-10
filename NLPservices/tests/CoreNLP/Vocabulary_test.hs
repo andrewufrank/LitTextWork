@@ -6,20 +6,17 @@
 -- | the list of properties and types used to describe the NLP results
 -- addition to the list of Treebank codes imported and exported here
 -----------------------------------------------------------------------------
+{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module Parser.NLPvocabulary_test  where
+module CoreNLP.Vocabulary_test  where
 
-import           CoreNLP.Defs0
-import           Data.RDF.Extension      --(PartURI, RDFproperty)
-import           Text.Printf             (printf)
-import           Uniform.Strings         hiding ((<|>))
-import Parser.TextDescriptor hiding ((</>)) -- from Foundation
-import LitTypes.ServerNames (rdfBase, vocabularyBase)  -- from Foundation
-import Parser.NLPvocabulary
+import           Test.Framework
+
+
 
 test_emtpy = assertEqual 1 1
 

@@ -30,11 +30,11 @@ import              Uniform.TestHarness
 import LitTypes.LanguageTypedText
 import LitTypes.ServerNames
 
--- import CoreNLP.Defs0   -- should only get instances ?
+-- import CoreNLP.DocBase   -- should only get instances ?
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
-import CoreNLP.Doc2ToDoc1  -- for Doc1
+import CoreNLP.Doc2ToRDF_JSON  -- for Doc1
 import LitTypes.LanguageTypedText
 
 import NLP.Corpora.Conll  as Conll -- Conll for english

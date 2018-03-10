@@ -32,8 +32,8 @@ module NLP2RDF.CompleteSentence (
 import Uniform.Error
 import LitTypes.ServerNames
 import NLP2RDF.ConvertTaggerOutput--import NLP.CallTagger2
--- import CoreNLP.Defs0
-import CoreNLP.Doc2ToDoc1
+-- import CoreNLP.DocBase
+import CoreNLP.Doc2ToRDF_JSON
 import NLP.Corpora.Conll
 --import BuchCode.BuchToken (LanguageCode(..))
 

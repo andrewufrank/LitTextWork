@@ -23,8 +23,9 @@ library
         , uniform-http
         , litFoundation
         , split
-        , rdf4hextension
---        , rdf4h
+        , rdf4hextension ==0.0.9.4
+        , rdf4h ==3.0.1.2
+        -- rdf4h is not required?
         , text
             -- is support for POS codes (could use haskell-conll)
                 -- used in  POS module
@@ -45,18 +46,22 @@ library
 
     exposed-modules:
         -- in order of inclusion
-        NLP2RDF.ProduceDocCallNLP
-        CoreNLP.Defs0
-        CoreNLP.CoreNLPxml
-        NLP2RDF.CompleteSentence
-        NLP2RDF.LanguageSpecific
-        CoreNLP.ProduceNLPtriples
-        NLP2RDF.ConvertTaggerOutput
-        NLP2RDF.NLPvocabulary
+--        NLP2RDF.ProduceDocCallNLP
+----        CoreNLP.Defs0
+----        CoreNLP.CoreNLPxml
+--        NLP2RDF.CompleteSentence
+--        NLP2RDF.LanguageSpecific
+----        CoreNLP.ProduceNLPtriples
+--        NLP2RDF.ConvertTaggerOutput
+--        NLP2RDF.NLPvocabulary
 --        CoreNLP.Models
          CoreNLP.ParseJsonCoreNLP
-         CoreNLP.Doc2ToDoc1
-         CoreNLP.ProduceNLPtriples2
+         CoreNLP.Doc2ToRDF_JSON
+         CoreNLP.DocBase
+         CoreNLP.Vocabulary
+
+--         CoreNLP.Doc2ToDoc1
+--         CoreNLP.ProduceNLPtriples2
 
     exposed: True
     buildable: True
@@ -82,41 +87,42 @@ Test-Suite nlpTestAuto
     default-language: Haskell2010
     hs-source-dirs: tests
     other-modules:
-        NLP2RDF.ProduceDocCallNLP_test
 --        CoreNLP.Models_test
 --        CoreNLP.Defs0_test
 --        CoreNLP.CoreNLPxml_test
          CoreNLP.ParseJsonCoreNLP_test
-         CoreNLP.Doc2ToDoc1_test
-         CoreNLP.ProduceNLPtriples2_test
-        NLP2RDF.CompleteSentence_test
-        NLP2RDF.ProduceNLPtriples_test
-        NLP2RDF.ConvertTaggerOutput_test
-        NLP2RDF.NLPvocabulary_test
+         CoreNLP.Doc2ToRDF_JSON_test
+         CoreNLP.DocBase_test
+--        NLP2RDF.ProduceDocCallNLP_test
+--         CoreNLP.ProduceNLPtriples2_test
+--        NLP2RDF.CompleteSentence_test
+--        NLP2RDF.ProduceNLPtriples_test
+--        NLP2RDF.ConvertTaggerOutput_test
+        CoreNLP.Vocabulary_test
 
-executable NLPmainTest1
--- necessary to run the test to produce triples, which uses all memory
-    main-is:    NLPmainTest1.hs
-    build-depends: base, HTF
-        , NLPservices
-        , uniform-strings
-        , uniform-convenience
-            , uniform-fileio
---        , safe
---        -- , test-framework  -- clash with HTF
---        , test-invariant
---        , text
---        , snap-core
---        , network-uri
---        , bytestring
---        , quickcheck-text
-        , TreeTagSets
-        , litFoundation
-        , rdf4hextension
-        , NLPservices
-        , aeson
-    default-language: Haskell2010
-    hs-source-dirs: src
-    other-modules:
+--executable NLPmainTest1
+---- necessary to run the test to produce triples, which uses all memory
+--    main-is:    NLPmainTest1.hs
+--    build-depends: base, HTF
+--        , NLPservices
+--        , uniform-strings
+--        , uniform-convenience
+--            , uniform-fileio
+----        , safe
+----        -- , test-framework  -- clash with HTF
+----        , test-invariant
+----        , text
+----        , snap-core
+----        , network-uri
+----        , bytestring
+----        , quickcheck-text
+--        , TreeTagSets
+--        , litFoundation
+--        , rdf4hextension
+--        , NLPservices
+--        , aeson
+--    default-language: Haskell2010
+--    hs-source-dirs: src
+--    other-modules:
 
 

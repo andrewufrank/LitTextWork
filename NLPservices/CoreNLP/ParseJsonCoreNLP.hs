@@ -10,7 +10,7 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass, StandaloneDeriving #-}
 --{-# LANGUAGE TemplateHaskell #-}
 -- template haskell requires reordering of data types
 --and all functions used for default otions imported (not local defined)
@@ -26,15 +26,48 @@ import Data.Aeson.Types  -- for modifying the labels
 import GHC.Generics
 import Control.Monad (mzero)
 import qualified Data.HashMap.Strict as HM
+import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..))
+--import NLP2RDF.NLPvocabulary (SnipSigl(..))
+import NLP.Types.Tags (POStags(..))
+import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
+import CoreNLP.Vocabulary
+import LitTypes.LanguageTypedText (unLCtext, LCtext (..))
+-- all data has 2 suffix ??
 
--- all data has 2 suffix
+-- | a single language piece of text with lanuage code
+-- , length and start para number
+data Snip2 lang = Snip2 { snip2text :: LTtext lang
+                        , snip2sigl :: SnipSigl  -- the id of the snip
+                          }
+            deriving (Read, Show, Eq)
+instance Zeros (Snip2 lang) where
+    zero = Snip2 zero zero
 
---parseNLP :: ErrIO ()
---parseNLP = do
---    f :: LazyByteString <- readFile2 (makeRelFile "short1 .json")
---    let r = decodeDoc2 f -- :: Maybe [Doc2]
---    putIOwords ["decoded", showT r]
---    return ()
+snipIsNull :: Snip2 lang -> Bool
+-- ^ test for null text
+snipIsNull = null' . unLCtext . snip2text
+
+newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
+unNLPtriple (NLPtriple t) = t
+
+
+--processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
+--            => lang ->  postag -> SnipSigl  -> Doc0 postag -> [NLPtriple postag]
+--            -- TriplesGraph  G -> H
+---- ^ convert the doc0 (which is the analysed xml) and produce the triples
+--
+--processDoc0toTriples2  lph pph snipsigl  doc0 =
+--    map NLPtriple $ t2  : sents -- ++ corefs
+--
+--    where
+--        lang = languageCode lph -- tz3lang ntz
+----        snipid = snip2sigl snip -- mkSnipSigl paraid snipnr
+--        t2 = mkTripleText (unSnipSigl snipsigl)
+--                (mkRDFproperty LanguageTag) (showT lang)
+--        sents :: [Triple]
+--        sents =   concat $ map (mkSentenceTriple2 lang  snipsigl) (docSents doc0)
+----        corefs =    (mkCorefTriple1 lang   snipsigl )
+----                            (docCorefs doc0)
 
 decodeDoc2 :: LazyByteString -> Either String Doc2
 --decodeDoc2 :: ByteString -> Either String Doc2

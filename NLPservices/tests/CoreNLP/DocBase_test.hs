@@ -23,24 +23,13 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceNLPtriples_test  where
+module CoreNLP.DocBase_test  where
 
 import           Test.Framework
-import Uniform.TestHarness (testVar3File)
-import CoreNLP.DocBase
-import CoreNLP.NERcodes
-import Parser.TextDescriptor
-import NLP.Types.Tags
-import Parser.NLPvocabulary  -- from Foundation
-import Parser.LanguageTypedText
-import Data.List (partition)
--- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
-import Parser.ProduceNLPtriples
 
-import Parser.ProduceLit
 
-test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
-                (mkRDFtype ( "Werk"::Text ))
+--test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
+--                (mkRDFtype ( "Werk"::Text ))
 
 
 -- cannot be used, as result1A is in LitText, which is above

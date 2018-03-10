@@ -13,12 +13,13 @@
 
 module NLP2RDF.NLPvocabulary
     ( module NLP2RDF.NLPvocabulary
-      , module CoreNLP.Defs0
+      , module CoreNLP.DocBase
       , module Data.RDFext.Extension
       , module Uniform.Strings
+      , SnipSigl
     ) where
 
-import           CoreNLP.Defs0
+--import           CoreNLP.DocBase
 import           Data.RDFext.Extension  -- (RDFproperty)
 import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
@@ -26,7 +27,8 @@ import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import LitTypes.ServerNames
 import LitTypes.TextDescriptor
 import LitTypes.TextDescriptor (SnipSigl)
-
+--import CoreNLP.DEPcodes (DepCode(..))
+import CoreNLP.DocBase
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker

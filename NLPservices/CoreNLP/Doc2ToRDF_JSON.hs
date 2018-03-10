@@ -20,13 +20,13 @@
 -- template haskell requires reordering of data types
 --and all functions used for default otions imported (not local defined)
 
-module CoreNLP.Doc2ToDoc1
-    ( module CoreNLP.Doc2ToDoc1
-    ,  module CoreNLP.Defs0
+module CoreNLP.Doc2ToRDF_JSON
+    ( module CoreNLP.Doc2ToRDF_JSON
+    ,  module CoreNLP.DocBase
     ) where
 
 import           Uniform.Strings
-import CoreNLP.Defs0
+import CoreNLP.DocBase
 import CoreNLP.ParseJsonCoreNLP
 import qualified NLP.Types.Tags      as NLP
 import              CoreNLP.DEPcodes
@@ -58,7 +58,6 @@ data Dependence1 = Dependence1 {d1type :: DepCode -- Text -- String
 
 instance Zeros Dependence1  where
         zero = Dependence1 zero zero zero zero zero zero
-instance Zeros DepCode where zero = DepUnknown "constant zero"
 
 data Coreferences1 = Coreferences1 {coChains:: [MentionChain1]}
                 deriving (Read, Show,  Eq)

@@ -23,7 +23,7 @@ import Uniform.FileIO
 --import           Lib.BlogExample
 --import  Lib.Tutorial1
 import CoreNLP.ParseJsonCoreNLP
-import CoreNLP.Doc2ToDoc1
+import CoreNLP.Doc2ToRDF_JSON
 import CoreNLP.ProduceNLPtriples2
 
 import Uniform.Convenience.StartApp
@@ -32,7 +32,7 @@ import qualified NLP.Corpora.Conll  as Conll
 import Data.Aeson (eitherDecode)
 import LitTypes.LanguageTypedText (undefEnglish)
 import CoreNLP.ProduceNLPtriples (unNLPtriple)
-import NLP2RDF.NLPvocabulary
+--import NLP2RDF.NLPvocabulary
 import Data.RDFext.Extension
 import LitTypes.ServerNames -- (PartURI)
 import LitTypes.TextDescriptor (SnipID (..))

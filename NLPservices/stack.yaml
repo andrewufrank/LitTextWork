@@ -10,6 +10,9 @@ packages:
 - /home/frank/Workspace8/uniform/uniform-time
 - /home/frank/Workspace8/uniform/uniform-http
 
+#- location: /home/frank/Workspace8/rdf4h
+#  extra-dep: true
+
 - /home/frank/Workspace8/rdf4h
 
 - /home/frank/Workspace8/TreeTagSets
@@ -20,4 +23,5 @@ extra-deps:
 - hgal-2.0.0.2
 - parsec-extra-0.2.0.0
 - test-invariant-0.4.5.0
-resolver: lts-9.1
+
+resolver: lts-9.9

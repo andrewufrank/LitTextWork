@@ -27,7 +27,7 @@ import           Test.Framework
 import Uniform.Error
 import LitTypes.ServerNames
 import Parser.ConvertTaggerOutput--import NLP.CallTagger2
-import CoreNLP.Defs0
+import CoreNLP.DocBase
 import NLP.Corpora.Conll
 --import BuchCode.BuchToken (LanguageCode(..))
 

@@ -34,8 +34,13 @@ import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
 --import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
 
 -- version based on JSON parsing :
-import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
+--import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
 --
+-- version with Doc2ToRDF_JSON
+import CoreNLP.Doc2ToRDF_JSON
+
+--import NLP2RDF.ProduceNLPtriples (Snip2(..))
+
 import NLP.Corpora.Conll  as Conll -- Conll for english
 import NLP.Corpora.ItalianTinT   as TinT-- for italian
 import NLP.Corpora.German  as German --

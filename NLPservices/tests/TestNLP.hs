@@ -25,11 +25,16 @@ module Main     where      -- must have Main (main) or Main where
 import  Uniform.Strings
 import   Test.Framework
 
+import {-@ HTF_TESTS @-} CoreNLP.Doc2ToRDF_JSON_test
+import {-@ HTF_TESTS @-} CoreNLP.DocBase_test
+import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
+import {-@ HTF_TESTS @-} CoreNLP.Vocabulary_test
+
 --import {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml_test
 --import {-@ HTF_TESTS @-} CoreNLP.Defs0_test
 --import {-@ HTF_TESTS @-} CoreNLP.Models_test
 -- parser:
-import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test
+--import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test
 -- tests text to snip (M) and to Triples (N)
 
 --import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test
