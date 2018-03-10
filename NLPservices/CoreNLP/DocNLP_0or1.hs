@@ -17,6 +17,7 @@
     , OverloadedStrings
     ,Arrows
 --    , GeneralizedNewtypeDeriving
+    , DeriveGeneric
     , DeriveAnyClass
     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -39,6 +40,7 @@ import   NLP.Corpora.Conll
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 import CoreNLP.DocBase
+import GHC.Generics
 
 class To1 postag a2 a1 where
 -- convert to the 1 or 0 records
@@ -49,8 +51,9 @@ class To1 postag a2 a1 where
 
 data Doc1 postag = Doc1 {doc1Sents:: [Sentence1 postag]
                  , doc1Corefs :: Maybe Coreferences1   -- only one
-                       } deriving (Read, Show,  Eq)
-instance Zeros (Doc1 postag) where zero = Doc1 [] zero
+                       } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+
+--instance Zeros (Doc1 postag) where zero = Doc1 [] zero
 
 data Sentence1 postag = Sentence1 {s1id :: SentenceID
                         , s1parse :: Maybe Text  -- the parse tree
@@ -59,7 +62,8 @@ data Sentence1 postag = Sentence1 {s1id :: SentenceID
                         -- should be only one or none
                         -- select (last = best) in coreNLPxml in getSentence
                         -- could be changed to parse all and select later
-                        } deriving (Read, Show,  Eq)
+                        }  deriving (Show, Read, Eq, Ord, Generic, Zeros)
+
 
 data Dependence1 = Dependence1 {d1type :: DepCode -- Text -- String
                         , d1orig :: Text -- the value given in the XML
@@ -67,19 +71,21 @@ data Dependence1 = Dependence1 {d1type :: DepCode -- Text -- String
                         , d1depid :: TokenID
                         , d1govGloss :: Text
                         , d1depGloss :: Text
-                        }   deriving (Show, Read, Eq)
+                        } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
-instance Zeros Dependence1  where
-        zero = Dependence1 zero zero zero zero zero zero
+
+--instance Zeros Dependence1  where
+--        zero = Dependence1 zero zero zero zero zero zero
 
 data Coreferences1 = Coreferences1 {coChains:: [MentionChain1]}
-                deriving (Read, Show,  Eq)
+                deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
-instance Zeros Coreferences1 where zero = Coreferences1 []
+--instance Zeros Coreferences1 where zero = Coreferences1 []
 
-data MentionChain1 = MentionChain1 [Mention1] deriving (Read, Show,  Eq)
+data MentionChain1 = MentionChain1 [Mention1]
+        deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
-instance Zeros (MentionChain1) where zero = MentionChain1 []
+--instance Zeros (MentionChain1) where zero = MentionChain1 []
 
 data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative mention
         , mentSent :: SentenceID
@@ -87,8 +93,10 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
         , mentHead :: TokenID  -- the head of the mention
         , mentText :: Text  -- multiple words, the actual mention - not yet used
         }
-  deriving (Show, Read, Eq)
-instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
+  deriving (Show, Read, Eq, Ord, Generic, Zeros)
+--instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
+
+instance Zeros Bool where zero = False
 
 data Token0 postag = Token0 { tid :: TokenID
                     , tword :: Wordform0
@@ -99,7 +107,7 @@ data Token0 postag = Token0 { tid :: TokenID
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [NERtag] -- [Text] -- String
                     , tspeaker :: [SpeakerTag] -- Text -- String
-                    }   deriving (Read, Show, Eq)
+                    }   deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 
 --type DepTypeID0 = Text
@@ -114,10 +122,10 @@ data Dependence0 = Dependence0 {dtype :: DepCode -- Text -- String
                         , dorig :: Text -- the value given in the XML
                         , dgov :: DependencePart0
                         , ddep :: DependencePart0
-                        }   deriving (Show, Read, Eq)
+                        } deriving   (Show, Read, Eq, Ord, Generic, Zeros)
 
 data DependencePart0 = DP0 { did :: TokenID  -- word number in sentence
                         , dword :: Wordform0  -- is word from text, not lemma
-                            }   deriving (Show, Read, Eq)
+                            } deriving  (Show, Read, Eq, Ord, Generic, Zeros)
 
 

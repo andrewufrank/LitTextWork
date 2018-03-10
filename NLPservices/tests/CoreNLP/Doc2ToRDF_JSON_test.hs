@@ -27,6 +27,14 @@ import CoreNLP.Doc2ToRDF_JSON
 import qualified NLP.Corpora.Conll  as Conll
 --import Text.Show.Pretty (valToStr)
 --import Text.PrettyPrint.GenericPretty
+import Data.Aeson.Encode.Pretty
+import Data.Aeson
+import GHC.Exts
+
+
+test_toJson = assertEqual objVBG (toJSON (Conll.VBG))
+
+objVBG = String "VBG"
 
 test_nlpjson2  = do
     res0 <- runErr $ do
@@ -39,6 +47,8 @@ test_nlpjson2  = do
         let r3 = fmap id r2
 --        putIOwords ["converted", showT r2]
         runErrorFromEither r3
+--    let res2p = encodePretty restest_nlpjson2
+--    let res0p = encodePretty res0
 --        return r
     assertEqual restest_nlpjson2  (show res0)
 

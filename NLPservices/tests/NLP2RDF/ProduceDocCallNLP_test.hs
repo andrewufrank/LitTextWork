@@ -24,7 +24,7 @@ module NLP2RDF.ProduceDocCallNLP_test  where
 
 import              Test.Framework
 import              Uniform.TestHarness
-import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
+--import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
 import CoreNLP.Doc2ToRDF_JSON
 import LitTypes.LanguageTypedText
 

@@ -76,7 +76,8 @@ decodeDoc2 = eitherDecode
 
 data Doc2 = Doc2 {doc_sentences::  [Sentence2]
                   , doc_corefs :: Maybe Coreferences2-- [CorefChain2]
-                       } deriving (Read, Show,  Eq, Ord, Generic)
+                       }
+           deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
 instance FromJSON Doc2 where
     parseJSON = genericParseJSON doc2ops
@@ -84,21 +85,23 @@ doc2ops = defaultOptions {
                 fieldLabelModifier = drop 4 }
 
 data Sentence2 = Sentence2 {s_index :: Int
-                        , s_parse :: Maybe Text  -- the parse tree
-                        , s_basicDependencies :: Maybe [Dependency2]
-                        , s_enhancedDependencies :: Maybe [Dependency2]
-                        , s_enhancedPlusPlusDependencies :: Maybe [Dependency2]
-                        , s_collapse_ccprocessed_dependencies :: Maybe [Dependency2]
-                                -- collapsed-ccprocessed-dependencies
-                        , s_entitymentions :: Maybe [Ner2]
-                        , s_tokens :: [Token2]
-                        } deriving (Read, Show,  Eq, Ord, Generic)
+                , s_parse :: Maybe Text  -- the parse tree
+                , s_basicDependencies :: Maybe [Dependency2]
+                , s_enhancedDependencies :: Maybe [Dependency2]
+                , s_enhancedPlusPlusDependencies :: Maybe [Dependency2]
+                , s_collapse_ccprocessed_dependencies :: Maybe [Dependency2]
+                        -- collapsed-ccprocessed-dependencies
+                , s_entitymentions :: Maybe [Ner2]
+                , s_tokens :: [Token2]
+                }
+        deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
 instance FromJSON Sentence2 where
     parseJSON = genericParseJSON defaultOptions {
                 fieldLabelModifier = drop 2 } . fieldlabels2filtered
 
-fieldlabels2filtered  (Object o) = Object . HM.fromList . map filterLabel . HM.toList $ o
+fieldlabels2filtered  (Object o) = Object . HM.fromList
+                . map filterLabel . HM.toList $ o
     where
         filterLabel :: (Text, Value) -> (Text, Value)
         filterLabel (key,value) = (filterChar (/='-') key, value)
@@ -109,7 +112,8 @@ data Dependency2 = Dependency2 {dep_dep ::  Text -- the tag
                         , dep_governorGloss :: Text
                         , dep_dependent :: Int
                         , dep_dependentGloss :: Text
-                        } deriving (Read, Show,  Eq, Ord, Generic)
+                        }
+                deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
 
 instance FromJSON Dependency2 where
     parseJSON = genericParseJSON defaultOptions {
@@ -123,7 +127,8 @@ data Ner2 = Ner2 {ner_docTokenBegin :: Int
                 , ner_characterOffsetBegin :: Int
                 , ner_characterOffsetEnd :: Int
                 , ner_ner :: Text -- the code
-                } deriving (Read, Show,  Eq, Ord, Generic)
+                }
+        deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
 
 instance FromJSON Ner2 where
     parseJSON = genericParseJSON defaultOptions {
@@ -140,14 +145,13 @@ data Token2 = Token2 {tok_index :: Int
                 , tok_speaker :: Maybe Text
                 , tok_before :: Maybe Text
                 , tok_after :: Maybe Text
-                } deriving (Read, Show,  Eq, Ord, Generic)
-
+                } deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
 instance FromJSON Token2 where
     parseJSON = genericParseJSON defaultOptions {
                 fieldLabelModifier = drop 4 }
 
 data Coreferences2 = Coreferences2  {chains:: [CorefChain2] }
-                 deriving (Read, Show,  Eq, Ord, Generic)
+                 deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
 
 instance FromJSON Coreferences2 where
     parseJSON =   genericParseJSON opts  . jsonToArray
@@ -163,7 +167,7 @@ jsonToArray x = x
 
 
 data CorefChain2 = CorefChain2 [Coref2]
-                 deriving (Read, Show,  Eq, Ord, Generic, FromJSON)
+         deriving (Read, Show,  Eq, Ord, Generic, ToJSON, FromJSON, Zeros)
 
 --instance FromJSON CorefChain2 where
 
@@ -180,8 +184,7 @@ data Coref2 = Coref2 {coref_id :: Int
                     , coref_sentNum :: Int
 --                    , coref_position :: [Int]
                     , coref_isRepresentativeMention :: Bool
-                } deriving (Read, Show,  Eq, Ord, Generic)
-
+                } deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
 instance FromJSON Coref2 where
     parseJSON =   genericParseJSON opts
         where
