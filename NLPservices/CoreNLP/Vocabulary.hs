@@ -21,12 +21,11 @@ module CoreNLP.Vocabulary
 
 --import           CoreNLP.DocBase
 import           Data.RDFext.Extension  -- (RDFproperty)
-import           Text.Printf             (printf)
 import           Uniform.Strings         hiding ((<|>))
-import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
+import LitTypes.TextDescriptor hiding ((</>), SnipID) -- from Foundation
 import LitTypes.ServerNames
-import LitTypes.TextDescriptor
-import LitTypes.TextDescriptor (SnipSigl)
+--import LitTypes.TextDescriptor
+--import LitTypes.TextDescriptor (SnipSigl)
 --import CoreNLP.DEPcodes (DepCode(..))
 import CoreNLP.DocBase
 
@@ -60,24 +59,16 @@ data NLPtype = Doc | Snip | Sentence | Token
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
 
-type ParaID = Int   -- should be typed?
 
 newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
 unParaSigl (ParaSigl t) = t
 
-paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
+paraSigl :: TextDescriptor -> ParaID -> ParaSigl
 paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
-                (formatParaID . unparaNum $ pn)
+                (formatID  pn)
                       ( buchURIx $ textstate)
                   )
 
-formatParaID :: ParaID -> Text
-formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
---  format to 5 digits
-
---formatLineID :: Int -> Text
---formatLineID nr = "L" <> (s2t . printf  ('%' : '0' : '3' : 'd' :[]) $  nr )
----- format to 3 digits
 
 buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
             <#> authorDir textstate <-> buchName textstate
@@ -93,91 +84,70 @@ buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
 mkSnipSigl parasigl snipid =  SnipSigl
-      . extendSlashRDFsubj  (formatSnipID  . unSnipID $    snipid)
+      . extendSlashRDFsubj  (formatID  snipid)
       . unParaSigl $ parasigl
   where
-    formatSnipID ::Int -> Text
-    -- format an Int to 2 decimals for Snis
-    formatSnipID  = ("N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
 
 
 newtype SentSigl = SentSigl RDFsubj deriving (Show, Eq)
-mkSentSigl :: SnipSigl  -> SentID0 -> SentSigl
+mkSentSigl :: SnipSigl  -> SentenceID -> SentSigl
 unSentSigl (SentSigl a) = a
 -- make the sentence id from buchsigl (docid) and sentnumber
 -- mkSentSigl docid sentid =  RDFsubj $ docid <+> "S" <> (formatSentenceID  . unSentID0 $    sentid)
 mkSentSigl docsigl sentid =  SentSigl
-      . extendSlashRDFsubj  (formatSentenceID  . unSentID0 $    sentid)
+      . extendSlashRDFsubj  (formatID   sentid)
       . unSnipSigl $ docsigl
   where
-    formatSentenceID ::Int -> Text
-    -- format an Int to 6 decimals for sentences
-    formatSentenceID  = ("S" <>) . s2t . printf ('%' : '0' : '6' : 'd' :[])
 
 newtype TokenSigl = TokenSigl RDFsubj deriving (Show, Eq)
 unTokenSigl (TokenSigl a) = a
 
-mkTokenSigl :: SentSigl -> TokenID0 -> TokenSigl
+mkTokenSigl :: SentSigl -> TokenID -> TokenSigl
 -- make the token sigl from sentence id
 mkTokenSigl sentsigl  tok =  TokenSigl
-      . extendSlashRDFsubj  (formatTokenID  . untid0 $  tok)
+      . extendSlashRDFsubj  (formatID tok)
       . unSentSigl $ sentsigl
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
   where
-    formatTokenID ::Int -> Text
-    -- format an Int to 3 decimals for tokens in sentence
-    formatTokenID  = ("T" <>) .s2t . printf ('%' : '0' : '3' : 'd' :[])
 
-newtype DepTypeSigl = DepTypeSigl RDFsubj deriving (Show, Eq)
-unDepTypeSigl (DepTypeSigl a) = a
-
-mkDepTypeSigl :: SentSigl -> DepTypeID0 -> DepTypeSigl
--- make the token sigl from sentence id
-mkDepTypeSigl sentsigl  did =  DepTypeSigl
-      . extendSlashRDFsubj did   -- is a Text
-      . unSentSigl $ sentsigl
+--newtype DepTypeSigl = DepTypeSigl RDFsubj deriving (Show, Eq)
+--unDepTypeSigl (DepTypeSigl a) = a
+--
+--mkDepTypeSigl :: SentSigl -> DepID -> DepTypeSigl
+---- make the token sigl from sentence id
+--mkDepTypeSigl sentsigl  did =  DepTypeSigl
+--      . extendSlashRDFsubj did   -- is a Text
+--      . unSentSigl $ sentsigl
 
 newtype DepSigl = DepSigl RDFsubj deriving (Show, Eq)
 unDepSigl (DepSigl a) = a
 
 
-mkDepSigl2 :: SentSigl -> Int -> DepSigl
+mkDepSigl2 :: SentSigl -> DepID  -> DepSigl
 -- make the dependency sigl (these must be numbered)
 mkDepSigl2 sentsigl  i =  DepSigl
-      . extendSlashRDFsubj (formatDepID i)   -- is a Text
+      . extendSlashRDFsubj (formatID i)   -- is a Text
       . unSentSigl $ sentsigl
     where
-        formatDepID  = ("Dep" <>) .s2t . printf ('%' : '0' : '2' : 'd' :[])
 
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
-type CorefNr = Int
 newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Eq)
 unCorefSigl (CorefSigl a) = a
 
-mkCorefsigl :: SnipSigl -> CorefNr -> CorefSigl
+mkCorefsigl :: SnipSigl -> CorefID -> CorefSigl
 -- given a snip id produce a corefid with the number given
 mkCorefsigl snip c =   CorefSigl
-      . extendSlashRDFsubj  (formatCorefID     c)
+      . extendSlashRDFsubj  (formatID     c)
       . unSnipSigl $ snip
-  where
-    formatCorefID ::Int -> Text
-    -- format an Int to 3 decimals for tokens in sentence
-    formatCorefID  = ("Coref" <>) . s2t . printf ('%' : '0' : '3' : 'd' :[])
-
---      t2oURI <#>  "Coref"<> (coref2text c)
 
 type MentionNr = Int
 newtype MentionSigl = MentionSigl RDFsubj deriving (Show, Eq)
 unMentionSigl (MentionSigl a) = a
 
-mkMentionsigl :: CorefSigl -> MentionNr -> MentionSigl
+mkMentionsigl :: CorefSigl -> MentionID -> MentionSigl
 -- given a snip id produce a Mentionid with the number given
 mkMentionsigl corefsigl c =   MentionSigl
-      . extendSlashRDFsubj  (formatMentionID c)
+      . extendSlashRDFsubj  (formatID c)
       . unCorefSigl $ corefsigl
-  where
-    formatMentionID ::Int -> Text
-    -- format an Int to 3 decimals for tokens in sentence
-    formatMentionID  = ("Mention" <>) . s2t . printf ('%' : '0' : '3' : 'd' :[])
 
 
