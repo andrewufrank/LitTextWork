@@ -58,6 +58,7 @@ library
          CoreNLP.ParseJsonCoreNLP
          CoreNLP.Doc2ToRDF_JSON
          CoreNLP.DocBase
+         CoreNLP.DocNLP_0or1
          CoreNLP.Vocabulary
 
 --         CoreNLP.Doc2ToDoc1

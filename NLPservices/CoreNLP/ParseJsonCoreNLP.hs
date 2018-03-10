@@ -1,6 +1,7 @@
 -----------------------------------------------------------------------------
 --
 -- Module      :  parsing the output of stanford corenlp 3.9. in json format
+-- produces Doc2
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}

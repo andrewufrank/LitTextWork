@@ -35,7 +35,7 @@ test_nlpjson2  = do
         f <- readFile2  fn
 --        putIOwords ["json input:",showStartJson f]
         let r = eitherDecode  f  :: Either String Doc2
-        let r2 = fmap (doc2to1 Conll.undefConll) r :: Either String (Doc1 Conll.POStag)
+        let r2 = fmap (to1 Conll.undefConll) r :: Either String (Doc1 Conll.POStag)
         let r3 = fmap id r2
 --        putIOwords ["converted", showT r2]
         runErrorFromEither r3
