@@ -17,18 +17,11 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.LanguageTypedText_test where
+module LitTypes.LanguageTypedText_test where
 
 import           Test.Framework
---import Uniform.TestHarness (testVar3File)
-import Uniform.Zero (Zeros (..))
---import Uniform.Strings
-import Uniform.Error--  (undef)
---import Data.RDF.Extension -- (LanguageCode (..))
---import CoreNLP.Defs0
---import Parser.TextDescriptor
---import NLP.Types.Tags
---import Parser.NLPvocabulary  -- from Foundation
-import Parser.LanguageTypedText
+--import Uniform.Zero (Zeros (..))
+--import Uniform.Error--  (undef)
+--import LitTypes.LanguageTypedText
 
 
