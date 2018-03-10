@@ -28,20 +28,11 @@ module CoreNLP.ProduceNLPtriples2 -- (openMain, htf_thisModuelsTests)
     , NLPtriple (..), unNLPtriple
     ) where
 
-----import           Uniform.Strings
-----import Uniform.FileIO
 import CoreNLP.Doc2ToDoc1
---import CoreNLP.ParseJsonCoreNLP
---import qualified NLP.Types.Tags      as NLP
-----import qualified NLP.Corpora.Conll  as Conll
-----import qualified NLP.Corpora.UD  as UD
-----            Uniform.FileIO
-----import              LitNLP.Tools
---import              CoreNLP.DEPcodes
---import              CoreNLP.NERcodes
---import Uniform.Zero
-import CoreNLP.ProduceNLPtriples
---import CoreNLP.Defs0
+import CoreNLP.ProduceNLPtriples (NLPtriple(..), unNLPtriple
+        , Snip2(..), snipIsNull
+        , mkTokenTriple2)
+
 import CoreNLP.NERcodes
 import LitTypes.TextDescriptor
 import NLP.Types.Tags

@@ -30,7 +30,10 @@ module NLP2RDF.ProduceDocCallNLP
 import CoreNLP.ParseJsonCoreNLP (decodeDoc2, Doc2 (..))
 import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
             , URI, HttpVarParams(..), combineHttpVarParams)
+-- version for xml (old)
 --import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2)
+
+-- version based on JSON parsing :
 import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
 --
 import NLP.Corpora.Conll  as Conll -- Conll for english
@@ -50,7 +53,7 @@ import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
 
 
-convertOneSnip2Triples3 :: LitTextFlags  ->   TD.Snip ->    ErrIO [Triple]
+convertOneSnip2Triples3 :: LitTextFlags  -> TD.Snip -> ErrIO [Triple]
     -- this is  the entry point called from litText
 
 convertOneSnip2Triples3 flags snip = do
