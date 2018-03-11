@@ -30,7 +30,7 @@ import   Test.Framework
 import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
 --import {-@ HTF_TESTS @-} CoreNLP.Vocabulary_test
 
---import {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml_test
+import {-@ HTF_TESTS @-} CoreNLP.DocNLP_0or1_test
 --import {-@ HTF_TESTS @-} CoreNLP.Defs0_test
 --import {-@ HTF_TESTS @-} CoreNLP.Models_test
 -- parser:

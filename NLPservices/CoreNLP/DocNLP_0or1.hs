@@ -14,17 +14,19 @@
 {-# LANGUAGE
         ScopedTypeVariables
         , FlexibleContexts
+        , FlexibleInstances
     , OverloadedStrings
     ,Arrows
 --    , GeneralizedNewtypeDeriving
     , DeriveGeneric
     , DeriveAnyClass
+    , RecordWildCards
     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 module CoreNLP.DocNLP_0or1 (
         module CoreNLP.DocNLP_0or1
-        , module CoreNLP.DocBase
+        , module CoreNLP.ParseJsonCoreNLP
 --        , module CoreNLP.POScodes
         ,  SpeakerTags (..)
 --        , module CoreNLP.NERcodes -- import separately when needed
@@ -39,12 +41,15 @@ import Uniform.Zero
 import   NLP.Corpora.Conll
 import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
-import CoreNLP.DocBase
+import CoreNLP.ParseJsonCoreNLP
 import GHC.Generics
+import qualified NLP.Types.Tags      as NLP
+import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
+import Data.Maybe
 
-class To1 postag a2 a1 where
+class ConvertTo1 postag a2 a1 where
 -- convert to the 1 or 0 records
-    to1 :: postag -> a2 -> a1
+    convertTo1 :: postag -> a2 -> a1
 
 
 
@@ -96,7 +101,7 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
   deriving (Show, Read, Eq, Ord, Generic, Zeros)
 --instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
 
-instance Zeros Bool where zero = False
+--instance Zeros Bool where zero = False
 
 data Token0 postag = Token0 { tid :: TokenID
                     , tword :: Wordform0
@@ -129,3 +134,98 @@ data DependencePart0 = DP0 { did :: TokenID  -- word number in sentence
                             } deriving  (Show, Read, Eq, Ord, Generic, Zeros)
 
 
+instance (NLP.POStags postag) => ConvertTo1 postag Doc2 (Doc1 postag) where
+--
+--doc2to1 ::(NLP.POStags postag) => postag -> Doc2 -> Doc1 postag
+--doc2to1
+    convertTo1 posPh Doc2{..} = Doc1 {..}
+      where
+        doc1Sents = map (convertTo1 posPh) doc_sentences
+        doc1Corefs =  fmap (convertTo1 posPh) doc_corefs
+                -- chains of mentions
+
+
+instance (NLP.POStags postag)
+    => ConvertTo1 postag Sentence2 (Sentence1 postag) where
+
+--sentence2to1 :: (NLP.POStags postag)
+--    => postag -> Sentence2 -> Sentence1 postag
+
+    convertTo1  posPh Sentence2 {..} = Sentence1 {..}
+        where
+            s1id = SentenceID s_index
+            s1parse = s_parse
+            s1toks = map (convertTo1 posPh)  s_tokens
+            s1deps = case s_enhancedPlusPlusDependencies of
+                Just d1 -> Just $ map (convertTo1 posPh) d1
+                Nothing -> case s_enhancedDependencies of
+                    Just d2 -> Just $ map  (convertTo1 posPh) d2
+                    Nothing -> case s_basicDependencies of
+                        Just d3 -> Just $ map (convertTo1 posPh) d3
+                        Nothing -> Nothing
+
+
+instance (NLP.POStags postag)
+        => ConvertTo1 postag Token2 (Token0 postag) where
+
+    convertTo1 posPh (Token2 {..}) = Token0 {..}
+
+--token2to0 :: (NLP.POStags postag) => postag -> Token2 -> Token0 postag
+---- ^ convert a token2 dataset from JSON to Token0
+---- posTag phantom indicates the type of posTags to use
+--token2to0 posPh (Token2 {..}) = Token0 {..}
+      where
+        tid = TokenID  tok_index
+        tword = Wordform0 tok_word
+        tlemma = Lemma0 tok_lemma
+        tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
+        tposOrig = tok_pos
+        tpostt = zero
+        tner = parseNERtagList [tok_ner] -- when is this a list?
+                        -- use the Ner2 values?
+        tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
+--                    maybe [] (\a -> [a]) $ tok_speaker
+        tbegin = tok_characterOffsetBegin
+        tend = tok_characterOffsetEnd
+
+
+instance ConvertTo1 postag Dependency2 (Dependence1) where
+
+--dependency2to0 :: Dependency2 -> Dependence1
+    convertTo1 _  Dependency2 {..} = Dependence1 {..}
+        where
+            d1type = parseDEPtag dep_dep :: DepCode
+            d1orig = dep_dep
+            d1govid = TokenID dep_governor
+            d1depid = TokenID dep_dependent
+            d1govGloss = dep_governorGloss
+            d1depGloss = dep_dependentGloss
+
+
+
+instance ConvertTo1 postag Coreferences2 (Coreferences1) where
+
+--coreferences2to0 :: Coreferences2 -> Coreferences1
+    convertTo1 phP Coreferences2{..} = Coreferences1{..}
+        where
+            coChains = map (convertTo1 phP) chains
+
+instance ConvertTo1 postag CorefChain2 MentionChain1 where
+
+--corefChain2to0 :: CorefChain2 -> CorefChain2
+    convertTo1 phP (CorefChain2 cs) = MentionChain1 (map (convertTo1 phP) cs)
+        -- phantom is not used
+
+instance ConvertTo1 postag Coref2 (Mention1) where
+
+--coref2to0 :: Coref2 -> Mention1
+    convertTo1 _  (Coref2 {..}) = Mention1 {..}
+        where
+            mentRep = coref_isRepresentativeMention
+            mentSent = SentenceID coref_sentNum
+            mentStart = TokenID coref_startIndex
+            mentEnd = TokenID coref_endIndex   -- points next word
+            mentHead = TokenID coref_headIndex
+            mentText = coref_text
+
+--

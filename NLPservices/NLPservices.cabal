@@ -100,7 +100,8 @@ Test-Suite nlpTestAuto
 --        NLP2RDF.CompleteSentence_test
 --        NLP2RDF.ProduceNLPtriples_test
 --        NLP2RDF.ConvertTaggerOutput_test
-        CoreNLP.Vocabulary_test
+         CoreNLP.DocNLP_0or1_test
+         CoreNLP.Vocabulary_test
 
 --executable NLPmainTest1
 ---- necessary to run the test to produce triples, which uses all memory

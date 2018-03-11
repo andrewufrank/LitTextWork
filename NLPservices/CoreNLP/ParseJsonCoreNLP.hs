@@ -16,8 +16,11 @@
 -- template haskell requires reordering of data types
 --and all functions used for default otions imported (not local defined)
 
-module CoreNLP.ParseJsonCoreNLP -- (openMain, htf_thisModuelsTests)
-     where
+module CoreNLP.ParseJsonCoreNLP
+    ( module CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
+        , module CoreNLP.Vocabulary
+-- (openMain, htf_thisModuelsTests)
+     ) where
 
 import           Uniform.Strings
 import Uniform.FileIO
