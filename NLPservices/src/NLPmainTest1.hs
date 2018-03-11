@@ -23,7 +23,7 @@ import Uniform.FileIO
 --import           Lib.BlogExample
 --import  Lib.Tutorial1
 import CoreNLP.ParseJsonCoreNLP
-import CoreNLP.Doc2ToRDF_JSON
+import CoreNLP.Doc2ToLinear
 import CoreNLP.ProduceNLPtriples2
 
 import Uniform.Convenience.StartApp

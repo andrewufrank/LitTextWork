@@ -56,7 +56,8 @@ library
 --        NLP2RDF.NLPvocabulary
 --        CoreNLP.Models
          CoreNLP.ParseJsonCoreNLP
-         CoreNLP.Doc2ToRDF_JSON
+         CoreNLP.Doc2ToLinear
+         CoreNLP.Linear2Triple
          CoreNLP.DocBase
          CoreNLP.DocNLP_0or1
          CoreNLP.Doc1_absoluteID
@@ -94,7 +95,8 @@ Test-Suite nlpTestAuto
 --        CoreNLP.Defs0_test
 --        CoreNLP.CoreNLPxml_test
          CoreNLP.ParseJsonCoreNLP_test
-         CoreNLP.Doc2ToRDF_JSON_test
+         CoreNLP.Doc2ToLinear_test
+         CoreNLP.Linear2Triple_test
          CoreNLP.DocBase_test
 --        NLP2RDF.ProduceDocCallNLP_test
 --         CoreNLP.ProduceNLPtriples2_test

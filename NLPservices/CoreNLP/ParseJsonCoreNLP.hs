@@ -51,8 +51,6 @@ snipIsNull :: Snip2 lang -> Bool
 -- ^ test for null text
 snipIsNull = null' . unLCtext . snip2text
 
-newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
-unNLPtriple (NLPtriple t) = t
 
 
 --processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)

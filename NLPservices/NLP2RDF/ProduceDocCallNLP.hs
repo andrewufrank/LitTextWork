@@ -37,7 +37,7 @@ import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
 --import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
 --
 -- version with Doc2ToRDF_JSON
-import CoreNLP.Doc2ToRDF_JSON
+import CoreNLP.Doc2ToLinear
 
 --import NLP2RDF.ProduceNLPtriples (Snip2(..))
 

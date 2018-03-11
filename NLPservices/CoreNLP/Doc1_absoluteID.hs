@@ -44,7 +44,7 @@ class ConvertToAbsulteID postag relID a2 a1 where
 
 data Doc11 postag = Doc11 {doc11sents:: [Sentence11 postag]
                  , doc11corefs :: Maybe Coreferences11   -- only one
-                       } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+                 , doc11id :: DocRelID     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 --instance Zeros (Doc1 postag) where zero = Doc1 [] zero
 

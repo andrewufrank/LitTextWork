@@ -11,13 +11,13 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module CoreNLP.Doc2ToRDF_JSON_test  -- (openMain, htf_thisModuelsTests)
+module CoreNLP.Linear2Triple_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
 import           Test.Framework
 import Uniform.TestHarness
-import CoreNLP.Doc2ToRDF_JSON
+import CoreNLP.Linear2Triple
 import qualified NLP.Corpora.Conll  as Conll
 
 toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag]

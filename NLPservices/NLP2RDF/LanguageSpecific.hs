@@ -34,7 +34,7 @@ import LitTypes.ServerNames
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Text.Regex (mkRegex, subRegex)
 import NLP2RDF.CompleteSentence (completeSentence)
-import CoreNLP.Doc2ToRDF_JSON  -- for Doc1
+import CoreNLP.Doc2ToLinear  -- for Doc1
 import LitTypes.LanguageTypedText
 
 import NLP.Corpora.Conll  as Conll -- Conll for english

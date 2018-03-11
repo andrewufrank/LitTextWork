@@ -16,8 +16,9 @@
 
 {-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
-module CoreNLP.Doc2ToRDF_JSON
-    ( module CoreNLP.Doc2ToRDF_JSON
+module CoreNLP.Doc2ToLinear
+    ( module CoreNLP.Doc2ToLinear
+    , module CoreNLP.Doc1_absoluteID
     , Doc11 (..)
 --    ,  module CoreNLP.DocNLP_0or1
     ,
@@ -35,7 +36,7 @@ import GHC.Generics
 
 -- Linearize Doc11
 
-data DocAsList postag = DocLin {}
+data DocAsList postag = DocLin {d3id:: DocRelID}
     | SentenceLin { s3id :: SentenceRelID
                     , s3parse :: Maybe Text  -- the parse tree
                 }
@@ -70,9 +71,10 @@ class Linearize d postag where
     linearize :: postag -> d -> [DocAsList postag]
 
 instance Linearize (Doc11 postag) postag where
-    linearize ph Doc11{..} = DocLin
+    linearize ph Doc11{..} = DocLin {..}
         : (sents ++ cos)
      where
+        d3id = doc11id
         sents = concat $ map (linearize ph) doc11sents:: [DocAsList postag]
         cos = maybe [] (linearize ph) doc11corefs :: [DocAsList postag]
 
