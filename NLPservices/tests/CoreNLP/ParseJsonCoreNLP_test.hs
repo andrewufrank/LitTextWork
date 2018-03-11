@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts      #-}
---{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
@@ -16,6 +16,7 @@ module CoreNLP.ParseJsonCoreNLP_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
+import Uniform.TestHarness
 import           Uniform.Strings
 import Uniform.FileIO
 --import qualified Data.ByteString.Lazy as B
@@ -32,6 +33,23 @@ import GHC.Exts
 test_toJson = assertEqual objVBG (toJSON (Conll.VBG))
 
 objVBG = String "VBG"
+
+--decodeDoc2op :: Text ->  ErrOrVal Doc2
+--decodeDoc2op f = either (Left . s2t) Right r
+
+decodeDoc2op :: Text ->   Doc2
+decodeDoc2op f = either (const zero) id r
+    where
+        r = eitherDecode flbs :: Either String Doc2
+        flbs = b2bl . t2b $ f :: LazyByteString
+
+test_A = testFile2File "short1.json" "short1.doc2" decodeDoc2op
+
+instance ShowTestHarness Doc2 where
+instance ShowTestHarness a => ShowTestHarness (ErrOrVal a) where
+
+instance (Zeros a) => Zeros (ErrOrVal a) where zero = Right zero
+
 
 test_nlpjson  = do
     res0   <- runErr $ do
