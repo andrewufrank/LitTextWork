@@ -16,28 +16,17 @@ module CoreNLP.Doc2ToRDF_JSON_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
+import Uniform.TestHarness
 import CoreNLP.Doc2ToRDF_JSON
+import qualified NLP.Corpora.Conll  as Conll
 
---import           Uniform.Strings
---import Uniform.FileIO
-----import qualified Data.ByteString.Lazy as B
---import qualified Data.ByteString.Lazy.UTF8 as B
---import Data.Aeson (eitherDecode)
---
---import CoreNLP.ParseJsonCoreNLP
---import CoreNLP.Doc2ToRDF_JSON
---import qualified NLP.Corpora.Conll  as Conll
-----import Text.Show.Pretty (valToStr)
-----import Text.PrettyPrint.GenericPretty
---import Data.Aeson.Encode.Pretty
---import Data.Aeson
---import GHC.Exts
+toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag]
+toLin   =  linearize Conll.undefConll
+
+instance ShowTestHarness (Doc11 Conll.POStag) where
+--instance ShowTestHarness (Doc1 Conll.POStag) where
 
 
-
---instance ShowTestHarness Doc2 where
---instance ShowTestHarness a => ShowTestHarness (ErrOrVal a) where
---
---instance (Zeros a) => Zeros (ErrOrVal a) where zero = Right zero
+test_c = testFile2File "short1.doc11" "short1.lin" toLin
 
 

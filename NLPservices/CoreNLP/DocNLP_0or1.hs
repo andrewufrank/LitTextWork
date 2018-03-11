@@ -54,8 +54,8 @@ class ConvertTo1 postag a2 a1 where
 
 
 
-data Doc1 postag = Doc1 {doc1Sents:: [Sentence1 postag]
-                 , doc1Corefs :: Maybe Coreferences1   -- only one
+data Doc1 postag = Doc1 {doc1sents:: [Sentence1 postag]
+                 , doc1corefs :: Maybe Coreferences1   -- only one
 --                 , doc1id :: DocID     added in Doc11
                  } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
@@ -141,8 +141,8 @@ instance (NLP.POStags postag) => ConvertTo1 postag Doc2 (Doc1 postag) where
 --doc2to1
     convertTo1 posPh Doc2{..} = Doc1 {..}
       where
-        doc1Sents = map (convertTo1 posPh) doc_sentences
-        doc1Corefs =  fmap (convertTo1 posPh) doc_corefs
+        doc1sents = map (convertTo1 posPh) doc_sentences
+        doc1corefs =  fmap (convertTo1 posPh) doc_corefs
                 -- chains of mentions
 --        doc1id = zero
 

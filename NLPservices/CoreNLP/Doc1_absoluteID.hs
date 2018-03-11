@@ -21,13 +21,10 @@
 module CoreNLP.Doc1_absoluteID (
         module CoreNLP.DocNLP_0or1
         , module CoreNLP.Doc1_absoluteID
---        , module CoreNLP.POScodes
         ,  SpeakerTags (..)
---        , module CoreNLP.NERcodes -- import separately when needed
             , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)
---        , module CoreNLP.DEPcodes  -- import separately when needed
-        -- ,readDocString
+            , SpeakerTag (..), NERtag (..)
         )  where
 
 import              Uniform.Strings
@@ -45,11 +42,8 @@ class ConvertToAbsulteID postag relID a2 a1 where
 -- convert to the 1 or 0 records
     convertToAbsoluteID :: postag -> relID -> a2 -> a1
 
-
-
-
-data Doc11 postag = Doc11 {doc11Sents:: [Sentence11 postag]
-                 , doc11Corefs :: Maybe Coreferences11   -- only one
+data Doc11 postag = Doc11 {doc11sents:: [Sentence11 postag]
+                 , doc11corefs :: Maybe Coreferences11   -- only one
                        } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 --instance Zeros (Doc1 postag) where zero = Doc1 [] zero
@@ -59,8 +53,6 @@ data Sentence11 postag = Sentence11 {s11id :: SentenceRelID
                         , s11toks :: [Token11 postag]
                         , s11deps :: Maybe [Dependence11]
                         -- should be only one or none
-                        -- select (last = best) in coreNLPxml in getSentence
-                        -- could be changed to parse all and select later
                         }  deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 
@@ -72,10 +64,10 @@ data Dependence11 = Dependence11 {d11type :: DepCode -- Text -- String
                         , d11depGloss :: Text
                         } deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
-data Coreferences11 = Coreferences11 {co11Chains:: [MentionChain11]}
+data Coreferences11 = Coreferences11 {co11chains:: [MentionChain11]}
                 deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
-data MentionChain11 = MentionChain11 [Mention11]
+data MentionChain11 = MentionChain11 {mentions:: [Mention11]}
         deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative mention
@@ -102,11 +94,9 @@ instance (NLP.POStags postag)
         => ConvertToAbsulteID postag DocRelID (Doc1 postag) (Doc11 postag) where
     convertToAbsoluteID posPh d@(DocRelID _) Doc1{..} = Doc11 {..}
       where
-        doc11Sents = map (convertToAbsoluteID posPh doc11id) doc1Sents
-        doc11Corefs =  fmap (convertToAbsoluteID posPh doc11id) doc1Corefs
+        doc11sents = map (convertToAbsoluteID posPh doc11id) doc1sents
+        doc11corefs =  fmap (convertToAbsoluteID posPh doc11id) doc1corefs
         doc11id = d
-                -- chains of mentions
-
 
 instance (NLP.POStags postag)
     => ConvertToAbsulteID postag DocRelID (Sentence1 postag) (Sentence11 postag) where
@@ -117,10 +107,6 @@ instance (NLP.POStags postag)
             s11parse = s1parse
             s11toks = map (convertToAbsoluteID posPh s11id)  s1toks
             s11deps = fmap (map (convertToAbsoluteID posPh s11id)) s1deps
---                        s_enhancedPlusPlusDependencies of
---                    Just d3 -> Just $ map (convertToAbsoluteID posPh s11id) d3
---                    Nothing -> Nothing
-
 
 instance (NLP.POStags postag)
         => ConvertToAbsulteID postag SentenceRelID
@@ -137,11 +123,8 @@ instance (NLP.POStags postag)
         t11ner =  tner -- when is this a list?
                         -- use the Ner2 values?
         t11speaker =  tspeaker
---                    maybe [] (\a -> [a]) $ tspeaker
---        t11begin = tcharacterOffsetBegin
---        t11end = tcharacterOffsetEnd
 
-instance ConvertToAbsulteID postag SentenceRelID Dependence1 (Dependence11) where
+instance ConvertToAbsulteID postag SentenceRelID Dependence1 Dependence11 where
     convertToAbsoluteID _  s Dependence1 {..} = Dependence11 {..}
         where
             d11type = d1type
@@ -151,10 +134,10 @@ instance ConvertToAbsulteID postag SentenceRelID Dependence1 (Dependence11) wher
             d11govGloss = d1govGloss
             d11depGloss = d1depGloss
 
-instance ConvertToAbsulteID postag DocRelID Coreferences1 (Coreferences11) where
+instance ConvertToAbsulteID postag DocRelID Coreferences1 Coreferences11 where
     convertToAbsoluteID phP s Coreferences1{..} = Coreferences11{..}
         where
-            co11Chains = map (convertToAbsoluteID phP s) coChains
+            co11chains = map (convertToAbsoluteID phP s) coChains
 
 instance ConvertToAbsulteID postag DocRelID MentionChain1 MentionChain11 where
     convertToAbsoluteID phP s (MentionChain1 cs) =

@@ -3,7 +3,7 @@
 -- Module      :  reformat the output from parsing
 --  stanford corenlp 3.9. in json format
 
--- all data additional to Defs0 have 1 suffix
+-- linearize doc11 and convert to triples
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -16,117 +16,113 @@
 
 {-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
---{-# LANGUAGE TemplateHaskell #-}
--- template haskell requires reordering of data types
---and all functions used for default otions imported (not local defined)
-
 module CoreNLP.Doc2ToRDF_JSON
     ( module CoreNLP.Doc2ToRDF_JSON
-    ,  module CoreNLP.DocNLP_0or1
+    , Doc11 (..)
+--    ,  module CoreNLP.DocNLP_0or1
     ,
     ) where
 
 import           Uniform.Strings
-import CoreNLP.DocNLP_0or1
-import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
-import qualified NLP.Types.Tags      as NLP
-import              CoreNLP.DEPcodes
-import              CoreNLP.NERcodes
+import CoreNLP.Doc1_absoluteID
+--import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
+--import qualified NLP.Types.Tags      as NLP
+--import              CoreNLP.DEPcodes
+--import              CoreNLP.NERcodes
 import Uniform.Zero
 import Data.Maybe
+import GHC.Generics
 
---instance (NLP.POStags postag) => To1 postag Doc2 (Doc1 postag) where
-----
-----doc2to1 ::(NLP.POStags postag) => postag -> Doc2 -> Doc1 postag
-----doc2to1
---    to1 posPh Doc2{..} = Doc1 {..}
---      where
---        doc1Sents = map (to1 posPh) doc_sentences
---        doc1Corefs =  fmap (to1 posPh) doc_corefs
---                -- chains of mentions
---
---
---instance (NLP.POStags postag)
---    => To1 postag Sentence2 (Sentence1 postag) where
---
-----sentence2to1 :: (NLP.POStags postag)
-----    => postag -> Sentence2 -> Sentence1 postag
---
---    to1  posPh Sentence2 {..} = Sentence1 {..}
---        where
---            s1id = SentenceID s_index
---            s1parse = s_parse
---            s1toks = map (to1 posPh)  s_tokens
---            s1deps = case s_enhancedPlusPlusDependencies of
---                Just d1 -> Just $ map (to1 posPh) d1
---                Nothing -> case s_enhancedDependencies of
---                    Just d2 -> Just $ map  (to1 posPh) d2
---                    Nothing -> case s_basicDependencies of
---                        Just d3 -> Just $ map (to1 posPh) d3
---                        Nothing -> Nothing
---
---
---instance (NLP.POStags postag)
---        => To1 postag Token2 (Token0 postag) where
---
---    to1 posPh (Token2 {..}) = Token0 {..}
---
-----token2to0 :: (NLP.POStags postag) => postag -> Token2 -> Token0 postag
------- ^ convert a token2 dataset from JSON to Token0
------- posTag phantom indicates the type of posTags to use
-----token2to0 posPh (Token2 {..}) = Token0 {..}
---      where
---        tid = TokenID  tok_index
---        tword = Wordform0 tok_word
---        tlemma = Lemma0 tok_lemma
---        tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
---        tposOrig = tok_pos
---        tpostt = zero
---        tner = parseNERtagList [tok_ner] -- when is this a list?
---                        -- use the Ner2 values?
---        tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
-----                    maybe [] (\a -> [a]) $ tok_speaker
---        tbegin = tok_characterOffsetBegin
---        tend = tok_characterOffsetEnd
---
---
---instance To1 postag Dependency2 (Dependence1) where
---
-----dependency2to0 :: Dependency2 -> Dependence1
---    to1 _  Dependency2 {..} = Dependence1 {..}
---        where
---            d1type = parseDEPtag dep_dep :: DepCode
---            d1orig = dep_dep
---            d1govid = TokenID dep_governor
---            d1depid = TokenID dep_dependent
---            d1govGloss = dep_governorGloss
---            d1depGloss = dep_dependentGloss
---
---
---
---instance To1 postag Coreferences2 (Coreferences1) where
---
-----coreferences2to0 :: Coreferences2 -> Coreferences1
---    to1 phP Coreferences2{..} = Coreferences1{..}
---        where
---            coChains = map (to1 phP) chains
---
---instance To1 postag CorefChain2 MentionChain1 where
---
-----corefChain2to0 :: CorefChain2 -> CorefChain2
---    to1 phP (CorefChain2 cs) = MentionChain1 (map (to1 phP) cs)
---        -- phantom is not used
---
---instance To1 postag Coref2 (Mention1) where
---
-----coref2to0 :: Coref2 -> Mention1
---    to1 _  (Coref2 {..}) = Mention1 {..}
---        where
---            mentRep = coref_isRepresentativeMention
---            mentSent = SentenceID coref_sentNum
---            mentStart = TokenID coref_startIndex
---            mentEnd = TokenID coref_endIndex   -- points next word
---            mentHead = TokenID coref_headIndex
---            mentText = coref_text
---
-----
+-- Linearize Doc11
+
+data DocAsList postag = DocLin {}
+    | SentenceLin { s3id :: SentenceRelID
+                    , s3parse :: Maybe Text  -- the parse tree
+                }
+    | DependenceLin {d3type :: DepCode -- Text -- String
+                        , d3orig :: Text -- the value given in the XML
+                        , d3govid :: TokenRelID
+                        , d3depid :: TokenRelID
+                        , d3govGloss :: Text
+                        , d3depGloss :: Text
+                        }
+    | MentionLin {ment3Rep ::  Bool -- , indicates the representative mention
+--        , mentSent :: SentenceID
+        , ment3Start, ment3End :: TokenRelID -- not used ??
+        , ment3Head :: TokenRelID  -- the head of the mention
+        , ment3Text :: Text  -- multiple words, the actual mention - not yet used
+        }
+    | TokenLin { t3id :: TokenRelID
+                    , t3word :: Wordform0
+                    , t3lemma :: Lemma0
+--                    , t3begin, t3end :: Int  -- not used
+                    , t3pos :: postag --  the pos tag recognized
+                    , t3posOrig :: Text -- the pos tag received
+                    , t3postt :: Text -- the pos from the tree tagger
+                    , t3ner :: [NERtag] -- [Text] -- String
+                    , t3speaker :: [SpeakerTag] -- Text -- String
+                    }
+
+        deriving (Show, Read, Eq, Ord, Generic, Zeros)
+
+
+class Linearize d postag where
+    linearize :: postag -> d -> [DocAsList postag]
+
+instance Linearize (Doc11 postag) postag where
+    linearize ph Doc11{..} = DocLin
+        : (sents ++ cos)
+     where
+        sents = concat $ map (linearize ph) doc11sents:: [DocAsList postag]
+        cos = maybe [] (linearize ph) doc11corefs :: [DocAsList postag]
+
+instance Linearize (Sentence11 postag) postag where
+    linearize ph Sentence11{..} = SentenceLin {s3parse = s11parse
+                                                , s3id = s11id
+                                                }
+                : (concat $ map (linearize ph) s11toks
+                    ++ maybe [] (map (linearize ph)) s11deps
+                )
+instance Linearize (Token11 postag) postag where
+    linearize ph Token11 {..} = [TokenLin {..}]
+        where
+        t3id = t11id
+        t3word =  t11word
+        t3lemma =  t11lemma
+        t3pos =   t11pos
+        t3posOrig = t11posOrig
+        t3postt = t11postt
+        t3ner =  t11ner -- when is this a list?
+                        -- use the Ner2 values?
+        t3speaker =  t11speaker
+
+instance Linearize  Coreferences11 postag where
+    linearize ph Coreferences11{..} = map linearizeMention mc
+        where
+            cs = co11chains :: [MentionChain11]
+            mc = concat $ map  mentions cs :: [Mention11]
+            linearizeMention Mention11 {..} = MentionLin {..}
+                where
+                        ment3Rep = ment11Rep
+            --            ment3Sent = ment11Sent
+                        ment3Start = ment11Start
+                        ment3End = ment11End  -- points next word
+                        ment3Head = ment11Head
+                        ment3Text = ment11Text
+
+instance Linearize Dependence11 postag where
+    linearize ph Dependence11 {..} =  [DependenceLin{..}]
+        where
+            d3type = d11type
+            d3orig = d11orig
+            d3govid =d11govid
+            d3depid = d11depid
+            d3govGloss = d11govGloss
+            d3depGloss = d11depGloss
+
+
+
+            --
+
+
+                --

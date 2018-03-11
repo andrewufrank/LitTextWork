@@ -27,8 +27,8 @@ import   Test.Framework
 
 --import {-@ HTF_TESTS @-} CoreNLP.Doc2ToRDF_JSON_test
 --import {-@ HTF_TESTS @-} CoreNLP.DocBase_test
-import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
 --import {-@ HTF_TESTS @-} CoreNLP.Vocabulary_test
+import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
 
 import {-@ HTF_TESTS @-} CoreNLP.DocNLP_0or1_test
 import {-@ HTF_TESTS @-} CoreNLP.Doc1_absoluteID_test
