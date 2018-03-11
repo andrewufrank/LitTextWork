@@ -16,6 +16,7 @@
     , DeriveGeneric
     , DeriveAnyClass
     , TypeSynonymInstances
+    , MultiParamTypeClasses
     #-}
 
 module CoreNLP.DocBase (
@@ -67,13 +68,35 @@ mkSentID :: Text -> SentenceID
 -- to make a sentence id, consist of coll id and number
 mkSentID s = SentenceID $ readNoteT "mkSentID" s
 
+newtype ParaRelID = ParaRelID  [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype CorefRelID = CorefRelID [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype MentionRelID = MentionRelID [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype DocRelID = DocRelID [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype SentenceRelID = SentenceRelID [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype TokenRelID = TokenRelID [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype DepRelID = DepRelID [Text]
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+
+--class AbsID abs0 relID abs1 where
+--    addToAbsID :: abs0 -> relID -> abs1
+--    -- add a new local relative id to the current abs ID
+----instance AbsID
+
+addDep2SentID (SentenceRelID d) s@(DepID s1) = DepRelID $ formatID s : d
+addSent2DocID (DocRelID d) s@(SentenceID s1) = SentenceRelID $ formatID s : d
 newtype ParaID = ParaID  Int
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
 newtype CorefID = CorefID Int
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
 newtype MentionID = MentionID Int
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
-newtype SnipID = SnipID Int
+newtype DocID = DocID Int
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
 newtype SentenceID = SentenceID Int
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
@@ -89,6 +112,7 @@ class FormatID i where
     unID :: i -> Int
 
 formatInt :: Int -> Int -> Text
+-- probably not required ??
 formatInt n  = s2t . case n of
         6 -> printf  ('%' : '0' : '6' : 'd' :[])
         5 ->  printf  ('%' : '0' : '5' : 'd' :[])
@@ -134,11 +158,11 @@ instance FormatID SentenceID where
     formatID  = formatID' "S" 6 -- <>) . s2t . printf ('%' : '0' : '6' : 'd' :[])
     unID (SentenceID i) = i
 
-instance FormatID SnipID where
+instance FormatID DocID where
 --formatSnipID ::Int -> Text
 -- format an Int to 2 decimals for Snis
-    formatID  = formatID' "Snip" 5 -- "N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
-    unID (SnipID i) = i
+    formatID  = formatID' "Doc" 5 -- "N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
+    unID (DocID i) = i
 
 
     --
