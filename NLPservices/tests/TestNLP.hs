@@ -31,7 +31,7 @@ import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
 --import {-@ HTF_TESTS @-} CoreNLP.Vocabulary_test
 
 import {-@ HTF_TESTS @-} CoreNLP.DocNLP_0or1_test
---import {-@ HTF_TESTS @-} CoreNLP.Defs0_test
+import {-@ HTF_TESTS @-} CoreNLP.Doc1_absoluteID_test
 --import {-@ HTF_TESTS @-} CoreNLP.Models_test
 -- parser:
 --import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test

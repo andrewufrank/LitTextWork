@@ -59,6 +59,7 @@ library
          CoreNLP.Doc2ToRDF_JSON
          CoreNLP.DocBase
          CoreNLP.DocNLP_0or1
+         CoreNLP.Doc1_absoluteID
          CoreNLP.Vocabulary
 
 --         CoreNLP.Doc2ToDoc1
@@ -101,6 +102,7 @@ Test-Suite nlpTestAuto
 --        NLP2RDF.ProduceNLPtriples_test
 --        NLP2RDF.ConvertTaggerOutput_test
          CoreNLP.DocNLP_0or1_test
+         CoreNLP.Doc1_absoluteID_test
          CoreNLP.Vocabulary_test
 
 --executable NLPmainTest1
