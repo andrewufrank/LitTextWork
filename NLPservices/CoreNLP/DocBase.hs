@@ -90,6 +90,7 @@ newtype DepRelID = DepRelID [Text]
 
 addDep2SentID (SentenceRelID d) s@(DepID s1) = DepRelID $ formatID s : d
 addSent2DocID (DocRelID d) s@(SentenceID s1) = SentenceRelID $ formatID s : d
+addTok2SentID (SentenceRelID d) s@(TokenID s1) = TokenRelID $ formatID s : d
 newtype ParaID = ParaID  Int
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
 newtype CorefID = CorefID Int

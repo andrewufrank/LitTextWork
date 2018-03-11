@@ -1,0 +1,676 @@
+{
+    "doc_sentences": [
+        {
+            "s_enhancedPlusPlusDependencies": [
+                {
+                    "dep_dep": "ROOT",
+                    "dep_dependentGloss": "carried",
+                    "dep_governor": 0,
+                    "dep_dependent": 10,
+                    "dep_governorGloss": "ROOT"
+                },
+                {
+                    "dep_dep": "advmod",
+                    "dep_dependentGloss": "When",
+                    "dep_governor": 4,
+                    "dep_dependent": 1,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "the",
+                    "dep_governor": 3,
+                    "dep_dependent": 2,
+                    "dep_governorGloss": "uncle"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "uncle",
+                    "dep_governor": 4,
+                    "dep_dependent": 3,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "advcl",
+                    "dep_dependentGloss": "came",
+                    "dep_governor": 10,
+                    "dep_dependent": 4,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "case",
+                    "dep_dependentGloss": "into",
+                    "dep_governor": 7,
+                    "dep_dependent": 5,
+                    "dep_governorGloss": "room"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "the",
+                    "dep_governor": 7,
+                    "dep_dependent": 6,
+                    "dep_governorGloss": "room"
+                },
+                {
+                    "dep_dep": "nmod:into",
+                    "dep_dependentGloss": "room",
+                    "dep_governor": 4,
+                    "dep_dependent": 7,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ",",
+                    "dep_governor": 10,
+                    "dep_dependent": 8,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "he",
+                    "dep_governor": 10,
+                    "dep_dependent": 9,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "a",
+                    "dep_governor": 12,
+                    "dep_dependent": 11,
+                    "dep_governorGloss": "book"
+                },
+                {
+                    "dep_dep": "dobj",
+                    "dep_dependentGloss": "book",
+                    "dep_governor": 10,
+                    "dep_dependent": 12,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ".",
+                    "dep_governor": 10,
+                    "dep_dependent": 13,
+                    "dep_governorGloss": "carried"
+                }
+            ],
+            "s_enhancedDependencies": [
+                {
+                    "dep_dep": "ROOT",
+                    "dep_dependentGloss": "carried",
+                    "dep_governor": 0,
+                    "dep_dependent": 10,
+                    "dep_governorGloss": "ROOT"
+                },
+                {
+                    "dep_dep": "advmod",
+                    "dep_dependentGloss": "When",
+                    "dep_governor": 4,
+                    "dep_dependent": 1,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "the",
+                    "dep_governor": 3,
+                    "dep_dependent": 2,
+                    "dep_governorGloss": "uncle"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "uncle",
+                    "dep_governor": 4,
+                    "dep_dependent": 3,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "advcl",
+                    "dep_dependentGloss": "came",
+                    "dep_governor": 10,
+                    "dep_dependent": 4,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "case",
+                    "dep_dependentGloss": "into",
+                    "dep_governor": 7,
+                    "dep_dependent": 5,
+                    "dep_governorGloss": "room"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "the",
+                    "dep_governor": 7,
+                    "dep_dependent": 6,
+                    "dep_governorGloss": "room"
+                },
+                {
+                    "dep_dep": "nmod:into",
+                    "dep_dependentGloss": "room",
+                    "dep_governor": 4,
+                    "dep_dependent": 7,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ",",
+                    "dep_governor": 10,
+                    "dep_dependent": 8,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "he",
+                    "dep_governor": 10,
+                    "dep_dependent": 9,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "a",
+                    "dep_governor": 12,
+                    "dep_dependent": 11,
+                    "dep_governorGloss": "book"
+                },
+                {
+                    "dep_dep": "dobj",
+                    "dep_dependentGloss": "book",
+                    "dep_governor": 10,
+                    "dep_dependent": 12,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ".",
+                    "dep_governor": 10,
+                    "dep_dependent": 13,
+                    "dep_governorGloss": "carried"
+                }
+            ],
+            "s_entitymentions": [
+                {
+                    "ner_ner": "PERSON",
+                    "ner_docTokenEnd": 9,
+                    "ner_tokenEnd": 9,
+                    "ner_characterOffsetEnd": 37,
+                    "ner_text": "he",
+                    "ner_docTokenBegin": 8,
+                    "ner_tokenBegin": 8,
+                    "ner_characterOffsetBegin": 35
+                }
+            ],
+            "s_parse": "(ROOT\n  (S\n    (SBAR\n      (WHADVP (WRB When))\n      (S\n        (NP (DT the) (NN uncle))\n        (VP (VBD came)\n          (PP (IN into)\n            (NP (DT the) (NN room))))))\n    (, ,)\n    (NP (PRP he))\n    (VP (VBD carried)\n      (NP (DT a) (NN book)))\n    (. .)))",
+            "s_collapse_ccprocessed_dependencies": null,
+            "s_tokens": [
+                {
+                    "tok_characterOffsetEnd": 4,
+                    "tok_lemma": "when",
+                    "tok_pos": "WRB",
+                    "tok_ner": "O",
+                    "tok_before": "",
+                    "tok_word": "When",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 0,
+                    "tok_originalText": "When",
+                    "tok_after": " ",
+                    "tok_index": 1
+                },
+                {
+                    "tok_characterOffsetEnd": 8,
+                    "tok_lemma": "the",
+                    "tok_pos": "DT",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "the",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 5,
+                    "tok_originalText": "the",
+                    "tok_after": " ",
+                    "tok_index": 2
+                },
+                {
+                    "tok_characterOffsetEnd": 14,
+                    "tok_lemma": "uncle",
+                    "tok_pos": "NN",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "uncle",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 9,
+                    "tok_originalText": "uncle",
+                    "tok_after": " ",
+                    "tok_index": 3
+                },
+                {
+                    "tok_characterOffsetEnd": 19,
+                    "tok_lemma": "come",
+                    "tok_pos": "VBD",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "came",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 15,
+                    "tok_originalText": "came",
+                    "tok_after": " ",
+                    "tok_index": 4
+                },
+                {
+                    "tok_characterOffsetEnd": 24,
+                    "tok_lemma": "into",
+                    "tok_pos": "IN",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "into",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 20,
+                    "tok_originalText": "into",
+                    "tok_after": " ",
+                    "tok_index": 5
+                },
+                {
+                    "tok_characterOffsetEnd": 28,
+                    "tok_lemma": "the",
+                    "tok_pos": "DT",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "the",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 25,
+                    "tok_originalText": "the",
+                    "tok_after": " ",
+                    "tok_index": 6
+                },
+                {
+                    "tok_characterOffsetEnd": 33,
+                    "tok_lemma": "room",
+                    "tok_pos": "NN",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "room",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 29,
+                    "tok_originalText": "room",
+                    "tok_after": "",
+                    "tok_index": 7
+                },
+                {
+                    "tok_characterOffsetEnd": 34,
+                    "tok_lemma": ",",
+                    "tok_pos": ",",
+                    "tok_ner": "O",
+                    "tok_before": "",
+                    "tok_word": ",",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 33,
+                    "tok_originalText": ",",
+                    "tok_after": " ",
+                    "tok_index": 8
+                },
+                {
+                    "tok_characterOffsetEnd": 37,
+                    "tok_lemma": "he",
+                    "tok_pos": "PRP",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "he",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 35,
+                    "tok_originalText": "he",
+                    "tok_after": " ",
+                    "tok_index": 9
+                },
+                {
+                    "tok_characterOffsetEnd": 45,
+                    "tok_lemma": "carry",
+                    "tok_pos": "VBD",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "carried",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 38,
+                    "tok_originalText": "carried",
+                    "tok_after": " ",
+                    "tok_index": 10
+                },
+                {
+                    "tok_characterOffsetEnd": 47,
+                    "tok_lemma": "a",
+                    "tok_pos": "DT",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "a",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 46,
+                    "tok_originalText": "a",
+                    "tok_after": " ",
+                    "tok_index": 11
+                },
+                {
+                    "tok_characterOffsetEnd": 52,
+                    "tok_lemma": "book",
+                    "tok_pos": "NN",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "book",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 48,
+                    "tok_originalText": "book",
+                    "tok_after": "",
+                    "tok_index": 12
+                },
+                {
+                    "tok_characterOffsetEnd": 53,
+                    "tok_lemma": ".",
+                    "tok_pos": ".",
+                    "tok_ner": "O",
+                    "tok_before": "",
+                    "tok_word": ".",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 52,
+                    "tok_originalText": ".",
+                    "tok_after": " ",
+                    "tok_index": 13
+                }
+            ],
+            "s_basicDependencies": [
+                {
+                    "dep_dep": "ROOT",
+                    "dep_dependentGloss": "carried",
+                    "dep_governor": 0,
+                    "dep_dependent": 10,
+                    "dep_governorGloss": "ROOT"
+                },
+                {
+                    "dep_dep": "advmod",
+                    "dep_dependentGloss": "When",
+                    "dep_governor": 4,
+                    "dep_dependent": 1,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "the",
+                    "dep_governor": 3,
+                    "dep_dependent": 2,
+                    "dep_governorGloss": "uncle"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "uncle",
+                    "dep_governor": 4,
+                    "dep_dependent": 3,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "advcl",
+                    "dep_dependentGloss": "came",
+                    "dep_governor": 10,
+                    "dep_dependent": 4,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "case",
+                    "dep_dependentGloss": "into",
+                    "dep_governor": 7,
+                    "dep_dependent": 5,
+                    "dep_governorGloss": "room"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "the",
+                    "dep_governor": 7,
+                    "dep_dependent": 6,
+                    "dep_governorGloss": "room"
+                },
+                {
+                    "dep_dep": "nmod",
+                    "dep_dependentGloss": "room",
+                    "dep_governor": 4,
+                    "dep_dependent": 7,
+                    "dep_governorGloss": "came"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ",",
+                    "dep_governor": 10,
+                    "dep_dependent": 8,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "he",
+                    "dep_governor": 10,
+                    "dep_dependent": 9,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "det",
+                    "dep_dependentGloss": "a",
+                    "dep_governor": 12,
+                    "dep_dependent": 11,
+                    "dep_governorGloss": "book"
+                },
+                {
+                    "dep_dep": "dobj",
+                    "dep_dependentGloss": "book",
+                    "dep_governor": 10,
+                    "dep_dependent": 12,
+                    "dep_governorGloss": "carried"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ".",
+                    "dep_governor": 10,
+                    "dep_dependent": 13,
+                    "dep_governorGloss": "carried"
+                }
+            ],
+            "s_index": 0
+        },
+        {
+            "s_enhancedPlusPlusDependencies": [
+                {
+                    "dep_dep": "ROOT",
+                    "dep_dependentGloss": "red",
+                    "dep_governor": 0,
+                    "dep_dependent": 3,
+                    "dep_governorGloss": "ROOT"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "It",
+                    "dep_governor": 3,
+                    "dep_dependent": 1,
+                    "dep_governorGloss": "red"
+                },
+                {
+                    "dep_dep": "cop",
+                    "dep_dependentGloss": "was",
+                    "dep_governor": 3,
+                    "dep_dependent": 2,
+                    "dep_governorGloss": "red"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ".",
+                    "dep_governor": 3,
+                    "dep_dependent": 4,
+                    "dep_governorGloss": "red"
+                }
+            ],
+            "s_enhancedDependencies": [
+                {
+                    "dep_dep": "ROOT",
+                    "dep_dependentGloss": "red",
+                    "dep_governor": 0,
+                    "dep_dependent": 3,
+                    "dep_governorGloss": "ROOT"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "It",
+                    "dep_governor": 3,
+                    "dep_dependent": 1,
+                    "dep_governorGloss": "red"
+                },
+                {
+                    "dep_dep": "cop",
+                    "dep_dependentGloss": "was",
+                    "dep_governor": 3,
+                    "dep_dependent": 2,
+                    "dep_governorGloss": "red"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ".",
+                    "dep_governor": 3,
+                    "dep_dependent": 4,
+                    "dep_governorGloss": "red"
+                }
+            ],
+            "s_entitymentions": [],
+            "s_parse": "(ROOT\n  (S\n    (NP (PRP It))\n    (VP (VBD was)\n      (ADJP (JJ red)))\n    (. .)))",
+            "s_collapse_ccprocessed_dependencies": null,
+            "s_tokens": [
+                {
+                    "tok_characterOffsetEnd": 56,
+                    "tok_lemma": "it",
+                    "tok_pos": "PRP",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "It",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 54,
+                    "tok_originalText": "It",
+                    "tok_after": " ",
+                    "tok_index": 1
+                },
+                {
+                    "tok_characterOffsetEnd": 60,
+                    "tok_lemma": "be",
+                    "tok_pos": "VBD",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "was",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 57,
+                    "tok_originalText": "was",
+                    "tok_after": " ",
+                    "tok_index": 2
+                },
+                {
+                    "tok_characterOffsetEnd": 64,
+                    "tok_lemma": "red",
+                    "tok_pos": "JJ",
+                    "tok_ner": "O",
+                    "tok_before": " ",
+                    "tok_word": "red",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 61,
+                    "tok_originalText": "red",
+                    "tok_after": "",
+                    "tok_index": 3
+                },
+                {
+                    "tok_characterOffsetEnd": 65,
+                    "tok_lemma": ".",
+                    "tok_pos": ".",
+                    "tok_ner": "O",
+                    "tok_before": "",
+                    "tok_word": ".",
+                    "tok_speaker": "PER0",
+                    "tok_characterOffsetBegin": 64,
+                    "tok_originalText": ".",
+                    "tok_after": "",
+                    "tok_index": 4
+                }
+            ],
+            "s_basicDependencies": [
+                {
+                    "dep_dep": "ROOT",
+                    "dep_dependentGloss": "red",
+                    "dep_governor": 0,
+                    "dep_dependent": 3,
+                    "dep_governorGloss": "ROOT"
+                },
+                {
+                    "dep_dep": "nsubj",
+                    "dep_dependentGloss": "It",
+                    "dep_governor": 3,
+                    "dep_dependent": 1,
+                    "dep_governorGloss": "red"
+                },
+                {
+                    "dep_dep": "cop",
+                    "dep_dependentGloss": "was",
+                    "dep_governor": 3,
+                    "dep_dependent": 2,
+                    "dep_governorGloss": "red"
+                },
+                {
+                    "dep_dep": "punct",
+                    "dep_dependentGloss": ".",
+                    "dep_governor": 3,
+                    "dep_dependent": 4,
+                    "dep_governorGloss": "red"
+                }
+            ],
+            "s_index": 1
+        }
+    ],
+    "doc_corefs": {
+        "chains": [
+            [
+                {
+                    "coref_headIndex": 3,
+                    "coref_startIndex": 2,
+                    "coref_text": "the uncle",
+                    "coref_sentNum": 1,
+                    "coref_endIndex": 4,
+                    "coref_id": 1,
+                    "coref_isRepresentativeMention": true
+                },
+                {
+                    "coref_headIndex": 9,
+                    "coref_startIndex": 9,
+                    "coref_text": "he",
+                    "coref_sentNum": 1,
+                    "coref_endIndex": 10,
+                    "coref_id": 3,
+                    "coref_isRepresentativeMention": false
+                }
+            ],
+            [
+                {
+                    "coref_headIndex": 12,
+                    "coref_startIndex": 11,
+                    "coref_text": "a book",
+                    "coref_sentNum": 1,
+                    "coref_endIndex": 13,
+                    "coref_id": 4,
+                    "coref_isRepresentativeMention": true
+                }
+            ],
+            [
+                {
+                    "coref_headIndex": 7,
+                    "coref_startIndex": 6,
+                    "coref_text": "the room",
+                    "coref_sentNum": 1,
+                    "coref_endIndex": 8,
+                    "coref_id": 2,
+                    "coref_isRepresentativeMention": true
+                },
+                {
+                    "coref_headIndex": 1,
+                    "coref_startIndex": 1,
+                    "coref_text": "It",
+                    "coref_sentNum": 2,
+                    "coref_endIndex": 2,
+                    "coref_id": 5,
+                    "coref_isRepresentativeMention": false
+                }
+            ]
+        ]
+    }
+}
