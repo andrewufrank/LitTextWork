@@ -6,10 +6,16 @@
 -- | the list of properties and types used to describe the NLP results
 -- addition to the list of Treebank codes imported and exported here
 -----------------------------------------------------------------------------
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE TypeSynonymInstances  #-}
+{-# LANGUAGE OverloadedStrings
+    , RecordWildCards     #-}
 
-{-# LANGUAGE FlexibleContexts    #-}
-{-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
 module CoreNLP.Vocabulary
     ( module CoreNLP.Vocabulary
@@ -28,20 +34,21 @@ import LitTypes.ServerNames
 --import LitTypes.TextDescriptor (SnipSigl)
 --import CoreNLP.DEPcodes (DepCode(..))
 import CoreNLP.DocBase
+import GHC.Generics
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker
 --          | DependencyType   -- in CoreNLPxml is the best (last) selected
           -- | Dep  | DepOrig -- not used in nlp_2017
           -- check separately that no unrecognized codes are occuring?
-          | SentenceForm
+          | SentenceForm | SentenceParse
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
-          | Mentions  -- s is a mention of representative o
+          | Mentions   -- s is a mention of representative o
 --          | MentionRepresenatative | MentionSentence
 --          | MentionSentenceStart | MentionSentenceEnd
 --          | MentionSentenceHead  | MentionSentenceText
-          deriving (Read, Show, Eq, Enum)
+          deriving (Show, Read, Eq, Ord, Generic, Zeros)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
 
@@ -54,7 +61,7 @@ instance RDFproperties DepCode where
             -- should be changed to 2017
 data NLPtype = Doc | Snip | Sentence | Token
     | DepType | Dependence | Mention | Coreference
-  deriving (Show, Eq, Enum)
+  deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
@@ -89,7 +96,7 @@ mkSnipSigl parasigl snipid =  SnipSigl
   where
 
 
-newtype SentSigl = SentSigl RDFsubj deriving (Show, Eq)
+newtype SentSigl = SentSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
 mkSentSigl :: SnipSigl  -> SentenceID -> SentSigl
 unSentSigl (SentSigl a) = a
 -- make the sentence id from buchsigl (docid) and sentnumber
@@ -99,7 +106,7 @@ mkSentSigl docsigl sentid =  SentSigl
       . unSnipSigl $ docsigl
   where
 
-newtype TokenSigl = TokenSigl RDFsubj deriving (Show, Eq)
+newtype TokenSigl = TokenSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
 unTokenSigl (TokenSigl a) = a
 
 mkTokenSigl :: SentSigl -> TokenID -> TokenSigl
@@ -119,7 +126,7 @@ mkTokenSigl sentsigl  tok =  TokenSigl
 --      . extendSlashRDFsubj did   -- is a Text
 --      . unSentSigl $ sentsigl
 
-newtype DepSigl = DepSigl RDFsubj deriving (Show, Eq)
+newtype DepSigl = DepSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
 unDepSigl (DepSigl a) = a
 
 
@@ -131,7 +138,7 @@ mkDepSigl2 sentsigl  i =  DepSigl
     where
 
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
-newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Eq)
+newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
 unCorefSigl (CorefSigl a) = a
 
 mkCorefsigl :: SnipSigl -> CorefID -> CorefSigl
@@ -141,7 +148,7 @@ mkCorefsigl snip c =   CorefSigl
       . unSnipSigl $ snip
 
 type MentionNr = Int
-newtype MentionSigl = MentionSigl RDFsubj deriving (Show, Eq)
+newtype MentionSigl = MentionSigl RDFsubj deriving  (Show, Read, Eq, Ord, Generic, Zeros)
 unMentionSigl (MentionSigl a) = a
 
 mkMentionsigl :: CorefSigl -> MentionID -> MentionSigl
