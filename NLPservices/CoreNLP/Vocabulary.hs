@@ -22,7 +22,7 @@ module CoreNLP.Vocabulary
       , module CoreNLP.DocBase
       , module Data.RDFext.Extension
       , module Uniform.Strings
-      , SnipSigl
+--      , SnipSigl
     ) where
 
 --import           CoreNLP.DocBase
@@ -48,7 +48,7 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
 --          | MentionRepresenatative | MentionSentence
 --          | MentionSentenceStart | MentionSentenceEnd
 --          | MentionSentenceHead  | MentionSentenceText
-          deriving (Show, Read, Eq, Ord, Generic, Zeros)
+          deriving (Show, Read, Eq, Ord, Generic)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
 
@@ -61,7 +61,7 @@ instance RDFproperties DepCode where
             -- should be changed to 2017
 data NLPtype = Doc | Snip | Sentence | Token
     | DepType | Dependence | Mention | Coreference
-  deriving (Show, Read, Eq, Ord, Generic, Zeros)
+  deriving (Show, Read, Eq, Ord, Generic)
 
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
@@ -84,8 +84,8 @@ buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
 
 
 --
---newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
---instance Zeros SnipSigl where zero = SnipSigl zero
+newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+instance Zeros SnipSigl where zero = SnipSigl zero
 
 
 mkSnipSigl :: ParaSigl   -> DocID -> SnipSigl
@@ -96,7 +96,7 @@ mkSnipSigl parasigl snipid =  SnipSigl
   where
 
 
-newtype SentSigl = SentSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype SentSigl = SentSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic)
 mkSentSigl :: SnipSigl  -> SentenceID -> SentSigl
 unSentSigl (SentSigl a) = a
 -- make the sentence id from buchsigl (docid) and sentnumber
@@ -106,7 +106,7 @@ mkSentSigl docsigl sentid =  SentSigl
       . unSnipSigl $ docsigl
   where
 
-newtype TokenSigl = TokenSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype TokenSigl = TokenSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic)
 unTokenSigl (TokenSigl a) = a
 
 mkTokenSigl :: SentSigl -> TokenID -> TokenSigl
@@ -126,7 +126,7 @@ mkTokenSigl sentsigl  tok =  TokenSigl
 --      . extendSlashRDFsubj did   -- is a Text
 --      . unSentSigl $ sentsigl
 
-newtype DepSigl = DepSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype DepSigl = DepSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic)
 unDepSigl (DepSigl a) = a
 
 
@@ -138,7 +138,7 @@ mkDepSigl2 sentsigl  i =  DepSigl
     where
 
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
-newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype CorefSigl = CorefSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic)
 unCorefSigl (CorefSigl a) = a
 
 mkCorefsigl :: SnipSigl -> CorefID -> CorefSigl
@@ -148,7 +148,7 @@ mkCorefsigl snip c =   CorefSigl
       . unSnipSigl $ snip
 
 type MentionNr = Int
-newtype MentionSigl = MentionSigl RDFsubj deriving  (Show, Read, Eq, Ord, Generic, Zeros)
+newtype MentionSigl = MentionSigl RDFsubj deriving  (Show, Read, Eq, Ord, Generic)
 unMentionSigl (MentionSigl a) = a
 
 mkMentionsigl :: CorefSigl -> MentionID -> MentionSigl

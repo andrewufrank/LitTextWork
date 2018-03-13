@@ -30,12 +30,12 @@ import Data.Aeson.Types  -- for modifying the labels
 import GHC.Generics
 import Control.Monad (mzero)
 import qualified Data.HashMap.Strict as HM
-import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..))
---import NLP2RDF.NLPvocabulary (SnipSigl(..))
+import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..) )
+--import NLP2RDF.NLPvocabulary (SnipSigl(..) )
 import NLP.Types.Tags (POStags(..))
 import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
 import CoreNLP.Vocabulary
-import LitTypes.LanguageTypedText (unLCtext, LCtext (..))
+import LitTypes.LanguageTypedText (unLCtext, LCtext (..) )
 -- all data has 2 suffix ??
 
 -- | a single language piece of text with lanuage code
@@ -79,7 +79,7 @@ data Doc2 = Doc2 {doc_sentences::  [Sentence2]
                   , doc_corefs :: Maybe Coreferences2-- [CorefChain2]
                        }
            deriving (Show, Read, Eq, Ord, Generic, ToJSON)
---instance Zeros (Maybe a) where zero = Nothing
+----instance Zeros (Maybe a) where zero = Nothing
 
 
 instance FromJSON Doc2 where
@@ -116,7 +116,7 @@ data Dependency2 = Dependency2 {dep_dep ::  Text -- the tag
                         , dep_dependent :: Int
                         , dep_dependentGloss :: Text
                         }
-                deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
+                deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
 instance FromJSON Dependency2 where
     parseJSON = genericParseJSON defaultOptions {
@@ -131,7 +131,7 @@ data Ner2 = Ner2 {ner_docTokenBegin :: Int
                 , ner_characterOffsetEnd :: Int
                 , ner_ner :: Text -- the code
                 }
-        deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
+        deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
 instance FromJSON Ner2 where
     parseJSON = genericParseJSON defaultOptions {
@@ -148,13 +148,13 @@ data Token2 = Token2 {tok_index :: Int
                 , tok_speaker :: Maybe Text
                 , tok_before :: Maybe Text
                 , tok_after :: Maybe Text
-                } deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
+                } deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 instance FromJSON Token2 where
     parseJSON = genericParseJSON defaultOptions {
                 fieldLabelModifier = drop 4 }
 
 data Coreferences2 = Coreferences2  {chains:: [CorefChain2] }
-                 deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
+                 deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
 instance FromJSON Coreferences2 where
     parseJSON =   genericParseJSON opts  . jsonToArray
@@ -170,7 +170,7 @@ jsonToArray x = x
 
 
 data CorefChain2 = CorefChain2 [Coref2]
-         deriving (Read, Show,  Eq, Ord, Generic, ToJSON, FromJSON, Zeros)
+         deriving (Read, Show,  Eq, Ord, Generic, ToJSON, FromJSON)
 
 --instance FromJSON CorefChain2 where
 
@@ -187,7 +187,7 @@ data Coref2 = Coref2 {coref_id :: Int
                     , coref_sentNum :: Int
 --                    , coref_position :: [Int]
                     , coref_isRepresentativeMention :: Bool
-                } deriving (Show, Read, Eq, Ord, Generic, ToJSON, Zeros)
+                } deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 instance FromJSON Coref2 where
     parseJSON =   genericParseJSON opts
         where

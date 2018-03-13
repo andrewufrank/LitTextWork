@@ -7,9 +7,16 @@
 -- addition to the list of Treebank codes imported and exported here
 -----------------------------------------------------------------------------
 
-{-# LANGUAGE FlexibleContexts    #-}
-{-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE FlexibleInstances     #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeFamilies          #-}
+{-# LANGUAGE TypeSynonymInstances  #-}
+{-# LANGUAGE OverloadedStrings
+    , RecordWildCards     #-}
+
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
 module NLP2RDF.NLPvocabulary
     ( module NLP2RDF.NLPvocabulary
@@ -29,6 +36,7 @@ import LitTypes.TextDescriptor
 import LitTypes.TextDescriptor (SnipSigl)
 --import CoreNLP.DEPcodes (DepCode(..))
 import CoreNLP.DocBase
+import GHC.Generics
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker
@@ -56,14 +64,14 @@ instance RDFproperties DepCode where
 data NLPtype = Doc | Snip | Sentence | Token
     | DepType | Dependence | Mention | Coreference
     -- Doc is the same as Snip
-  deriving (Show, Eq, Enum)
+  deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
 
 type ParaID = Int   -- should be typed?
 
-newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
+newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic, Zeros)
 unParaSigl (ParaSigl t) = t
 
 paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
@@ -87,8 +95,8 @@ buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
 
 
 --
---newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
---instance Zeros SnipSigl where zero = SnipSigl zero
+newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+instance Zeros SnipSigl where zero = SnipSigl zero
 
 
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl

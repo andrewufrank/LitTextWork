@@ -44,31 +44,32 @@ class ConvertToAbsulteID postag relID a2 a1 where
 
 data Doc11 postag = Doc11 {doc11sents:: [Sentence11 postag]
                  , doc11corefs :: Maybe Coreferences11   -- only one
-                 , doc11id :: DocRelID     } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+                 , doc11id :: DocRelID     } deriving (Show, Read, Eq, Ord, Generic)
 
---instance Zeros (Doc1 postag) where zero = Doc1 [] zero
+
+instance Zeros (Doc11 postag) where zero = Doc11 [] zero zero
 
 data Sentence11 postag = Sentence11 {s11id :: SentenceRelID
                         , s11parse :: Maybe Text  -- the parse tree
                         , s11toks :: [Token11 postag]
                         , s11deps :: Maybe [Dependence11]
                         -- should be only one or none
-                        }  deriving (Show, Read, Eq, Ord, Generic, Zeros)
+                        }  deriving (Show, Read, Eq, Ord, Generic)
 
 
 data Dependence11 = Dependence11 {d11type :: DepCode -- Text -- String
-                        , d11orig :: Text -- the value given in the XML
+--                        , d11orig :: Text -- the value given in the XML
                         , d11govid :: TokenRelID
                         , d11depid :: TokenRelID
-                        , d11govGloss :: Text
-                        , d11depGloss :: Text
-                        } deriving (Show, Read, Eq, Ord, Generic, Zeros)
+--                        , d11govGloss :: Text
+--                        , d11depGloss :: Text
+                        } deriving (Show, Read, Eq, Ord, Generic)
 
 data Coreferences11 = Coreferences11 {co11chains:: [MentionChain11]}
-                deriving (Show, Read, Eq, Ord, Generic, Zeros)
+                deriving (Show, Read, Eq, Ord, Generic)
 
 data MentionChain11 = MentionChain11 {mentions:: [Mention11]}
-        deriving (Show, Read, Eq, Ord, Generic, Zeros)
+        deriving (Show, Read, Eq, Ord, Generic)
 
 data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative mention
 --        , mentSent :: SentenceID
@@ -76,7 +77,7 @@ data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative
         , ment11Head :: TokenRelID  -- the head of the mention
         , ment11Text :: Text  -- multiple words, the actual mention - not yet used
         }
-  deriving (Show, Read, Eq, Ord, Generic, Zeros)
+  deriving (Show, Read, Eq, Ord, Generic)
 
 data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11word :: Wordform0
@@ -87,7 +88,7 @@ data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11postt :: Text -- the pos from the tree tagger
                     , t11ner :: [NERtag] -- [Text] -- String
                     , t11speaker :: [SpeakerTag] -- Text -- String
-                    }   deriving (Show, Read, Eq, Ord, Generic, Zeros)
+                    }   deriving (Show, Read, Eq, Ord, Generic)
 
 
 instance (NLP.POStags postag)

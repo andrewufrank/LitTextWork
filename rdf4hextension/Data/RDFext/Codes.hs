@@ -6,18 +6,19 @@
 -- the URI are always open at end and connecting must add separator
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
-{-# OPTIONS_GHC -fno-warn-missing-methods  #-}
-{-# OPTIONS_GHC -fno-warn-overlapping-patterns  #-}
-{-# LANGUAGE FlexibleContexts      #-}
-{-# LANGUAGE FlexibleInstances     #-}
+--{-# OPTIONS_GHC -fno-warn-missing-methods  #-}
+--{-# OPTIONS_GHC -fno-warn-overlapping-patterns  #-}
+--{-# LANGUAGE FlexibleContexts      #-}
+--{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TypeFamilies          #-}
+--{-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings
     , RecordWildCards     #-}
 
-{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
 
@@ -42,7 +43,7 @@ import           Uniform.Zero
 import  GHC.Generics
 
 
-newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord, Generic)
 unPartURI (PartURI t) = t
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type - Network.URI, which is checked (and problems with Read class)
@@ -54,7 +55,7 @@ append2partURI u1 t = PartURI $  unPartURI u1  <> t
 -- the base url - with no closing
 --baseurl = Just gerastreeURI :: Maybe Text
 
-newtype RDFproperty = RDFproperty Text deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype RDFproperty = RDFproperty Text deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a type to identify the RDFproperties
 unRDFproperty (RDFproperty a) = a
 
@@ -65,11 +66,11 @@ class RDFproperties p where
 -- class URIs a b where
 --   extendURI :: a -> b
 
-newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a type to identify the RDF subject value
 -- is a text, not a URI
 unRDFsubj (RDFsubj a) = a
---instance Zeros RDFsubj where zero = RDFsubj zero
+instance Zeros RDFsubj where zero = RDFsubj zero
 
 --instance Functor RDFsubj where fmap op (RDFsubj a) = RDFsubj (op a)
 -- would applicative work?
@@ -84,7 +85,7 @@ extendSlashRDFsubj e a = RDFsubj .  (</> e) . unRDFsubj $ a
 -- makeRDFtype :: PartURI -> Text -> RDFtype
 -- makeRDFtype a e = RDFtype $ a <#> e
 
-newtype RDFtype = RDFtype Text deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype RDFtype = RDFtype Text deriving (Show, Read, Eq, Ord, Generic)
 -- ^ the types for the rdf type values
 unRDFtype (RDFtype a) = a
 

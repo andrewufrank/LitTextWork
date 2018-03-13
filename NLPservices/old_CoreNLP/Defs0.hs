@@ -46,7 +46,7 @@ newtype  Lemma0 = Lemma0 {lemma0 :: Text} deriving (Show, Read, Eq, Ord, Zeros)
 -- ^ a single word as lemma
 
 newtype TokenID0 = TokenID0 {untid0 :: Int} deriving (Show, Read, Eq, Ord, Zeros)
---instance Zeros TokenID0 where zero = TID0 zero
+instance Zeros TokenID0 where zero = TID0 zero
 instance NiceStrings TokenID0 where
     shownice   = show' . untid0
 
@@ -55,7 +55,7 @@ mkTokenID :: Text -> TokenID0
 mkTokenID s = TokenID0 $ readNoteT "mkTokenID" s
 
 newtype  SentID0 = SentID0 {unSentID0 :: Int} deriving (Show, Read, Eq, Ord, Zeros)
---instance Zeros SentID0 where zero = SentID0 zero
+instance Zeros SentID0 where zero = SentID0 zero
 instance NiceStrings SentID0 where
     shownice   = show' . unSentID0
 
@@ -106,10 +106,10 @@ data DependencePart0 = DP0 { did :: TokenID0  -- word number in sentence
                         , dword :: Wordform0  -- is word from text, not lemma
                             }   deriving (Show, Read, Eq)
 
---newtype CorefOuter0 = CorefOuter0 {corefCluster:: [CorefCluster0]
+newtype CorefOuter0 = CorefOuter0 {corefCluster:: [CorefCluster0]
 --                    }
 --  deriving (Show, Read, Eq)
---instance Zeros CorefOuter0 where zero = CorefOuter0 []
+instance Zeros CorefOuter0 where zero = CorefOuter0 []
 --
 --
 --newtype CorefCluster0 = CorefCluster0 {corefMents:: [Mention0]  -- a list of coreferences (for a singl subj)

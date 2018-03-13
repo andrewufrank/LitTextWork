@@ -40,12 +40,12 @@ import GHC.Generics
 
 
 newtype  Wordform0 = Wordform0 {word0 :: Text}
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a single word in the form it is in the text
 -- should be language encoded
 
 newtype  Lemma0 = Lemma0 {lemma0 :: Text}
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a single word as lemma
 
 --newtype TokenID0 = TokenID0 {untid0 :: Int}
@@ -69,19 +69,27 @@ mkSentID :: Text -> SentenceID
 mkSentID s = SentenceID $ readNoteT "mkSentID" s
 
 newtype ParaRelID = ParaRelID  [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype CorefRelID = CorefRelID [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype MentionRelID = MentionRelID [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype DocRelID = DocRelID [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype SentenceRelID = SentenceRelID [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype TokenRelID = TokenRelID [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype DepRelID = DepRelID [Text]
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
+
+instance Zeros ParaRelID where zero = ParaRelID zero
+instance Zeros CorefRelID where zero = CorefRelID zero
+instance Zeros MentionRelID where zero = MentionRelID zero
+instance Zeros DocRelID where zero = DocRelID zero
+instance Zeros SentenceRelID where zero = SentenceRelID zero
+instance Zeros TokenRelID where zero = TokenRelID zero
+instance Zeros DepRelID where zero = DepRelID zero
 
 --class AbsID abs0 relID abs1 where
 --    addToAbsID :: abs0 -> relID -> abs1
@@ -92,21 +100,27 @@ addDep2SentID (SentenceRelID d) s@(DepID s1) = DepRelID $ formatID s : d
 addSent2DocID (DocRelID d) s@(SentenceID s1) = SentenceRelID $ formatID s : d
 addTok2SentID (SentenceRelID d) s@(TokenID s1) = TokenRelID $ formatID s : d
 newtype ParaID = ParaID  Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype CorefID = CorefID Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype MentionID = MentionID Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype DocID = DocID Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype SentenceID = SentenceID Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype TokenID = TokenID Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 newtype DepID = DepID Int
-            deriving (Show, Read, Eq, Ord, Generic, Zeros)
+            deriving (Show, Read, Eq, Ord, Generic)
 
-
+instance Zeros ParaID where zero = ParaID zero
+instance Zeros CorefID where zero = CorefID zero
+instance Zeros MentionID where zero = MentionID zero
+instance Zeros DocID where zero = DocID zero
+instance Zeros SentenceID where zero = SentenceID zero
+instance Zeros TokenID where zero = TokenID zero
+instance Zeros DepID where zero = DepID zero
 
 class FormatID i where
     formatID :: i -> Text

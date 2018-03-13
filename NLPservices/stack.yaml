@@ -24,4 +24,5 @@ extra-deps:
 - parsec-extra-0.2.0.0
 - test-invariant-0.4.5.0
 
-resolver: lts-9.9
+#resolver: lts-9.9
+resolver: lts-10.8

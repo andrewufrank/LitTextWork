@@ -25,7 +25,7 @@ module LitTypes.TextDescriptor (
     , NTdescriptor (..)
     , LitTextFlag (..), LitTextFlags
     , PartURI (..), unPartURI
-    , SnipSigl (..)
+--    , SnipSigl (..)
 --    , module Path   -- to export IsString
     ) where
 
@@ -84,7 +84,7 @@ instance Zeros NTdescriptor where
 data Snip = Snip { tz3loc :: TextLoc
                         , tz3para :: ParaNum
                         , tz3snipnr ::  SnipID
-                        , tz3snipsigl :: SnipSigl
+--                        , tz3snipsigl :: SnipSigl
                         , tz3text:: LCtext
                         , tz3textLength :: Int
                         , tz3posTag :: Text
@@ -94,10 +94,10 @@ data Snip = Snip { tz3loc :: TextLoc
 -- snip sigl uses the paragraph number of the first paragraph
 newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 unSnipID (SnipID i) = i
-instance Zeros SnipID where zero = SnipID zero
+--instance Zeros SnipID where zero = SnipID zero
 
 --
---instance Zeros Snip where zero = Snip zero zero zero zero zero zero
+----instance Zeros Snip where zero = Snip zero zero zero zero zero zero
 --
 ----instance (Zeros a) => Zeros (Maybe a) where zero = Nothing
 ---- todo algebra
@@ -106,8 +106,8 @@ instance Zeros SnipID where zero = SnipID zero
 --newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 --unSnipID (SnipID i) = i
 ----
-newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
-instance Zeros SnipSigl where zero = SnipSigl zero
+--newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
+--instance Zeros SnipSigl where zero = SnipSigl zero
 --
 --type ParaID = Int   -- should be typed?
 --
@@ -211,7 +211,7 @@ data TZ1 =
         | TZignore1 {tzloc1 :: TextLoc, tztext1:: TextWithMarks1}
             deriving (Read, Show, Eq )
 
--- instance Zeros TZ1 where zero = TZleer zero
+instance Zeros TZ1 where zero = TZleer1 zero
 
 copyTZtoTZ1 :: TZ -> TZ1
 copyTZtoTZ1 (TZtext t l m) = TZtext1 t l (codeTextWM NoLanguage m)
