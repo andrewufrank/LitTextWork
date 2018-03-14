@@ -17,7 +17,7 @@ module CoreNLP.DocNLP_0or1_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
-import Uniform.TestHarness
+import Uniform.Test.TestHarness
 import           Uniform.Strings
 --import Uniform.FileIO
 ----import qualified Data.ByteString.Lazy as B

@@ -30,10 +30,10 @@ import   Test.Framework
 --import {-@ HTF_TESTS @-} CoreNLP.Vocabulary_test
 import {-@ HTF_TESTS @-} CoreNLP.ParseJsonCoreNLP_test
 
-import {-@ HTF_TESTS @-} CoreNLP.DocNLP_0or1_test
-import {-@ HTF_TESTS @-} CoreNLP.Doc1_absoluteID_test
-import {-@ HTF_TESTS @-} CoreNLP.Doc2ToLinear_test
-import {-@ HTF_TESTS @-} CoreNLP.Linear2Triple_test
+--import {-@ HTF_TESTS @-} CoreNLP.DocNLP_0or1_test
+--import {-@ HTF_TESTS @-} CoreNLP.Doc1_absoluteID_test
+--import {-@ HTF_TESTS @-} CoreNLP.Doc2ToLinear_test
+--import {-@ HTF_TESTS @-} CoreNLP.Linear2Triple_test
 -- parser:
 --import {-@ HTF_TESTS @-} NLP2RDF.ProduceDocCallNLP_test
 -- tests text to snip (M) and to Triples (N)

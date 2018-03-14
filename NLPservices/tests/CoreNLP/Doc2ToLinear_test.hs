@@ -16,7 +16,7 @@ module CoreNLP.Doc2ToLinear_test  -- (openMain, htf_thisModuelsTests)
 
 
 import           Test.Framework
-import Uniform.TestHarness
+import Uniform.Test.TestHarness
 import CoreNLP.Doc2ToLinear
 import qualified NLP.Corpora.Conll  as Conll
 
@@ -24,7 +24,7 @@ toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag]
 toLin   =  linearize Conll.undefConll
 
 instance ShowTestHarness (Doc11 Conll.POStag) where
---instance ShowTestHarness (Doc1 Conll.POStag) where
+instance ShowTestHarness [DocAsList Conll.POStag] where
 
 
 test_c = testFile2File "short1.doc11" "short1.lin" toLin
