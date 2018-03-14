@@ -59,7 +59,7 @@ decodeDoc2 :: LazyByteString -> ErrOrVal Doc2
 decodeDoc2 = toErrOrVal . eitherDecode
 
 data Doc2 = Doc2 {doc_sentences::  [Sentence2]
-                  , doc_corefs :: Maybe Coreferences2-- [CorefChain2]
+                  , doc_corefs :: Maybe Coreferences2 -- [CorefChain2]
                        }
            deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 ----instance Zeros (Maybe a) where zero = Nothing
@@ -71,16 +71,16 @@ doc2ops = defaultOptions {
                 fieldLabelModifier = drop 4 }
 
 data Sentence2 = Sentence2 {s_index :: Int
-                , s_parse :: Maybe Text  -- the parse tree
-                , s_basicDependencies :: Maybe [Dependency2]
-                , s_enhancedDependencies :: Maybe [Dependency2]
-                , s_enhancedPlusPlusDependencies :: Maybe [Dependency2]
-                , s_collapse_ccprocessed_dependencies :: Maybe [Dependency2]
-                        -- collapsed-ccprocessed-dependencies
-                , s_entitymentions :: Maybe [Ner2]
-                , s_tokens :: [Token2]
-                }
-        deriving (Show, Read, Eq, Ord, Generic, ToJSON)
+            , s_parse :: Maybe Text  -- the parse tree
+            , s_basicDependencies :: Maybe [Dependency2]
+            , s_enhancedDependencies :: Maybe [Dependency2]
+            , s_enhancedPlusPlusDependencies :: Maybe [Dependency2]
+            , s_collapse_ccprocessed_dependencies :: Maybe [Dependency2]
+                    -- collapsed-ccprocessed-dependencies
+            , s_entitymentions :: Maybe [Ner2]
+            , s_tokens :: [Token2]
+            }
+    deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
 instance FromJSON Sentence2 where
     parseJSON = genericParseJSON defaultOptions {

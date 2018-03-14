@@ -48,7 +48,6 @@ import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
 
 class ConvertTo1 postag a2 a1 where
--- convert to the 1 or 0 records
     convertTo1 :: postag -> a2 -> a1
 
 
@@ -65,7 +64,7 @@ data Sentence1 postag = Sentence1 {s1id :: SentenceID
                         , s1parse :: Maybe Text  -- the parse tree
                         , s1toks :: [Token0 postag]
                         , s1deps :: Maybe [Dependence1]
-                        -- should be only one or none
+                        -- only the last one or none
                         -- select (last = best) in coreNLPxml in getSentence
                         -- could be changed to parse all and select later
                         }  deriving (Show, Read, Eq, Ord, Generic)
@@ -98,6 +97,8 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
         , mentStart, mentEnd :: TokenID -- not used ??
         , mentHead :: TokenID  -- the head of the mention
         , mentText :: Text  -- multiple words, the actual mention - not yet used
+        -- coref_id not used
+
         }
   deriving (Show, Read, Eq, Ord, Generic)
 instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
