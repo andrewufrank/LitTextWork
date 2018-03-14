@@ -29,6 +29,6 @@ instance ShowTestHarness [DocAsList Conll.POStag] where
 instance ShowTestHarness [DocAsTriple Conll.POStag] where
 
 
-test_c = testFile2File "short1.lin" "short1.trips" toLin
+test_c = testFile2File "nlp/short1.lin" "nlp/short1.trips" toLin
 
 
