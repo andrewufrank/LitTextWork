@@ -2,6 +2,7 @@
 --
 -- Module      :  parsing the output of stanford corenlp 3.9. in json format
 -- produces Doc2
+--
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -16,10 +17,11 @@
 -- template haskell requires reordering of data types
 --and all functions used for default otions imported (not local defined)
 
+-- extract all which is in the english coreNLP json output
+
 module CoreNLP.ParseJsonCoreNLP
     ( module CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
         , module CoreNLP.Vocabulary
--- (openMain, htf_thisModuelsTests)
      ) where
 
 import           Uniform.Strings
@@ -44,6 +46,7 @@ data Snip2 lang = Snip2 { snip2text :: LTtext lang
                         , snip2sigl :: SnipSigl  -- the id of the snip
                           }
             deriving (Read, Show, Eq)
+
 instance Zeros (Snip2 lang) where
     zero = Snip2 zero zero
 
@@ -52,28 +55,8 @@ snipIsNull :: Snip2 lang -> Bool
 snipIsNull = null' . unLCtext . snip2text
 
 
-
---processDoc0toTriples2 :: (Show postag, POStags postag, LanguageTypedText lang)
---            => lang ->  postag -> SnipSigl  -> Doc0 postag -> [NLPtriple postag]
---            -- TriplesGraph  G -> H
----- ^ convert the doc0 (which is the analysed xml) and produce the triples
---
---processDoc0toTriples2  lph pph snipsigl  doc0 =
---    map NLPtriple $ t2  : sents -- ++ corefs
---
---    where
---        lang = languageCode lph -- tz3lang ntz
-----        snipid = snip2sigl snip -- mkSnipSigl paraid snipnr
---        t2 = mkTripleText (unSnipSigl snipsigl)
---                (mkRDFproperty LanguageTag) (showT lang)
---        sents :: [Triple]
---        sents =   concat $ map (mkSentenceTriple2 lang  snipsigl) (docSents doc0)
-----        corefs =    (mkCorefTriple1 lang   snipsigl )
-----                            (docCorefs doc0)
-
-decodeDoc2 :: LazyByteString -> Either String Doc2
---decodeDoc2 :: ByteString -> Either String Doc2
-decodeDoc2 = eitherDecode
+decodeDoc2 :: LazyByteString -> ErrOrVal Doc2
+decodeDoc2 = toErrOrVal . eitherDecode
 
 data Doc2 = Doc2 {doc_sentences::  [Sentence2]
                   , doc_corefs :: Maybe Coreferences2-- [CorefChain2]
@@ -122,6 +105,7 @@ instance FromJSON Dependency2 where
     parseJSON = genericParseJSON defaultOptions {
                 fieldLabelModifier = drop 4 }
 
+-- | the record from the s_entitymentions
 data Ner2 = Ner2 {ner_docTokenBegin :: Int
                 , ner_docTokenEnd :: Int
                 , ner_tokenBegin :: Int
@@ -129,7 +113,7 @@ data Ner2 = Ner2 {ner_docTokenBegin :: Int
                 , ner_text :: Text
                 , ner_characterOffsetBegin :: Int
                 , ner_characterOffsetEnd :: Int
-                , ner_ner :: Text -- the code
+                , ner_ner :: Text -- the code ??
                 }
         deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
@@ -146,8 +130,8 @@ data Token2 = Token2 {tok_index :: Int
                 , tok_pos :: Text
                 , tok_ner :: Text  -- missing NormalizedNER ?
                 , tok_speaker :: Maybe Text
-                , tok_before :: Maybe Text
-                , tok_after :: Maybe Text
+                , tok_before :: Maybe Text  -- the separation, usually ""
+                , tok_after :: Maybe Text -- the separation, usually " "
                 } deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 instance FromJSON Token2 where
     parseJSON = genericParseJSON defaultOptions {
@@ -176,11 +160,14 @@ data CorefChain2 = CorefChain2 [Coref2]
 
 
 data Coref2 = Coref2 {coref_id :: Int
+            -- the first id is the json label of the chain
+            -- which is dropped by read (but also by the pretty printer or checker)
                     , coref_text :: Text
---                    , coref_type :: Text
---                    , coref_number :: Text
---                    , coref_gender :: Text
---                    , coref_animacy :: Text
+                    , coref_type :: Text
+                    , coref_number :: Text
+                    , coref_gender :: Text
+                    , coref_animacy :: Text
+                    -- add a time and location class, avoids some errors
                     , coref_startIndex :: Int
                     , coref_endIndex :: Int
                     , coref_headIndex :: Int
