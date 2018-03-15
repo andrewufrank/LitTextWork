@@ -4,6 +4,7 @@
 --
 -- | the base data types for the Doc11
 -- Doc11 has all RelIDs relative to the SentenceID
+-- the postag is coded here
 -----------------------------------------------------------------------------
 {-# LANGUAGE
         ScopedTypeVariables
@@ -37,6 +38,7 @@ import GHC.Generics
 import qualified NLP.Types.Tags      as NLP
 --import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
+import Data.List
 
 class ConvertToAbsulteID postag relID a2 a1 where
 -- convert to the 1 or 0 records
@@ -76,18 +78,23 @@ data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative
         , ment11Start, ment11End :: TokenRelID -- not used ??
         , ment11Head :: TokenRelID  -- the head of the mention
         , ment11Text :: Text  -- multiple words, the actual mention - not yet used
+        , ment11Referent :: TokenRelID -- the head of the referent
+                -- what the text mentions in the original
+                -- the referent is kept, recognized by rep == true and
+                -- ment11Head == ment11Referent
         }
   deriving (Show, Read, Eq, Ord, Generic)
 
 data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11word :: Wordform0
                     , t11lemma :: Lemma0
---                    , t11begin, t11end :: Int  -- not used
+                    , t11begin, t11end :: Int  -- not used
                     , t11pos :: postag --  the pos tag recognized
                     , t11posOrig :: Text -- the pos tag received
                     , t11postt :: Text -- the pos from the tree tagger
                     , t11ner :: [NERtag] -- [Text] -- String
                     , t11speaker :: [SpeakerTag] -- Text -- String
+                    , t11before, t11after :: Maybe Text
                     }   deriving (Show, Read, Eq, Ord, Generic)
 
 
@@ -124,6 +131,10 @@ instance (NLP.POStags postag)
         t11ner =  tner -- when is this a list?
                         -- use the Ner2 values?
         t11speaker =  tspeaker
+        t11before = tbefore
+        t11after = tafter
+        t11begin = tbegin
+        t11end = tend
 
 instance ConvertToAbsulteID postag SentenceRelID Dependence1 Dependence11 where
     convertToAbsoluteID _  s Dependence1 {..} = Dependence11 {..}
@@ -141,9 +152,17 @@ instance ConvertToAbsulteID postag DocRelID Coreferences1 Coreferences11 where
             co11chains = map (convertToAbsoluteID phP s) coChains
 
 instance ConvertToAbsulteID postag DocRelID MentionChain1 MentionChain11 where
-    convertToAbsoluteID phP s (MentionChain1 cs) =
-            MentionChain11 (map (convertToAbsoluteID phP s) cs)
+    convertToAbsoluteID phP s (MentionChain1 mentions) = MentionChain11 $
+            map (markMentionsWithRep (ment11Head rep')) mentions2
+
         -- phantom is not used
+        where
+            mentions2 = (map (convertToAbsoluteID phP s) mentions)
+            (rep,norep) = partition ment11Rep mentions2
+            rep' = case length rep of
+                1 -> headNote "mkCorefTriple2 rep not present" rep :: Mention11
+                _ -> errorT ["mkCoreTriple2 - mentions exist, but not a single true rep",
+                        showT mentions, showT rep]
 
 instance ConvertToAbsulteID postag DocRelID (Mention1) Mention11 where
     convertToAbsoluteID _  s (Mention1 {..}) = Mention11 {..}
@@ -154,5 +173,8 @@ instance ConvertToAbsulteID postag DocRelID (Mention1) Mention11 where
             ment11End = addTok2SentID ment11Sent mentEnd  -- points next word
             ment11Head = addTok2SentID ment11Sent mentHead
             ment11Text = mentText
+            ment11Referent = undefined "undefined Referent asdwqer"
 
+markMentionsWithRep ::   TokenRelID -> Mention11 -> Mention11
+markMentionsWithRep rep ment  = ment  {ment11Referent = rep}
 --

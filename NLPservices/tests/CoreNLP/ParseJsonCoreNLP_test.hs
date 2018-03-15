@@ -53,7 +53,8 @@ decodeDoc2op f = either (const zero) id r
         r = eitherDecode flbs :: Either String Doc2
         flbs = b2bl . t2b $ f :: LazyByteString
 
-test_A = testFile2File "nlp/short1.json" "nlp/short1.doc2" decodeDoc2op
+progName = "nlpservices"
+test_A = testFile2File progName "short1.json" "short1.doc2" decodeDoc2op
 
 instance ShowTestHarness Doc2 where
 instance ShowTestHarness a => ShowTestHarness (ErrOrVal a) where

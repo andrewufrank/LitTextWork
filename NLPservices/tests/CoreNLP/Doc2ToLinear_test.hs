@@ -19,6 +19,7 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import CoreNLP.Doc2ToLinear
 import qualified NLP.Corpora.Conll  as Conll
+import qualified Data.Text  as T
 
 toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag]
 toLin   =  linearize Conll.undefConll
@@ -26,7 +27,10 @@ toLin   =  linearize Conll.undefConll
 instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness [DocAsList Conll.POStag] where
 
+progName = "nlpservices"
+test_c = testFile2File progName "short1.doc11" "short1.lin" toLin
 
-test_c = testFile2File "nlp/short1.doc11" "nlp/short1.lin" toLin
+test_2spaces = assertEqual s2r (T.replace "  " " " s2)
 
-
+s2 = "When  the  uncle  came  into  the  room,  he  carried  a  book. "
+s2r = "When the uncle came into the room, he carried a book. "

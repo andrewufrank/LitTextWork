@@ -29,7 +29,7 @@ to1op f =  convertTo1 Conll.undefConll f
 instance ShowTestHarness (Doc1 Conll.POStag) where
 instance ShowTestHarness Doc2 where
 
-
-test_B = testFile2File "nlp/short1.doc2" "nlp/short1.doc1" to1op
+progName = "nlpservices"
+test_B = testFile2File progName "short1.doc2" "short1.doc1" to1op
 
 

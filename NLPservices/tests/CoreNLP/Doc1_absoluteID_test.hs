@@ -37,7 +37,7 @@ to11op  =  convertToAbsoluteID Conll.undefConll  (DocRelID ["doc11"])
 instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness (Doc1 Conll.POStag) where
 
-
-test_c = testFile2File "nlp/short1.doc1" "nlp/short1.doc11" to11op
+progName = "nlpservices"
+test_c = testFile2File progName "short1.doc1" "short1.doc11" to11op
 
 

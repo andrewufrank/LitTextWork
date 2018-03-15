@@ -20,25 +20,20 @@ module CoreNLP.Doc2ToLinear
     ( module CoreNLP.Doc2ToLinear
     , module CoreNLP.Doc1_absoluteID
     , Doc11 (..)
---    ,  module CoreNLP.DocNLP_0or1
-    ,
     ) where
 
 import           Uniform.Strings
 import CoreNLP.Doc1_absoluteID
---import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
---import qualified NLP.Types.Tags      as NLP
---import              CoreNLP.DEPcodes
---import              CoreNLP.NERcodes
 import Uniform.Zero
 import Data.Maybe
 import GHC.Generics
-
+import qualified Data.Text as T   -- replace
 -- Linearize Doc11
 
-data DocAsList postag = DocLin {d3id:: DocRelID}
+data DocAsList postag = DocAsList {d3id:: DocRelID}
     | SentenceLin { s3id :: SentenceRelID
                     , s3parse :: Maybe Text  -- the parse tree
+                    , s3text :: Text -- the sentence text combined from the tokens
                 }
     | DependenceLin {d3type :: DepCode -- Text -- String
 --                        , d3orig :: Text -- the value given in the XML
@@ -74,7 +69,7 @@ class Linearize d postag where
     linearize :: postag -> d -> [DocAsList postag]
 
 instance Linearize (Doc11 postag) postag where
-    linearize ph Doc11{..} = DocLin {..}
+    linearize ph Doc11{..} = DocAsList {..}
         : (sents ++ cos)
      where
         d3id = doc11id
@@ -84,10 +79,19 @@ instance Linearize (Doc11 postag) postag where
 instance Linearize (Sentence11 postag) postag where
     linearize ph Sentence11{..} = SentenceLin {s3parse = s11parse
                                                 , s3id = s11id
+                                                , s3text = t1
                                                 }
                 : (concat $ map (linearize ph) s11toks
                     ++ maybe [] (map (linearize ph)) s11deps
                 )
+        where
+            t1 = T.replace "  " " " . concat' . map getTokenText $ s11toks
+            -- replace double blanks by a single one for the sentence
+            getTokenText :: Token11 postag -> Text
+            getTokenText Token11{..} = concat'
+                . catMaybes $ [t11before, Just . word0 $ t11word, t11after]
+
+
 instance Linearize (Token11 postag) postag where
     linearize ph Token11 {..} = [TokenLin {..}]
         where

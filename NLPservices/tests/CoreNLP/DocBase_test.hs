@@ -26,7 +26,7 @@
 module CoreNLP.DocBase_test  where
 
 import           Test.Framework
-
+progName = "nlpservices"
 
 --test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
 --                (mkRDFtype ( "Werk"::Text ))

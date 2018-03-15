@@ -114,6 +114,7 @@ data Token0 postag = Token0 { tid :: TokenID
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [NERtag] -- [Text] -- String
                     , tspeaker :: [SpeakerTag] -- Text -- String
+                    , tbefore, tafter :: Maybe Text
                     }   deriving (Show, Read, Eq, Ord, Generic)
 
 
@@ -190,6 +191,8 @@ instance (NLP.POStags postag)
 --                    maybe [] (\a -> [a]) $ tok_speaker
         tbegin = tok_characterOffsetBegin
         tend = tok_characterOffsetEnd
+        tbefore = tok_before
+        tafter = tok_after
 
 
 instance ConvertTo1 postag Dependency2 (Dependence1) where
