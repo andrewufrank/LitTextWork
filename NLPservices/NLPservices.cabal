@@ -61,11 +61,7 @@ library
          CoreNLP.DocNLP_0or1
          CoreNLP.Doc1_absoluteID
          CoreNLP.Doc2ToLinear
---         CoreNLP.Linear2Triple
---         CoreNLP.Vocabulary
-
---         CoreNLP.Doc2ToDoc1
---         CoreNLP.ProduceNLPtriples2
+         CoreNLP.Linear2Triple
 
     exposed: True
     buildable: True
@@ -102,7 +98,7 @@ Test-Suite nlpTestAuto
          CoreNLP.DocNLP_0or1_test
          CoreNLP.Doc1_absoluteID_test
          CoreNLP.Doc2ToLinear_test
-----         CoreNLP.Linear2Triple_test
+         CoreNLP.Linear2Triple_test
 ----        NLP2RDF.ProduceDocCallNLP_test
 ----         CoreNLP.ProduceNLPtriples2_test
 ----        NLP2RDF.CompleteSentence_test

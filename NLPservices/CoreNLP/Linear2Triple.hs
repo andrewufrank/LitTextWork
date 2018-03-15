@@ -48,17 +48,20 @@ class MakeIRI p where
 instance MakeIRI DocRelID where
     mkIRI (PartURI base) (DocRelID ts)
             = PartURI (base </>
-                    (fromJustNote "intercalate mkIRI DocRelID" $ intercalate' "/" ts))
+                    (fromJustNote "intercalate mkIRI DocRelID"
+                            $ intercalate' "/" . reverse $ ts))
 
 instance MakeIRI SentenceRelID where
     mkIRI (PartURI base) (SentenceRelID ts)
             = PartURI (base </>
-                    (fromJustNote "intercalate mkIRI SentenceRelID" $ intercalate' "/" ts))
+                    (fromJustNote "intercalate mkIRI SentenceRelID"
+                            $ intercalate' "/" . reverse $ ts))
 
 instance MakeIRI TokenRelID where
     mkIRI (PartURI base) (TokenRelID ts)
             = PartURI (base </>
-                    (fromJustNote "intercalate mkIRI TokenRelID" $ intercalate' "/" ts))
+                    (fromJustNote "intercalate mkIRI TokenRelID"
+                            $ intercalate' "/" . reverse $ ts))
 
 data DocAsTriple postag =
     TriType {s::PartURI , ty ::NLPtype}
@@ -75,7 +78,7 @@ instance Zeros (DocAsTriple postag) where zero = TriZero
 
 makeTriple :: (Show postag) =>  PartURI -> DocAsList postag -> [DocAsTriple postag]
 
-makeTriple base DocLin {..} = [TriType (mkIRI base d3id)  Voc.Doc]
+makeTriple base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Doc]
 
 makeTriple base SentenceLin{..} = [TriType s Voc.Sentence
                                , maybe zero (TriText s  Voc.SentenceParse) s3parse]

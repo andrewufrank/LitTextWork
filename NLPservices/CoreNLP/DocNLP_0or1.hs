@@ -98,10 +98,14 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
         , mentHead :: TokenID  -- the head of the mention
         , mentText :: Text  -- multiple words, the actual mention - not yet used
         -- coref_id not used
-
+        , mentType :: Text
+        , mentNumber :: Text
+        , mentGender :: Text
+        , mentAnimacy :: Text
         }
   deriving (Show, Read, Eq, Ord, Generic)
 instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
+                                            zero zero zero zero
 
 ----instance Zeros Bool where zero = False
 
@@ -233,5 +237,9 @@ instance ConvertTo1 postag Coref2 (Mention1) where
             mentEnd = TokenID coref_endIndex   -- points next word
             mentHead = TokenID coref_headIndex
             mentText = coref_text
+            mentType = coref_type
+            mentNumber = coref_number
+            mentGender = coref_gender
+            mentAnimacy = coref_animacy
 
 --

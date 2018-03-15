@@ -60,11 +60,11 @@ data Sentence11 postag = Sentence11 {s11id :: SentenceRelID
 
 
 data Dependence11 = Dependence11 {d11type :: DepCode -- Text -- String
---                        , d11orig :: Text -- the value given in the XML
+                        , d11orig :: Text -- the value given in the XML
                         , d11govid :: TokenRelID
                         , d11depid :: TokenRelID
---                        , d11govGloss :: Text
---                        , d11depGloss :: Text
+                        , d11govGloss :: Text
+                        , d11depGloss :: Text
                         } deriving (Show, Read, Eq, Ord, Generic)
 
 data Coreferences11 = Coreferences11 {co11chains:: [MentionChain11]}
@@ -82,6 +82,7 @@ data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative
                 -- what the text mentions in the original
                 -- the referent is kept, recognized by rep == true and
                 -- ment11Head == ment11Referent
+        , ment11Type, ment11Number, ment11Gender, ment11Animacy :: Text
         }
   deriving (Show, Read, Eq, Ord, Generic)
 
@@ -174,6 +175,10 @@ instance ConvertToAbsulteID postag DocRelID (Mention1) Mention11 where
             ment11Head = addTok2SentID ment11Sent mentHead
             ment11Text = mentText
             ment11Referent = undefined "undefined Referent asdwqer"
+            ment11Type = mentType
+            ment11Number = mentNumber
+            ment11Gender = mentGender
+            ment11Animacy = mentAnimacy
 
 markMentionsWithRep ::   TokenRelID -> Mention11 -> Mention11
 markMentionsWithRep rep ment  = ment  {ment11Referent = rep}

@@ -36,19 +36,20 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                     , s3text :: Text -- the sentence text combined from the tokens
                 }
     | DependenceLin {d3type :: DepCode -- Text -- String
---                        , d3orig :: Text -- the value given in the XML
+                        , d3orig :: Text -- the value given in the XML
                         , d3govid :: TokenRelID
                         , d3depid :: TokenRelID
---                        , d3govGloss :: Text
---                        , d3depGloss :: Text
+                        , d3govGloss :: Text
+                        , d3depGloss :: Text
                         }
     | MentionLin {
---            ment3Rep ::  Bool -- , indicates the representative mention
+            ment3Rep ::  Bool -- , indicates the representative mention
 --        , mentSent :: SentenceID
-          ment3Ment :: TokenRelID  -- missing?? find in chain
+         , ment3Ment :: TokenRelID  -- missing?? find in chain
         , ment3Start, ment3End :: TokenRelID -- not used ??
         , ment3Head :: TokenRelID  -- the head of the mention
---        , ment3Text :: Text  -- multiple words, the actual mention - not yet used
+        , ment3Text :: Text  -- multiple words, the actual mention - not yet used
+        , ment3Type, ment3Number, ment3Gender, ment3Animacy :: Text
         }
     | TokenLin { t3id :: TokenRelID
                     , t3word :: Wordform0
@@ -106,35 +107,36 @@ instance Linearize (Token11 postag) postag where
         t3speaker =  t11speaker
 
 instance Linearize  Coreferences11 postag where
-    linearize ph Coreferences11{..} = map (linearizeMention zero) mc
+    linearize ph Coreferences11{..} = map (linearizeMention ) mc
         where
             cs = co11chains :: [MentionChain11]
 
 
             mc = concat $ map  mentions cs :: [Mention11]
-            linearizeMention rep Mention11 {..} = MentionLin {..}
+            linearizeMention Mention11 {..} = MentionLin {..}
                 where
-                        ment3Ment = rep
---                        ment3Rep = ment11Rep
+                        ment3Ment = ment11Referent
+                        ment3Rep = ment11Rep
             --            ment3Sent = ment11Sent
                         ment3Start = ment11Start
                         ment3End = ment11End  -- points next word
                         ment3Head = ment11Head
                         ment3Text = ment11Text
+                        ment3Type = ment11Type
+                        ment3Number = ment11Number
+                        ment3Gender = ment11Gender
+                        ment3Animacy = ment11Animacy
 
---processOneMentionChain :: MentionChain11 -> (TokenRelID, MentionChain11)
----- find the rep
---processOneMentionChain mc =
 
 instance Linearize Dependence11 postag where
     linearize ph Dependence11 {..} =  [DependenceLin{..}]
         where
             d3type = d11type
---            d3orig = d11orig
+            d3orig = d11orig
             d3govid =d11govid
             d3depid = d11depid
---            d3govGloss = d11govGloss
---            d3depGloss = d11depGloss
+            d3govGloss = d11govGloss
+            d3depGloss = d11depGloss
 
 
 

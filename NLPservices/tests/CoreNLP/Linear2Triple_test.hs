@@ -31,4 +31,7 @@ instance ShowTestHarness [DocAsTriple Conll.POStag] where
 progName = "nlpservices"
 test_c = testFile2File progName "short1.lin" "short1.trips" toLin
 
+test_intercalate1 = assertEqual (Just "doc11/S000001/T006")
+             (intercalate' "/" . reverse $ ts1)
 
+ts1 = [ "T006" , "S000001" , "doc11" ] :: [Text]
