@@ -23,7 +23,7 @@ library
         , uniform-http
         , litFoundation
         , split
-        , rdf4hextension ==0.0.9.4
+        , rdf4hextension
         , rdf4h ==3.0.1.2
         -- rdf4h is not required?
         , text

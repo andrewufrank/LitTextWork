@@ -19,17 +19,27 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import CoreNLP.Linear2Triple
 import qualified NLP.Corpora.Conll  as Conll
+import Data.RDFext.Extension as RDF
 
 toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
 toLin ds  =  concat r
     where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
 
+toNT ::     [DocAsTriple ] -> Text
+toNT ds  =  t
+    where
+        r =  map (makeRDFnt ) ds :: [[Triple]]
+        t = unlines' . map triple2text . concat $ r
+
 instance ShowTestHarness [DocAsList Conll.POStag] where
 --instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness [DocAsTriple ] where
+instance ShowTestHarness [Triple ] where
 
 progName = "nlpservices"
 test_c = testFile2File progName "short1.lin" "short1.trips" toLin
+
+test_d = testFile2File progName "short1.trips" "short1.nt" toNT
 
 test_intercalate1 = assertEqual (Just "doc11/S000001/T006")
              (intercalate' "/" . reverse $ ts1)
