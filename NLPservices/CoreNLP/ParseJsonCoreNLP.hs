@@ -41,19 +41,19 @@ import CoreNLP.Vocabulary
 import LitTypes.LanguageTypedText (unLCtext, LCtext (..) )
 -- all data has 2 suffix ??
 
--- | a single language piece of text with lanuage code
--- , length and start para number
-data Snip2 lang = Snip2 { snip2text :: LTtext lang
-                        , snip2sigl :: SnipSigl  -- the id of the snip
-                          }
-            deriving (Read, Show, Eq)
-
-instance Zeros (Snip2 lang) where
-    zero = Snip2 zero zero
-
-snipIsNull :: Snip2 lang -> Bool
--- ^ test for null text
-snipIsNull = null' . unLCtext . snip2text
+---- | a single language piece of text with lanuage code
+---- , length and start para number
+--data Snip2 lang = Snip2 { snip2text :: LTtext lang
+--                        , snip2sigl :: SnipSigl  -- the id of the snip
+--                          }
+--            deriving (Read, Show, Eq)
+--
+--instance Zeros (Snip2 lang) where
+--    zero = Snip2 zero zero
+--
+--snipIsNull :: Snip2 lang -> Bool
+---- ^ test for null text
+--snipIsNull = null' . unLCtext . snip2text
 
 
 decodeDoc2 :: LazyByteString -> ErrOrVal Doc2
