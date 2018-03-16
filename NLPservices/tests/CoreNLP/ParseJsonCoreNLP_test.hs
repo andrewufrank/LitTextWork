@@ -34,17 +34,17 @@ test_toJson = assertEqual objVBG (toJSON (Conll.VBG))
 
 objVBG = String "VBG"
 
-test_short1 = do   -- this test work relative to working dir, not test dir
-    res0   <- runErr $ do
-        let fn = makeRelFile "short1.json"
-        putIOwords ["nlp json decode:", showT fn]
-        f <- readFile2  fn
-        putIOwords ["json input:",showStartJson f]
-        let r = eitherDecode  f  :: Either String Doc2
-        putIOwords ["decoded:", showT r]
-        writeFile2 (makeRelFile "short1.doc2x") (showT r)
-
-    assertBool True
+--test_short1 = do   -- this test work relative to working dir, not test dir
+--    res0   <- runErr $ do
+--        let fn = makeRelFile "short1.json"
+--        putIOwords ["nlp json decode:", showT fn]
+--        f <- readFile2  fn
+--        putIOwords ["json input:",showStartJson f]
+--        let r = eitherDecode  f  :: Either String Doc2
+--        putIOwords ["decoded:", showT r]
+--        writeFile2 (makeRelFile "short1.doc2x") (showT r)
+--
+--    assertBool True
 
 
 decodeDoc2op :: Text ->   Doc2
