@@ -33,12 +33,13 @@ import qualified Data.Text as T   -- replace
 import qualified NLP.Corpora.Conll  as Conll
 
 toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag] -- the entry point
-toLin   =  linearize Conll.undefConll
+toLin   =  linearize Conll.undefConll ()
 
 data DocAsList postag = DocAsList {d3id:: DocRelID}
     | SentenceLin { s3id :: SentenceRelID
                     , s3parse :: Maybe Text  -- the parse tree
                     , s3text :: LCtext -- the sentence text combined from the tokens
+                    , s3docid :: DocRelID  -- for the part of
                 }
     | DependenceLin {d3type :: DepCode -- Text -- String
                         , d3orig :: Text -- the value given in the XML
@@ -46,6 +47,7 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                         , d3depid :: TokenRelID
                         , d3govGloss :: Text
                         , d3depGloss :: Text
+                    , d3sentence :: SentenceRelID -- for partOf
                         }
     | MentionLin {
             ment3Rep ::  Bool -- , indicates the representative mention
@@ -65,30 +67,32 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                     , t3postt :: Text -- the pos from the tree tagger
                     , t3ner :: [NERtag] -- [Text] -- String
                     , t3speaker :: [SpeakerTag] -- Text -- String
+                    , t3sentence :: SentenceRelID -- for partOf
                     }
       | ZeroLin {}
 
         deriving (Show, Read, Eq, Ord, Generic)
 instance Zeros (DocAsList postag) where zero = ZeroLin
 
-class Linearize d postag where
-    linearize :: postag -> d -> [DocAsList postag]
+class Linearize d postag partOf where
+    linearize :: postag -> partOf -> d -> [DocAsList postag]
 
-instance Linearize (Doc11 postag) postag where
-    linearize ph Doc11{..} = DocAsList {..}
+instance Linearize (Doc11 postag) postag () where
+    linearize ph _ Doc11{..} = DocAsList {..}
         : (sents ++ cos)
      where
         d3id = doc11id
-        sents = concat $ map (linearize ph) doc11sents:: [DocAsList postag]
-        cos = maybe [] (linearize ph) doc11corefs :: [DocAsList postag]
+        sents = concat $ map (linearize ph doc11id) doc11sents:: [DocAsList postag]
+        cos = maybe [] (linearize ph doc11id) doc11corefs :: [DocAsList postag]
 
-instance Linearize (Sentence11 postag) postag where
-    linearize ph Sentence11{..} = SentenceLin {s3parse = s11parse
+instance Linearize (Sentence11 postag) postag DocRelID where
+    linearize ph pa Sentence11{..} = SentenceLin {s3parse = s11parse
                                                 , s3id = s11id
                                                 , s3text = t2
+                                                , s3docid = pa
                                                 }
-                : (concat $ map (linearize ph) s11toks
-                    ++ maybe [] (map (linearize ph)) s11deps
+                : (concat $ map (linearize ph s11id) s11toks
+                    ++ maybe [] (map (linearize ph s11id)) s11deps
                 )
         where
             t2 = LCtext t1 lang
@@ -101,8 +105,8 @@ instance Linearize (Sentence11 postag) postag where
             lang = if null s11toks then NoLanguage
                             else getLanguage . headNote "linearize sentence 11" $ s11toks
 
-instance Linearize (Token11 postag) postag where
-    linearize ph Token11 {..} = [TokenLin {..}]
+instance Linearize (Token11 postag) postag SentenceRelID where
+    linearize ph pa Token11 {..} = [TokenLin {..}]
         where
         t3id = t11id
         t3word =  t11word
@@ -117,9 +121,10 @@ instance Linearize (Token11 postag) postag where
         t3after = t11after
         t3begin = t11begin
         t3end = t11end
+        t3sentence = pa
 
-instance Linearize  Coreferences11 postag where
-    linearize ph Coreferences11{..} = map (linearizeMention ) mc
+instance Linearize  Coreferences11 postag DocRelID where
+    linearize _ _  Coreferences11{..} = map (linearizeMention) mc
         where
             cs = co11chains :: [MentionChain11]
 
@@ -140,8 +145,8 @@ instance Linearize  Coreferences11 postag where
                         ment3Animacy = ment11Animacy
 
 
-instance Linearize Dependence11 postag where
-    linearize ph Dependence11 {..} =  [DependenceLin{..}]
+instance Linearize Dependence11 postag SentenceRelID where
+    linearize _ pa Dependence11 {..} =  [DependenceLin{..}]
         where
             d3type = d11type
             d3orig = d11orig
@@ -149,6 +154,7 @@ instance Linearize Dependence11 postag where
             d3depid = d11depid
             d3govGloss = d11govGloss
             d3depGloss = d11depGloss
+            d3sentence = pa
 
 
 

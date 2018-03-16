@@ -4,6 +4,7 @@
 --  stanford corenlp 3.9. in json format
 
 -- linearize doc11 and convert to triples
+-- including all data, except entitymentions
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -84,6 +85,7 @@ instance MakeIRI TokenRelID where
 
 data DocAsTriple   =
     TriType {triSubj::RDFsubj , ty ::NLPtype}
+    | TriPartOf {triSubj::RDFsubj , o :: RDFsubj }
 --    | TriTextL  {triSubj::RDFsubj , p::NLPproperty, tl ::LCtext}  -- should be language coded
     | TriTextL2  {triSubj::RDFsubj , pp::RDFproperty, tl ::LCtext}  -- should be language coded
 --    | TriText   {triSubj::RDFsubj , p::NLPproperty, te ::Ttext}  -- should not be language coded
@@ -105,17 +107,19 @@ makeTriple :: (Show postag) =>  PartURI -> DocAsList postag -> [DocAsTriple ]
 makeTriple base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Doc]
 
 makeTriple base SentenceLin{..} = [TriType triSubj Voc.Sentence
-                   , maybe zero (TriText2 triSubj  (mkRDFproperty Voc.SentenceParse)) s3parse]
+                   , maybe zero (TriText2 triSubj  (mkRDFproperty Voc.SentenceParse)) s3parse
+                   , TriPartOf triSubj $ mkIRI base s3docid]
                                -- sentence form not in the data
     where triSubj = mkIRI base s3id
 
+-- | this gives all triples of a chain with the the same subj
 makeTriple base DependenceLin{..} = [TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
                         , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
                         , TriRel2 triSubj (mkRDFproperty Governor) (mkIRI base d3govid)
                         , TriRel2 triSubj (mkRDFproperty Dependent) (mkIRI base d3depid)
                         , TriText2 triSubj (mkRDFproperty GovGloss) d3govGloss
                         , TriText2 triSubj (mkRDFproperty DepGloss) d3depGloss
-
+                        , TriPartOf triSubj $ mkIRI base d3sentence
                         ]
         -- uses the correct nlp prefix because d3type is a DepType
         -- how to find the places where the original type is not parsed?
@@ -148,6 +152,7 @@ makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
                                , TriText2 triSubj (mkRDFproperty PosTT) (showT t3postt)
                                , TriList2 triSubj (mkRDFproperty Voc.Ner) (map showT t3ner)
                                , TriList2 triSubj (mkRDFproperty Voc.Speaker) ( map showT t3speaker)
+                   , TriPartOf triSubj $ mkIRI base t3sentence
                                ]
 
     where triSubj = mkIRI base t3id
@@ -159,6 +164,7 @@ makeRDFnt TriTextL2{..} =  singleton $ mkTripleLang3 (llang tl) (triSubj) pp (lt
 makeRDFnt TriText2{..} =  singleton $ mkTripleText  (triSubj) pp te
 makeRDFnt TriRel2 {..} = singleton $ mkTripleRef (triSubj) pp o
 makeRDFnt TriList2{..} = map (mkTripleText triSubj pp) os
+makeRDFnt TriPartOf {..} = singleton $ mkTriplePartOf triSubj o
 makeRDFnt TriType {..} = singleton $ mkTripleType triSubj (mkRDFtype ty)
 makeRDFnt TriInt2 {..} = singleton $ mkTripleInt triSubj pp int
 -- should use lang coded text
