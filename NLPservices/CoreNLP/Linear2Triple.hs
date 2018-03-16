@@ -45,30 +45,41 @@ unNLPtriple (NLPtriple t) = t
 class MakeIRI p where
 -- make an IRI from a nRelID
     mkIRI ::  PartURI -> p -> PartURI
+
+mkIRI_ :: Text -> Text -> [Text] -> PartURI
+-- the internal code
+mkIRI_ note base ts = if null ts
+        then errorT ["mkIRI with empty list for ", note]
+        else PartURI $ base </> (fromJustNote ("intercalate mkIRI  " ++ (t2s note))
+                            $ intercalate' "/" . reverse $ ts)
+
 instance MakeIRI DocRelID where
     mkIRI (PartURI base) (DocRelID ts)
-            = PartURI (base </>
-                    (fromJustNote "intercalate mkIRI DocRelID"
-                            $ intercalate' "/" . reverse $ ts))
+            =   mkIRI_ "DocRelID" base ts
+--            (base </>
+--                    (fromJustNote "intercalate mkIRI DocRelID"
+--                            $ intercalate' "/" . reverse $ ts))
 
 instance MakeIRI SentenceRelID where
     mkIRI (PartURI base) (SentenceRelID ts)
-            = PartURI (base </>
-                    (fromJustNote "intercalate mkIRI SentenceRelID"
-                            $ intercalate' "/" . reverse $ ts))
+            =  mkIRI_ "SentenceRelID" base ts
+--            (base </>
+--                    (fromJustNote "intercalate mkIRI SentenceRelID"
+--                            $ intercalate' "/" . reverse $ ts))
 
 instance MakeIRI TokenRelID where
     mkIRI (PartURI base) (TokenRelID ts)
-            = PartURI (base </>
-                    (fromJustNote "intercalate mkIRI TokenRelID"
-                            $ intercalate' "/" . reverse $ ts))
+            =   mkIRI_ "TokenRelID" base ts
+--            PartURI (base </>
+--                    (fromJustNote "intercalate mkIRI TokenRelID"
+--                            $ intercalate' "/" . reverse $ ts))
 
 data DocAsTriple postag =
     TriType {s::PartURI , ty ::NLPtype}
     | TriTextL  {s::PartURI , p::NLPproperty, te ::Text}  -- should be language coded
     | TriText   {s::PartURI , p::NLPproperty, te ::Text}  -- should not be language coded
-    | TriRel   {s::PartURI , p::NLPproperty, o ::PartURI}  -- should not be language coded
-    | TriRel2   {s::PartURI , pp::RDFproperty, o ::PartURI}  -- should not be language coded
+    | TriRel   {s::PartURI , p::NLPproperty, o ::PartURI}
+    | TriRel2   {s::PartURI , pp::RDFproperty, o ::PartURI}
     | TriList {s::PartURI, p::NLPproperty, os :: [Text]}
     | TriZero {}
 
