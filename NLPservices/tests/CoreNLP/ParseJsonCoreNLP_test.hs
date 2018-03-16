@@ -47,11 +47,6 @@ objVBG = String "VBG"
 --    assertBool True
 
 
-decodeDoc2op :: Text ->   Doc2
-decodeDoc2op f = either (const zero) id r
-    where
-        r = eitherDecode flbs :: Either String Doc2
-        flbs = b2bl . t2b $ f :: LazyByteString
 
 progName = "nlpservices"
 test_A = testFile2File progName "short1.json" "short1.doc2" decodeDoc2op
@@ -63,7 +58,6 @@ instance (Zeros a) => Zeros (ErrOrVal a) where zero = Right zero
 
 restest = zero :: Doc2
 
-instance Zeros Doc2 where zero = Doc2 zero Nothing
 
 showStartJson = s2t . take 100 . B.toString
 

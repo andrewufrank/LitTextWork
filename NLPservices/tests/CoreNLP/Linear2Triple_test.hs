@@ -21,15 +21,6 @@ import CoreNLP.Linear2Triple
 import qualified NLP.Corpora.Conll  as Conll
 import Data.RDFext.Extension as RDF
 
-toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
-toLin ds  =  concat r
-    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
-
-toNT ::     [DocAsTriple ] -> Text
-toNT ds  =  t
-    where
-        r =  map (makeRDFnt ) ds :: [[Triple]]
-        t = unlines' . map triple2text . concat $ r
 
 instance ShowTestHarness [DocAsList Conll.POStag] where
 --instance ShowTestHarness (Doc11 Conll.POStag) where

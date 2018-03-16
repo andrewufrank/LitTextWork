@@ -41,6 +41,17 @@ import GHC.Generics
 import LitTypes.ServerNames (rdfBase)
 import LitTypes.LanguageTypedText
 import Data.RDFext.Extension
+import qualified NLP.Corpora.Conll  as Conll
+
+toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
+toLin ds  =  concat r
+    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
+
+toNT ::     [DocAsTriple ] -> Text
+toNT ds  =  t
+    where
+        r =  map (makeRDFnt ) ds :: [[Triple]]
+        t = unlines' . map triple2text . concat $ r
 
 newtype NLPtriple postag = NLPtriple Triple
     deriving (Eq, Ord, Show, Read)

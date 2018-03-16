@@ -30,6 +30,10 @@ import GHC.Generics
 import qualified Data.Text as T   -- replace
 --import LitTypes.LanguageTypedText  (unLCtext, LCtext (..), LanguageCodedText (..) )
 -- should be imported
+import qualified NLP.Corpora.Conll  as Conll
+
+toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag] -- the entry point
+toLin   =  linearize Conll.undefConll
 
 data DocAsList postag = DocAsList {d3id:: DocRelID}
     | SentenceLin { s3id :: SentenceRelID

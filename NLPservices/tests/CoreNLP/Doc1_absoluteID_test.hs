@@ -23,16 +23,14 @@ import           Uniform.Strings
 ----import qualified Data.ByteString.Lazy as B
 --import qualified Data.ByteString.Lazy.UTF8 as B
 --import Data.Aeson (eitherDecode)
-import qualified NLP.Corpora.Conll  as Conll
 --
 import CoreNLP.Doc1_absoluteID
 --
 --import Data.Aeson.Encode.Pretty
 --import Data.Aeson
 --import GHC.Exts
+import qualified NLP.Corpora.Conll  as Conll
 
-to11op ::   (Doc1 Conll.POStag) ->  (Doc11 Conll.POStag)
-to11op  =  convertToAbsoluteID Conll.undefConll  (DocRelID ["doc11"])
 
 instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness (Doc1 Conll.POStag) where

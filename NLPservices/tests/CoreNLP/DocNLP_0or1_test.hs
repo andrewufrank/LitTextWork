@@ -23,8 +23,6 @@ import qualified NLP.Corpora.Conll  as Conll
 --
 import CoreNLP.DocNLP_0or1
 
-to1op :: Doc2  ->   (Doc1 Conll.POStag)
-to1op f =  convertTo1 Conll.undefConll English f
 
 instance ShowTestHarness (Doc1 Conll.POStag) where
 instance ShowTestHarness Doc2 where

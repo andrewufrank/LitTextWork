@@ -55,6 +55,12 @@ import CoreNLP.Vocabulary
 ---- ^ test for null text
 --snipIsNull = null' . unLCtext . snip2text
 
+decodeDoc2op :: Text ->   Doc2      -- the entry point
+decodeDoc2op f = either (const zero) id r
+    where
+        r = eitherDecode flbs :: Either String Doc2
+        flbs = b2bl . t2b $ f :: LazyByteString
+
 
 decodeDoc2 :: LazyByteString -> ErrOrVal Doc2
 decodeDoc2   = toErrOrVal . eitherDecode
@@ -63,7 +69,7 @@ data Doc2 = Doc2 {doc_sentences::  [Sentence2]
                   , doc_corefs :: Maybe Coreferences2 -- [CorefChain2]
                        }
            deriving (Show, Read, Eq, Ord, Generic, ToJSON)
-----instance Zeros (Maybe a) where zero = Nothing
+instance Zeros Doc2 where zero = Doc2 zero Nothing
 
 
 instance FromJSON Doc2 where
