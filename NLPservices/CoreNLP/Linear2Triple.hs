@@ -92,6 +92,8 @@ data DocAsTriple   =
     | TriRel2   {triSubj::RDFsubj , pp::RDFproperty, o ::RDFsubj}
 --    | TriList {triSubj::RDFsubj, p::NLPproperty, os :: [Text]}
     | TriList2 {triSubj::RDFsubj, pp::RDFproperty, os :: [Text]}
+    | TriInt2 {triSubj::RDFsubj, pp::RDFproperty, int :: Int}
+
     | TriZero {}
 
     deriving (Show, Read, Eq, Ord, Generic)
@@ -107,22 +109,43 @@ makeTriple base SentenceLin{..} = [TriType triSubj Voc.Sentence
                                -- sentence form not in the data
     where triSubj = mkIRI base s3id
 
-makeTriple base DependenceLin{..} = [TriRel2 triSubj (mkRDFproperty d3type) o]
+makeTriple base DependenceLin{..} = [TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
+                        , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
+                        , TriRel2 triSubj (mkRDFproperty Governor) (mkIRI base d3govid)
+                        , TriRel2 triSubj (mkRDFproperty Dependent) (mkIRI base d3depid)
+                        , TriText2 triSubj (mkRDFproperty GovGloss) d3govGloss
+                        , TriText2 triSubj (mkRDFproperty DepGloss) d3depGloss
+
+                        ]
         -- uses the correct nlp prefix because d3type is a DepType
         -- how to find the places where the original type is not parsed?
         -- find earlier ??
     where   triSubj = mkIRI base d3govid
-            o = mkIRI base d3depid
 
-makeTriple base MentionLin{..} = [TriRel2 triSubj (mkRDFproperty Voc.Mentions) o]
+makeTriple base MentionLin{..} = [TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
+                    , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
+                                            -- is Bool
+                    , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
+                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
+                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
+                    , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
+                    , TriText2 triSubj (mkRDFproperty MentionText) ment3Text
+                    , TriText2 triSubj (mkRDFproperty MentionType) ment3Type
+                    , TriText2 triSubj (mkRDFproperty MentionNumber) ment3Number
+                    , TriText2 triSubj (mkRDFproperty MentionGender) ment3Gender
+                    , TriText2 triSubj (mkRDFproperty MentionAnimacy) ment3Animacy
+                        ]
         --  triSubj is a refers to o (mentions o
     where   triSubj = mkIRI base ment3Head
-            o = mkIRI base ment3Ment
 
 makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
                                ,  TriTextL2 triSubj  (mkRDFproperty WordForm) (word0 t3word)
                                , TriTextL2 triSubj (mkRDFproperty Lemma3) (lemma0 t3lemma)
+                   , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
+                   , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
                                , TriText2 triSubj (mkRDFproperty Voc.Pos) (showT t3pos)
+                               , TriText2 triSubj (mkRDFproperty Voc.PosOrig) (showT t3posOrig)
+                               , TriText2 triSubj (mkRDFproperty PosTT) (showT t3postt)
                                , TriList2 triSubj (mkRDFproperty Voc.Ner) (map showT t3ner)
                                , TriList2 triSubj (mkRDFproperty Voc.Speaker) ( map showT t3speaker)
                                ]
@@ -137,6 +160,7 @@ makeRDFnt TriText2{..} =  singleton $ mkTripleText  (triSubj) pp te
 makeRDFnt TriRel2 {..} = singleton $ mkTripleRef (triSubj) pp o
 makeRDFnt TriList2{..} = map (mkTripleText triSubj pp) os
 makeRDFnt TriType {..} = singleton $ mkTripleType triSubj (mkRDFtype ty)
+makeRDFnt TriInt2 {..} = singleton $ mkTripleInt triSubj pp int
 -- should use lang coded text
               --
 singleton a = [a]

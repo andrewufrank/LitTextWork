@@ -44,11 +44,16 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | SentenceForm | SentenceParse
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
-          | Mentions   -- s is a mention of representative o
---          | MentionRepresenatative | MentionSentence
---          | MentionSentenceStart | MentionSentenceEnd
---          | MentionSentenceHead  | MentionSentenceText
-          deriving (Show, Read, Eq, Ord, Generic)
+          | Mentions  -- s is a mention of representative o
+          | MentionRepresentative | MentionSentence
+          | MentionStart | MentionEnd
+          | MentionHead  | MentionText
+          | MentionType
+          | MentionGender | MentionNumber | MentionAnimacy
+          | MentTokenRelID
+          | TokenBegin | TokenEnd |PosTT
+          | DepOrigin |  GovGloss |  DepGloss
+          deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
 

@@ -47,18 +47,29 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | Governor | Dependent | DepWordform
           | GovernorWordform | DependentWordform
           | Mentions  -- s is a mention of representative o
---          | MentionRepresenatative | MentionSentence
---          | MentionSentenceStart | MentionSentenceEnd
---          | MentionSentenceHead  | MentionSentenceText
+          | MentionRepresenatative | MentionSentence
+          | MentionStart | MentionEnd
+          | MentionHead  | MentionText
+          | MentionType
+          | MentionGender | MentionNumber | MentionAnimacy
+          | MentTokenRelID
+          | TokenBegin | TokenEnd |PosTT
+          | DepOrigin |  GovGloss |  DepGloss
           deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
 
 instance RDFproperties NLPproperty where
-    mkRDFproperty p = RDFproperty $ unPartURI nlpURItext <#> (toLowerStart . showT $ p)
+    mkRDFproperty p = RDFproperty
+                $ unPartURI nlpURItext <#> (toLowerStart . showT $ p)
 
 instance RDFproperties DepCode where
-    mkRDFproperty c = RDFproperty $ unPartURI nlpURItext <#> (toLower' . fromDEPtag $ c)
+    mkRDFproperty c = RDFproperty
+                $ unPartURI nlpURItext <#> (toLower' . fromDEPtag $ c)
+
+--instance RDFproperties Text where
+--    mkRDFproperty t = RDFproperty
+--                $ unPartURI nlpURItext <#> (toLower' t)
 
             -- should be changed to 2017
 data NLPtype = Doc | Snip | Sentence | Token
@@ -68,6 +79,7 @@ data NLPtype = Doc | Snip | Sentence | Token
 
 instance RDFtypes NLPtype where
       mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
+
 
 type ParaID = Int   -- should be typed?
 

@@ -49,7 +49,7 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                         }
     | MentionLin {
             ment3Rep ::  Bool -- , indicates the representative mention
---        , mentSent :: SentenceID
+        , ment3Sent :: SentenceRelID
          , ment3Ment :: TokenRelID  -- missing?? find in chain
         , ment3Start, ment3End :: TokenRelID -- not used ??
         , ment3Head :: TokenRelID  -- the head of the mention
@@ -59,10 +59,10 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
     | TokenLin { t3id :: TokenRelID
                     , t3word :: Wordform0
                     , t3lemma :: Lemma0
---                    , t3begin, t3end :: Int  -- not used
+                    , t3begin, t3end :: Int  -- not used
                     , t3pos :: postag --  the pos tag recognized
---                    , t3posOrig :: Text -- the pos tag received
---                    , t3postt :: Text -- the pos from the tree tagger
+                    , t3posOrig :: Text -- the pos tag received
+                    , t3postt :: Text -- the pos from the tree tagger
                     , t3ner :: [NERtag] -- [Text] -- String
                     , t3speaker :: [SpeakerTag] -- Text -- String
                     }
@@ -113,6 +113,10 @@ instance Linearize (Token11 postag) postag where
         t3ner =  t11ner -- when is this a list?
                         -- use the Ner2 values?
         t3speaker =  t11speaker
+        t3before = t11before
+        t3after = t11after
+        t3begin = t11begin
+        t3end = t11end
 
 instance Linearize  Coreferences11 postag where
     linearize ph Coreferences11{..} = map (linearizeMention ) mc
@@ -125,7 +129,7 @@ instance Linearize  Coreferences11 postag where
                 where
                         ment3Ment = ment11Referent
                         ment3Rep = ment11Rep
-            --            ment3Sent = ment11Sent
+                        ment3Sent = ment11Sent
                         ment3Start = ment11Start
                         ment3End = ment11End  -- points next word
                         ment3Head = ment11Head

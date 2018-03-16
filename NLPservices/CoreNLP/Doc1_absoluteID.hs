@@ -78,7 +78,7 @@ data MentionChain11 = MentionChain11 {mentions:: [Mention11]}
         deriving (Show, Read, Eq, Ord, Generic)
 
 data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative mention
---        , mentSent :: SentenceID
+        , ment11Sent :: SentenceRelID
         , ment11Start, ment11End :: TokenRelID -- not used ??
         , ment11Head :: TokenRelID  -- the head of the mention
         , ment11Text :: Text  -- multiple words, the actual mention - not yet used
