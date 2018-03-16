@@ -70,12 +70,14 @@ instance MakeIRI TokenRelID where
 
 data DocAsTriple   =
     TriType {s::PartURI , ty ::NLPtype}
-    | TriTextL  {s::PartURI , p::NLPproperty, te ::Text}  -- should be language coded
+--    | TriTextL  {s::PartURI , p::NLPproperty, te ::Text}  -- should be language coded
+    | TriTextL2  {s::PartURI , pp::RDFproperty, te ::Text}  -- should be language coded
     | TriText   {s::PartURI , p::NLPproperty, te ::Text}  -- should not be language coded
     | TriText2   {s::PartURI , pp::RDFproperty, te ::Text}  -- should not be language coded
 --    | TriRel   {s::PartURI , p::NLPproperty, o ::PartURI}
     | TriRel2   {s::PartURI , pp::RDFproperty, o ::PartURI}
-    | TriList {s::PartURI, p::NLPproperty, os :: [Text]}
+--    | TriList {s::PartURI, p::NLPproperty, os :: [Text]}
+    | TriList2 {s::PartURI, pp::RDFproperty, os :: [Text]}
     | TriZero {}
 
     deriving (Show, Read, Eq, Ord, Generic)
@@ -104,11 +106,11 @@ makeTriple base MentionLin{..} = [TriRel2 s (mkRDFproperty Voc.Mentions) o]
             o = mkIRI base ment3Ment
 
 makeTriple base TokenLin{..} = [TriType s Voc.Token
-                               ,  TriTextL s  WordForm (word0 t3word)
-                               , TriTextL s Lemma3 (lemma0 t3lemma)
+                               ,  TriTextL2 s  (mkRDFproperty WordForm) (word0 t3word)
+                               , TriTextL2 s (mkRDFproperty Lemma3) (lemma0 t3lemma)
                                , TriText2 s (mkRDFproperty Voc.Pos) (showT t3pos)
-                               , TriList s Voc.Ner (map showT t3ner)
-                               , TriList s Voc.Speaker ( map showT t3speaker)
+                               , TriList2 s (mkRDFproperty Voc.Ner) (map showT t3ner)
+                               , TriList2 s (mkRDFproperty Voc.Speaker) ( map showT t3speaker)
                                ]
 
     where s = mkIRI base t3id
