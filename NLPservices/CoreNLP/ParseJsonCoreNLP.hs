@@ -31,14 +31,14 @@ import Uniform.FileIO
 import Data.Aeson
 import Data.Aeson.Types  -- for modifying the labels
 import GHC.Generics
-import Control.Monad (mzero)
+--import Control.Monad (mzero)
 import qualified Data.HashMap.Strict as HM
-import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..) )
+--import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..) )
 --import NLP2RDF.NLPvocabulary (SnipSigl(..) )
 import NLP.Types.Tags (POStags(..))
-import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
+--import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
 import CoreNLP.Vocabulary
-import LitTypes.LanguageTypedText (unLCtext, LCtext (..) )
+--import LitTypes.LanguageTypedText (unLCtext, LCtext (..) )
 -- all data has 2 suffix ??
 
 ---- | a single language piece of text with lanuage code
