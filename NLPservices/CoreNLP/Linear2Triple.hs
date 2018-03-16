@@ -14,7 +14,7 @@
 {-# LANGUAGE OverloadedStrings
     , RecordWildCards     #-}
 
-{-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric, DeriveAnyClass, DerivingStrategies #-}
 
 module CoreNLP.Linear2Triple
     ( module CoreNLP.Linear2Triple
@@ -39,7 +39,10 @@ import Data.Maybe
 import GHC.Generics
 import LitTypes.ServerNames (rdfBase)
 
-newtype NLPtriple postag = NLPtriple Triple deriving (Eq, Ord, Show, Read)
+newtype NLPtriple postag = NLPtriple Triple
+    deriving (Eq, Ord, Show, Read)
+--    deriving newtype Zeros   -- not feasible, probably because it is parametrized?
+
 unNLPtriple (NLPtriple t) = t
 
 class MakeIRI p where
@@ -56,23 +59,14 @@ mkIRI_ note base ts = if null ts
 instance MakeIRI DocRelID where
     mkIRI (PartURI base) (DocRelID ts)
             =   mkIRI_ "DocRelID" base ts
---            (base </>
---                    (fromJustNote "intercalate mkIRI DocRelID"
---                            $ intercalate' "/" . reverse $ ts))
 
 instance MakeIRI SentenceRelID where
     mkIRI (PartURI base) (SentenceRelID ts)
             =  mkIRI_ "SentenceRelID" base ts
---            (base </>
---                    (fromJustNote "intercalate mkIRI SentenceRelID"
---                            $ intercalate' "/" . reverse $ ts))
 
 instance MakeIRI TokenRelID where
     mkIRI (PartURI base) (TokenRelID ts)
             =   mkIRI_ "TokenRelID" base ts
---            PartURI (base </>
---                    (fromJustNote "intercalate mkIRI TokenRelID"
---                            $ intercalate' "/" . reverse $ ts))
 
 data DocAsTriple postag =
     TriType {s::PartURI , ty ::NLPtype}
