@@ -28,6 +28,7 @@ module CoreNLP.DocBase (
             , DepCode1 (..), DepCode2 (..)
 --        , module CoreNLP.DEPcodes  -- import separately when needed
         -- ,readDocString
+         , LCtext (..)
         )  where
 
 import              Uniform.Strings
@@ -37,14 +38,15 @@ import              CoreNLP.DEPcodes
 import              CoreNLP.NERcodes
 import           Text.Printf             (printf)
 import GHC.Generics
+import LitTypes.LanguageTypedText (LCtext (..))
 
 
-newtype  Wordform0 = Wordform0 {word0 :: Text}
+newtype  Wordform0 = Wordform0 {word0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a single word in the form it is in the text
 -- should be language encoded
 
-newtype  Lemma0 = Lemma0 {lemma0 :: Text}
+newtype  Lemma0 = Lemma0 {lemma0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a single word as lemma
 

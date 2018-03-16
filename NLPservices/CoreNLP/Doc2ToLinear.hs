@@ -28,12 +28,13 @@ import Uniform.Zero
 import Data.Maybe
 import GHC.Generics
 import qualified Data.Text as T   -- replace
--- Linearize Doc11
+--import LitTypes.LanguageTypedText  (unLCtext, LCtext (..), LanguageCodedText (..) )
+-- should be imported
 
 data DocAsList postag = DocAsList {d3id:: DocRelID}
     | SentenceLin { s3id :: SentenceRelID
                     , s3parse :: Maybe Text  -- the parse tree
-                    , s3text :: Text -- the sentence text combined from the tokens
+                    , s3text :: LCtext -- the sentence text combined from the tokens
                 }
     | DependenceLin {d3type :: DepCode -- Text -- String
                         , d3orig :: Text -- the value given in the XML
@@ -80,18 +81,21 @@ instance Linearize (Doc11 postag) postag where
 instance Linearize (Sentence11 postag) postag where
     linearize ph Sentence11{..} = SentenceLin {s3parse = s11parse
                                                 , s3id = s11id
-                                                , s3text = t1
+                                                , s3text = t2
                                                 }
                 : (concat $ map (linearize ph) s11toks
                     ++ maybe [] (map (linearize ph)) s11deps
                 )
         where
+            t2 = LCtext t1 lang
             t1 = T.replace "  " " " . concat' . map getTokenText $ s11toks
             -- replace double blanks by a single one for the sentence
             getTokenText :: Token11 postag -> Text
             getTokenText Token11{..} = concat'
-                . catMaybes $ [t11before, Just . word0 $ t11word, t11after]
-
+                . catMaybes $ [t11before, Just  . getText . word0 $ t11word, t11after]
+            getLanguage Token11{..} = getLanguageCode . word0 $ t11word
+            lang = if null s11toks then NoLanguage
+                            else getLanguage . headNote "linearize sentence 11" $ s11toks
 
 instance Linearize (Token11 postag) postag where
     linearize ph Token11 {..} = [TokenLin {..}]

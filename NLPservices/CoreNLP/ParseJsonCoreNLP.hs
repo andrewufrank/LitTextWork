@@ -3,6 +3,7 @@
 -- Module      :  parsing the output of stanford corenlp 3.9. in json format
 -- produces Doc2
 --
+-- does nothing than convert json to doc format
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -56,7 +57,7 @@ snipIsNull = null' . unLCtext . snip2text
 
 
 decodeDoc2 :: LazyByteString -> ErrOrVal Doc2
-decodeDoc2 = toErrOrVal . eitherDecode
+decodeDoc2   = toErrOrVal . eitherDecode
 
 data Doc2 = Doc2 {doc_sentences::  [Sentence2]
                   , doc_corefs :: Maybe Coreferences2 -- [CorefChain2]

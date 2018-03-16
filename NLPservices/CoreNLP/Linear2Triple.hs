@@ -73,9 +73,9 @@ instance MakeIRI TokenRelID where
 
 data DocAsTriple   =
     TriType {triSubj::RDFsubj , ty ::NLPtype}
---    | TriTextL  {triSubj::RDFsubj , p::NLPproperty, te ::Text}  -- should be language coded
-    | TriTextL2  {triSubj::RDFsubj , pp::RDFproperty, te ::Text}  -- should be language coded
---    | TriText   {triSubj::RDFsubj , p::NLPproperty, te ::Text}  -- should not be language coded
+--    | TriTextL  {triSubj::RDFsubj , p::NLPproperty, tl ::LCtext}  -- should be language coded
+    | TriTextL2  {triSubj::RDFsubj , pp::RDFproperty, tl ::LCtext}  -- should be language coded
+--    | TriText   {triSubj::RDFsubj , p::NLPproperty, te ::Ttext}  -- should not be language coded
     | TriText2   {triSubj::RDFsubj , pp::RDFproperty, te ::Text}  -- should not be language coded
 --    | TriRel   {triSubj::RDFsubj , p::NLPproperty, o ::RDFsubj}
     | TriRel2   {triSubj::RDFsubj , pp::RDFproperty, o ::RDFsubj}
@@ -121,7 +121,7 @@ makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
 
 makeRDFnt :: DocAsTriple -> [Triple]
 -- | convert to a real RDF triple
-makeRDFnt TriTextL2{..} =  singleton $ mkTripleLang3 NoLanguage (triSubj) pp te
+makeRDFnt TriTextL2{..} =  singleton $ mkTripleLang3 (llang tl) (triSubj) pp (ltxt tl)
 makeRDFnt TriText2{..} =  singleton $ mkTripleText  (triSubj) pp te
 makeRDFnt TriRel2 {..} = singleton $ mkTripleRef (triSubj) pp o
 makeRDFnt TriList2{..} = map (mkTripleText triSubj pp) os

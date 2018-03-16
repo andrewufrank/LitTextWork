@@ -34,6 +34,7 @@ module CoreNLP.DocNLP_0or1 (
             , DepCode1 (..), DepCode2 (..)
 --        , module CoreNLP.DEPcodes  -- import separately when needed
         -- ,readDocString
+        , unLCtext, LCtext (..), LanguageCodedText (..)
         )  where
 
 import              Uniform.Strings
@@ -46,9 +47,10 @@ import GHC.Generics
 import qualified NLP.Types.Tags      as NLP
 import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
+import LitTypes.LanguageTypedText (unLCtext, LCtext (..), LanguageCodedText (..) )
 
 class ConvertTo1 postag a2 a1 where
-    convertTo1 :: postag -> a2 -> a1
+    convertTo1 :: postag -> LanguageCode -> a2 -> a1
 
 
 
@@ -145,10 +147,10 @@ instance (NLP.POStags postag) => ConvertTo1 postag Doc2 (Doc1 postag) where
 --
 --doc2to1 ::(NLP.POStags postag) => postag -> Doc2 -> Doc1 postag
 --doc2to1
-    convertTo1 posPh Doc2{..} = Doc1 {..}
+    convertTo1 posPh lang Doc2{..} = Doc1 {..}
       where
-        doc1sents = map (convertTo1 posPh) doc_sentences
-        doc1corefs =  fmap (convertTo1 posPh) doc_corefs
+        doc1sents = map (convertTo1 posPh lang)  doc_sentences
+        doc1corefs =  fmap (convertTo1 posPh lang)  doc_corefs
                 -- chains of mentions
 --        doc1id = zero
 
@@ -159,24 +161,24 @@ instance (NLP.POStags postag)
 --sentence2to1 :: (NLP.POStags postag)
 --    => postag -> Sentence2 -> Sentence1 postag
 
-    convertTo1  posPh Sentence2 {..} = Sentence1 {..}
+    convertTo1  posPh lang Sentence2 {..} = Sentence1 {..}
         where
             s1id = SentenceID s_index
             s1parse = s_parse
-            s1toks = map (convertTo1 posPh)  s_tokens
+            s1toks = map (convertTo1 posPh lang)  s_tokens
             s1deps = case s_enhancedPlusPlusDependencies of
-                Just d1 -> Just $ map (convertTo1 posPh) d1
+                Just d1 -> Just $ map (convertTo1  posPh lang) d1
                 Nothing -> case s_enhancedDependencies of
-                    Just d2 -> Just $ map  (convertTo1 posPh) d2
+                    Just d2 -> Just $ map  (convertTo1 posPh lang ) d2
                     Nothing -> case s_basicDependencies of
-                        Just d3 -> Just $ map (convertTo1 posPh) d3
+                        Just d3 -> Just $ map (convertTo1 posPh lang ) d3
                         Nothing -> Nothing
 
 
 instance (NLP.POStags postag)
         => ConvertTo1 postag Token2 (Token0 postag) where
 
-    convertTo1 posPh (Token2 {..}) = Token0 {..}
+    convertTo1 posPh lang (Token2 {..}) = Token0 {..}
 
 --token2to0 :: (NLP.POStags postag) => postag -> Token2 -> Token0 postag
 ---- ^ convert a token2 dataset from JSON to Token0
@@ -184,8 +186,8 @@ instance (NLP.POStags postag)
 --token2to0 posPh (Token2 {..}) = Token0 {..}
       where
         tid = TokenID  tok_index
-        tword = Wordform0 tok_word
-        tlemma = Lemma0 tok_lemma
+        tword = Wordform0 $ LCtext  tok_word lang
+        tlemma = Lemma0 $ LCtext tok_lemma lang
         tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
         tposOrig = tok_pos
         tpostt = zero
@@ -202,7 +204,7 @@ instance (NLP.POStags postag)
 instance ConvertTo1 postag Dependency2 (Dependence1) where
 
 --dependency2to0 :: Dependency2 -> Dependence1
-    convertTo1 _  Dependency2 {..} = Dependence1 {..}
+    convertTo1 _ _ Dependency2 {..} = Dependence1 {..}
         where
             d1type = parseDEPtag dep_dep :: DepCode
             d1orig = dep_dep
@@ -216,20 +218,20 @@ instance ConvertTo1 postag Dependency2 (Dependence1) where
 instance ConvertTo1 postag Coreferences2 (Coreferences1) where
 
 --coreferences2to0 :: Coreferences2 -> Coreferences1
-    convertTo1 phP Coreferences2{..} = Coreferences1{..}
+    convertTo1 phP lang Coreferences2{..} = Coreferences1{..}
         where
-            coChains = map (convertTo1 phP) chains
+            coChains = map (convertTo1 phP lang) chains
 
 instance ConvertTo1 postag CorefChain2 MentionChain1 where
 
 --corefChain2to0 :: CorefChain2 -> CorefChain2
-    convertTo1 phP (CorefChain2 cs) = MentionChain1 (map (convertTo1 phP) cs)
+    convertTo1 phP lang (CorefChain2 cs) = MentionChain1 (map (convertTo1 phP lang) cs)
         -- phantom is not used
 
 instance ConvertTo1 postag Coref2 (Mention1) where
 
 --coref2to0 :: Coref2 -> Mention1
-    convertTo1 _  (Coref2 {..}) = Mention1 {..}
+    convertTo1 _ _ (Coref2 {..}) = Mention1 {..}
         where
             mentRep = coref_isRepresentativeMention
             mentSent = SentenceID coref_sentNum
