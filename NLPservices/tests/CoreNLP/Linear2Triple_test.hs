@@ -20,13 +20,13 @@ import Uniform.Test.TestHarness
 import CoreNLP.Linear2Triple
 import qualified NLP.Corpora.Conll  as Conll
 
-toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple Conll.POStag]
+toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
 toLin ds  =  concat r
-    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple Conll.POStag]]
+    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
 
 instance ShowTestHarness [DocAsList Conll.POStag] where
 --instance ShowTestHarness (Doc11 Conll.POStag) where
-instance ShowTestHarness [DocAsTriple Conll.POStag] where
+instance ShowTestHarness [DocAsTriple ] where
 
 progName = "nlpservices"
 test_c = testFile2File progName "short1.lin" "short1.trips" toLin
