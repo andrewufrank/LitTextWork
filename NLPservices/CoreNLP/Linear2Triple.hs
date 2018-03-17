@@ -155,12 +155,12 @@ makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
             , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
             , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
             , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
-            , TriList2 triSubj (mkRDFproperty TokenNERorig) (map showT t3ner)
+--                            (if t3ner == [NERunk "0"] then [] else map showT t3ner)
             , TriList2 triSubj (mkRDFproperty TokenSpeaker) (map fromSpeakerTag t3speaker)
            , TriPartOf triSubj $ mkIRI base t3sentence
             , TriList2 triSubj (mkRDFproperty TokenNERorig)
                 (maybe [] id t3nerOrig)
-            , (TriText2 triSubj (mkRDFproperty TokenPOSorig)) $ maybe zero id t3posOrig
+            , (TriList2 triSubj (mkRDFproperty TokenPOSorig)) $ maybe [] singleton t3posOrig
                                    ]
 
     where

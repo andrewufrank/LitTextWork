@@ -136,6 +136,7 @@ instance (NLP.POStags postag)
         t11postt = zero
         t11ner =  tner -- when is this a list?
                         -- use the Ner2 values?
+        t11nerOrig =  tnerOrig
         t11speaker =  tspeaker
         t11before = tbefore
         t11after = tafter

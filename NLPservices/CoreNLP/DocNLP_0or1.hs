@@ -125,7 +125,7 @@ data Token0 postag = Token0 { tid :: TokenID
                     , tposOrig :: Maybe Text -- the pos tag received
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [NERtag] -- [Text] -- String
-                    , tnerOrig :: Maybe Text
+                    , tnerOrig :: Maybe [Text]
                     , tspeaker :: [SpeakerTag] -- Text -- String
                     , tbefore, tafter :: Maybe Text
                     }   deriving (Show, Read, Eq, Ord, Generic)
@@ -197,11 +197,11 @@ instance (NLP.POStags postag)
         twordOrig = if tok_word == tok_originalText then Nothing else Just tok_originalText
         tlemma = Lemma0 $ LCtext tok_lemma lang
         tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
-        tposOrig = Just tok_pos
+        tposOrig = if showT tpos == tok_pos then Nothing else Just tok_pos
         -- missig a test that parse was complete
         tpostt = zero
         tner = parseNERtagList [tok_ner] -- when is this a list?
-        tnerOrig = if isZero tner then Just tok_ner else Nothing
+        tnerOrig = if (any isAnUnknownNER $ tner) then Just [tok_ner] else Nothing
                         -- use the Ner2 values?
         tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
 --                    maybe [] (\a -> [a]) $ tok_speaker

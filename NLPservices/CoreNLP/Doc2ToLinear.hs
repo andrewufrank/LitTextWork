@@ -118,6 +118,7 @@ instance Linearize (Token11 postag) postag SentenceRelID where
         t3postt = t11postt
         t3ner =  t11ner -- when is this a list?
                         -- use the Ner2 values?
+        t3nerOrig = t11nerOrig
         t3speaker =  t11speaker
         t3before = t11before
         t3after = t11after
