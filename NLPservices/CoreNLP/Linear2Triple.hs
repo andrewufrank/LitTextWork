@@ -117,10 +117,10 @@ makeTriple base SentenceLin{..} = [TriType triSubj Voc.Sentence
 makeTriple base DependenceLin{..} = [TriType triSubj Dependence
                         ,TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
                         , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
-                        , TriRel2 triSubj (mkRDFproperty Governor) (mkIRI base d3govid)
-                        , TriRel2 triSubj (mkRDFproperty Dependent) (mkIRI base d3depid)
-                        , TriText2 triSubj (mkRDFproperty GovGloss) d3govGloss
-                        , TriText2 triSubj (mkRDFproperty DepGloss) d3depGloss
+                        , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
+                        , TriRel2 triSubj (mkRDFproperty DepDependent) (mkIRI base d3depid)
+                        , TriText2 triSubj (mkRDFproperty DepGovGloss) d3govGloss
+                        , TriText2 triSubj (mkRDFproperty DepDepGloss) d3depGloss
                         , TriPartOf triSubj $ mkIRI base d3sentence
                         ]
         -- uses the correct nlp prefix because d3type is a DepType
@@ -148,15 +148,16 @@ makeTriple base MentionLin{..} = [TriType triSubj MentionChain
     where   triSubj = mkIRI base ment3Head
 
 makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
-            ,  TriTextL2 triSubj  (mkRDFproperty WordForm) (word0 t3word)
-            , TriTextL2 triSubj (mkRDFproperty Lemma3) (lemma0 t3lemma)
+            ,  TriTextL2 triSubj  (mkRDFproperty TokenWordForm) (word0 t3word)
+            , TriTextL2 triSubj (mkRDFproperty TokenLemma3) (lemma0 t3lemma)
             , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
             , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
-            , TriText2 triSubj (mkRDFproperty Voc.Pos) (showT t3pos)
-            , TriText2 triSubj (mkRDFproperty Voc.PosOrig) (t3posOrig)
-            , TriText2 triSubj (mkRDFproperty PosTT) (t3postt)
-            , TriList2 triSubj (mkRDFproperty Voc.Ner) (map showT t3ner)
-            , TriList2 triSubj (mkRDFproperty Voc.Speaker) (map fromSpeakerTag t3speaker)
+            , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
+            , TriText2 triSubj (mkRDFproperty TokenPOSorig) (t3posOrig)
+            , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
+            , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
+            , TriList2 triSubj (mkRDFproperty TokenNERorig) (map showT t3ner)
+            , TriList2 triSubj (mkRDFproperty TokenSpeaker) (map fromSpeakerTag t3speaker)
            , TriPartOf triSubj $ mkIRI base t3sentence
                                ]
 

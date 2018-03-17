@@ -36,14 +36,17 @@ import LitTypes.ServerNames
 import CoreNLP.DocBase
 import GHC.Generics
 
-data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
-          | Pos | PosOrig | WordForm | Ner  | NerOrig |Speaker
+data NLPproperty = LanguageTag | FileName | Parse | Lemma
+            | TokenLemma3
+          | TokenPOS | TokenPOSorig | TokenWordForm | TokenNER
+          | TokenNERorig | TokenSpeaker | TokenPosTT
 --          | DependencyType   -- in CoreNLPxml is the best (last) selected
           -- | Dep  | DepOrig -- not used in nlp_2017
           -- check separately that no unrecognized codes are occuring?
           | SentenceForm | SentenceParse
-          | Governor | Dependent | DepWordform
-          | GovernorWordform | DependentWordform
+          | DepGovernor | DepOrigin | DepDependent  -- | DepWordform
+          | DepGovGloss | DepDepGloss
+--          GovernorWordform | DependentWordform
           | Mentions  -- s is a mention of representative o
           | MentionRepresentative | MentionSentence
           | MentionStart | MentionEnd
@@ -51,8 +54,7 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma | Lemma3
           | MentionType
           | MentionGender | MentionNumber | MentionAnimacy
           | MentTokenRelID
-          | TokenBegin | TokenEnd |PosTT
-          | DepOrigin |  GovGloss |  DepGloss
+          | TokenBegin | TokenEnd
           deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
