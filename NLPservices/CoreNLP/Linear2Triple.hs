@@ -108,12 +108,14 @@ makeTriple base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Doc]
 
 makeTriple base SentenceLin{..} = [TriType triSubj Voc.Sentence
                    , maybe zero (TriText2 triSubj  (mkRDFproperty Voc.SentenceParse)) s3parse
-                   , TriPartOf triSubj $ mkIRI base s3docid]
+                   , TriPartOf triSubj $ mkIRI base s3docid
+                   , TriTextL2 triSubj (mkRDFproperty SentenceForm) s3text]
                                -- sentence form not in the data
     where triSubj = mkIRI base s3id
 
 -- | this gives all triples of a chain with the the same subj
-makeTriple base DependenceLin{..} = [TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
+makeTriple base DependenceLin{..} = [TriType triSubj Dependence
+                        ,TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
                         , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
                         , TriRel2 triSubj (mkRDFproperty Governor) (mkIRI base d3govid)
                         , TriRel2 triSubj (mkRDFproperty Dependent) (mkIRI base d3depid)
@@ -126,7 +128,10 @@ makeTriple base DependenceLin{..} = [TriRel2 triSubj (mkRDFproperty d3type) $ mk
         -- find earlier ??
     where   triSubj = mkIRI base d3govid
 
-makeTriple base MentionLin{..} = [TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
+makeTriple base MentionLin{..} = [TriType triSubj MentionChain
+                    -- the triSubj is the same for all chains
+                    -- most of this is not really necessary
+                ,TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
                     , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
                                             -- is Bool
                     , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
@@ -143,16 +148,16 @@ makeTriple base MentionLin{..} = [TriRel2 triSubj (mkRDFproperty Voc.Mentions) $
     where   triSubj = mkIRI base ment3Head
 
 makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
-                               ,  TriTextL2 triSubj  (mkRDFproperty WordForm) (word0 t3word)
-                               , TriTextL2 triSubj (mkRDFproperty Lemma3) (lemma0 t3lemma)
-                   , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
-                   , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
-                               , TriText2 triSubj (mkRDFproperty Voc.Pos) (showT t3pos)
-                               , TriText2 triSubj (mkRDFproperty Voc.PosOrig) (showT t3posOrig)
-                               , TriText2 triSubj (mkRDFproperty PosTT) (showT t3postt)
-                               , TriList2 triSubj (mkRDFproperty Voc.Ner) (map showT t3ner)
-                               , TriList2 triSubj (mkRDFproperty Voc.Speaker) ( map showT t3speaker)
-                   , TriPartOf triSubj $ mkIRI base t3sentence
+            ,  TriTextL2 triSubj  (mkRDFproperty WordForm) (word0 t3word)
+            , TriTextL2 triSubj (mkRDFproperty Lemma3) (lemma0 t3lemma)
+            , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
+            , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
+            , TriText2 triSubj (mkRDFproperty Voc.Pos) (showT t3pos)
+            , TriText2 triSubj (mkRDFproperty Voc.PosOrig) (t3posOrig)
+            , TriText2 triSubj (mkRDFproperty PosTT) (t3postt)
+            , TriList2 triSubj (mkRDFproperty Voc.Ner) (map showT t3ner)
+            , TriList2 triSubj (mkRDFproperty Voc.Speaker) (map fromSpeakerTag t3speaker)
+           , TriPartOf triSubj $ mkIRI base t3sentence
                                ]
 
     where triSubj = mkIRI base t3id

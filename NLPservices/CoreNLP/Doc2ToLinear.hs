@@ -96,8 +96,9 @@ instance Linearize (Sentence11 postag) postag DocRelID where
                 )
         where
             t2 = LCtext t1 lang
-            t1 = T.replace "  " " " . concat' . map getTokenText $ s11toks
+            t1 = trim' . T.replace "  " " " . concat' . map getTokenText $ s11toks
             -- replace double blanks by a single one for the sentence
+            -- remove blanks front and back -
             getTokenText :: Token11 postag -> Text
             getTokenText Token11{..} = concat'
                 . catMaybes $ [t11before, Just  . getText . word0 $ t11word, t11after]

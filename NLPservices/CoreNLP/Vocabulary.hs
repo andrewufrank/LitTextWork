@@ -66,6 +66,7 @@ instance RDFproperties DepCode where
             -- should be changed to 2017
 data NLPtype = Doc | Snip | Sentence | Token
     | DepType | Dependence | Mention | Coreference
+    | MentionChain
   deriving (Show, Read, Eq, Ord, Generic)
 
 instance RDFtypes NLPtype where
