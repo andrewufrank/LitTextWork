@@ -118,12 +118,14 @@ instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
 
 data Token0 postag = Token0 { tid :: TokenID
                     , tword :: Wordform0
+                    , twordOrig :: Maybe Text
                     , tlemma :: Lemma0
                     , tbegin, tend :: Int  -- not used
                     , tpos :: postag --  the pos tag recognized
-                    , tposOrig :: Text -- the pos tag received
+                    , tposOrig :: Maybe Text -- the pos tag received
                     , tpostt :: Text -- the pos from the tree tagger
                     , tner :: [NERtag] -- [Text] -- String
+                    , tnerOrig :: Maybe Text
                     , tspeaker :: [SpeakerTag] -- Text -- String
                     , tbefore, tafter :: Maybe Text
                     }   deriving (Show, Read, Eq, Ord, Generic)
@@ -192,11 +194,14 @@ instance (NLP.POStags postag)
       where
         tid = TokenID  tok_index
         tword = Wordform0 $ LCtext  tok_word lang
+        twordOrig = if tok_word == tok_originalText then Nothing else Just tok_originalText
         tlemma = Lemma0 $ LCtext tok_lemma lang
         tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
-        tposOrig = tok_pos
+        tposOrig = Just tok_pos
+        -- missig a test that parse was complete
         tpostt = zero
         tner = parseNERtagList [tok_ner] -- when is this a list?
+        tnerOrig = if isZero tner then Just tok_ner else Nothing
                         -- use the Ner2 values?
         tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
 --                    maybe [] (\a -> [a]) $ tok_speaker

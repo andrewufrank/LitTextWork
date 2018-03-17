@@ -95,9 +95,10 @@ data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11lemma :: Lemma0
                     , t11begin, t11end :: Int  -- not used
                     , t11pos :: postag --  the pos tag recognized
-                    , t11posOrig :: Text -- the pos tag received
+                    , t11posOrig :: Maybe Text -- the pos tag received
                     , t11postt :: Text -- the pos from the tree tagger
                     , t11ner :: [NERtag] -- [Text] -- String
+                    , t11nerOrig :: Maybe [Text]
                     , t11speaker :: [SpeakerTag] -- Text -- String
                     , t11before, t11after :: Maybe Text
                     }   deriving (Show, Read, Eq, Ord, Generic)

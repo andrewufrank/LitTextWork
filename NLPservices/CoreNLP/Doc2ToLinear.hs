@@ -63,9 +63,10 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                     , t3lemma :: Lemma0
                     , t3begin, t3end :: Int  -- not used
                     , t3pos :: postag --  the pos tag recognized
-                    , t3posOrig :: Text -- the pos tag received
+                    , t3posOrig :: Maybe Text -- the pos tag received
                     , t3postt :: Text -- the pos from the tree tagger
                     , t3ner :: [NERtag] -- [Text] -- String
+                    , t3nerOrig :: Maybe [Text]
                     , t3speaker :: [SpeakerTag] -- Text -- String
                     , t3sentence :: SentenceRelID -- for partOf
                     }
