@@ -76,6 +76,7 @@ data Sentence1 postag = Sentence1 {s1id :: SentenceID
                         -- only the last one or none
                         -- select (last = best) in coreNLPxml in getSentence
                         -- could be changed to parse all and select later
+                        , s1entitymentions :: Maybe [Ner3]
                         }  deriving (Show, Read, Eq, Ord, Generic)
 
 
@@ -115,6 +116,17 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
   deriving (Show, Read, Eq, Ord, Generic)
 instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
                                             zero zero zero zero
+-- | the record from the s_entitymentions
+data Ner3 = Ner3 {ner3docTokenBegin :: Int
+                , ner3docTokenEnd :: Int
+                , ner3tokenBegin :: Int
+                , ner3tokenEnd :: Int
+                , ner3text :: Text
+                , ner3characterOffsetBegin :: Int
+                , ner3characterOffsetEnd :: Int
+                , ner3ner :: Text -- the code ??
+                }
+        deriving (Show, Read, Eq, Ord, Generic)
 
 ----instance Zeros Bool where zero = False
 
@@ -151,6 +163,10 @@ data DependencePart0 = DP0 { did :: TokenID  -- word number in sentence
                         , dword :: Wordform0  -- is word from text, not lemma
                             } deriving  (Show, Read, Eq, Ord, Generic)
 
+-----------------------
+
+--                c o n v e r s i o n s
+
 
 instance (NLP.POStags postag) => ConvertTo1 postag Doc2 (Doc1 postag) where
 --
@@ -183,6 +199,7 @@ instance (NLP.POStags postag)
                     Nothing -> case s_basicDependencies of
                         Just d3 -> Just $ map (convertTo1 posPh lang ) d3
                         Nothing -> Nothing
+            s1entitymentions = fmap (map (convertTo1 posPh lang)) s_entitymentions
 
 
 instance (NLP.POStags postag)
@@ -257,4 +274,16 @@ instance ConvertTo1 postag Coref2 (Mention1) where
             mentGender = coref_gender
             mentAnimacy = coref_animacy
 
---
+
+instance ConvertTo1 postag Ner2 Ner3 where
+    convertTo1 _ _ Ner2{..} = Ner3 {..}
+        where
+            ner3docTokenBegin = ner_docTokenBegin
+            ner3docTokenEnd = ner_docTokenEnd
+            ner3tokenBegin = ner_tokenBegin
+            ner3tokenEnd = ner_tokenEnd
+            ner3text = ner_text
+            ner3characterOffsetBegin = ner_characterOffsetBegin
+            ner3characterOffsetEnd = ner_characterOffsetEnd
+            ner3ner = ner_ner
+

@@ -39,22 +39,6 @@ import qualified Data.HashMap.Strict as HM
 import NLP.Types.Tags (POStags(..))
 --import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
 import CoreNLP.Vocabulary
---import LitTypes.LanguageTypedText (unLCtext, LCtext (..) )
--- all data has 2 suffix ??
-
----- | a single language piece of text with lanuage code
----- , length and start para number
---data Snip2 lang = Snip2 { snip2text :: LTtext lang
---                        , snip2sigl :: SnipSigl  -- the id of the snip
---                          }
---            deriving (Read, Show, Eq)
---
---instance Zeros (Snip2 lang) where
---    zero = Snip2 zero zero
---
---snipIsNull :: Snip2 lang -> Bool
----- ^ test for null text
---snipIsNull = null' . unLCtext . snip2text
 
 decodeDoc2op :: Text ->   Doc2      -- the entry point
 decodeDoc2op f = either (const zero) id r
@@ -125,6 +109,17 @@ data Ner2 = Ner2 {ner_docTokenBegin :: Int
                 }
         deriving (Show, Read, Eq, Ord, Generic, ToJSON)
 
+-- "entitymentions":[
+--            {
+--               "docTokenBegin":8,
+--               "docTokenEnd":9,
+--               "tokenBegin":8,
+--               "tokenEnd":9,
+--               "text":"he",
+--               "characterOffsetBegin":35,
+--               "characterOffsetEnd":37,
+--               "ner":"PERSON"
+--            }
 instance FromJSON Ner2 where
     parseJSON = genericParseJSON defaultOptions {
                 fieldLabelModifier = drop 4 }
