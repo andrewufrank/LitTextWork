@@ -26,7 +26,7 @@ instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness [DocAsList Conll.POStag] where
 
 progName = "nlpservices"
-test_c = testFile2File progName "short1.doc11" "short1.lin" toLin
+test_c = testFile2File progName "short1.doc4" "short1.lin5" toLin
 
 test_2spaces = assertEqual s2r (T.replace "  " " " s2)
 

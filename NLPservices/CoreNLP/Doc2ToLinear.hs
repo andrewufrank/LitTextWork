@@ -3,7 +3,7 @@
 -- Module      :  reformat the output from parsing
 --  stanford corenlp 3.9. in json format
 
--- linearize doc11 and convert to triples
+-- linearize doc4 and convert to triples  in .lin5
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}

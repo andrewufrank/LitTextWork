@@ -5,6 +5,7 @@
 
 -- linearize doc11 and convert to triples
 -- including all data, except entitymentions
+-- convert lin5 to trips6
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
