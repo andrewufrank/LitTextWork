@@ -128,7 +128,7 @@ makeTriple base DependenceLin{..} = [TriType triSubj Dependence
         -- find earlier ??
     where   triSubj = mkIRI base d3govid
 
-makeTriple base MentionLin{..} = [TriType triSubj MentionChain
+makeTriple base MentionLin{..} = [TriType triSubj Mention
                     -- the triSubj is the same for all chains
                     -- most of this is not really necessary
                 ,TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
