@@ -10,6 +10,8 @@
 
 -- 1 if structure in JSON is different (Dependence, Coreference)
 --and suffix 1 if it results from JSON conversion
+
+-- converts the .doc2 files to .doc3
 -----------------------------------------------------------------------------
 {-# LANGUAGE
         ScopedTypeVariables
@@ -170,7 +172,8 @@ instance (NLP.POStags postag)
 
     convertTo1  posPh lang Sentence2 {..} = Sentence1 {..}
         where
-            s1id = SentenceID s_index
+            s1id = SentenceID (s_index + 1)
+                -- the index in json starts with 0, but sentence numbers start with 1
             s1parse = s_parse
             s1toks = map (convertTo1 posPh lang)  s_tokens
             s1deps = case s_enhancedPlusPlusDependencies of

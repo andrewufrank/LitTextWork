@@ -4,6 +4,7 @@
 -- produces Doc2
 --
 -- does nothing than convert json to doc format
+-- produces .doc2
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
