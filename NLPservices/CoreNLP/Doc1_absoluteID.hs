@@ -60,6 +60,7 @@ data Sentence11 postag = Sentence11 {s11id :: SentenceRelID
                         , s11parse :: Maybe Text  -- the parse tree
                         , s11toks :: [Token11 postag]
                         , s11deps :: Maybe [Dependence11]
+                        , s11ner :: Maybe [Ner4]
                         -- should be only one or none
                         }  deriving (Show, Read, Eq, Ord, Generic)
 
@@ -68,8 +69,8 @@ data Dependence11 = Dependence11 {d11type :: DepCode -- Text -- String
                         , d11orig :: Text -- the value given in the XML
                         , d11govid :: TokenRelID
                         , d11depid :: TokenRelID
-                        , d11govGloss :: Text
-                        , d11depGloss :: Text
+                        , d11govGloss :: LCtext
+                        , d11depGloss :: LCtext
                         } deriving (Show, Read, Eq, Ord, Generic)
 
 data Coreferences11 = Coreferences11 {co11chains:: [MentionChain11]}
@@ -82,7 +83,7 @@ data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative
         , ment11Sent :: SentenceRelID
         , ment11Start, ment11End :: TokenRelID -- not used ??
         , ment11Head :: TokenRelID  -- the head of the mention
-        , ment11Text :: Text  -- multiple words, the actual mention - not yet used
+        , ment11Text :: LCtext  -- multiple words, the actual mention - not yet used
         , ment11Referent :: TokenRelID -- the head of the referent
                 -- what the text mentions in the original
                 -- the referent is kept, recognized by rep == true and
@@ -104,6 +105,18 @@ data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11before, t11after :: Maybe Text
                     }   deriving (Show, Read, Eq, Ord, Generic)
 
+-- | the record from the s_entitymentions
+data Ner4 = Ner4 {ner4docTokenBegin :: TokenRelID
+                , ner4docTokenEnd :: TokenRelID
+                , ner4tokenBegin :: TokenRelID
+                , ner4tokenEnd :: TokenRelID
+                , ner4text :: LCtext
+                , ner4characterOffsetBegin :: Int
+                , ner4characterOffsetEnd :: Int
+                , ner4ner :: NERtag -- the code ??
+                }
+        deriving (Show, Read, Eq, Ord, Generic)
+
 
 instance (NLP.POStags postag)
         => ConvertToAbsulteID postag DocRelID (Doc1 postag) (Doc11 postag) where
@@ -122,6 +135,7 @@ instance (NLP.POStags postag)
             s11parse = s1parse
             s11toks = map (convertToAbsoluteID posPh s11id)  s1toks
             s11deps = fmap (map (convertToAbsoluteID posPh s11id)) s1deps
+            s11ner = fmap (map (convertToAbsoluteID posPh s11id)) s1entitymentions
 
 instance (NLP.POStags postag)
         => ConvertToAbsulteID postag SentenceRelID
@@ -189,4 +203,16 @@ instance ConvertToAbsulteID postag DocRelID (Mention1) Mention11 where
 
 markMentionsWithRep ::   TokenRelID -> Mention11 -> Mention11
 markMentionsWithRep rep ment  = ment  {ment11Referent = rep}
---
+
+instance ConvertToAbsulteID postag SentenceRelID Ner3 Ner4 where
+    convertToAbsoluteID _ s  Ner3{..} = Ner4 {..}
+        where
+            ner4docTokenBegin = addTok2SentID s ner3docTokenBegin
+            ner4docTokenEnd = addTok2SentID s ner3docTokenEnd
+            ner4tokenBegin = addTok2SentID s ner3tokenBegin
+            ner4tokenEnd = addTok2SentID s ner3tokenEnd
+            ner4text =   ner3text
+            ner4characterOffsetBegin = ner3characterOffsetBegin
+            ner4characterOffsetEnd = ner3characterOffsetEnd
+            ner4ner = ner3ner
+

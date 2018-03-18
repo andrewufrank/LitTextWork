@@ -32,6 +32,7 @@ import qualified Data.Text as T   -- replace
 -- should be imported
 import qualified NLP.Corpora.Conll  as Conll
 
+
 toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag] -- the entry point
 toLin   =  linearize Conll.undefConll ()
 
@@ -45,8 +46,8 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                         , d3orig :: Text -- the value given in the XML
                         , d3govid :: TokenRelID
                         , d3depid :: TokenRelID
-                        , d3govGloss :: Text
-                        , d3depGloss :: Text
+                        , d3govGloss :: LCtext
+                        , d3depGloss :: LCtext
                     , d3sentence :: SentenceRelID -- for partOf
                         }
     | MentionLin {
@@ -55,7 +56,7 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
          , ment3Ment :: TokenRelID  -- missing?? find in chain
         , ment3Start, ment3End :: TokenRelID -- not used ??
         , ment3Head :: TokenRelID  -- the head of the mention
-        , ment3Text :: Text  -- multiple words, the actual mention - not yet used
+        , ment3Text :: LCtext   -- multiple words, the actual mention - not yet used
         , ment3Type, ment3Number, ment3Gender, ment3Animacy :: Text
         }
     | TokenLin { t3id :: TokenRelID
@@ -70,6 +71,16 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                     , t3speaker :: [SpeakerTag] -- Text -- String
                     , t3sentence :: SentenceRelID -- for partOf
                     }
+                        -- | the record from the s_entitymentions
+    | NerLin {ner5docTokenBegin :: TokenRelID
+                , ner5docTokenEnd :: TokenRelID
+                , ner5tokenBegin :: TokenRelID
+                , ner5tokenEnd :: TokenRelID
+                , ner5text :: LCtext
+                , ner5characterOffsetBegin :: Int
+                , ner5characterOffsetEnd :: Int
+                , ner5ner :: NERtag -- the code ??
+                }
       | ZeroLin {}
 
         deriving (Show, Read, Eq, Ord, Generic)
@@ -94,6 +105,8 @@ instance Linearize (Sentence11 postag) postag DocRelID where
                                                 }
                 : (concat $ map (linearize ph s11id) s11toks
                     ++ maybe [] (map (linearize ph s11id)) s11deps
+                    ++ maybe [] (map (linearize ph s11id)) s11ner
+
                 )
         where
             t2 = LCtext t1 lang
@@ -159,6 +172,17 @@ instance Linearize Dependence11 postag SentenceRelID where
             d3depGloss = d11depGloss
             d3sentence = pa
 
+instance Linearize Ner4 postag SentenceRelID  where
+    linearize _ pa Ner4{..} = [NerLin{..}]
+        where
+            ner5docTokenBegin = ner4docTokenBegin
+            ner5docTokenEnd =   ner4docTokenEnd
+            ner5tokenBegin =   ner4tokenBegin
+            ner5tokenEnd =   ner4tokenEnd
+            ner5text =   ner4text
+            ner5characterOffsetBegin = ner4characterOffsetBegin
+            ner5characterOffsetEnd = ner4characterOffsetEnd
+            ner5ner = ner4ner
 
 
             --

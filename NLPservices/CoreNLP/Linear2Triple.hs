@@ -44,6 +44,7 @@ import LitTypes.ServerNames (rdfBase)
 import LitTypes.LanguageTypedText
 import Data.RDFext.Extension
 import qualified NLP.Corpora.Conll  as Conll
+import CoreNLP.NERcodes (fromNERtag)
 
 toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
 toLin ds  =  concat r
@@ -140,7 +141,7 @@ makeTriple base MentionLin{..} =
 --                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
 --                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
 --                    , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
-                    , TriText2 triSubj (mkRDFproperty MentionText) ment3Text
+                    , TriTextL2 triSubj (mkRDFproperty MentionText) ment3Text
                     , TriText2 triSubj (mkRDFproperty MentionType) ment3Type
                     , TriText2 triSubj (mkRDFproperty MentionNumber) ment3Number
                     , TriText2 triSubj (mkRDFproperty MentionGender) ment3Gender
@@ -173,6 +174,15 @@ makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
 --            ]
 --                :: [Maybe DocAsTriple]
 
+makeTriple base NerLin{..} = [TriType triSubj NERentity
+            , TriTextL2 triSubj (mkRDFproperty NerText) ner5text
+            , TriRel2 triSubj (mkRDFproperty NerTokenEnd) $ mkIRI base ner5docTokenEnd
+            , TriRel2 triSubj (mkRDFproperty NerTokenBegin2)$ mkIRI base  ner5docTokenEnd
+            , TriRel2 triSubj (mkRDFproperty NerTokenEnd2) $ mkIRI base ner5docTokenEnd
+            , TriText2 triSubj (mkRDFproperty NerType) (fromNERtag ner5ner)
+            ]
+    where
+            triSubj = mkIRI base ner5docTokenBegin
 
 makeRDFnt :: DocAsTriple -> [Triple]
 -- | convert to a real RDF triple

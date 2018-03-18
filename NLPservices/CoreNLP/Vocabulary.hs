@@ -55,6 +55,9 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma
           | MentionGender | MentionNumber | MentionAnimacy
           | MentTokenRelID
           | TokenBegin | TokenEnd
+          | NerTokenEnd | NerTokenEnd2 | NerTokenBegin2
+          | NerType | NerText
+            -- when are these in entitymentions different ?
           deriving (Read, Show, Eq, Enum)
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
@@ -66,8 +69,11 @@ instance RDFproperties DepCode where
     mkRDFproperty c = RDFproperty $ unPartURI nlpURItext <#> (toLower' . fromDEPtag $ c)
 
             -- should be changed to 2017
-data NLPtype = Doc | Snip | Sentence | Token
-    | DepType | Dependence | Mention | Coreference
+data NLPtype = Doc  -- | Snip
+    | Sentence | Token
+--    | DepType
+    | Dependence | Mention  -- | Coreference
+    | NERentity
 --    | MentionChain
   deriving (Show, Read, Eq, Ord, Generic)
 

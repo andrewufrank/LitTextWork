@@ -84,8 +84,8 @@ data Dependence1 = Dependence1 {d1type :: DepCode -- Text -- String
                         , d1orig :: Text -- the value given in the XML
                         , d1govid :: TokenID
                         , d1depid :: TokenID
-                        , d1govGloss :: Text
-                        , d1depGloss :: Text
+                        , d1govGloss :: LCtext
+                        , d1depGloss :: LCtext
                         } deriving (Show, Read, Eq, Ord, Generic)
 
 
@@ -106,7 +106,7 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
         , mentSent :: SentenceID
         , mentStart, mentEnd :: TokenID -- not used ??
         , mentHead :: TokenID  -- the head of the mention
-        , mentText :: Text  -- multiple words, the actual mention - not yet used
+        , mentText :: LCtext   -- multiple words, the actual mention - not yet used
         -- coref_id not used
         , mentType :: Text
         , mentNumber :: Text
@@ -117,14 +117,14 @@ data Mention1 = Mention1 {mentRep ::  Bool -- , indicates the representative men
 instance Zeros Mention1 where zero = Mention1 False zero zero zero zero zero
                                             zero zero zero zero
 -- | the record from the s_entitymentions
-data Ner3 = Ner3 {ner3docTokenBegin :: Int
-                , ner3docTokenEnd :: Int
-                , ner3tokenBegin :: Int
-                , ner3tokenEnd :: Int
-                , ner3text :: Text
+data Ner3 = Ner3 {ner3docTokenBegin :: TokenID
+                , ner3docTokenEnd :: TokenID
+                , ner3tokenBegin :: TokenID
+                , ner3tokenEnd :: TokenID
+                , ner3text :: LCtext
                 , ner3characterOffsetBegin :: Int
                 , ner3characterOffsetEnd :: Int
-                , ner3ner :: Text -- the code ??
+                , ner3ner :: NERtag -- the code ??
                 }
         deriving (Show, Read, Eq, Ord, Generic)
 
@@ -234,14 +234,14 @@ instance (NLP.POStags postag)
 instance ConvertTo1 postag Dependency2 (Dependence1) where
 
 --dependency2to0 :: Dependency2 -> Dependence1
-    convertTo1 _ _ Dependency2 {..} = Dependence1 {..}
+    convertTo1 _ lang Dependency2 {..} = Dependence1 {..}
         where
             d1type = parseDEPtag dep_dep :: DepCode
             d1orig = dep_dep
             d1govid = TokenID dep_governor
             d1depid = TokenID dep_dependent
-            d1govGloss = dep_governorGloss
-            d1depGloss = dep_dependentGloss
+            d1govGloss = LCtext {ltxt = dep_governorGloss, llang = lang}
+            d1depGloss = LCtext {ltxt = dep_dependentGloss, llang = lang}
 
 
 
@@ -261,14 +261,14 @@ instance ConvertTo1 postag CorefChain2 MentionChain1 where
 instance ConvertTo1 postag Coref2 (Mention1) where
 
 --coref2to0 :: Coref2 -> Mention1
-    convertTo1 _ _ (Coref2 {..}) = Mention1 {..}
+    convertTo1 _ lang  (Coref2 {..}) = Mention1 {..}
         where
             mentRep = coref_isRepresentativeMention
             mentSent = SentenceID coref_sentNum
             mentStart = TokenID coref_startIndex
             mentEnd = TokenID coref_endIndex   -- points next word
             mentHead = TokenID coref_headIndex
-            mentText = coref_text
+            mentText = LCtext {ltxt = coref_text, llang = lang}
             mentType = coref_type
             mentNumber = coref_number
             mentGender = coref_gender
@@ -276,14 +276,14 @@ instance ConvertTo1 postag Coref2 (Mention1) where
 
 
 instance ConvertTo1 postag Ner2 Ner3 where
-    convertTo1 _ _ Ner2{..} = Ner3 {..}
+    convertTo1 _ lang Ner2{..} = Ner3 {..}
         where
-            ner3docTokenBegin = ner_docTokenBegin
-            ner3docTokenEnd = ner_docTokenEnd
-            ner3tokenBegin = ner_tokenBegin
-            ner3tokenEnd = ner_tokenEnd
-            ner3text = ner_text
+            ner3docTokenBegin = TokenID ner_docTokenBegin
+            ner3docTokenEnd = TokenID ner_docTokenEnd
+            ner3tokenBegin = TokenID ner_tokenBegin
+            ner3tokenEnd = TokenID ner_tokenEnd
+            ner3text = LCtext {ltxt = ner_text, llang = lang}
             ner3characterOffsetBegin = ner_characterOffsetBegin
             ner3characterOffsetEnd = ner_characterOffsetEnd
-            ner3ner = ner_ner
+            ner3ner = parseNERtag ner_ner
 
