@@ -115,30 +115,31 @@ makeTriple base SentenceLin{..} = [TriType triSubj Voc.Sentence
     where triSubj = mkIRI base s3id
 
 -- | this gives all triples of a chain with the the same subj
-makeTriple base DependenceLin{..} = [TriType triSubj Dependence
-                        ,TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
-                        , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
-                        , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
-                        , TriRel2 triSubj (mkRDFproperty DepDependent) (mkIRI base d3depid)
-                        , TriText2 triSubj (mkRDFproperty DepGovGloss) d3govGloss
-                        , TriText2 triSubj (mkRDFproperty DepDepGloss) d3depGloss
-                        , TriPartOf triSubj $ mkIRI base d3sentence
+makeTriple base DependenceLin{..} = [ TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
+--                        ,TriType triSubj Dependence
+--                        , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
+--                        , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
+--                        , TriRel2 triSubj (mkRDFproperty DepDependent) (mkIRI base d3depid)
+--                        , TriText2 triSubj (mkRDFproperty DepGovGloss) d3govGloss
+--                        , TriText2 triSubj (mkRDFproperty DepDepGloss) d3depGloss
+--                        , TriPartOf triSubj $ mkIRI base d3sentence
                         ]
         -- uses the correct nlp prefix because d3type is a DepType
         -- how to find the places where the original type is not parsed?
         -- find earlier ??
     where   triSubj = mkIRI base d3govid
 
-makeTriple base MentionLin{..} = [TriType triSubj Mention
+makeTriple base MentionLin{..} =
+                [TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
+--                        , TriType triSubj Mention
                     -- the triSubj is the same for all chains
                     -- most of this is not really necessary
-                ,TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
-                    , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
+--                    , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
                                             -- is Bool
-                    , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
-                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
-                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
-                    , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
+--                    , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
+--                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
+--                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
+--                    , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
                     , TriText2 triSubj (mkRDFproperty MentionText) ment3Text
                     , TriText2 triSubj (mkRDFproperty MentionType) ment3Type
                     , TriText2 triSubj (mkRDFproperty MentionNumber) ment3Number
