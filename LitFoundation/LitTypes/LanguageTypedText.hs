@@ -94,6 +94,8 @@ instance LanguageTypedText NoLanguageType where
 data LCtext = LCtext {ltxt :: Text
                         , llang :: LanguageCode
                       } deriving (Read, Show, Eq, Ord)
+instance Zeros LCtext where
+    zero = LCtext "" NoLanguage
 
 class LanguageCodedText l where
     codeText  :: LanguageCode-> Text -> l
@@ -123,5 +125,3 @@ mkTripleLang33 :: RDFsubj -> RDFproperty -> LCtext -> Triple
 mkTripleLang33 o p lctext = mkTripleLang3 (getLanguageCode lctext) o p (getText lctext)
 
 
-instance Zeros LCtext where
-    zero = LCtext "" NoLanguage
