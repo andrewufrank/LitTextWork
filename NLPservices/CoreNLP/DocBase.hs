@@ -17,6 +17,7 @@
     , DeriveAnyClass
     , TypeSynonymInstances
     , MultiParamTypeClasses
+    , DerivingStrategies
     #-}
 
 module CoreNLP.DocBase (
@@ -43,12 +44,16 @@ import LitTypes.LanguageTypedText (LCtext (..))
 
 newtype  Wordform0 = Wordform0 {word0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic)
+--            deriving newtype Zeros
 -- ^ a single word in the form it is in the text
 -- should be language encoded
+
+instance Zeros Wordform0 where zero =  Wordform0 zero
 
 newtype  Lemma0 = Lemma0 {lemma0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic)
 -- ^ a single word as lemma
+instance Zeros Lemma0 where zero =  Lemma0 zero
 
 --newtype TokenID0 = TokenID0 {untid0 :: Int}
 --deriving (Show, Read, Eq, Ord, Zeros)

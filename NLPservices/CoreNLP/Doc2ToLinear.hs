@@ -31,10 +31,14 @@ import qualified Data.Text as T   -- replace
 --import LitTypes.LanguageTypedText  (unLCtext, LCtext (..), LanguageCodedText (..) )
 -- should be imported
 import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.Corpora.UD as UD
 
 
 toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag] -- the entry point
 toLin   =  linearize Conll.undefConll ()
+
+toLinUD ::   (Doc11 UD.POStag) ->  [DocAsList UD.POStag] -- the entry point
+toLinUD   =  linearize UD.undefUPOS ()
 
 data DocAsList postag = DocAsList {d3id:: DocRelID}
     | SentenceLin { s3id :: SentenceRelID

@@ -28,7 +28,7 @@ instance ShowTestHarness [DocAsTriple ] where
 instance ShowTestHarness [Triple ] where
 
 progName = "nlpservices"
-test_c = testFile2File progName "short1.lin5" "short1.trips6" toLin
+test_c = testFile2File progName "short1.lin5" "short1.trips6" toTriple
 
 test_d = testFile2File progName "short1.trips6" "short1.nt" toNT
 

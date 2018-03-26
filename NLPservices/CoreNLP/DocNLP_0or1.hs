@@ -136,8 +136,11 @@ data Token0 postag = Token0 { tid :: TokenID
                     , tlemma :: Lemma0
                     , tbegin, tend :: Int  -- not used
                     , tpos :: postag --  the pos tag recognized
+                    , tfeature :: [(String,String)] -- the features, improve rep!!!
+                            -- only for UD, could be included in UD pos tag ?
+
                     , tposOrig :: Maybe Text -- the pos tag received
-                    , tpostt :: Text -- the pos from the tree tagger
+                    , tpostt :: Maybe Text -- the pos from the tree tagger
                     , tner :: [NERtag] -- [Text] -- String
                     , tnerOrig :: Maybe [Text]
                     , tspeaker :: [SpeakerTag] -- Text -- String
@@ -152,6 +155,8 @@ data Token0 postag = Token0 { tid :: TokenID
 --            , dtd :: [Dependence0]
 --            } deriving (Show, Read, Eq, Zeros)
 
+
+-- old - were used for xml corenlp output
 
 data Dependence0 = Dependence0 {dtype :: DepCode -- Text -- String
                         , dorig :: Text -- the value given in the XML
@@ -217,9 +222,10 @@ instance (NLP.POStags postag)
         twordOrig = if tok_word == tok_originalText then Nothing else Just tok_originalText
         tlemma = Lemma0 $ LCtext tok_lemma lang
         tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
+        tfeature = []
         tposOrig = if showT tpos == tok_pos then Nothing else Just tok_pos
         -- missig a test that parse was complete
-        tpostt = zero
+        tpostt = Nothing
         tner = parseNERtagList [tok_ner] -- when is this a list?
         tnerOrig = if (any isAnUnknownNER $ tner) then Just [tok_ner] else Nothing
                         -- use the Ner2 values?

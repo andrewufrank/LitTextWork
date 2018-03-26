@@ -44,10 +44,15 @@ import LitTypes.ServerNames (rdfBase)
 import LitTypes.LanguageTypedText
 import Data.RDFext.Extension
 import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.Corpora.UD as UD
 import CoreNLP.NERcodes (fromNERtag)
 
-toLin ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
-toLin ds  =  concat r
+toTriple ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
+toTriple ds  =  concat r
+    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
+
+toTripleUD ::   [DocAsList UD.POStag] -> [DocAsTriple ]
+toTripleUD ds  =  concat r
     where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
 
 toNT ::     [DocAsTriple ] -> Text
@@ -193,6 +198,8 @@ makeRDFnt TriList2{..} = map (mkTripleText triSubj pp) os
 makeRDFnt TriPartOf {..} = singleton $ mkTriplePartOf triSubj o
 makeRDFnt TriType {..} = singleton $ mkTripleType triSubj (mkRDFtype ty)
 makeRDFnt TriInt2 {..} = singleton $ mkTripleInt triSubj pp int
+makeRDFnt TriZero = []
+makeRDFnt x = errorT ["makeRDFnt missing", showT x]
 -- should use lang coded text
               --
 singleton a = [a]
