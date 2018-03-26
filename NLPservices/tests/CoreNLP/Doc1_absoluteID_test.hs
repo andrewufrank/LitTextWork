@@ -29,7 +29,7 @@ import CoreNLP.Doc1_absoluteID
 --import Data.Aeson.Encode.Pretty
 --import Data.Aeson
 --import GHC.Exts
-import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.TagSets.Conll  as Conll
 
 
 instance ShowTestHarness (Doc11 Conll.POStag) where

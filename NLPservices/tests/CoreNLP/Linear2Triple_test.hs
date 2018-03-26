@@ -18,7 +18,7 @@ module CoreNLP.Linear2Triple_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 import CoreNLP.Linear2Triple
-import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.TagSets.Conll  as Conll
 import Data.RDFext.Extension as RDF
 
 

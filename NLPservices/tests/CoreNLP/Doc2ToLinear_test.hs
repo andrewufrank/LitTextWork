@@ -19,7 +19,7 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import CoreNLP.Doc2ToLinear
 import qualified Data.Text  as T
-import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.TagSets.Conll  as Conll
 
 
 instance ShowTestHarness (Doc11 Conll.POStag) where

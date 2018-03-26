@@ -10,7 +10,9 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE OverloadedStrings
+    , StandaloneDeriving
+    , DeriveAnyClass    #-}
 module CoreNLP.ParseJsonCoreNLP_test
      where
 
@@ -22,13 +24,15 @@ import Uniform.FileIO
 --import qualified Data.ByteString.Lazy as B
 import qualified Data.ByteString.Lazy.UTF8 as B
 import Data.Aeson (eitherDecode)
-import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.TagSets.Conll  as Conll
 
 import CoreNLP.ParseJsonCoreNLP
 
 import Data.Aeson.Encode.Pretty
 import Data.Aeson
 import GHC.Exts
+
+deriving instance ToJSON (Conll.POStag)
 
 test_toJson = assertEqual objVBG (toJSON (Conll.VBG))
 

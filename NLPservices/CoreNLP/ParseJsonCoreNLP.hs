@@ -36,7 +36,7 @@ import GHC.Generics
 import qualified Data.HashMap.Strict as HM
 --import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..) )
 --import NLP2RDF.NLPvocabulary (SnipSigl(..) )
-import NLP.Types.Tags (POStags(..))
+import NLP.Tags (POStags(..))
 --import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
 import CoreNLP.Vocabulary
 

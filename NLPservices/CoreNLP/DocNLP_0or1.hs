@@ -41,16 +41,16 @@ module CoreNLP.DocNLP_0or1 (
 
 import              Uniform.Strings
 import Uniform.Zero
-import   NLP.Corpora.Conll
-import              CoreNLP.DEPcodes
-import              CoreNLP.NERcodes
+import   NLP.TagSets.Conll hiding (NERtag (..))
+import              NLP.TagSets.DEPcodes
+import              NLP.TagSets.NERcodes
 import CoreNLP.ParseJsonCoreNLP
 import GHC.Generics
-import qualified NLP.Types.Tags      as NLP
+import qualified NLP.Tags      as NLP
 import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
 import LitTypes.LanguageTypedText (unLCtext, LCtext (..), LanguageCodedText (..) )
-import qualified NLP.Corpora.Conll  as Conll -- for test
+import qualified NLP.TagSets.Conll  as Conll -- for test
 
 to1op :: Doc2  ->   (Doc1 Conll.POStag)  -- the entry point
 to1op f =  convertTo1 Conll.undefConll English f
@@ -90,7 +90,7 @@ data Dependence1 = Dependence1 {d1type :: DepCode -- Text -- String
 
 
 instance Zeros Dependence1  where
-        zero = Dependence1 zero zero zero zero zero zero
+        zero = Dependence1 unkDEPtag zero zero zero zero zero
 
 data Coreferences1 = Coreferences1 {coChains:: [MentionChain1]}
                 deriving (Show, Read, Eq, Ord, Generic)
@@ -221,7 +221,7 @@ instance (NLP.POStags postag)
         tword = Wordform0 $ LCtext  tok_word lang
         twordOrig = if tok_word == tok_originalText then Nothing else Just tok_originalText
         tlemma = Lemma0 $ LCtext tok_lemma lang
-        tpos = (NLP.parseTag  tok_pos) `asTypeOf` posPh
+        tpos = (NLP.toPOStag  tok_pos) `asTypeOf` posPh
         tfeature = []
         tposOrig = if showT tpos == tok_pos then Nothing else Just tok_pos
         -- missig a test that parse was complete
@@ -242,7 +242,7 @@ instance ConvertTo1 postag Dependency2 (Dependence1) where
 --dependency2to0 :: Dependency2 -> Dependence1
     convertTo1 _ lang Dependency2 {..} = Dependence1 {..}
         where
-            d1type = parseDEPtag dep_dep :: DepCode
+            d1type = toDEPtag dep_dep :: DepCode
             d1orig = dep_dep
             d1govid = TokenID dep_governor
             d1depid = TokenID dep_dependent
@@ -291,5 +291,5 @@ instance ConvertTo1 postag Ner2 Ner3 where
             ner3text = LCtext {ltxt = ner_text, llang = lang}
             ner3characterOffsetBegin = ner_characterOffsetBegin
             ner3characterOffsetEnd = ner_characterOffsetEnd
-            ner3ner = parseNERtag ner_ner
+            ner3ner = toNERtag ner_ner
 

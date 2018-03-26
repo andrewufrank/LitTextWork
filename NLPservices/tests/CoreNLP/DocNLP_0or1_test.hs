@@ -19,7 +19,7 @@ module CoreNLP.DocNLP_0or1_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import qualified NLP.Corpora.Conll  as Conll
+import qualified NLP.TagSets.Conll  as Conll
 --
 import CoreNLP.DocNLP_0or1
 

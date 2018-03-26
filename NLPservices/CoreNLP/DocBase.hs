@@ -34,9 +34,9 @@ module CoreNLP.DocBase (
 
 import              Uniform.Strings
 import Uniform.Zero
-import   NLP.Corpora.Conll
-import              CoreNLP.DEPcodes
-import              CoreNLP.NERcodes
+import   NLP.TagSets.Conll
+import              NLP.TagSets.DEPcodes
+import              NLP.TagSets.NERcodes
 import           Text.Printf             (printf)
 import GHC.Generics
 import LitTypes.LanguageTypedText (LCtext (..))

@@ -31,17 +31,17 @@ module CoreNLP.Doc1_absoluteID (
 
 import              Uniform.Strings
 import Uniform.Zero
-import   NLP.Corpora.Conll
-import              CoreNLP.DEPcodes
-import              CoreNLP.NERcodes
+import   NLP.TagSets.Conll hiding (NERtag (..))
+import              NLP.TagSets.DEPcodes
+import              NLP.TagSets.NERcodes
 import CoreNLP.DocNLP_0or1
 import GHC.Generics
-import qualified NLP.Types.Tags      as NLP
+import qualified NLP.Tags      as NLP
 --import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
 import Data.List
-import qualified NLP.Corpora.Conll  as Conll
-import qualified NLP.Corpora.UD as UD
+import qualified NLP.TagSets.Conll  as Conll
+import qualified NLP.TagSets.UD as UD
 
 to11op ::   (Doc1 Conll.POStag) ->  (Doc11 Conll.POStag)  -- the entry point
 to11op  =  convertToAbsoluteID Conll.undefConll  (DocRelID ["doc11"])

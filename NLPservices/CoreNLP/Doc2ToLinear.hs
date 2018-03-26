@@ -30,8 +30,8 @@ import GHC.Generics
 import qualified Data.Text as T   -- replace
 --import LitTypes.LanguageTypedText  (unLCtext, LCtext (..), LanguageCodedText (..) )
 -- should be imported
-import qualified NLP.Corpora.Conll  as Conll
-import qualified NLP.Corpora.UD as UD
+import qualified NLP.TagSets.Conll  as Conll
+import qualified NLP.TagSets.UD as UD
 
 
 toLin ::   (Doc11 Conll.POStag) ->  [DocAsList Conll.POStag] -- the entry point

@@ -43,9 +43,9 @@ import GHC.Generics
 import LitTypes.ServerNames (rdfBase)
 import LitTypes.LanguageTypedText
 import Data.RDFext.Extension
-import qualified NLP.Corpora.Conll  as Conll
-import qualified NLP.Corpora.UD as UD
-import CoreNLP.NERcodes (fromNERtag)
+import qualified NLP.TagSets.Conll  as Conll
+import qualified NLP.TagSets.UD as UD
+import NLP.TagSets.NERcodes (fromNERtag)
 
 toTriple ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
 toTriple ds  =  concat r
