@@ -21,7 +21,7 @@
 module CoreNLP.Linear2Triple
     ( module CoreNLP.Linear2Triple
     , DocAsList (..)
-    , rdfBase
+--    , rdfBase
 --    ,  module CoreNLP.DocNLP_0or1
     , Triple
     ) where
@@ -40,20 +40,19 @@ import Uniform.Zero
 import Uniform.Strings
 import Data.Maybe
 import GHC.Generics
-import LitTypes.ServerNames (rdfBase)
 import LitTypes.LanguageTypedText
 import Data.RDFext.Extension
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 import NLP.TagSets.NERcodes (fromNERtag)
 
-toTriple ::   [DocAsList Conll.POStag] -> [DocAsTriple ]
-toTriple ds  =  concat r
-    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
+toTriple ::  PartURI ->  [DocAsList Conll.POStag] -> [DocAsTriple ]
+toTriple rdfbase ds  =  concat r
+    where r =  map (makeTriple rdfbase) ds :: [[DocAsTriple ]]
 
-toTripleUD ::   [DocAsList UD.POStag] -> [DocAsTriple ]
-toTripleUD ds  =  concat r
-    where r =  map (makeTriple rdfBase) ds :: [[DocAsTriple ]]
+toTripleUD :: PartURI ->   [DocAsList UD.POStag] -> [DocAsTriple ]
+toTripleUD rdfbase ds  =  concat r
+    where r =  map (makeTriple rdfbase) ds :: [[DocAsTriple ]]
 
 toNT ::     [DocAsTriple ] -> Text
 toNT ds  =  t

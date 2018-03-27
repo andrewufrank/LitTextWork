@@ -6,7 +6,7 @@
 -- | convert snip to doc
 
 -----------------------------------------------------------------------------
-{-# OPTIONS_GHC -F -pgmF htfpp #-}
+--{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -25,24 +25,26 @@ module NLP2RDF.LanguageSpecific
 --    , module LitTypes.ServerNames
     ) where
 
-import              Test.Framework
-import              Uniform.TestHarness
+--import              Test.Framework
+--import              Uniform.TestHarness
 import LitTypes.LanguageTypedText
 import LitTypes.ServerNames
 
 -- import CoreNLP.DocBase   -- should only get instances ?
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
-import Text.Regex (mkRegex, subRegex)
-import NLP2RDF.CompleteSentence (completeSentence)
-import CoreNLP.Doc2ToLinear  -- for Doc1
-import LitTypes.LanguageTypedText
+import Uniform.Strings
 
-import NLP.Corpora.Conll  as Conll -- Conll for english
-import NLP.Corpora.ItalianTinT   as TinT-- for italian
-import NLP.Corpora.German  as German --
-import NLP.Corpora.Spanish as Spanish --
-import NLP.Corpora.French as French --
-import NLP.Corpora.FrenchUD as FrenchUD --
+import Text.Regex (mkRegex, subRegex)
+--import NLP2RDF.CompleteSentence (completeSentence)
+--import CoreNLP.Doc2ToLinear  -- for Doc1
+import LitTypes.LanguageTypedText
+--import NLP.Tags
+import NLP.TagSets.Conll  as Conll -- Conll for english
+import NLP.TagSets.ItalianTinT   as TinT-- for italian
+import NLP.TagSets.German  as German --
+import NLP.TagSets.Spanish as Spanish --
+import NLP.TagSets.French as French --
+import NLP.TagSets.FrenchUD as FrenchUD --
 
 import Data.Text as T
 
@@ -94,26 +96,26 @@ instance LanguageDependent ItalianType where
     preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
-class TaggedTyped postag where
-    postNLP :: Bool -> URI -> Doc1 postag -> ErrIO (Doc1 postag)
-    -- postprocessing (e.g. adding POS to german)
-    postNLP _ _ = return
+--class TaggedTyped postag where
+--    postNLP :: Bool -> URI -> Doc1 postag -> ErrIO (Doc1 postag)
+--    -- postprocessing (e.g. adding POS to german)
+--    postNLP _ _ = return
 
 
 
-instance TaggedTyped Conll.POStag
-instance TaggedTyped German.POStag where
-    postNLP debug sloc doc1  = do
-        let sents1 = doc1Sents doc1
-        sents2 <- mapM (completeSentence False
-                    (addPort2URI sloc treeTaggerPort ) ) sents1
-        let docs2 = doc1{doc1Sents = sents2}
-        return docs2
+--instance TaggedTyped Conll.POStag
+--instance TaggedTyped German.POStag where
+--    postNLP debug sloc doc1  = do
+--        let sents1 = doc1Sents doc1
+--        sents2 <- mapM (completeSentence False
+--                    (addPort2URI sloc treeTaggerPort ) ) sents1
+--        let docs2 = doc1{doc1Sents = sents2}
+--        return docs2
 
-instance TaggedTyped TinT.POStag
-instance TaggedTyped Spanish.POStag
-instance TaggedTyped French.POStag
-instance TaggedTyped FrenchUD.POStag
+--instance TaggedTyped TinT.POStag
+--instance TaggedTyped Spanish.POStag
+--instance TaggedTyped French.POStag
+--instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish

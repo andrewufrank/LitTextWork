@@ -44,6 +44,6 @@ import CoreNLP.Linear2Triple
 --import qualified NLP.TagSets.Conll  as Conll
 --import qualified NLP.TagSets.UD as UD
 
-json2NT :: Text -> Text
+json2NT :: PartURI -> Text -> Text
 -- | main operation, convert JSON text file to a triple (NT) text file
-json2NT = toNT . toTriple . toLin . to11op . to1op .  decodeDoc2op
+json2NT rdfbase = toNT . toTriple rdfbase . toLin . to11op . to1op .  decodeDoc2op

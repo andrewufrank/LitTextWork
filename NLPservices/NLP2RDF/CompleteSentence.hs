@@ -34,7 +34,7 @@ import LitTypes.ServerNames
 import NLP2RDF.ConvertTaggerOutput--import NLP.CallTagger2
 -- import CoreNLP.DocBase
 import CoreNLP.Doc2ToLinear
-import NLP.Corpora.Conll
+import NLP.TagSets.Conll
 --import BuchCode.BuchToken (LanguageCode(..))
 
 import Uniform.HttpCall

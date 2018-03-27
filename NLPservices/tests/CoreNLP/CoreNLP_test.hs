@@ -20,6 +20,7 @@ import Uniform.Test.TestHarness
 import           Uniform.Strings
 import CoreNLP.CoreNLP
 import qualified NLP.TagSets.Conll  as Conll
+import LitTypes.ServerNames (rdfBase)
 
 
 -- instance ShowTestHarness (Doc11 Conll.POStag) where
@@ -27,6 +28,6 @@ import qualified NLP.TagSets.Conll  as Conll
 
 progName = "nlpservices"
 test_all :: IO ()
-test_all = testFile2File (progName) "short1.json" "short1.nt" json2NT
+test_all = testFile2File (progName) "short1.json" "short1.nt" (json2NT rdfBase)
 
 

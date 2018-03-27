@@ -46,13 +46,13 @@ library
 
     exposed-modules:
         -- in order of inclusion
---        NLP2RDF.ProduceDocCallNLP
+        NLP2RDF.ProduceDocCallNLP
 ----        CoreNLP.Defs0
 ----        CoreNLP.CoreNLPxml
 --        NLP2RDF.CompleteSentence
---        NLP2RDF.LanguageSpecific
+        NLP2RDF.LanguageSpecific
 ----        CoreNLP.ProduceNLPtriples
---        NLP2RDF.ConvertTaggerOutput
+        NLP2RDF.ConvertTaggerOutput
 --        NLP2RDF.NLPvocabulary
 --        CoreNLP.Models
          CoreNLP.DocBase

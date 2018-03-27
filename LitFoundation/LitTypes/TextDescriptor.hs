@@ -10,7 +10,8 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances
+    , RecordWildCards #-}
 
 module LitTypes.TextDescriptor (
         module LitTypes.TextDescriptor
@@ -25,6 +26,7 @@ module LitTypes.TextDescriptor (
     , NTdescriptor (..)
     , LitTextFlag (..), LitTextFlags
     , PartURI (..), unPartURI
+--    , snipIsNull
 --    , SnipSigl (..)
 --    , module Path   -- to export IsString
     ) where
@@ -36,6 +38,7 @@ import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
 import LitTypes.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )
+--import CoreNLP.Vocabulary (ParaSigl (..))
 
 -- directories:
 litOriginals = makeRelDir "LitOriginals"
@@ -81,19 +84,23 @@ instance Zeros NTdescriptor where
 -- S N I P , SnipID, SnipSigl -- input
 
 -- | a single language piece of text with lanuage code, length and start para number
-data Snip = Snip { tz3loc :: TextLoc
-                        , tz3para :: ParaNum
-                        , tz3snipnr ::  SnipID
---                        , tz3snipsigl :: SnipSigl
-                        , tz3text:: LCtext
-                        , tz3textLength :: Int
-                        , tz3posTag :: Text
---                        , tz3lang :: LanguageCode
+data Snip = Snip { snip3loc :: TextLoc
+--                        , snip3para :: ParaNum
+                        , snip3snipnr ::  SnipID
+                        , snip3baserdf :: PartURI
+--                        , snip3snipsigl :: SnipSigl
+--                        , snip3parasigl :: ParaSigl
+                        , snip3text:: LCtext
+                        , snip3textLength :: Int
+                        , snip3posTag :: Text
+--                        , snip3lang :: LanguageCode
                         }
             deriving (Read, Show, Eq )
 -- snip sigl uses the paragraph number of the first paragraph
 newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 unSnipID (SnipID i) = i
+snipIsNull Snip {..} = snip3textLength == 0
+
 --instance Zeros SnipID where zero = SnipID zero
 
 --
