@@ -37,6 +37,7 @@ import Uniform.Zero
 import   NLP.TagSets.Conll
 import              NLP.TagSets.DEPcodes
 import              NLP.TagSets.NERcodes
+import              NLP.TagSets.SpeakerTags
 import           Text.Printf             (printf)
 import GHC.Generics
 import LitTypes.LanguageTypedText (LCtext (..))

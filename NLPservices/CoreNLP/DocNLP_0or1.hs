@@ -44,6 +44,7 @@ import Uniform.Zero
 import   NLP.TagSets.Conll hiding (NERtag (..))
 import              NLP.TagSets.DEPcodes
 import              NLP.TagSets.NERcodes
+import              NLP.TagSets.SpeakerTags
 import CoreNLP.ParseJsonCoreNLP
 import GHC.Generics
 import qualified NLP.Tags      as NLP
@@ -130,6 +131,9 @@ data Ner3 = Ner3 {ner3docTokenBegin :: TokenID
 
 ----instance Zeros Bool where zero = False
 
+data NERtagExt = NERtagValue Text | NER NERtag
+  deriving (Show, Read, Eq, Ord, Generic)
+
 data Token0 postag = Token0 { tid :: TokenID
                     , tword :: Wordform0
                     , twordOrig :: Maybe Text
@@ -141,7 +145,7 @@ data Token0 postag = Token0 { tid :: TokenID
 
                     , tposOrig :: Maybe Text -- the pos tag received
                     , tpostt :: Maybe Text -- the pos from the tree tagger
-                    , tner :: [NERtag] -- [Text] -- String
+                    , tner :: [NERtagExt] -- [Text] -- String
                     , tnerOrig :: Maybe [Text]
                     , tspeaker :: [SpeakerTag] -- Text -- String
                     , tbefore, tafter :: Maybe Text
@@ -227,7 +231,7 @@ instance (NLP.POStags postag)
         -- missig a test that parse was complete
         tpostt = Nothing
         tner = parseNERtagList [tok_ner] -- when is this a list?
-        tnerOrig = if (any isAnUnknownNER $ tner) then Just [tok_ner] else Nothing
+        tnerOrig = if (any (==(NER NERunk)) $ tner) then Just [tok_ner] else Nothing
                         -- use the Ner2 values?
         tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
 --                    maybe [] (\a -> [a]) $ tok_speaker
@@ -236,6 +240,16 @@ instance (NLP.POStags postag)
         tbefore = tok_before
         tafter = tok_after
 
+
+parseNERtagList :: [Text] -> [NERtagExt]
+parseNERtagList [] = []
+parseNERtagList [a] = [NER $ toNERtag a]
+parseNERtagList (a:as) = (NER $ toNERtag a) : map NERtagValue as
+    -- assume the first is the code and the rest is detail
+    -- check with actual values
+
+--isAnUnknownNER  (NERunk a) = True
+--isAnUnknownNER  _ = False
 
 instance ConvertTo1 postag Dependency2 (Dependence1) where
 

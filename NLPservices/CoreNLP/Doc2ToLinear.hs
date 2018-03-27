@@ -70,7 +70,7 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                     , t3pos :: postag --  the pos tag recognized
                     , t3posOrig :: Maybe Text -- the pos tag received
                     , t3postt :: Text -- the pos from the tree tagger
-                    , t3ner :: [NERtag] -- [Text] -- String
+                    , t3ner :: [NERtagExt] -- [Text] -- String
                     , t3nerOrig :: Maybe [Text]
                     , t3speaker :: [SpeakerTag] -- Text -- String
                     , t3sentence :: SentenceRelID -- for partOf

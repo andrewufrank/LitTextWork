@@ -199,7 +199,7 @@ makeRDFnt TriPartOf {..} = singleton $ mkTriplePartOf triSubj o
 makeRDFnt TriType {..} = singleton $ mkTripleType triSubj (mkRDFtype ty)
 makeRDFnt TriInt2 {..} = singleton $ mkTripleInt triSubj pp int
 makeRDFnt TriZero = []
-makeRDFnt x = errorT ["makeRDFnt missing", showT x]
+--makeRDFnt x = errorT ["makeRDFnt missing", showT x]
 -- should use lang coded text
               --
 singleton a = [a]

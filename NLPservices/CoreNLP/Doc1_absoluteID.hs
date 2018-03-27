@@ -34,6 +34,7 @@ import Uniform.Zero
 import   NLP.TagSets.Conll hiding (NERtag (..))
 import              NLP.TagSets.DEPcodes
 import              NLP.TagSets.NERcodes
+import              NLP.TagSets.SpeakerTags
 import CoreNLP.DocNLP_0or1
 import GHC.Generics
 import qualified NLP.Tags      as NLP
@@ -103,7 +104,7 @@ data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11pos :: postag --  the pos tag recognized
                     , t11posOrig :: Maybe Text -- the pos tag received
                     , t11postt :: Text -- the pos from the tree tagger
-                    , t11ner :: [NERtag] -- [Text] -- String
+                    , t11ner :: [NERtagExt] -- [Text] -- String
                     , t11nerOrig :: Maybe [Text]
                     , t11speaker :: [SpeakerTag] -- Text -- String
                     , t11before, t11after :: Maybe Text
