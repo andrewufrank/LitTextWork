@@ -32,6 +32,7 @@ test_c = testFile2File progName "short1.lin5" "short1.trips6" toTriple
 
 test_d = testFile2File progName "short1.trips6" "short1.nt" toNT
 
+
 test_intercalate1 = assertEqual (Just "doc11/S000001/T006")
              (intercalate' "/" . reverse $ ts1)
 

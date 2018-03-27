@@ -62,6 +62,7 @@ library
          CoreNLP.Doc1_absoluteID
          CoreNLP.Doc2ToLinear
          CoreNLP.Linear2Triple
+         CoreNLP.CoreNLP
 
     exposed: True
     buildable: True
@@ -93,7 +94,7 @@ Test-Suite nlpTestAuto
          CoreNLP.Vocabulary_test
 --        CoreNLP.Models_test
 --        CoreNLP.Defs0_test
---        CoreNLP.CoreNLPxml_test
+         CoreNLP.CoreNLP_test
          CoreNLP.ParseJsonCoreNLP_test
          CoreNLP.DocNLP_0or1_test
          CoreNLP.Doc1_absoluteID_test

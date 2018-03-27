@@ -1,7 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :   a test for HTF framework
--- insert {-@ HTF_TESTS @-} for each import
+-- Module      :  a test for all of CoreNLP
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts
@@ -13,21 +12,21 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module CoreNLP.Doc1_absoluteID_test  -- (openMain, htf_thisModuelsTests)
+module CoreNLP.CoreNLP_test  -- (openMain, htf_thisModuelsTests)
      where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import CoreNLP.Doc1_absoluteID
+import CoreNLP.CoreNLP
 import qualified NLP.TagSets.Conll  as Conll
 
 
-instance ShowTestHarness (Doc11 Conll.POStag) where
-instance ShowTestHarness (Doc1 Conll.POStag) where
+-- instance ShowTestHarness (Doc11 Conll.POStag) where
+-- instance ShowTestHarness (Doc1 Conll.POStag) where
 
 progName = "nlpservices"
-test_c :: IO ()
-test_c = testFile2File progName "short1.doc3" "short1.doc4" to11op
+test_all :: IO ()
+test_all = testFile2File (progName) "short1.json" "short1.nt" json2NT
 
 
