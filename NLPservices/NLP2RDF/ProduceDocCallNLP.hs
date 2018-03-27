@@ -61,6 +61,9 @@ import Data.ByteString.Lazy (fromStrict)  -- move to decode
 convertOneSnip2NT :: LitTextFlags  -> TD.Snip -> ErrIO Text
 -- | is is the overall process taking a snip and producing the NT as text
 -- construct a snipID from rdfBase (from LitTypes.ServerNames)
+-- this is just the conversion from tagged to typed
+-- which could not be moved earlier, because the snip is the highest
+-- single language text collection
 convertOneSnip2NT flags snip = if  TD.snipIsNull snip
     then return zero
     else do
@@ -153,11 +156,13 @@ instance (-- LanguageDependent lang,
 --                let snipSigl = snip2sigl snip
 --                let trips = processDoc1toTriples2 lph pph snipSigl doc2
         let nts = json2NT (rdfBase) doc2
+        -- here is the difference between languages
+        -- make this a class selected by lang and postag and perhaps NERtag
         return nts
 
     snip2doc lph pph debugNLP  text  sloc = do
         let debug2 = debugNLP
-        code1 <-  text2nlpCode pph debug2
+        code1 <-  text2nlpCode  debug2
                             (addPort2URI sloc (nlpPort lph pph))  -- server uri
                             (nlpPath lph)   -- path
                                 (nlpParams lph pph)  (unLCtext text)
@@ -166,21 +171,21 @@ instance (-- LanguageDependent lang,
         return code1
 
 
-class Docs2 postag where
-    text2nlpCode :: postag -> Bool -> URI -> Text -> HttpVarParams -> Text
+--class Docs2 postag where
+text2nlpCode :: Bool -> URI -> Text -> HttpVarParams -> Text
                     ->  ErrIO Text
 --                    ph debugNLP  nlpServer path vars text
 --    nlpCode2doc1 :: postag -> Bool ->  Text ->  ErrIO (Doc1 postag)
 ----                    ph debugNLP   nlpCode = do
 
-instance (POStags postag) => Docs2 postag where
+--instance (POStags postag) => Docs2 postag where
 --    text2nlpcode  :: Bool ->  URI -> [(Text,Maybe Text)] -> Text ->  ErrIO (Doc0 postag)    -- the nlpCode to analyzse  D -> E
     -- call to send text to nlp server and converts nlpCode to Doc0
     -- works on individual paragraphs - but should treat bigger pieces if para is small (eg. dialog)
     -- merger
 
 
-    text2nlpCode ph debugNLP  nlpServer path vars text = do
+text2nlpCode debugNLP  nlpServer path vars text = do
             when debugNLP $
                 putIOwords ["text2nlpCode start"
                             , showT . lengthChar $ text
@@ -188,6 +193,7 @@ instance (POStags postag) => Docs2 postag where
             let vars2 = combineHttpVarParams vars
                     (HttpVarParams [("outputFormat", Just "json")])
             -- alternative ("outputFormat", Just "xml"),
+            -- or conllu
             nlpCode :: Text <- callHTTP10post debugNLP
                             "multipart/form-data"  nlpServer path
                             (b2bl . t2b $ text) vars

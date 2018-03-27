@@ -150,7 +150,7 @@ testOP_M_MA :: (
                   LanguageTyped2 lang postag) =>
          (lang, postag, Text, Int) -> Snip2 lang -> ErrIO Text
 testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
-            json1 <- text2nlpCode   postagPh True server  path
+            json1 <- text2nlpCode   True server  path
                         vars (unLCtext txt)
             -- add a json pretty print here?
             return json1
