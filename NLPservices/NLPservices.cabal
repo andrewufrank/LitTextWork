@@ -100,7 +100,7 @@ Test-Suite nlpTestAuto
          CoreNLP.Doc1_absoluteID_test
          CoreNLP.Doc2ToLinear_test
          CoreNLP.Linear2Triple_test
-----        NLP2RDF.ProduceDocCallNLP_test
+        NLP2RDF.ProduceDocCallNLP_test
 ----         CoreNLP.ProduceNLPtriples2_test
 ----        NLP2RDF.CompleteSentence_test
 ----        NLP2RDF.ProduceNLPtriples_test

@@ -106,7 +106,8 @@ class  LanguageTyped22 lang postag where
 
 --    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlags ->  Snip2 lang -> URI
 --                -> ErrIO [NLPtriple postag]
-    snip2NT :: lang -> postag -> LitTextFlags ->  LTtext lang -> PartURI  -> URI
+    snip2NT :: lang -> postag -> LitTextFlags ->  LTtext lang
+                -> PartURI  -> URI
                 -> ErrIO Text
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output

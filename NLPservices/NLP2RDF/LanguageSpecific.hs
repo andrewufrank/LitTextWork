@@ -121,9 +121,9 @@ instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
     nlpParams _ _ =  HttpVarParams [
             -- only use json for english ?? TODO
-                  ("annotators", Just "tokenize,ssplit,parse,pos\
-                                        \,lemma,ner,depparse,coref")]
-            --                                    coref -coref.algorithm neural")
+              ("annotators", Just "tokenize,ssplit,parse,pos\
+                            \,lemma,ner,depparse,coref")]
+--                   coref -coref.algorithm neural")
 --                  attention - no blanks between parameters!!!
 
 instance LanguageTyped2 GermanType German.POStag where
