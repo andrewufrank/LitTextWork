@@ -188,7 +188,7 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
 
 
 
-    -- produce Doc1 from whatever nlp produces (xml, json, conllu)
+    -- produce NT from whatever nlp produces (xml, json, conllu)
 testOP_M_MB ::  (Show postag
             , TaggedTyped postag
             , LanguageTypedText lang
@@ -216,6 +216,28 @@ test_M_MB1 = testVar2FileIO progName
 test_M_MB6 = testVar2FileIO progName
             (undefEnglish, undefUPOS, entz3text, 1)
                   "resultMA6" "resultMB6" testOP_M_MB
+
+
+----- next test ?
+
+--testOP_MA_MC :: (Show postag, TaggedTyped postag, LanguageTypedText t0
+--        , LanguageTyped2 t0 postag) =>
+--            (t0, postag, Text, Int) -> Text -> ErrIO (Doc1 postag)
+--
+--testOP_MA_MC (langPh, postagPh, text, i) xml1 = do
+--        nlpCode2doc1   postagPh False  xml1
+--
+--test_MA_MC_1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
+--                                         "resultMA1" "resultMC1" testOP_MA_MC
+--test_M_MC2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
+--                                          "resultMA2" "resultMC2" testOP_MA_MC
+--test_M_MC3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
+--                                          "resultMA3" "resultMC3" testOP_MA_MC
+--test_M_MC4 = testVar3FileIO (undefSpanish, undefSpanishPos, spantz3text, 4)
+--                                          "resultMA4" "resultMC4" testOP_MA_MC
+--test_MA_MC_5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
+--                                         "resultMA5" "resultMC5" testOP_MA_MC
+
 --
 {-
     -- --  xml2doc    :: postag -> Bool ->  Text ->  ErrIO (Doc1 postag)
