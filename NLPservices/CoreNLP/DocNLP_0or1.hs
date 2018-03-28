@@ -54,7 +54,7 @@ import LitTypes.LanguageTypedText (unLCtext, LCtext (..), LanguageCodedText (..)
 import qualified NLP.TagSets.Conll  as Conll -- for test
 
 to1op :: Doc2  ->   (Doc1 Conll.POStag)  -- the entry point
-to1op f =  convertTo1 Conll.undefConll English f
+to1op f =  convertTo1 Conll.undefPOS English f
 
 
 class ConvertTo1 postag a2 a1 where

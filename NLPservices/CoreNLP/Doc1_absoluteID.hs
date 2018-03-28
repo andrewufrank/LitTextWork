@@ -44,8 +44,8 @@ import Data.List
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 
-to11op ::   (Doc1 Conll.POStag) ->  (Doc11 Conll.POStag)  -- the entry point
-to11op  =  convertToAbsoluteID Conll.undefConll  (DocRelID ["doc11"])
+to11op ::   (POStags postag) => postag -> (Doc1 postag) ->  (Doc11 postag)  -- the entry point
+to11op postag =  convertToAbsoluteID postag  (DocRelID ["doc11"])
 
 to11opUD ::   (Doc1 UD.POStag) ->  (Doc11 UD.POStag)  -- the entry point
 to11opUD  =  convertToAbsoluteID UD.undefUPOS  (DocRelID ["doc11"])

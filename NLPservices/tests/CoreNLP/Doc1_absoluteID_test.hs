@@ -28,6 +28,7 @@ instance ShowTestHarness (Doc1 Conll.POStag) where
 
 progName = "nlpservices"
 test_c :: IO ()
-test_c = testFile2File progName "short1.doc3" "short1.doc4" to11op
+test_c = testFile2File progName "short1.doc3" "short1.doc4"
+                (to11op Conll.undefPOS)
 
 

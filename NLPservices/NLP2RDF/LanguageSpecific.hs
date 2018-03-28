@@ -34,7 +34,7 @@ import LitTypes.ServerNames
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Uniform.Strings
 import Uniform.Error (ErrIO)
-import CoreNLP.CoreNLP (json2NT, NTtext (..), unNT)
+import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT)
 --import CoreNLP.Conllu2doc1
 import Text.Regex (mkRegex, subRegex)
 --import NLP2RDF.CompleteSentence (completeSentence)
@@ -110,7 +110,7 @@ instance TaggedTyped Conll.POStag where
     postNLP pph debug u brdf txt = return $ json2NT brdf txt
 
 instance TaggedTyped UD.POStag where
-    postNLP pph debug u brdf txt = return $ conllu2doc1 brdf txt
+    postNLP pph debug u brdf txt = return $ conllu2NT brdf txt
 
 --instance TaggedTyped German.POStag where
 --    postNLP debug sloc doc1  = do

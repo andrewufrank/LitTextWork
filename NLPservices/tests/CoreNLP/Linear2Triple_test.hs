@@ -30,9 +30,11 @@ instance ShowTestHarness [Triple ] where
 instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
-test_c = testFile2File progName "short1.lin5" "short1.trips6" (toTriple rdfBase)
+test_c = testFile2File progName "short1.lin5" "short1.trips6"
+        (toTriple Conll.undefPOS rdfBase)
 
-test_d = testFile2File progName "short1.trips6" "short1.nt" (unNT . toNT)
+test_d = testFile2File progName "short1.trips6" "short1.nt"
+        (unNT . toNT)
 
 
 test_intercalate1 = assertEqual (Just "doc11/S000001/T006")

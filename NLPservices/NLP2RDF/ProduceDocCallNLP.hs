@@ -78,7 +78,7 @@ convertOneSnip2NT flags snip = if  TD.snipIsNull snip
                     else serverBrest
         trips <- case (lang, pt) of
             (English, "") -> do
-                    t <- snip2NT undefEnglish undefConll
+                    t <- snip2NT undefEnglish Conll.undefPOS
                          flags   (convertLC2LT text) snipBase  nlpserver
                     return t -- (map unNLPtriple t)
 --        (German, "") -> do

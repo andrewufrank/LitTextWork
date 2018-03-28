@@ -22,7 +22,8 @@ module CoreNLP.Conllu2doc1 (
 
 import Conllu.Print as Pr
 import Conllu.Type as T
-import qualified Conllu.Parse as P -- (document, Parser)  -- this is the parser!
+import qualified Conllu.Parse as P -- (document, Parser)
+            -- this is the parser!
 import qualified Text.Megaparsec as M
 
 --import              Uniform.Strings
@@ -57,7 +58,10 @@ conllu2doc1  t = convertTo1 (UD.undefUPOS) English  ss2 -- (fromRightEOV ss1)
     where
         ss1 = parseConllu (P.documentC P.sentence) $ t :: ErrOrVal [T.Sentence]
         ss2 = case ss1 of
-            Right ss -> errorT ["result conllu2doc1", showT ss] :: [T.Sentence] -- unlines' $ map showT ss
+--            Right ss -> errorT ["result conllu2doc1", showT ss] :: [T.Sentence]
+                            -- unlines' $ ma
+--                            showT ss
+            Right ss -> ss :: [T.Sentence]
             Left msg -> errorT ["conllu2doc1 parse error: ", msg]
 
 prettyPrintConlluSentence ::T.Sentence -> Text

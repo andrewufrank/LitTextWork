@@ -203,7 +203,7 @@ testOP_M_MB (langPh, postagPh, text, i) txt  = fmap unNT $
 --                        (unLCtext $ snip2text snip2)
 
 test_M_MB1 = testVar2FileIO progName
-                    (undefEnglish, undefConll, entz3text, 1)
+                    (undefEnglish, Conll.undefPOS, entz3text, 1)
                           "resultMA1" "resultMB1" testOP_M_MB
 --test_M_MB2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
 --                                          "resultM2" "resultMB2" testOP_M_MB
