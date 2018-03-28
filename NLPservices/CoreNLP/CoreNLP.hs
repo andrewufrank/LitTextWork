@@ -49,7 +49,7 @@ json2NT :: PartURI -> Text -> NTtext
 -- | main operation, convert JSON text file to a triple (NT) text file
 json2NT rdfbase = doc1toNT Conll.undefPOS rdfbase . to1op .  decodeDoc2op
 
-conllu2NT rdfbase = doc1toNT UD.undefUPOS rdfbase . conllu2doc1
+conllu2NT rdfbase = doc1toNT UD.undefPOS rdfbase . conllu2doc1
 
 doc1toNT :: (Show postag, UD.POStags postag) =>
             postag -> PartURI -> Doc1 postag -> NTtext

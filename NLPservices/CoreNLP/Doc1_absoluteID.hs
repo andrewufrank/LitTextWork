@@ -48,7 +48,7 @@ to11op ::   (POStags postag) => postag -> (Doc1 postag) ->  (Doc11 postag)  -- t
 to11op postag =  convertToAbsoluteID postag  (DocRelID ["doc11"])
 
 to11opUD ::   (Doc1 UD.POStag) ->  (Doc11 UD.POStag)  -- the entry point
-to11opUD  =  convertToAbsoluteID UD.undefUPOS  (DocRelID ["doc11"])
+to11opUD  =  convertToAbsoluteID UD.undefPOS  (DocRelID ["doc11"])
 
 class ConvertToAbsulteID postag relID a2 a1 where
 -- convert to the 1 or 0 records

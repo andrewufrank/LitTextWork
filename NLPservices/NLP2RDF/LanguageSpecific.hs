@@ -102,7 +102,7 @@ instance LanguageDependent ItalianType where
 class TaggedTyped postag where
     postNLP :: postag -> Bool -> URI -> PartURI -> Text -> ErrIO NTtext
     -- postprocessing (e.g. adding POS to german)
---    postNLP _ _ = return
+    postNLP pph debug u brdf txt = return $ json2NT brdf txt
 
 
 
@@ -120,10 +120,10 @@ instance TaggedTyped UD.POStag where
 --        let docs2 = doc1{doc1Sents = sents2}
 --        return docs2
 --
---instance TaggedTyped TinT.POStag
---instance TaggedTyped Spanish.POStag
---instance TaggedTyped French.POStag
---instance TaggedTyped FrenchUD.POStag
+instance TaggedTyped TinT.POStag
+instance TaggedTyped Spanish.POStag
+instance TaggedTyped French.POStag
+instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish

@@ -54,7 +54,7 @@ import qualified NLP.Tags as NLP
 --conllu2NT rdfbase = toNT . toTriple rdfbase . toLin . to11op . conllu2doc1
 
 conllu2doc1 :: Text -> Doc1 UD.POStag
-conllu2doc1  t = convertTo1 (UD.undefUPOS) English  ss2 -- (fromRightEOV ss1)
+conllu2doc1  t = convertTo1 (UD.undefPOS) English  ss2 -- (fromRightEOV ss1)
     where
         ss1 = parseConllu (P.documentC P.sentence) $ t :: ErrOrVal [T.Sentence]
         ss2 = case ss1 of
