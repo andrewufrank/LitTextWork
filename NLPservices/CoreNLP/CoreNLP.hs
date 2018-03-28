@@ -45,9 +45,11 @@ import CoreNLP.Conllu2doc1
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 
-json2NT :: PartURI -> Text -> NTtext
+json2NT :: (UD.POStags postag) =>
+        postag -> LanguageCode -> PartURI -> Text -> NTtext
 -- | main operation, convert JSON text file to a triple (NT) text file
-json2NT rdfbase = doc1toNT Conll.undefPOS rdfbase . to1op .  decodeDoc2op
+json2NT postag lang rdfbase = doc1toNT postag rdfbase
+                . to1op postag lang .  decodeDoc2op
 
 conllu2NT rdfbase = doc1toNT UD.undefPOS rdfbase . conllu2doc1
 

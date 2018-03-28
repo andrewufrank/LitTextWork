@@ -12,6 +12,7 @@
 --and suffix 1 if it results from JSON conversion
 
 -- converts the .doc2 files to .doc3
+-- put the text in LCtext with language code
 -----------------------------------------------------------------------------
 {-# LANGUAGE
         ScopedTypeVariables
@@ -53,8 +54,10 @@ import Data.Maybe
 import LitTypes.LanguageTypedText (unLCtext, LCtext (..), LanguageCodedText (..) )
 import qualified NLP.TagSets.Conll  as Conll -- for test
 
-to1op :: Doc2  ->   (Doc1 Conll.POStag)  -- the entry point
-to1op f =  convertTo1 Conll.undefPOS English f
+to1op :: (POStags postag) =>
+        postag -> LanguageCode -> Doc2  ->   (Doc1 postag)
+-- the entry point
+to1op postag lang f =  convertTo1 postag lang f
 
 
 class ConvertTo1 postag a2 a1 where

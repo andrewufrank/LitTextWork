@@ -99,21 +99,21 @@ instance LanguageDependent ItalianType where
     preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
-class TaggedTyped postag where
-    postNLP :: postag -> Bool -> URI -> PartURI -> Text -> ErrIO NTtext
+class (UD.POStags postag) => TaggedTyped postag where
+    postNLP :: postag -> LanguageCode -> Bool ->   PartURI -> Text -> ErrIO NTtext
     -- postprocessing (e.g. adding POS to german)
-    postNLP pph debug u brdf txt = return $ json2NT brdf txt
+    postNLP pph lang debug  brdf txt = return $ json2NT pph lang brdf txt
 
 
 
 instance TaggedTyped Conll.POStag where
-    postNLP pph debug u brdf txt = return $ json2NT brdf txt
+--    postNLP pph debug  brdf txt = return $ json2NT brdf txt
 
 instance TaggedTyped UD.POStag where
-    postNLP pph debug u brdf txt = return $ conllu2NT brdf txt
+    postNLP pph lang debug  brdf txt = return $ conllu2NT brdf txt
 
---instance TaggedTyped German.POStag where
---    postNLP debug sloc doc1  = do
+instance TaggedTyped German.POStag where
+--    postNLP pph debug sloc brdf txt  = do
 --        let sents1 = doc1Sents doc1
 --        sents2 <- mapM (completeSentence False
 --                    (addPort2URI sloc treeTaggerPort ) ) sents1

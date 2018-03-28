@@ -28,6 +28,7 @@ instance ShowTestHarness (Doc1 Conll.POStag) where
 instance ShowTestHarness Doc2 where
 
 progName = "nlpservices"
-test_B = testFile2File progName "short1.doc2" "short1.doc3" to1op
+test_B = testFile2File progName "short1.doc2" "short1.doc3"
+            (to1op Conll.undefPOS English)
 
 

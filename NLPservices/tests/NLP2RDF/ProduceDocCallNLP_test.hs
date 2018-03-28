@@ -174,8 +174,7 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
         where   vars = nlpParams langPh postagPh
                 path = nlpPath langPh
                 server = addPort2URI serverBrest (nlpPort langPh postagPh)
---        code <_ text2nlpCode   postagPh True server path vars
---                        (unLCtext $ snip2text snip2)
+
 --test_M_MA1 :: IO ()
 --test_M_MA1 = testVar2FileIO progName englVars "resultM1" "resultMA1" testOP_M_MA
 --test_M_MA2 = testVar2FileIO progName germanVars "resultM2" "resultMA2" testOP_M_MA
@@ -195,19 +194,15 @@ testOP_M_MB ::  (Show postag
                 , LanguageTyped2 lang postag) =>
          (lang, postag, Text, Int) -> Text -> ErrIO Text
 testOP_M_MB (langPh, postagPh, text, i) txt  = fmap unNT $
-                    postNLP  postagPh True  serverBrest rdfBase txt
---        let vars = nlpParams langPh postagPh
---        let path = nlpPath langPh
---        let server = addPort2URI serverBrest (nlpPort langPh postagPh)
---        code <_ text2nlpCode   postagPh True server path vars
---                        (unLCtext $ snip2text snip2)
+                    postNLP  postagPh (languageCode langPh)
+                        True   rdfBase txt
 
---test_M_MB1 = testVar2FileIO progName englVars "resultMA1" "resultMB1" testOP_M_MB
---test_M_MB2 = testVar2FileIO progName germanVars  "resultMA2" "resultMB2" testOP_M_MB
+test_M_MB1 = testVar2FileIO progName englVars "resultMA1" "resultMB1" testOP_M_MB
+test_M_MB2 = testVar2FileIO progName germanVars  "resultMA2" "resultMB2" testOP_M_MB
 test_M_MB3 = testVar2FileIO progName frenchVars "resultMA3" "resultMB3" testOP_M_MB
 test_M_MB4 = testVar2FileIO progName spanishVars "resultMA4" "resultMB4" testOP_M_MB
 test_M_MB5 = testVar2FileIO progName italianVars "resultMA5" "resultMB5" testOP_M_MB
---test_M_MB6 = testVar2FileIO progName udfeatsVars "resultMA6" "resultMB6" testOP_M_MB
+test_M_MB6 = testVar2FileIO progName udfeatsVars "resultMA6" "resultMB6" testOP_M_MB
 
 
 ----- next test ?

@@ -152,7 +152,7 @@ instance (-- LanguageDependent lang,
 --                let sloc = nlpServer textstate
         doc1 <- snip2doc lph pph debugNLP   text2  sloc
             -- doc1 is the nlp produced document (xml, json or conllu)
-        doc2 <-  postNLP pph debugNLP  sloc baserdf doc1
+        doc2 <-  postNLP pph (languageCode lph) debugNLP baserdf doc1
 --                let snipSigl = snip2sigl snip
 --                let trips = processDoc1toTriples2 lph pph snipSigl doc2
 --        let nts = json2NT (baserdf) doc2
