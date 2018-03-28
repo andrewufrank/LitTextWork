@@ -3,7 +3,7 @@ extra-package-dbs: []
 packages:
 - /home/frank/Workspace8/rdf4h
 -  /home/frank/Workspace8/LitTextWork/NLPservices
--  /home/frank/Workspace8/TreeTagSets
+# -  /home/frank/Workspace8/TreeTagSets
 - ../LitFoundation
 - ../rdf4hextension
 - '.'
