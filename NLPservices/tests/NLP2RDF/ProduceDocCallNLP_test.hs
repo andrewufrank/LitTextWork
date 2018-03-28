@@ -98,9 +98,9 @@ testOP_Snip_M (langPh, postagPh, text, i)= do
         return snip
 
  -- M is just the snip
-test_M_1 :: IO ()
-test_M_1 = testVar1File progName (undefEnglish, undefConll, entz3text, 1)
-                                 "resultM1" testOP_Snip_M
+--test_M_1 :: IO ()
+--test_M_1 = testVar1File progName (undefEnglish, undefConll, entz3text, 1)
+--                                 "resultM1" testOP_Snip_M
 --test_M_2 = testVar2File (undefGerman, undefGermanPos, gertz3text, 2)
 --                                 "resultM2" testOP_Snip_M
 --test_M_3 = testVar2File (undefFrench, undefFrenchPos, fretz3text, 3)
@@ -109,18 +109,18 @@ test_M_1 = testVar1File progName (undefEnglish, undefConll, entz3text, 1)
 --                                    "resultM4" testOP_Snip_M
 --test_M_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)
 --                                    "resultM5" testOP_Snip_M
-test_M_6 = testVar1File progName (undefEnglish, undefUPOS, entz3text, 1)
-                                 "resultM6" testOP_Snip_M
+--test_M_6 = testVar1File progName (undefEnglish, undefUPOS, entz3text, 1)
+--                                 "resultM6" testOP_Snip_M
 
 instance  ShowTestHarness (Snip2 a) where
     -- to avoid the additional "" added when show  text
-    showTestH = show
-    readTestH2 = readNote -- "showTestHarness Snip2"
+--    showTestH = show
+--    readTestH2 = readNote -- "showTestHarness Snip2"
 
 instance  ShowTestHarness (Doc1 a) where
     -- to avoid the additional "" added when show  text
-    showTestH = show
-    readTestH2 = readNote -- "showTestHarness Doc1"
+--    showTestH = show
+--    readTestH2 = readNote -- "showTestHarness Doc1"
 
 instance ShowTestHarness NTtext where
 
@@ -134,10 +134,10 @@ testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
 --testVar3File :: (Read a, Eq b, Show b, Read b
 --            , Zeros b, ShowTestHarness b) =>
 --        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
-test_M_N1 :: IO ()
-test_M_N1 = testVar2FileIO progName
-                                (undefEnglish, undefConll, entz3text, 1)
-                                         "resultM1" "resultN1" testOP_M_N
+--test_M_N1 :: IO ()
+--test_M_N1 = testVar2FileIO progName
+--                                (undefEnglish, undefConll, entz3text, 1)
+--                                         "resultM1" "resultN1" testOP_M_N
 --test_M_N2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
 --                                          "resultM2" "resultN2" testOP_M_N
 --test_M_N3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
@@ -146,9 +146,9 @@ test_M_N1 = testVar2FileIO progName
 --                                          "resultM4" "resultN4" testOP_M_N
 --test_M_N5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultN5" testOP_M_N
-test_M_N6 = testVar2FileIO progName
-                                (undefEnglish, undefUPOS, entz3text, 1)
-                                         "resultM6" "resultN6" testOP_M_N
+--test_M_N6 = testVar2FileIO progName
+--                                (undefEnglish, undefUPOS, entz3text, 1)
+--                                         "resultM6" "resultN6" testOP_M_N
 
 ----    text2xml :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
 --                    ->  ErrIO Text
@@ -168,10 +168,10 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
                 server = addPort2URI serverBrest (nlpPort langPh postagPh)
 --        code <_ text2nlpCode   postagPh True server path vars
 --                        (unLCtext $ snip2text snip2)
-test_M_MA1 :: IO ()
-test_M_MA1 = testVar2FileIO progName
-                (undefEnglish, undefConll, entz3text, 1)
-                                          "resultM1" "resultMA1" testOP_M_MA
+--test_M_MA1 :: IO ()
+--test_M_MA1 = testVar2FileIO progName
+--                (undefEnglish, undefConll, entz3text, 1)
+--                                          "resultM1" "resultMA1" testOP_M_MA
 --test_M_MA2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
 --                                          "resultM2" "resultMA2" testOP_M_MA
 --test_M_MA3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
@@ -181,28 +181,30 @@ test_M_MA1 = testVar2FileIO progName
 --test_M_MA5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultMA5" testOP_M_MA
 --fails always, because it contains timing info
-test_M_MA6 = testVar2FileIO progName
-                (undefEnglish, undefUPOS, entz3text, 1)
-                                          "resultM6" "resultMA6" testOP_M_MA
+--test_M_MA6 = testVar2FileIO progName
+--                (undefEnglish, undefUPOS, entz3text, 1)
+--                                          "resultM6" "resultMA6" testOP_M_MA
 
 
-{-
-    -- produce Doc1
+
+
+    -- produce Doc1 from whatever nlp produces (xml, json, conllu)
 testOP_M_MB ::  (Show postag
---            , TaggedTyped postag
+            , TaggedTyped postag
             , LanguageTypedText lang
                 , LanguageTyped2 lang postag) =>
-         (lang, postag, Text, Int) -> Snip2 lang -> ErrIO (Doc1 postag)
-testOP_M_MB (langPh, postagPh, text, i) (txt,base)  =
-                    snip2doc langPh postagPh True txt serverBrest
+         (lang, postag, Text, Int) -> Text -> ErrIO Text
+testOP_M_MB (langPh, postagPh, text, i) txt  = fmap unNT $
+                    postNLP  postagPh True  serverBrest rdfBase txt
 --        let vars = nlpParams langPh postagPh
 --        let path = nlpPath langPh
 --        let server = addPort2URI serverBrest (nlpPort langPh postagPh)
 --        code <_ text2nlpCode   postagPh True server path vars
 --                        (unLCtext $ snip2text snip2)
 
-test_M_MB1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
-                                          "resultM1" "resultMB1" testOP_M_MB
+test_M_MB1 = testVar2FileIO progName
+                    (undefEnglish, undefConll, entz3text, 1)
+                          "resultMA1" "resultMB1" testOP_M_MB
 --test_M_MB2 = testVar3FileIO (undefGerman, undefGermanPos, gertz3text, 2)
 --                                          "resultM2" "resultMB2" testOP_M_MB
 --test_M_MB3 = testVar3FileIO (undefFrench, undefFrenchPos, fretz3text, 3)
@@ -211,9 +213,12 @@ test_M_MB1 = testVar3FileIO (undefEnglish, undefConll, entz3text, 1)
 --                                          "resultM4" "resultMB4" testOP_M_MB
 --test_M_MB5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultMB5" testOP_M_MB
+test_M_MB6 = testVar2FileIO progName
+            (undefEnglish, undefUPOS, entz3text, 1)
+                  "resultMA6" "resultMB6" testOP_M_MB
 --
---
--- --  xml2doc    :: postag -> Bool ->  Text ->  ErrIO (Doc1 postag)
+{-
+    -- --  xml2doc    :: postag -> Bool ->  Text ->  ErrIO (Doc1 postag)
 
 testOP_MA_MBB :: (Show postag, TaggedTyped postag, LanguageTypedText t0
         , LanguageTyped2 t0 postag) =>

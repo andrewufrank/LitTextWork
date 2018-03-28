@@ -43,6 +43,8 @@ library
         , TreeTagSets
         , litFoundation
         , bytestring
+        , Hs-conllu
+        , megaparsec
 
     exposed-modules:
         -- in order of inclusion
@@ -62,6 +64,7 @@ library
          CoreNLP.Doc1_absoluteID
          CoreNLP.Doc2ToLinear
          CoreNLP.Linear2Triple
+         CoreNLP.Conllu2doc1
          CoreNLP.CoreNLP
 
     exposed: True
@@ -100,6 +103,7 @@ Test-Suite nlpTestAuto
          CoreNLP.Doc1_absoluteID_test
          CoreNLP.Doc2ToLinear_test
          CoreNLP.Linear2Triple_test
+         CoreNLP.Conllu2doc1_test
         NLP2RDF.ProduceDocCallNLP_test
 ----         CoreNLP.ProduceNLPtriples2_test
 ----        NLP2RDF.CompleteSentence_test
