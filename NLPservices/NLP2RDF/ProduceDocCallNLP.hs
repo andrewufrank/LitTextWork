@@ -151,13 +151,15 @@ instance (-- LanguageDependent lang,
         let text2 = text -- preNLP  text
 --                let sloc = nlpServer textstate
         doc1 <- snip2doc lph pph debugNLP   text2  sloc
-
+            -- doc1 is the nlp produced document (xml, json or conllu)
         doc2 <- return doc1 -- postNLP debugNLP  sloc doc1
 --                let snipSigl = snip2sigl snip
 --                let trips = processDoc1toTriples2 lph pph snipSigl doc2
-        let nts = json2NT (rdfBase) doc2
+        let nts = json2NT (baserdf) doc2
         -- here is the difference between languages
         -- make this a class selected by lang and postag and perhaps NERtag
+        -- move all processing after the call to nlp to
+        -- postNLP : doc1 -> NT text
         return nts
 
     snip2doc lph pph debugNLP  text  sloc = do
@@ -199,6 +201,7 @@ text2nlpCode debugNLP  nlpServer path vars text = do
                             (b2bl . t2b $ text) vars
                             (Just 300)   -- timeout in seconds
 --            when debugNLP  $
+
             putIOwords ["text2nlpCode end \n", take' 200 . showT    $  nlpCode]
             return nlpCode
 

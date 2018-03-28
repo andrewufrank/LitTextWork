@@ -21,20 +21,12 @@
 module CoreNLP.Linear2Triple
     ( module CoreNLP.Linear2Triple
     , DocAsList (..)
---    , rdfBase
---    ,  module CoreNLP.DocNLP_0or1
     , Triple
     ) where
 
 import           Uniform.Strings
---import CoreNLP.Doc1_absoluteID
 import CoreNLP.Doc2ToLinear
 import qualified CoreNLP.Vocabulary as Voc
-
---import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
---import qualified NLP.Types.Tags      as NLP
---import              CoreNLP.DEPcodes
---import              CoreNLP.NERcodes
 import Data.RDFext.Extension as RDF
 import Uniform.Zero
 import Uniform.Strings
@@ -62,7 +54,8 @@ toNT ds  =  t
 
 newtype NLPtriple postag = NLPtriple Triple
     deriving (Eq, Ord, Show, Read)
---    deriving newtype Zeros   -- not feasible, probably because it is parametrized?
+--    deriving newtype Zeros
+-- not feasible, probably because it is parametrized?
 
 unNLPtriple (NLPtriple t) = t
 
@@ -74,7 +67,8 @@ mkIRI_ :: Text -> Text -> [Text] -> RDFsubj
 -- the internal code
 mkIRI_ note base ts = if null ts
         then errorT ["mkIRI with empty list for ", note]
-        else RDFsubj $ base </> (fromJustNote ("intercalate mkIRI  " ++ (t2s note))
+        else RDFsubj $ base </>
+                (fromJustNote ("intercalate mkIRI  " ++ (t2s note))
                             $ intercalate' "/" . reverse $ ts)
 
 instance MakeIRI DocRelID where
@@ -92,10 +86,14 @@ instance MakeIRI TokenRelID where
 data DocAsTriple   =
     TriType {triSubj::RDFsubj , ty ::NLPtype}
     | TriPartOf {triSubj::RDFsubj , o :: RDFsubj }
---    | TriTextL  {triSubj::RDFsubj , p::NLPproperty, tl ::LCtext}  -- should be language coded
-    | TriTextL2  {triSubj::RDFsubj , pp::RDFproperty, tl ::LCtext}  -- should be language coded
---    | TriText   {triSubj::RDFsubj , p::NLPproperty, te ::Ttext}  -- should not be language coded
-    | TriText2   {triSubj::RDFsubj , pp::RDFproperty, te ::Text}  -- should not be language coded
+--    | TriTextL  {triSubj::RDFsubj , p::NLPproperty, tl ::LCtext}
+ -- should be language coded
+    | TriTextL2  {triSubj::RDFsubj , pp::RDFproperty, tl ::LCtext}
+     -- should be language coded
+--    | TriText   {triSubj::RDFsubj , p::NLPproperty, te ::Ttext}
+ -- should not be language coded
+    | TriText2   {triSubj::RDFsubj , pp::RDFproperty, te ::Text}
+    -- should not be language coded
 --    | TriRel   {triSubj::RDFsubj , p::NLPproperty, o ::RDFsubj}
     | TriRel2   {triSubj::RDFsubj , pp::RDFproperty, o ::RDFsubj}
 --    | TriList {triSubj::RDFsubj, p::NLPproperty, os :: [Text]}
@@ -121,13 +119,13 @@ makeTriple base SentenceLin{..} = [TriType triSubj Voc.Sentence
 
 -- | this gives all triples of a chain with the the same subj
 makeTriple base DependenceLin{..} = [ TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
---                        ,TriType triSubj Dependence
---                        , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
---                        , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
---                        , TriRel2 triSubj (mkRDFproperty DepDependent) (mkIRI base d3depid)
---                        , TriText2 triSubj (mkRDFproperty DepGovGloss) d3govGloss
---                        , TriText2 triSubj (mkRDFproperty DepDepGloss) d3depGloss
---                        , TriPartOf triSubj $ mkIRI base d3sentence
+--            ,TriType triSubj Dependence
+--            , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
+--            , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
+--            , TriRel2 triSubj (mkRDFproperty DepDependent) (mkIRI base d3depid)
+--            , TriText2 triSubj (mkRDFproperty DepGovGloss) d3govGloss
+--            , TriText2 triSubj (mkRDFproperty DepDepGloss) d3depGloss
+--            , TriPartOf triSubj $ mkIRI base d3sentence
                         ]
         -- uses the correct nlp prefix because d3type is a DepType
         -- how to find the places where the original type is not parsed?
@@ -139,35 +137,35 @@ makeTriple base MentionLin{..} =
 --                        , TriType triSubj Mention
                     -- the triSubj is the same for all chains
                     -- most of this is not really necessary
---                    , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
+--      , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
                                             -- is Bool
---                    , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
---                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
---                    , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
---                    , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
-                    , TriTextL2 triSubj (mkRDFproperty MentionText) ment3Text
-                    , TriText2 triSubj (mkRDFproperty MentionType) ment3Type
-                    , TriText2 triSubj (mkRDFproperty MentionNumber) ment3Number
-                    , TriText2 triSubj (mkRDFproperty MentionGender) ment3Gender
-                    , TriText2 triSubj (mkRDFproperty MentionAnimacy) ment3Animacy
+--      , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
+--      , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
+--      , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
+--      , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
+            , TriTextL2 triSubj (mkRDFproperty MentionText) ment3Text
+            , TriText2 triSubj (mkRDFproperty MentionType) ment3Type
+            , TriText2 triSubj (mkRDFproperty MentionNumber) ment3Number
+            , TriText2 triSubj (mkRDFproperty MentionGender) ment3Gender
+            , TriText2 triSubj (mkRDFproperty MentionAnimacy) ment3Animacy
                         ]
         --  triSubj is a refers to o (mentions o
     where   triSubj = mkIRI base ment3Head
 
 makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
-            ,  TriTextL2 triSubj  (mkRDFproperty TokenWordForm) (word0 t3word)
-            , TriTextL2 triSubj (mkRDFproperty TokenLemma3) (lemma0 t3lemma)
+        ,  TriTextL2 triSubj  (mkRDFproperty TokenWordForm) (word0 t3word)
+        , TriTextL2 triSubj (mkRDFproperty TokenLemma3) (lemma0 t3lemma)
 --            , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
 --            , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
-            , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
-            , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
-            , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
---                            (if t3ner == [NERunk "0"] then [] else map showT t3ner)
-            , TriList2 triSubj (mkRDFproperty TokenSpeaker) (map fromSpeakerTag t3speaker)
-           , TriPartOf triSubj $ mkIRI base t3sentence
-            , TriList2 triSubj (mkRDFproperty TokenNERorig)
-                (maybe [] id t3nerOrig)
-            , (TriList2 triSubj (mkRDFproperty TokenPOSorig)) $ maybe [] singleton t3posOrig
+        , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
+        , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
+        , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
+--                       (if t3ner == [NERunk "0"] then [] else map showT t3ner)
+        , TriList2 triSubj (mkRDFproperty TokenSpeaker) (map fromSpeakerTag t3speaker)
+       , TriPartOf triSubj $ mkIRI base t3sentence
+        , TriList2 triSubj (mkRDFproperty TokenNERorig)
+            (maybe [] id t3nerOrig)
+        , (TriList2 triSubj (mkRDFproperty TokenPOSorig)) $ maybe [] singleton t3posOrig
                                    ]
 
     where
@@ -179,11 +177,11 @@ makeTriple base TokenLin{..} = [TriType triSubj Voc.Token
 --                :: [Maybe DocAsTriple]
 
 makeTriple base NerLin{..} = [TriType triSubj NERentity
-            , TriTextL2 triSubj (mkRDFproperty NerText) ner5text
-            , TriRel2 triSubj (mkRDFproperty NerTokenEnd) $ mkIRI base ner5docTokenEnd
-            , TriRel2 triSubj (mkRDFproperty NerTokenBegin2)$ mkIRI base  ner5docTokenEnd
-            , TriRel2 triSubj (mkRDFproperty NerTokenEnd2) $ mkIRI base ner5docTokenEnd
-            , TriText2 triSubj (mkRDFproperty NerType) (fromNERtag ner5ner)
+        , TriTextL2 triSubj (mkRDFproperty NerText) ner5text
+        , TriRel2 triSubj (mkRDFproperty NerTokenEnd) $ mkIRI base ner5docTokenEnd
+        , TriRel2 triSubj (mkRDFproperty NerTokenBegin2)$ mkIRI base  ner5docTokenEnd
+        , TriRel2 triSubj (mkRDFproperty NerTokenEnd2) $ mkIRI base ner5docTokenEnd
+        , TriText2 triSubj (mkRDFproperty NerType) (fromNERtag ner5ner)
             ]
     where
             triSubj = mkIRI base ner5docTokenBegin
