@@ -192,8 +192,8 @@ text2nlpCode debugNLP  nlpServer path vars text = do
                 putIOwords ["text2nlpCode start"
                             , showT . lengthChar $ text
                             , showT . take' 100 $ text ]
-            let vars2 = combineHttpVarParams vars
-                    (HttpVarParams [("outputFormat", Just "json")])
+--            let vars2 = combineHttpVarParams vars
+--                    (HttpVarParams [("outputFormat", Just "json")])
             -- alternative ("outputFormat", Just "xml"),
             -- or conllu
             nlpCode :: Text <- callHTTP10post debugNLP

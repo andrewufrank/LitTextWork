@@ -45,6 +45,7 @@ import NLP.TagSets.German  as German --
 import NLP.TagSets.Spanish as Spanish --
 import NLP.TagSets.French as French --
 import NLP.TagSets.FrenchUD as FrenchUD --
+import NLP.TagSets.UD as UD --
 
 import Data.Text as T
 
@@ -119,10 +120,19 @@ instance LanguageDependent ItalianType where
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
-    nlpParams _ _ =  HttpVarParams [
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
             -- only use json for english ?? TODO
               ("annotators", Just "tokenize,ssplit,parse,pos\
                             \,lemma,ner,depparse,coref")]
+--                   coref -coref.algorithm neural")
+--                  attention - no blanks between parameters!!!
+
+instance LanguageTyped2 EnglishType UD.POStag where
+    nlpPort _ _ = portEnglish
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "conllu"),
+            -- only use json for english ?? TODO
+              ("annotators", Just "tokenize,ssplit,parse,pos\
+                \,lemma,ner,depparse,coref,udfeats")]
 --                   coref -coref.algorithm neural")
 --                  attention - no blanks between parameters!!!
 

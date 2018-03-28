@@ -36,6 +36,7 @@ import NLP.TagSets.Spanish as Spanish --
 import NLP.TagSets.French as French --
 import NLP.TagSets.FrenchUD as FrenchUD --
 import NLP.TagSets.ItalianTinT   as TinT-- for italian
+import NLP.TagSets.UD as UD --
 
 progName = "nlpservices"
 
@@ -108,6 +109,8 @@ test_M_1 = testVar1File progName (undefEnglish, undefConll, entz3text, 1)
 --                                    "resultM4" testOP_Snip_M
 --test_M_5 = testVar2File (undefItalian, undefTinTPos, ittz3text, 5)
 --                                    "resultM5" testOP_Snip_M
+test_M_6 = testVar1File progName (undefEnglish, undefUPOS, entz3text, 1)
+                                 "resultM6" testOP_Snip_M
 
 instance  ShowTestHarness (Snip2 a) where
     -- to avoid the additional "" added when show  text
@@ -143,6 +146,9 @@ test_M_N1 = testVar2FileIO progName
 --                                          "resultM4" "resultN4" testOP_M_N
 --test_M_N5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultN5" testOP_M_N
+test_M_N6 = testVar2FileIO progName
+                                (undefEnglish, undefUPOS, entz3text, 1)
+                                         "resultM6" "resultN6" testOP_M_N
 
 ----    text2xml :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
 --                    ->  ErrIO Text
@@ -175,6 +181,9 @@ test_M_MA1 = testVar2FileIO progName
 --test_M_MA5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultMA5" testOP_M_MA
 --fails always, because it contains timing info
+test_M_MA6 = testVar2FileIO progName
+                (undefEnglish, undefUPOS, entz3text, 1)
+                                          "resultM6" "resultMA6" testOP_M_MA
 
 
 {-
