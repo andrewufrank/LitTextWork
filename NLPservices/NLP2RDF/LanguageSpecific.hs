@@ -136,12 +136,15 @@ instance LanguageTyped2 EnglishType Conll.POStag where
 
 instance LanguageTyped2 EnglishType UD.POStag where
     nlpPort _ _ = portEnglish
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "conllu"),
-            -- only use json for english ?? TODO
-              ("annotators", Just "tokenize,ssplit,parse,pos\
-                \,lemma,ner,depparse,coref,udfeats")]
---                   coref -coref.algorithm neural")
---                  attention - no blanks between parameters!!!
+    nlpParams _ _ =  HttpVarParams
+        [("outputFormat", Just "conllu"),
+         ("annotators", Just
+          "tokenize,ssplit,pos,lemma,ner,parse,dcoref,udfeats"
+          )]
+--        not working:
+--               "tokenize,ssplit,parse,pos\
+--                \,lemma,ner,depparse,coref,udfeats"
+--                   udfeats needs constituency parser
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman

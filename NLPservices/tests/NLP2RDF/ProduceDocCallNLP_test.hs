@@ -181,9 +181,9 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
 --test_M_MA5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultMA5" testOP_M_MA
 --fails always, because it contains timing info
---test_M_MA6 = testVar2FileIO progName
---                (undefEnglish, undefUPOS, entz3text, 1)
---                                          "resultM6" "resultMA6" testOP_M_MA
+test_M_MA6 = testVar2FileIO progName
+                (undefEnglish, undefUPOS, entz3text, 1)
+                                          "resultM6" "resultMA6" testOP_M_MA
 
 
 
