@@ -48,3 +48,7 @@ import CoreNLP.Linear2Triple
 json2NT :: PartURI -> Text -> NTtext
 -- | main operation, convert JSON text file to a triple (NT) text file
 json2NT rdfbase = toNT . toTriple rdfbase . toLin . to11op . to1op .  decodeDoc2op
+
+conllu2NT rdfbase = toNT . toTriple rdfbase . toLin . to11op . conllu2doc1
+
+conllu2doc1 = const zero

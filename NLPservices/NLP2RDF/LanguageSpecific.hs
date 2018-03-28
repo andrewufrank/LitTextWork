@@ -33,6 +33,8 @@ import LitTypes.ServerNames
 -- import CoreNLP.DocBase   -- should only get instances ?
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Uniform.Strings
+import Uniform.Error (ErrIO)
+import CoreNLP.CoreNLP (json2NT, NTtext (..), unNT)
 
 import Text.Regex (mkRegex, subRegex)
 --import NLP2RDF.CompleteSentence (completeSentence)
@@ -97,14 +99,19 @@ instance LanguageDependent ItalianType where
     preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
---class TaggedTyped postag where
---    postNLP :: Bool -> URI -> Doc1 postag -> ErrIO (Doc1 postag)
---    -- postprocessing (e.g. adding POS to german)
+class TaggedTyped postag where
+    postNLP :: postag -> Bool -> URI -> PartURI -> Text -> ErrIO NTtext
+    -- postprocessing (e.g. adding POS to german)
 --    postNLP _ _ = return
 
 
 
---instance TaggedTyped Conll.POStag
+instance TaggedTyped Conll.POStag where
+    postNLP pph debug u brdf txt = return $ json2NT brdf txt
+
+instance TaggedTyped UD.POStag where
+    postNLP pph debug u brdf txt = return $ json2NT brdf txt
+
 --instance TaggedTyped German.POStag where
 --    postNLP debug sloc doc1  = do
 --        let sents1 = doc1Sents doc1
@@ -112,7 +119,7 @@ instance LanguageDependent ItalianType where
 --                    (addPort2URI sloc treeTaggerPort ) ) sents1
 --        let docs2 = doc1{doc1Sents = sents2}
 --        return docs2
-
+--
 --instance TaggedTyped TinT.POStag
 --instance TaggedTyped Spanish.POStag
 --instance TaggedTyped French.POStag

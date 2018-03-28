@@ -124,7 +124,7 @@ instance  ShowTestHarness (Doc1 a) where
 
 instance ShowTestHarness NTtext where
 
-testOP_M_N :: (-- TaggedTyped t1,
+testOP_M_N :: (TaggedTyped t1,
         LanguageTypedText t0, LanguageTyped2 t0 t1) =>
          (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO Text
 testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
