@@ -146,9 +146,9 @@ testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
 --                                          "resultM4" "resultN4" testOP_M_N
 --test_M_N5 = testVar3FileIO (undefItalian, undefTinTPos, ittz3text, 5)
 --                                          "resultM5" "resultN5" testOP_M_N
---test_M_N6 = testVar2FileIO progName
---                                (undefEnglish, undefUPOS, entz3text, 1)
---                                         "resultM6" "resultN6" testOP_M_N
+test_M_N6 = testVar2FileIO progName
+                                (undefEnglish, undefUPOS, entz3text, 1)
+                                         "resultM6" "resultN6" testOP_M_N
 
 ----    text2xml :: postag -> Bool -> URI -> Text -> [(Text,Maybe Text)] -> Text
 --                    ->  ErrIO Text
