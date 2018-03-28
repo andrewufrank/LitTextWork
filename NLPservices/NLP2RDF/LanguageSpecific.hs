@@ -155,7 +155,7 @@ instance LanguageTyped2 EnglishType UD.POStag where
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman
-    nlpParams _ _ =  HttpVarParams [
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
@@ -169,13 +169,13 @@ instance LanguageTyped2 ItalianType TinT.POStag where
 
 instance LanguageTyped2 FrenchType French.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =  HttpVarParams [
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 FrenchType FrenchUD.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =  HttpVarParams [
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
@@ -187,7 +187,7 @@ instance LanguageTyped2 FrenchType FrenchUD.POStag where
 
 instance LanguageTyped2 SpanishType UD.POStag where
     nlpPort _ _ = portSpanish
-    nlpParams _ _ =  HttpVarParams [
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
