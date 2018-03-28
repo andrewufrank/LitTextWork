@@ -23,7 +23,7 @@ module Parser.ProduceLayout (module Parser.ProduceLayout
 
 import LitTypes.TextDescriptor
 import Data.RDFext.Extension
-import NLP2RDF.NLPvocabulary
+import CoreNLP.Vocabulary
 import           Text.Printf         (printf)
 import LitTypes.ServerNames (rdfBase)  -- from Foundation
 

@@ -58,13 +58,13 @@ import LitTypes.ServerNames (rdfBase)  -- replace!!
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
-convertOneSnip2NT :: LitTextFlags  -> TD.Snip -> ErrIO NTtext
+convertOneSnip2triples :: LitTextFlags  -> TD.Snip -> ErrIO [Triple]
 -- | is is the overall process taking a snip and producing the NT as text
 -- construct a snipID from rdfBase (from LitTypes.ServerNames)
 -- this is just the conversion from tagged to typed
 -- which could not be moved earlier, because the snip is the highest
 -- single language text collection
-convertOneSnip2NT flags snip = if  TD.snipIsNull snip
+convertOneSnip2triples flags snip = if  TD.snipIsNull snip
     then return zero
     else do
         let lang = getLanguageCode . snip3text $  snip
@@ -78,27 +78,27 @@ convertOneSnip2NT flags snip = if  TD.snipIsNull snip
                     else serverBrest
         trips <- case (lang, pt) of
             (English, "") -> do
-                    t <- snip2NT undefEnglish Conll.undefPOS
+                    t <- snip2triples undefEnglish Conll.undefPOS
                          flags   (convertLC2LT text) snipBase  nlpserver
                     return t -- (map unNLPtriple t)
 --        (German, "") -> do
---                t <- snip2NT undefGerman undefGermanPos
+--                t <- snip2triples undefGerman undefGermanPos
 --                     flags   (convertLC2LT text) snipBase  nlpserver
 --                return (map unNLPtriple t)
 --        (Italian,"") -> do
---                t <- snip2NT undefItalian undefTinTPos
+--                t <- snip2triples undefItalian undefTinTPos
 --                     flags   (convertLC2LT text) snipBase  nlpserver
 --                return (map unNLPtriple t)
 --        (French, "")-> do
---                t <-snip2NT undefFrench undefFrenchPos
+--                t <-snip2triples undefFrench undefFrenchPos
 --                     flags   (convertLC2LT text) snipBase  nlpserver
 --                return (map unNLPtriple t)
 --        (French, "FrenchUD")-> do
---                t <- snip2NT undefFrench undefFrenchUDPos
+--                t <- snip2triples undefFrench undefFrenchUDPos
 --                     flags   (convertLC2LT text) snipBase  nlpserver
 --                return (map unNLPtriple t)
 --        (Spanish,"") -> do
---                t <- snip2NT undefSpanish undefSpanishPos
+--                t <- snip2triples undefSpanish undefSpanishPos
 --                     flags   (convertLC2LT text) snipBase  nlpserver
 --                return (map unNLPtriple t)
             _ -> return zero
@@ -109,9 +109,9 @@ class  LanguageTyped22 lang postag where
 
 --    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlags ->  Snip2 lang -> URI
 --                -> ErrIO [NLPtriple postag]
-    snip2NT :: lang -> postag -> LitTextFlags ->  LTtext lang
+    snip2triples :: lang -> postag -> LitTextFlags ->  LTtext lang
                 -> PartURI  -> URI
-                -> ErrIO NTtext
+                -> ErrIO [Triple]
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output
     -- calls nlp to convert to doc
@@ -141,7 +141,7 @@ instance (-- LanguageDependent lang,
         )
     =>
     LanguageTyped22 lang postag where
-    snip2NT lph pph flags lttext baserdf sloc = do
+    snip2triples lph pph flags lttext baserdf sloc = do
         let debugNLP = DebugFlag `elem` flags
 
         let text = lttext -- snip2text snip
@@ -152,7 +152,7 @@ instance (-- LanguageDependent lang,
 --                let sloc = nlpServer textstate
         doc1 <- snip2doc lph pph debugNLP   text2  sloc
             -- doc1 is the nlp produced document (xml, json or conllu)
-        doc2 <-  postNLP pph lph debugNLP baserdf doc1
+        let doc2 = postNLP pph lph debugNLP baserdf doc1
 --                let snipSigl = snip2sigl snip
 --                let trips = processDoc1toTriples2 lph pph snipSigl doc2
 --        let nts = json2NT (baserdf) doc2

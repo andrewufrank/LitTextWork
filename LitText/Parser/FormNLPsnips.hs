@@ -47,18 +47,18 @@ maxSnipSize = 10000 -- 2000  -- 10000
 
 mergeNLPtext :: Snip -> Snip -> Maybe Snip
 -- merge two text if same language and size less than maxSnipSize
-mergeNLPtext a b = if sameLang a b && (tz3textLength a + tz3textLength b) < maxSnipSize
-                        then Just (a {tz3text = fromJustNote "mergeNLPtext "
-                                         (mergeLC " " (tz3text a) (tz3text b))
---                                tz3text = tz3text a <> " " <> tz3text b
-                                , tz3textLength = tz3textLength a + tz3textLength b +1})
+mergeNLPtext a b = if sameLang a b && (snip3textLength a + snip3textLength b) < maxSnipSize
+                        then Just (a {snip3text = fromJustNote "mergeNLPtext "
+                                         (mergeLC " " (snip3text a) (snip3text b))
+--                                snip3text = snip3text a <> " " <> snip3text b
+                                , snip3textLength = snip3textLength a + snip3textLength b +1})
                                     -- there is a spaece added, would a period "." be needed?
                         else Nothing
 
     where
---        alength = lengthChar . tz3text $ a
---        blength = lengthChar . tz3text $ b
-        sameLang a b = sameLanguageLC (tz3text a) (tz3text b)
+--        alength = lengthChar . snip3text $ a
+--        blength = lengthChar . snip3text $ b
+        sameLang a b = sameLanguageLC (snip3text a) (snip3text b)
 
 
 

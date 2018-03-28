@@ -13,7 +13,8 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE ScopedTypeVariables
+    , RecordWildCards #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
@@ -32,16 +33,22 @@ import LitTypes.TextDescriptor
 
 ---- | a single language piece of text with lanuage code,
 --             length and start para number
---data Snip = Snip { tz3loc :: TextLoc
---                        , tz3para :: ParaNum
---                        , tz3text:: Text
---                        , tz3textLength :: Int
---                        , tz3lang :: LanguageCode }
+--data Snip = Snip { snip3loc :: TextLoc
+----                        , snip3para :: ParaNum
+--                        , snip3snipnr ::  SnipID
+--                        , snip3baserdf :: PartURI
+----                        , snip3snipsigl :: SnipSigl
+----                        , snip3parasigl :: ParaSigl
+--                        , snip3text:: LCtext
+--                        , snip3textLength :: Int
+--                        , snip3posTag :: Text
+----                        , snip3lang :: LanguageCode
+--                        }
 --            deriving (Read, Show, Eq )
 
 tz3fillLength :: Snip -> Snip
 -- fill the length field
-tz3fillLength n = n{tz3textLength = getLengthLC . tz3text $ n}
+tz3fillLength n = n{snip3textLength = getLengthLC . snip3text $ n}
 
 
 prepareTZ4nlp :: Text -> [TZ2] -> [Snip]
@@ -73,32 +80,34 @@ condNLPtext tz  = case tz of
 
 formatParaText :: Text -> TZ2 -> Snip
 -- convert the headers to a tztext
-formatParaText postag tz@TZ2para{} = Snip {
-                tz3loc = tz2loc tz
-                , tz3para = tz2para tz
-                , tz3snipnr = zero  -- not acceptable snip nr, cannot be undef
+formatParaText postag tz@TZ2para{..} =
+        Snip {
+            snip3loc = tz2loc
+--                , tz3para = tz2para
+--                , snip3snipnr = zero  -- not acceptable snip nr, cannot be undef
                                 -- would not work with test harness
-                , tz3snipsigl = zero
-        , tz3posTag = postag
-                , tz3text = codeText lang (foldl1 combine2linesWithHyphenation
-            . map (getText . twm1 . tztext1) $ (tz2tzs tz))
+--                , tz3snipsigl = zero
+            , snip3posTag = postag
+            , snip3text = codeText lang (foldl1 combine2linesWithHyphenation
+                        . map (getText . twm1 . tztext1) $ (tz2tzs  ))
         }
     where
             lang  = getLanguageCode . twm1 . tztext1
-                        . headNote "formatParaText lang" . tz2tzs $ tz  :: LanguageCode
+                        . headNote "formatParaText lang" $ tz2tzs   :: LanguageCode
 
-formatParaText postag tz@TZ2markup {} = Snip {tz3loc = tz2loc tz
---        , tz3lang = tz2lang tz
-        , tz3para = tz2para tz
-        , tz3snipnr = zero
-        , tz3snipsigl = zero
-        , tz3text = codeText lang $ tx <> ". "     -- to make sure these are sentences for NLP
+formatParaText postag tz@TZ2markup {..} =
+    Snip {snip3loc = tz2loc
+--        , tz3lang = tz2lang
+--        , tz3para = tz2para
+        , snip3snipnr = zero
+--        , tz3snipsigl = zero
+        , snip3text = codeText lang $ tx <> ". "     -- to make sure these are sentences for NLP
                                       --    risk of two ..
-        , tz3posTag = postag
+        , snip3posTag = postag
         }
 
     where
-        tx = getText . twm1 . tz2text $ tz
-        lang = getLanguageCode . twm1 . tz2text $ tz
+        tx = getText . twm1 $ tz2text
+        lang = getLanguageCode . twm1 $ tz2text
 
 

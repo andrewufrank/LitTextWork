@@ -28,6 +28,6 @@ instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
 --test_all :: IO ()
---test_all = testFile2File (progName) "short1.json" "short1.nt" (json2NT rdfBase)
+--test_all = test1File (progName) "short1.json" "short1.nt" (json2NT rdfBase)
 
 

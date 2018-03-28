@@ -143,8 +143,11 @@ instance ShowTestHarness NTtext where
 testOP_M_N :: (-- TaggedTyped t1,
         LanguageTypedText t0, LanguageTyped2 t0 t1) =>
          (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO Text
-testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
-        snip2NT langPh postagPh [DebugFlag] txt base serverBrest
+testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = do
+         res <- snip2triples langPh postagPh [DebugFlag] txt base serverBrest
+         let res2 = map triple2text res
+         return . unlines' $ res2
+
         -- overall test, snip to triples
 
 --testVar3File :: (Read a, Eq b, Show b, Read b
@@ -177,13 +180,13 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
                 server = addPort2URI serverBrest (nlpPort langPh postagPh)
 
 test_M_MA1 :: IO ()
-test_M_MA1 = testVar2FileIO progName englVars "resultM1" "resultMA1" testOP_M_MA
-test_M_MA2 = testVar2FileIO progName germanVars "resultM2" "resultMA2" testOP_M_MA
-test_M_MA3 = testVar2FileIO progName frenchVars "resultM3" "resultMA3" testOP_M_MA
-test_M_MA4 = testVar2FileIO progName spanishVars "resultM4" "resultMA4" testOP_M_MA
-test_M_MA5 = testVar2FileIO progName italianVars "resultM5" "resultMA5" testOP_M_MA
+test_M_MA1 = testVar1FileIO progName englVars "resultM1" "resultMA1" testOP_M_MA
+test_M_MA2 = testVar1FileIO progName germanVars "resultM2" "resultMA2" testOP_M_MA
+test_M_MA3 = testVar1FileIO progName frenchVars "resultM3" "resultMA3" testOP_M_MA
+test_M_MA4 = testVar1FileIO progName spanishVars "resultM4" "resultMA4" testOP_M_MA
+test_M_MA5 = testVar1FileIO progName italianVars "resultM5" "resultMA5" testOP_M_MA
 --fails always, because it contains timing info
-test_M_MA6 = testVar2FileIO progName udfeatsVars "resultM6" "resultMA6" testOP_M_MA
+test_M_MA6 = testVar1FileIO progName udfeatsVars "resultM6" "resultMA6" testOP_M_MA
 
 
 
@@ -193,17 +196,18 @@ testOP_M_MB ::  (Show postag
 --            , TaggedTyped postag
             , LanguageTypedText lang
                 , LanguageTyped2 lang postag) =>
-         (lang, postag, Text, Int) -> Text -> ErrIO Text
-testOP_M_MB (langPh, postagPh, text, i) txt  = fmap unNT $
-                    postNLP  postagPh langPh
-                        True   rdfBase txt
+         (lang, postag, Text, Int) -> Text ->  Text
+testOP_M_MB (langPh, postagPh, text, i)   =
+            unlines' . map triple2text
+             . postNLP  postagPh langPh True   rdfBase
 
-test_M_MB1 = testVar2FileIO progName englVars "resultMA1" "resultMB1" testOP_M_MB
-test_M_MB2 = testVar2FileIO progName germanVars  "resultMA2" "resultMB2" testOP_M_MB
-test_M_MB3 = testVar2FileIO progName frenchVars "resultMA3" "resultMB3" testOP_M_MB
-test_M_MB4 = testVar2FileIO progName spanishVars "resultMA4" "resultMB4" testOP_M_MB
-test_M_MB5 = testVar2FileIO progName italianVars "resultMA5" "resultMB5" testOP_M_MB
-test_M_MB6 = testVar2FileIO progName udfeatsVars "resultMA6" "resultMB6" testOP_M_MB
+test_M_MB1 :: IO ()
+test_M_MB1 = testVar1File progName englVars "resultMA1" "resultMB1" testOP_M_MB
+test_M_MB2 = testVar1File progName germanVars  "resultMA2" "resultMB2" testOP_M_MB
+test_M_MB3 = testVar1File progName frenchVars "resultMA3" "resultMB3" testOP_M_MB
+test_M_MB4 = testVar1File progName spanishVars "resultMA4" "resultMB4" testOP_M_MB
+test_M_MB5 = testVar1File progName italianVars "resultMA5" "resultMB5" testOP_M_MB
+test_M_MB6 = testVar1File progName udfeatsVars "resultMA6" "resultMB6" testOP_M_MB
 
 
 ----- next test ?

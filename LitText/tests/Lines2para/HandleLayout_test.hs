@@ -41,17 +41,17 @@ import Lines2para.HandleLayout
 --paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB
 
 
-----test_0BA_BB = testFile2File "resultBA0" "resultBB0" paragraphs2TZlayout
-test_1BA_BB = testFile2File "resultBA1" "resultBB1" paragraphs2TZlayout
-test_2BA_BB = testFile2File "resultBA2" "resultBB2" paragraphs2TZlayout
-test_3BA_BB = testFile2File "resultBA3" "resultBB3" paragraphs2TZlayout
-test_4BA_BB = testFile2File "resultBA4" "resultBB4" paragraphs2TZlayout
-test_5BA_BB = testFile2File "resultBA5" "resultBB5" paragraphs2TZlayout
-test_6BA_BB = testFile2File "resultBA6" "resultBB6" paragraphs2TZlayout
-test_8BA_BB = testFile2File "resultBA8" "resultBB8" paragraphs2TZlayout
-test_9BA_BB = testFile2File "resultBA9" "resultBB9" paragraphs2TZlayout
-test_10BA_BB = testFile2File "resultBA10" "resultBB10" paragraphs2TZlayout
-test_11BA_BB = testFile2File "resultBA11" "resultBB11" paragraphs2TZlayout
-test_12BA_BB = testFile2File "resultBA12" "resultBB12" paragraphs2TZlayout
+----test_0BA_BB = test1File "resultBA0" "resultBB0" paragraphs2TZlayout
+test_1BA_BB = test1File "resultBA1" "resultBB1" paragraphs2TZlayout
+test_2BA_BB = test1File "resultBA2" "resultBB2" paragraphs2TZlayout
+test_3BA_BB = test1File "resultBA3" "resultBB3" paragraphs2TZlayout
+test_4BA_BB = test1File "resultBA4" "resultBB4" paragraphs2TZlayout
+test_5BA_BB = test1File "resultBA5" "resultBB5" paragraphs2TZlayout
+test_6BA_BB = test1File "resultBA6" "resultBB6" paragraphs2TZlayout
+test_8BA_BB = test1File "resultBA8" "resultBB8" paragraphs2TZlayout
+test_9BA_BB = test1File "resultBA9" "resultBB9" paragraphs2TZlayout
+test_10BA_BB = test1File "resultBA10" "resultBB10" paragraphs2TZlayout
+test_11BA_BB = test1File "resultBA11" "resultBB11" paragraphs2TZlayout
+test_12BA_BB = test1File "resultBA12" "resultBB12" paragraphs2TZlayout
 
 

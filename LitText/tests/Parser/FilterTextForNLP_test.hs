@@ -44,30 +44,30 @@ prepareTZ4nlpTest  = prepareTZ4nlp ""
 
 
 
-test_1_CA_DA = testFile2File "resultCA1" "resultD1" prepareTZ4nlpTest
-test_2_C_D = testFile2File "resultCA2" "resultD2" prepareTZ4nlpTest
-test_3_C_D = testFile2File "resultCA3" "resultD3" prepareTZ4nlpTest
-test_4_C_D = testFile2File "resultCA4" "resultD4" prepareTZ4nlpTest
-test_5_C_D = testFile2File "resultCA5" "resultD5" prepareTZ4nlpTest
-test_6_C_D = testFile2File "resultCA6" "resultD6" prepareTZ4nlpTest
-test_8_C_D = testFile2File "resultCA8" "resultD8" prepareTZ4nlpTest
-test_9_C_D = testFile2File "resultCA9" "resultD9" prepareTZ4nlpTest
-test_10_C_D = testFile2File "resultCA10" "resultD10" prepareTZ4nlpTest
-test_11_C_D = testFile2File "resultCA11" "resultD11" prepareTZ4nlpTest
-test_12_C_D = testFile2File "resultCA12" "resultD12" prepareTZ4nlpTest
+test_1_CA_DA = test1File "resultCA1" "resultD1" prepareTZ4nlpTest
+test_2_C_D = test1File "resultCA2" "resultD2" prepareTZ4nlpTest
+test_3_C_D = test1File "resultCA3" "resultD3" prepareTZ4nlpTest
+test_4_C_D = test1File "resultCA4" "resultD4" prepareTZ4nlpTest
+test_5_C_D = test1File "resultCA5" "resultD5" prepareTZ4nlpTest
+test_6_C_D = test1File "resultCA6" "resultD6" prepareTZ4nlpTest
+test_8_C_D = test1File "resultCA8" "resultD8" prepareTZ4nlpTest
+test_9_C_D = test1File "resultCA9" "resultD9" prepareTZ4nlpTest
+test_10_C_D = test1File "resultCA10" "resultD10" prepareTZ4nlpTest
+test_11_C_D = test1File "resultCA11" "resultD11" prepareTZ4nlpTest
+test_12_C_D = test1File "resultCA12" "resultD12" prepareTZ4nlpTest
 
 --snip4test :: [TZ1] -> [Snip]  -- change to TZ1 -> Snip
 --snip4test = prepareTZ4nlp "" . paragraphsTZ2TZ2
 ----
---test_1_C_D = testFile2File "resultC1" "resultD1" snip4test
-----test_2_C_D = testFile2File "resultBAE2" "resultD2" snip4test
-----test_3_C_D = testFile2File "resultBAE3" "resultD3" snip4test
-----test_4_C_D = testFile2File "resultBAE4" "resultD4" snip4test
-----test_5_C_D = testFile2File "resultBAE5" "resultD5" snip4test
-----test_6_C_D = testFile2File "resultBAE6" "resultD6" snip4test
-----test_8_C_D = testFile2File "resultBAE8" "resultD8" snip4test
-----test_9_C_D = testFile2File "resultBAE9" "resultD9" snip4test
-----test_10_C_D = testFile2File "resultBAE10" "resultD10" snip4test
-----test_11_C_D = testFile2File "resultBAE11" "resultD11" snip4test
-----test_12_C_D = testFile2File "resultBAE12" "resultD12" snip4test
+--test_1_C_D = test1File "resultC1" "resultD1" snip4test
+----test_2_C_D = test1File "resultBAE2" "resultD2" snip4test
+----test_3_C_D = test1File "resultBAE3" "resultD3" snip4test
+----test_4_C_D = test1File "resultBAE4" "resultD4" snip4test
+----test_5_C_D = test1File "resultBAE5" "resultD5" snip4test
+----test_6_C_D = test1File "resultBAE6" "resultD6" snip4test
+----test_8_C_D = test1File "resultBAE8" "resultD8" snip4test
+----test_9_C_D = test1File "resultBAE9" "resultD9" snip4test
+----test_10_C_D = test1File "resultBAE10" "resultD10" snip4test
+----test_11_C_D = test1File "resultBAE11" "resultD11" snip4test
+----test_12_C_D = test1File "resultBAE12" "resultD12" snip4test
 

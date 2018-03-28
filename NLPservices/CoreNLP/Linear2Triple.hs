@@ -59,6 +59,10 @@ toNT ds  =  NT t
         r =  map (makeRDFnt ) ds :: [[Triple]]
         t = unlines' . map triple2text . concat $ r
 
+toTriples :: [DocAsTriple ] -> [Triple]
+-- the format requested by LitText
+toTriples   = concat . map  makeRDFnt
+
 newtype NLPtriple postag = NLPtriple Triple
     deriving (Eq, Ord, Show, Read)
 --    deriving newtype Zeros

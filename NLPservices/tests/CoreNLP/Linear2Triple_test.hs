@@ -30,10 +30,10 @@ instance ShowTestHarness [Triple ] where
 instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
-test_c = testFile2File progName "short1.lin5" "short1.trips6"
+test_c = test1File progName "short1.lin5" "short1.trips6"
         (toTriple Conll.undefPOS rdfBase)
 
-test_d = testFile2File progName "short1.trips6" "short1.nt"
+test_d = test1File progName "short1.trips6" "short1.nt"
         (unNT . toNT)
 
 

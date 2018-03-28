@@ -35,7 +35,7 @@ module Parser.ProduceNLP
     ) where
 
 import LitTypes.TextDescriptor
-import NLP2RDF.NLPvocabulary
+import CoreNLP.Vocabulary
 import Uniform.Zero
 import NLP2RDF.ProduceDocCallNLP
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
@@ -57,13 +57,13 @@ tz2toSnip flags textstate tzs = snips3
         snips3 = zipWith pushSnipNumber2snip [1..] snips2
 
 pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
-pushPosTagset2snip textstate snip = snip {tz3posTag = txPosTagset textstate}
+pushPosTagset2snip textstate snip = snip {snip3posTag = txPosTagset textstate}
 
 pushSnipNumber2snip :: Int -> Snip -> Snip
-pushSnipNumber2snip i  snip = snip {tz3snipnr = SnipID i}
+pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
 
-pushSnipSigl2snip :: SnipSigl -> Snip -> Snip
-pushSnipSigl2snip s  snip = snip {tz3snipsigl = s}
+--pushSnipSigl2snip :: SnipSigl -> Snip -> Snip
+--pushSnipSigl2snip s  snip = snip {tz3snipsigl = s}
 
 
 convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
@@ -74,8 +74,8 @@ convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [
 
 -- the following is just the bridges, which should go earlier
 convertOneSnip2Triples flags textstate snip = do
-    let text = tz3text snip
-    let lang = getLanguageCode . tz3text $  snip
+    let text = snip3text snip
+    let lang = getLanguageCode . snip3text $  snip
             -- reduce for some special cases _italics_
 
 --    let nlpserver = nlpServer textstate
@@ -85,8 +85,8 @@ convertOneSnip2Triples flags textstate snip = do
     trips2 <- if not . notNullLC $ text
         then return []
         else do
-            let snip2 = pushSnipSigl2snip snipsigl snip
-            trips <- convertOneSnip2Triples3 flags  snip2
+--            let snip2 = pushSnipSigl2snip snipsigl snip
+            trips <- convertOneSnip2Triples3 flags  snip
             return trips
 
     return $ partOfTriples ++ trips2
@@ -96,9 +96,9 @@ mkSnipPartOf :: TextDescriptor -> Snip -> (SnipSigl, [Triple])
 -- make the triples to state that triple is part of book and part of paragraphs2TZlayout
 mkSnipPartOf textstate snip = (snipsigl, [buchtrip, paratrip])
     where
-        paranum = tz3para snip
+        paranum = zero -- ??? tz3para snip
         parasigl = paraSigl textstate paranum
-        snipsigl = mkSnipSigl parasigl (tz3snipnr snip) -- snipnr
+        snipsigl = mkSnipSigl parasigl (snip3snipnr snip) -- snipnr
 --        nlpserver = nlpServer textstate
 --        pt = txPosTagset textstate
         buchURI = buchURIx   textstate

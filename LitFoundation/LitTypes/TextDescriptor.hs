@@ -100,6 +100,7 @@ data Snip = Snip { snip3loc :: TextLoc
 newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
 unSnipID (SnipID i) = i
 snipIsNull Snip {..} = snip3textLength == 0
+instance Zeros SnipID where zero = SnipID zero
 
 --instance Zeros SnipID where zero = SnipID zero
 

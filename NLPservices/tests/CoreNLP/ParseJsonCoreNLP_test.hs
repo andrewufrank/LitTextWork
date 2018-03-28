@@ -53,7 +53,7 @@ objVBG = String "VBG"
 
 
 progName = "nlpservices"
-test_A = testFile2File progName "short1.json" "short1.doc2" decodeDoc2op
+test_A = test1File progName "short1.json" "short1.doc2" decodeDoc2op
 
 instance ShowTestHarness Doc2 where
 instance ShowTestHarness a => ShowTestHarness (ErrOrVal a) where

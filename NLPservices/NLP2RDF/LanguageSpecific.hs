@@ -34,7 +34,8 @@ import LitTypes.ServerNames
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Uniform.Strings
 import Uniform.Error (ErrIO)
-import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT)
+import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
+        , conllu2triples, json2triples)
 --import CoreNLP.Conllu2doc1
 import Text.Regex (mkRegex, subRegex)
 --import NLP2RDF.CompleteSentence (completeSentence)
@@ -89,10 +90,9 @@ class ( POStags postag, LanguageDependent lang, LanguageTypedText lang)
     nlpParams :: lang -> postag -> HttpVarParams
     nlpPort :: lang -> postag -> Int   -- should be a port type
 
-    postNLP :: postag -> lang -> Bool ->   PartURI -> Text -> ErrIO NTtext
+    postNLP :: postag -> lang -> Bool ->   PartURI -> Text -> [Triple]
     -- postprocessing (e.g. adding POS to german)
-    postNLP pph lang debug  brdf txt = return
-                $ json2NT pph (languageCode lang) brdf txt
+    postNLP pph lang debug  brdf txt =   json2triples pph (languageCode lang) brdf txt
 
 instance LanguageDependent EnglishType where
     preNLP    =  LTtext . cleanTextEnglish . unLCtext
@@ -151,7 +151,7 @@ instance LanguageTyped2 EnglishType UD.POStag where
 --               "tokenize,ssplit,parse,pos\
 --                \,lemma,ner,depparse,coref,udfeats"
 --                   udfeats needs constituency parser
-    postNLP pph lang debug  brdf txt = return $ conllu2NT brdf txt
+    postNLP pph lang debug  brdf txt = conllu2triples brdf txt
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman
