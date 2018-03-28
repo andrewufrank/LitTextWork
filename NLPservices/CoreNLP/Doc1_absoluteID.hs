@@ -103,7 +103,7 @@ data Token11 postag = Token11 { t11id :: TokenRelID
                     , t11begin, t11end :: Int  -- not used
                     , t11pos :: postag --  the pos tag recognized
                     , t11posOrig :: Maybe Text -- the pos tag received
-                    , t11postt :: Text -- the pos from the tree tagger
+--                    , t11postt :: Text -- the pos from the tree tagger
                     , t11ner :: [NERtagExt] -- [Text] -- String
                     , t11nerOrig :: Maybe [Text]
                     , t11speaker :: [SpeakerTag] -- Text -- String
@@ -153,7 +153,7 @@ instance (NLP.POStags postag)
         t11lemma =  tlemma
         t11pos =   tpos
         t11posOrig = tposOrig
-        t11postt = zero
+--        t11postt = zero
         t11ner =  tner -- when is this a list?
                         -- use the Ner2 values?
         t11nerOrig =  tnerOrig

@@ -69,7 +69,7 @@ data DocAsList postag = DocAsList {d3id:: DocRelID}
                     , t3begin, t3end :: Int  -- not used
                     , t3pos :: postag --  the pos tag recognized
                     , t3posOrig :: Maybe Text -- the pos tag received
-                    , t3postt :: Text -- the pos from the tree tagger
+--                    , t3postt :: Text -- the pos from the tree tagger
                     , t3ner :: [NERtagExt] -- [Text] -- String
                     , t3nerOrig :: Maybe [Text]
                     , t3speaker :: [SpeakerTag] -- Text -- String
@@ -132,7 +132,7 @@ instance Linearize (Token11 postag) postag SentenceRelID where
         t3lemma =  t11lemma
         t3pos =   t11pos
         t3posOrig = t11posOrig
-        t3postt = t11postt
+--        t3postt = t11postt
         t3ner =  t11ner -- when is this a list?
                         -- use the Ner2 values?
         t3nerOrig = t11nerOrig

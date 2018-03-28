@@ -165,7 +165,7 @@ makeTriple _ base TokenLin{..} = [TriType triSubj Voc.Token
 --            , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
 --            , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
         , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
-        , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
+--        , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
         , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
 --                       (if t3ner == [NERunk "0"] then [] else map showT t3ner)
         , TriList2 triSubj (mkRDFproperty TokenSpeaker) (map fromSpeakerTag t3speaker)

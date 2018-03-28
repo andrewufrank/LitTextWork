@@ -74,7 +74,7 @@ ttProcess server toks  = callHTTP10post False "text/plain" server ""
                 (b2bl . t2b . unlines' $ toks) zero Nothing
 
 tlemma' f t = t{tlemma = f . tlemma $ t}
-tpostt' f t = t{tpostt = f . tpostt $ t}
+--tpostt' f t = t{tpostt = f . tpostt $ t}
 
 
 

@@ -73,7 +73,8 @@ class LanguageDependent lang where
     nlpPath :: lang -> Text
     nlpPath _ = ""   -- only italian uses a path
 
-class ( POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag where
+class ( POStags postag, LanguageDependent lang, LanguageTypedText lang)
+        =>  LanguageTyped2 lang postag where
 --    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
 --    -- the nlp process, selected by language and postag
 --    snip2doc lph pph debugNLP  text sloc = do
@@ -88,6 +89,11 @@ class ( POStags postag, LanguageDependent lang) =>  LanguageTyped2 lang postag w
     nlpParams :: lang -> postag -> HttpVarParams
     nlpPort :: lang -> postag -> Int   -- should be a port type
 
+    postNLP :: postag -> lang -> Bool ->   PartURI -> Text -> ErrIO NTtext
+    -- postprocessing (e.g. adding POS to german)
+    postNLP pph lang debug  brdf txt = return
+                $ json2NT pph (languageCode lang) brdf txt
+
 instance LanguageDependent EnglishType where
     preNLP    =  LTtext . cleanTextEnglish . unLCtext
 
@@ -99,31 +105,31 @@ instance LanguageDependent ItalianType where
     preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
-class (UD.POStags postag) => TaggedTyped postag where
-    postNLP :: postag -> LanguageCode -> Bool ->   PartURI -> Text -> ErrIO NTtext
-    -- postprocessing (e.g. adding POS to german)
-    postNLP pph lang debug  brdf txt = return $ json2NT pph lang brdf txt
+--class (UD.POStags postag) => TaggedTyped postag where
+--    postNLP :: postag -> LanguageCode -> Bool ->   PartURI -> Text -> ErrIO NTtext
+--    -- postprocessing (e.g. adding POS to german)
+--    postNLP pph lang debug  brdf txt = return $ json2NT pph lang brdf txt
 
 
 
-instance TaggedTyped Conll.POStag where
---    postNLP pph debug  brdf txt = return $ json2NT brdf txt
-
-instance TaggedTyped UD.POStag where
-    postNLP pph lang debug  brdf txt = return $ conllu2NT brdf txt
-
-instance TaggedTyped German.POStag where
---    postNLP pph debug sloc brdf txt  = do
---        let sents1 = doc1Sents doc1
---        sents2 <- mapM (completeSentence False
---                    (addPort2URI sloc treeTaggerPort ) ) sents1
---        let docs2 = doc1{doc1Sents = sents2}
---        return docs2
+--instance TaggedTyped Conll.POStag where
+----    postNLP pph debug  brdf txt = return $ json2NT brdf txt
 --
-instance TaggedTyped TinT.POStag
-instance TaggedTyped Spanish.POStag
-instance TaggedTyped French.POStag
-instance TaggedTyped FrenchUD.POStag
+--instance TaggedTyped UD.POStag where
+--    postNLP pph lang debug  brdf txt = return $ conllu2NT brdf txt
+--
+--instance TaggedTyped German.POStag where
+----    postNLP pph debug sloc brdf txt  = do
+----        let sents1 = doc1Sents doc1
+----        sents2 <- mapM (completeSentence False
+----                    (addPort2URI sloc treeTaggerPort ) ) sents1
+----        let docs2 = doc1{doc1Sents = sents2}
+----        return docs2
+----
+--instance TaggedTyped TinT.POStag
+--instance TaggedTyped Spanish.POStag
+--instance TaggedTyped French.POStag
+--instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
@@ -145,6 +151,7 @@ instance LanguageTyped2 EnglishType UD.POStag where
 --               "tokenize,ssplit,parse,pos\
 --                \,lemma,ner,depparse,coref,udfeats"
 --                   udfeats needs constituency parser
+    postNLP pph lang debug  brdf txt = return $ conllu2NT brdf txt
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman
@@ -172,7 +179,13 @@ instance LanguageTyped2 FrenchType FrenchUD.POStag where
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
-instance LanguageTyped2 SpanishType Spanish.POStag where
+--instance LanguageTyped2 SpanishType Spanish.POStag where
+--    nlpPort _ _ = portSpanish
+--    nlpParams _ _ =  HttpVarParams [
+--                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+--                                        ]
+
+instance LanguageTyped2 SpanishType UD.POStag where
     nlpPort _ _ = portSpanish
     nlpParams _ _ =  HttpVarParams [
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")

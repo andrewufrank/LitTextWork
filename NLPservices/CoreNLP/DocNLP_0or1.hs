@@ -147,7 +147,7 @@ data Token0 postag = Token0 { tid :: TokenID
                             -- only for UD, could be included in UD pos tag ?
 
                     , tposOrig :: Maybe Text -- the pos tag received
-                    , tpostt :: Maybe Text -- the pos from the tree tagger
+--                    , tpostt :: Maybe Text -- the pos from the tree tagger
                     , tner :: [NERtagExt] -- [Text] -- String
                     , tnerOrig :: Maybe [Text]
                     , tspeaker :: [SpeakerTag] -- Text -- String
@@ -232,7 +232,7 @@ instance (NLP.POStags postag)
         tfeature = []
         tposOrig = if showT tpos == tok_pos then Nothing else Just tok_pos
         -- missig a test that parse was complete
-        tpostt = Nothing
+--        tpostt = Nothing
         tner = parseNERtagList [tok_ner] -- when is this a list?
         tnerOrig = if (any (==(NER NERunk)) $ tner) then Just [tok_ner] else Nothing
                         -- use the Ner2 values?

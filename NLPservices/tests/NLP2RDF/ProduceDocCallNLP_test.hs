@@ -105,7 +105,8 @@ instance Zeros PartURI where zero = PartURI ""
 englVars = (undefEnglish, Conll.undefPOS, entz3text, 1)
 germanVars = (undefGerman, German.undefPOS, gertz3text, 2)
 frenchVars = (undefFrench, French.undefPOS, fretz3text, 3)
-spanishVars = (undefSpanish, Spanish.undefPOS, spantz3text, 4)
+spanishVars = (undefSpanish, UD.undefPOS, spantz3text, 4)
+-- spanish wit json format seems to produce UD
 italianVars = (undefItalian, TinT.undefPOS, ittz3text, 5)
 udfeatsVars = (undefEnglish, UD.undefPOS, entz3text, 1)
 --------------
@@ -139,7 +140,7 @@ instance  ShowTestHarness (Doc1 a) where
 
 instance ShowTestHarness NTtext where
 
-testOP_M_N :: (TaggedTyped t1,
+testOP_M_N :: (-- TaggedTyped t1,
         LanguageTypedText t0, LanguageTyped2 t0 t1) =>
          (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO Text
 testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
@@ -149,13 +150,13 @@ testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
 --testVar3File :: (Read a, Eq b, Show b, Read b
 --            , Zeros b, ShowTestHarness b) =>
 --        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
---test_M_N1 :: IO ()
---test_M_N1 = testVar2FileIO progName englVars "resultM1" "resultN1" testOP_M_N
-----test_M_N2 = testVar2FileIO progName germanVars "resultM2" "resultN2" testOP_M_N
---test_M_N3 = testVar2FileIO progName frenchVars "resultM3" "resultN3" testOP_M_N
---test_M_N4 = testVar2FileIO progName spanishVars "resultM4" "resultN4" testOP_M_N
---test_M_N5 = testVar2FileIO progName italianVars "resultM5" "resultN5" testOP_M_N
---test_M_N6 = testVar2FileIO progName udfeatsVars "resultM6" "resultN6" testOP_M_N
+test_M_N1 :: IO ()
+test_M_N1 = testVar2FileIO progName englVars "resultM1" "resultN1" testOP_M_N
+--test_M_N2 = testVar2FileIO progName germanVars "resultM2" "resultN2" testOP_M_N
+test_M_N3 = testVar2FileIO progName frenchVars "resultM3" "resultN3" testOP_M_N
+test_M_N4 = testVar2FileIO progName spanishVars "resultM4" "resultN4" testOP_M_N
+test_M_N5 = testVar2FileIO progName italianVars "resultM5" "resultN5" testOP_M_N
+test_M_N6 = testVar2FileIO progName udfeatsVars "resultM6" "resultN6" testOP_M_N
 
 ----    text2xml :: postag -> Bool -> URI -> Text
 --    -> [(Text,Maybe Text)] -> Text
@@ -175,26 +176,26 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
                 path = nlpPath langPh
                 server = addPort2URI serverBrest (nlpPort langPh postagPh)
 
---test_M_MA1 :: IO ()
---test_M_MA1 = testVar2FileIO progName englVars "resultM1" "resultMA1" testOP_M_MA
---test_M_MA2 = testVar2FileIO progName germanVars "resultM2" "resultMA2" testOP_M_MA
---test_M_MA3 = testVar2FileIO progName frenchVars "resultM3" "resultMA3" testOP_M_MA
---test_M_MA4 = testVar2FileIO progName spanishVars "resultM4" "resultMA4" testOP_M_MA
---test_M_MA5 = testVar2FileIO progName italianVars "resultM5" "resultMA5" testOP_M_MA
-----fails always, because it contains timing info
---test_M_MA6 = testVar2FileIO progName udfeatsVars "resultM6" "resultMA6" testOP_M_MA
+test_M_MA1 :: IO ()
+test_M_MA1 = testVar2FileIO progName englVars "resultM1" "resultMA1" testOP_M_MA
+test_M_MA2 = testVar2FileIO progName germanVars "resultM2" "resultMA2" testOP_M_MA
+test_M_MA3 = testVar2FileIO progName frenchVars "resultM3" "resultMA3" testOP_M_MA
+test_M_MA4 = testVar2FileIO progName spanishVars "resultM4" "resultMA4" testOP_M_MA
+test_M_MA5 = testVar2FileIO progName italianVars "resultM5" "resultMA5" testOP_M_MA
+--fails always, because it contains timing info
+test_M_MA6 = testVar2FileIO progName udfeatsVars "resultM6" "resultMA6" testOP_M_MA
 
 
 
 
     -- produce NT from whatever nlp produces (xml, json, conllu)
 testOP_M_MB ::  (Show postag
-            , TaggedTyped postag
+--            , TaggedTyped postag
             , LanguageTypedText lang
                 , LanguageTyped2 lang postag) =>
          (lang, postag, Text, Int) -> Text -> ErrIO Text
 testOP_M_MB (langPh, postagPh, text, i) txt  = fmap unNT $
-                    postNLP  postagPh (languageCode langPh)
+                    postNLP  postagPh langPh
                         True   rdfBase txt
 
 test_M_MB1 = testVar2FileIO progName englVars "resultMA1" "resultMB1" testOP_M_MB

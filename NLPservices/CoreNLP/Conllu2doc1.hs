@@ -110,7 +110,7 @@ instance  ConvertTo1 UD.POStag  T.Token (Token0 UD.POStag) where
         tposOrig = Just . showT $ _upostag
 --        if showT pos == tok_pos then Nothing else Just tok_pos
         -- missig a test that parse was complete
-        tpostt = Nothing
+--        tpostt = Nothing
         tner = []
 --        parseNERtagList [tok_ner] -- when is this a list?
         tnerOrig = Nothing
