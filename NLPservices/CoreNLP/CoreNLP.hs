@@ -22,6 +22,7 @@ module CoreNLP.CoreNLP (
             , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)
             , SpeakerTag (..), NERtag (..)
+            , NTtext (..), unNT
         )  where
 
 --import              Uniform.Strings
@@ -44,6 +45,6 @@ import CoreNLP.Linear2Triple
 --import qualified NLP.TagSets.Conll  as Conll
 --import qualified NLP.TagSets.UD as UD
 
-json2NT :: PartURI -> Text -> Text
+json2NT :: PartURI -> Text -> NTtext
 -- | main operation, convert JSON text file to a triple (NT) text file
 json2NT rdfbase = toNT . toTriple rdfbase . toLin . to11op . to1op .  decodeDoc2op

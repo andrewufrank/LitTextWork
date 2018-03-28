@@ -24,7 +24,7 @@ import LitTypes.ServerNames (rdfBase)
 
 
 -- instance ShowTestHarness (Doc11 Conll.POStag) where
--- instance ShowTestHarness (Doc1 Conll.POStag) where
+instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
 test_all :: IO ()

@@ -22,6 +22,7 @@ module CoreNLP.Linear2Triple
     ( module CoreNLP.Linear2Triple
     , DocAsList (..)
     , Triple
+
     ) where
 
 import           Uniform.Strings
@@ -46,8 +47,13 @@ toTripleUD :: PartURI ->   [DocAsList UD.POStag] -> [DocAsTriple ]
 toTripleUD rdfbase ds  =  concat r
     where r =  map (makeTriple rdfbase) ds :: [[DocAsTriple ]]
 
-toNT ::     [DocAsTriple ] -> Text
-toNT ds  =  t
+newtype NTtext = NT Text deriving (Eq, Ord, Read, Show)
+-- ^ a special wrap to separate NT encoded text
+unNT (NT t) = t
+instance Zeros NTtext where zero = NT zero
+
+toNT ::     [DocAsTriple ] -> NTtext
+toNT ds  =  NT t
     where
         r =  map (makeRDFnt ) ds :: [[Triple]]
         t = unlines' . map triple2text . concat $ r

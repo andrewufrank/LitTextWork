@@ -58,7 +58,7 @@ import LitTypes.ServerNames (rdfBase)  -- replace!!
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
-convertOneSnip2NT :: LitTextFlags  -> TD.Snip -> ErrIO Text
+convertOneSnip2NT :: LitTextFlags  -> TD.Snip -> ErrIO NTtext
 -- | is is the overall process taking a snip and producing the NT as text
 -- construct a snipID from rdfBase (from LitTypes.ServerNames)
 -- this is just the conversion from tagged to typed
@@ -111,7 +111,7 @@ class  LanguageTyped22 lang postag where
 --                -> ErrIO [NLPtriple postag]
     snip2NT :: lang -> postag -> LitTextFlags ->  LTtext lang
                 -> PartURI  -> URI
-                -> ErrIO Text
+                -> ErrIO NTtext
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output
     -- calls nlp to convert to doc

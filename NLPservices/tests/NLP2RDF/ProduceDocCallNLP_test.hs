@@ -26,6 +26,7 @@ import              Test.Framework
 import              Uniform.Test.TestHarness
 --import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
 import CoreNLP.Doc2ToLinear
+import CoreNLP.CoreNLP (NTtext (..), unNT)
 import LitTypes.LanguageTypedText
 
 import NLP2RDF.ProduceDocCallNLP
@@ -118,10 +119,12 @@ instance  ShowTestHarness (Doc1 a) where
     showTestH = show
     readTestH2 = readNote -- "showTestHarness Doc1"
 
+instance ShowTestHarness NTtext where
+
 testOP_M_N :: (-- TaggedTyped t1,
         LanguageTypedText t0, LanguageTyped2 t0 t1) =>
          (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO Text
-testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   =
+testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = fmap unNT $
         snip2NT langPh postagPh [DebugFlag] txt base serverBrest
         -- overall test, snip to triples
 
