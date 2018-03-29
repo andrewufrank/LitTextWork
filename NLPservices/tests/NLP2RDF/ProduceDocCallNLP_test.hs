@@ -122,13 +122,13 @@ testOP_Snip_M (langPh, postagPh, text, i)= do
         return snip
 
  -- M is just the snip
---test_M_1 :: IO ()
---test_M_1 = testVar1File progName englVars "resultM1" testOP_Snip_M
---test_M_2 = testVar1File progName germanVars "resultM2" testOP_Snip_M
---test_M_3 = testVar1File progName frenchVars "resultM3" testOP_Snip_M
---test_M_4 = testVar1File progName spanishVars "resultM4" testOP_Snip_M
---test_M_5 = testVar1File progName italianVars "resultM5" testOP_Snip_M
---test_M_6 = testVar1File progName udfeatsVars "resultM6" testOP_Snip_M
+test_M_1 :: IO ()
+test_M_1 = testVar0FileIO progName englVars "resultM1" testOP_Snip_M
+test_M_2 = testVar0FileIO progName germanVars "resultM2" testOP_Snip_M
+test_M_3 = testVar0FileIO progName frenchVars "resultM3" testOP_Snip_M
+test_M_4 = testVar0FileIO progName spanishVars "resultM4" testOP_Snip_M
+test_M_5 = testVar0FileIO progName italianVars "resultM5" testOP_Snip_M
+test_M_6 = testVar0FileIO progName udfeatsVars "resultM6" testOP_Snip_M
 
 instance  ShowTestHarness (Snip2 a) where
     -- to avoid the additional "" added when show  text
