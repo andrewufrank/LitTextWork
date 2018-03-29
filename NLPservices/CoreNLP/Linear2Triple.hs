@@ -166,20 +166,23 @@ makeTriple _ base MentionLin{..} =
     where   triSubj = mkIRI base ment3Head
 
 makeTriple _ base TokenLin{..} = [TriType triSubj Voc.Token
-        ,  TriTextL2 triSubj  (mkRDFproperty TokenWordForm) (word0 t3word)
-        , TriTextL2 triSubj (mkRDFproperty TokenLemma3) (lemma0 t3lemma)
+    ,  TriTextL2 triSubj  (mkRDFproperty TokenWordForm) (word0 t3word)
+    , TriTextL2 triSubj (mkRDFproperty TokenLemma3) (lemma0 t3lemma)
 --            , TriInt2 triSubj (mkRDFproperty TokenBegin) t3begin  -- not used?
 --            , TriInt2 triSubj (mkRDFproperty TokenEnd) t3end  -- not used?
-        , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
+    , TriText2 triSubj (mkRDFproperty TokenPOS) (showT t3pos)
+    -- gives the parsed form, not the original (Comma, not ,)
+    -- better for queries with SPARQL
 --        , TriText2 triSubj (mkRDFproperty TokenPosTT) (t3postt)
-        , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
+    , TriList2 triSubj (mkRDFproperty TokenNER) (map showT t3ner)
 --                       (if t3ner == [NERunk "0"] then [] else map showT t3ner)
-        , TriList2 triSubj (mkRDFproperty TokenSpeaker) (map fromSpeakerTag t3speaker)
-       , TriPartOf triSubj $ mkIRI base t3sentence
-        , TriList2 triSubj (mkRDFproperty TokenNERorig)
-            (maybe [] id t3nerOrig)
-        , (TriList2 triSubj (mkRDFproperty TokenPOSorig)) $ maybe [] singleton t3posOrig
-                                   ]
+    , TriList2 triSubj (mkRDFproperty TokenSpeaker)(map fromSpeakerTag t3speaker)
+   , TriPartOf triSubj $ mkIRI base t3sentence
+    , TriList2 triSubj (mkRDFproperty TokenNERorig)
+        (maybe [] id t3nerOrig)
+    , (TriList2 triSubj (mkRDFproperty TokenPOSorig))
+        $ maybe [] singleton t3posOrig
+                               ]
 
     where
         triSubj = mkIRI base t3id

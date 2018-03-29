@@ -227,7 +227,9 @@ instance (NLP.POStags postag)
         tlemma = Lemma0 $ LCtext tok_lemma lang
         tpos = (NLP.toPOStag  tok_pos) `asTypeOf` posPh
         tfeature = []
-        tposOrig = if showT tpos == tok_pos then Nothing else Just tok_pos
+        tposOrig = if (NLP.fromPOStag tpos  == tok_pos) then Nothing else Just tok_pos
+        -- must deal for conll with cases that the orig tag and the parsed
+        -- are different (Comma = ,"
         -- missig a test that parse was complete
 --        tpostt = Nothing
         tner = parseNERtagList [tok_ner] -- when is this a list?
