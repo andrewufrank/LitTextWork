@@ -19,7 +19,7 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import CoreNLP.Linear2Triple
 import qualified NLP.TagSets.Conll  as Conll
-import Data.RDFext.Extension as RDF
+--import Data.RDFext.Extension as RDF
 import CoreNLP.Vocabulary
 
 

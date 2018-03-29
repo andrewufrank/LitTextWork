@@ -20,14 +20,14 @@
 module CoreNLP.Vocabulary
     ( module CoreNLP.Vocabulary
       , module CoreNLP.DocBase
-      , module Data.RDFext.Extension
+--      , module Data.RDFext.Extension
 --      , module Uniform.Strings
       , RDFsubj (..), PartURI (..), rdfBase
 --      , SnipSigl
     ) where
 
 --import           CoreNLP.DocBase
-import           Data.RDFext.Extension  -- (RDFproperty)
+--import           Data.RDFext.Extension  -- (RDFproperty)
 --import           Uniform.Strings         hiding ((<|>))
 --import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 --import LitTypes.ServerNames
@@ -35,7 +35,7 @@ import           Data.RDFext.Extension  -- (RDFproperty)
 --import LitTypes.TextDescriptor (SnipSigl)
 --import CoreNLP.DEPcodes (DepCode(..))
 import CoreNLP.DocBase
-import Data.RDFext.Extension
+--import Data.RDFext.Extension
 --import GHC.Generics
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma

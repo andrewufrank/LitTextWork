@@ -29,7 +29,7 @@ module NLP2RDF.ProduceDocCallNLP
     ) where
 
 --import CoreNLP.CoreNLPxml (readDocString)
-import CoreNLP.ParseJsonCoreNLP (decodeDoc2, Doc2 (..))
+--import CoreNLP.ParseJsonCoreNLP (decodeDoc2, Doc2 (..))
 import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
             , URI, HttpVarParams(..), combineHttpVarParams)
 -- version for xml (old)
@@ -52,7 +52,7 @@ import NLP.TagSets.FrenchUD as FrenchUD --
 import NLP.Tags
 ----import Data.Text as T
 import NLP2RDF.LanguageSpecific
-import LitTypes.TextDescriptor   as TD
+--import LitTypes.TextDescriptor   as TD
 --import LitTypes.TextDescriptor
 --import LitTypes.ServerNames
 --import Data.RDFext.Codes
@@ -61,7 +61,7 @@ import LitTypes.TextDescriptor   as TD
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
-convertOneSnip2triples_NLPservices :: LitTextFlags  -> TD.Snip -> ErrIO [Triple]
+convertOneSnip2triples_NLPservices :: LitTextFlags  -> Snip -> ErrIO [Triple]
 -- | is is the overall process taking a snip and producing the NT as text
 -- construct a snipID from rdfBase (from LitTypes.ServerNames)
 -- this is just the conversion from tagged to typed

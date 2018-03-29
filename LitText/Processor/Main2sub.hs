@@ -22,7 +22,7 @@ module Processor.Main2sub (mainLitAndNLPproduction
          , ntFileTriples,ntFileTriplesGZip
          , LitTextFlags (..), LitTextFlag (..)
          , module LitTypes.TextDescriptor
-         , ErrIO (..)
+         , ErrIO (..), URI (..)
             ) where
 
 import           Parser.ReadMarkupAB (textstate2Text)

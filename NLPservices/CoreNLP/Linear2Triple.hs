@@ -28,13 +28,13 @@ module CoreNLP.Linear2Triple
 import           Uniform.Strings
 import CoreNLP.Doc2ToLinear
 import qualified CoreNLP.Vocabulary as Voc
-import Data.RDFext.Extension as RDF
+--import Data.RDFext.Extension as RDF
 import Uniform.Zero
 import Uniform.Strings
 import Data.Maybe
 import GHC.Generics
-import LitTypes.LanguageTypedText
-import Data.RDFext.Extension
+import LitTypes.TextDescriptor hiding ((</>))
+--import Data.RDFext.Extension
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 import NLP.TagSets.NERcodes (fromNERtag)

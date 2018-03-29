@@ -27,7 +27,7 @@ import              Uniform.Test.TestHarness
 --import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
 import CoreNLP.Doc2ToLinear
 import CoreNLP.CoreNLP (NTtext (..), unNT)
-import LitTypes.LanguageTypedText
+--import LitTypes.LanguageTypedText
 import CoreNLP.Vocabulary
 
 import NLP2RDF.ProduceDocCallNLP

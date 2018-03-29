@@ -30,12 +30,12 @@ import Uniform.Convenience.StartApp
 import qualified NLP.TagSets.Conll  as Conll
 
 import Data.Aeson (eitherDecode)
-import LitTypes.LanguageTypedText (undefEnglish)
+--import LitTypes.LanguageTypedText (undefEnglish)
 --import CoreNLP.ProduceNLPtriples (unNLPtriple)
 --import NLP2RDF.NLPvocabulary
-import Data.RDFext.Extension
+--import Data.RDFext.Extension
 import LitTypes.ServerNames -- (PartURI)
-import LitTypes.TextDescriptor (SnipID (..))
+import LitTypes.TextDescriptor -- (SnipID (..))
 
 main :: IO ()
 main =  do  -- with tests in other modules

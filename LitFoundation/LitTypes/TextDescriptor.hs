@@ -21,12 +21,15 @@ module LitTypes.TextDescriptor (
 --    , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
     , module Uniform.Error
+    , module Data.RDFext.Extension
     , LanguageCode (..) -- from rdf4hextension
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
     , LitTextFlag (..), LitTextFlags
-    , PartURI (..), RDFsubj (..), unPartURI
+    , PartURI (..), RDFsubj (..)
+--    , unPartURI
+--    , append2partURI
     , Zeros (..)
 --    , unPartURI
 --    , snipIsNull
@@ -40,7 +43,8 @@ import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
 --import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
-import LitTypes.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )
+import LitTypes.UtilsParseArgs --( LitTextFlag (..), LitTextFlags )
+import Data.RDFext.Extension hiding ((</>), (<.>))
 import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
 
