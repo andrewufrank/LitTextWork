@@ -28,6 +28,7 @@ import              Uniform.Test.TestHarness
 import CoreNLP.Doc2ToLinear
 import CoreNLP.CoreNLP (NTtext (..), unNT)
 import LitTypes.LanguageTypedText
+import CoreNLP.Vocabulary
 
 import NLP2RDF.ProduceDocCallNLP
 import NLP.TagSets.Conll  as Conll -- Conll for english
@@ -64,7 +65,7 @@ ittz3text = "Lo zio vol\242 a Boston. Quando entr\242 nella stanza, \
 paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP"
                             (RDFsubj $ (unPartURI rdfBase))  )
 
-data Snip2 lang = Snip2 (LTtext lang) PartURI
+data Snip2 lang = Snip2 (LTtext lang) RDFsubj
     deriving (Eq, Ord, Read, Show)
     -- the data type Snip2 is not used anymore - here just for testing
 instance Zeros (Snip2 lang) where zero = Snip2 zero zero
@@ -115,7 +116,8 @@ testOP_Snip_M :: LanguageTypedText t0 =>
         (t0, t1, Text, Int) -> ErrIO (Snip2 t0)
 testOP_Snip_M (langPh, postagPh, text, i)= do
         putIOwords [ "testOP"]
-        let snip  = Snip2 (typeText langPh text) rdfBase  -- )
+        let snip  = Snip2 (typeText langPh text)
+                         (RDFsubj . unPartURI $ rdfBase)  -- )
 --                        (mkSnipSigl paraSigl1 (SnipID i))
         return snip
 
@@ -154,12 +156,12 @@ testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = do
 --            , Zeros b, ShowTestHarness b) =>
 --        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
 test_M_N1 :: IO ()
-test_M_N1 = testVar2FileIO progName englVars "resultM1" "resultN1" testOP_M_N
---test_M_N2 = testVar2FileIO progName germanVars "resultM2" "resultN2" testOP_M_N
-test_M_N3 = testVar2FileIO progName frenchVars "resultM3" "resultN3" testOP_M_N
-test_M_N4 = testVar2FileIO progName spanishVars "resultM4" "resultN4" testOP_M_N
-test_M_N5 = testVar2FileIO progName italianVars "resultM5" "resultN5" testOP_M_N
-test_M_N6 = testVar2FileIO progName udfeatsVars "resultM6" "resultN6" testOP_M_N
+test_M_N1 = testVar1FileIO progName englVars "resultM1" "resultN1" testOP_M_N
+--test_M_N2 = testVar1FileIO progName germanVars "resultM2" "resultN2" testOP_M_N
+test_M_N3 = testVar1FileIO progName frenchVars "resultM3" "resultN3" testOP_M_N
+test_M_N4 = testVar1FileIO progName spanishVars "resultM4" "resultN4" testOP_M_N
+test_M_N5 = testVar1FileIO progName italianVars "resultM5" "resultN5" testOP_M_N
+test_M_N6 = testVar1FileIO progName udfeatsVars "resultM6" "resultN6" testOP_M_N
 
 ----    text2xml :: postag -> Bool -> URI -> Text
 --    -> [(Text,Maybe Text)] -> Text
@@ -199,7 +201,8 @@ testOP_M_MB ::  (Show postag
          (lang, postag, Text, Int) -> Text ->  Text
 testOP_M_MB (langPh, postagPh, text, i)   =
             unlines' . map triple2text
-             . postNLP  postagPh langPh True   rdfBase
+             . postNLP  postagPh langPh True
+                    (RDFsubj . unPartURI $ rdfBase)
 
 test_M_MB1 :: IO ()
 test_M_MB1 = testVar1File progName englVars "resultMA1" "resultMB1" testOP_M_MB

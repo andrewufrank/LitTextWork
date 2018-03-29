@@ -22,6 +22,7 @@ module CoreNLP.Vocabulary
       , module CoreNLP.DocBase
       , module Data.RDFext.Extension
       , module Uniform.Strings
+      , RDFsubj (..), PartURI (..), rdfBase
 --      , SnipSigl
     ) where
 
