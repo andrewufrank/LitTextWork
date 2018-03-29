@@ -22,10 +22,10 @@ module Parser.ProduceLayout (module Parser.ProduceLayout
     ) where
 
 import LitTypes.TextDescriptor
-import Data.RDFext.Extension
+--import Data.RDFext.Extension
 import CoreNLP.Vocabulary
 import           Text.Printf         (printf)
-import LitTypes.ServerNames (rdfBase)  -- from Foundation
+--import LitTypes.ServerNames (rdfBase)  -- from Foundation
 
 layoutURItext =   append2partURI rdfBase  "/layout_2017" :: PartURI
 

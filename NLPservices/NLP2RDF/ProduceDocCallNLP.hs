@@ -22,8 +22,9 @@
 
 module NLP2RDF.ProduceDocCallNLP
     (module NLP2RDF.ProduceDocCallNLP
-    , module LitTypes.ServerNames
+--    , module LitTypes.ServerNames
     , module NLP2RDF.LanguageSpecific
+--    , module LitTypes.TextDescriptor
     , LitTextFlags (..), LitTextFlag (..), SnipID (..)
     ) where
 
@@ -38,7 +39,7 @@ import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
 --import CoreNLP.ProduceNLPtriples2 -- (processDoc0toTriples2)
 --
 -- version with Doc2ToRDF_JSON
-import CoreNLP.CoreNLP -- Doc2ToLinear
+--import CoreNLP.CoreNLP -- Doc2ToLinear
 
 --import NLP2RDF.ProduceNLPtriples (Snip2(..))
 
@@ -51,11 +52,12 @@ import NLP.TagSets.FrenchUD as FrenchUD --
 import NLP.Tags
 ----import Data.Text as T
 import NLP2RDF.LanguageSpecific
-import LitTypes.TextDescriptor  as TD
-import LitTypes.ServerNames
-import Data.RDFext.Codes
-import Uniform.Zero
-import LitTypes.ServerNames (rdfBase)  -- replace!!
+import LitTypes.TextDescriptor   as TD
+--import LitTypes.TextDescriptor
+--import LitTypes.ServerNames
+--import Data.RDFext.Codes
+--import Uniform.Zero
+--import LitTypes.ServerNames (rdfBase)  -- replace!!
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 

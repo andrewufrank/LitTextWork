@@ -17,6 +17,9 @@
 {-# OPTIONS_GHC -w #-}
 
 module Parser.FormNLPsnips
+     (module Parser.FormNLPsnips
+     , module LitTypes.TextDescriptor
+     )
     where
 
 --import Lines2para.Lines2para

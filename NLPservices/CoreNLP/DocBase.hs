@@ -30,6 +30,10 @@ module CoreNLP.DocBase (
 --        , module CoreNLP.DEPcodes  -- import separately when needed
         -- ,readDocString
          , LCtext (..)
+         , module GHC.Generics
+         , module Uniform.Zero
+         , module Uniform.Strings
+         , module LitTypes.TextDescriptor
         )  where
 
 import              Uniform.Strings
@@ -41,7 +45,7 @@ import              NLP.TagSets.SpeakerTags
 import           Text.Printf             (printf)
 import GHC.Generics
 --import LitTypes.LanguageTypedText (LCtext (..))
-import LitTypes.TextDescriptor
+import LitTypes.TextDescriptor hiding ((<|>), (</>), (<>))
 
 newtype  Wordform0 = Wordform0 {word0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic)

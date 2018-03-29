@@ -30,7 +30,7 @@ import           Data.Semigroup               ((<>))
 --import           Options.Applicative.Builder
 import           Options.Applicative
 
-import LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
+--import LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 import LitTypes.TextDescriptor hiding ((<>))
 import Data.RDFext.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import Processor.Main2sub (mainLitAndNLPproduction)
@@ -38,7 +38,7 @@ import Processor.Main2sub (mainLitAndNLPproduction)
 import LitTypes.UtilsProcessing (processAll)
 import LitTypes.UtilsParseArgs (getArgsParsed, setDefaultOriginDir, selectServer
             , LitTextFlag (..), LitTextFlags )
-import Processor.ProcessAll
+import Processor.ProcessAll hiding ((<>))
 --import qualified System.Directory as S (getHomeDirectory)
 
 programName = "ntmake5 v 0.0.4.2" :: Text

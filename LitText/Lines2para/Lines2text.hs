@@ -20,18 +20,18 @@ module Lines2para.Lines2text
     (module Lines2para.Lines2text
 --    , Zeilen (..)
 --    , BuchToken (..)
---    , module Lines2para.HandleLayout
+    , module Lines2para.HandleLayout
 
     ) where
 
 
-import Lines2para.MarkupText (parseMarkup)
-import BuchCode.Classes4text
-import Lines2para.HandleLayout (paragraphs2TZlayout)
+--import Lines2para.MarkupText -- (parseMarkup)
+--import BuchCode.Classes4text
+import Lines2para.HandleLayout -- (paragraphs2TZlayout)
 
 import           Data.List.Split
 --import           Test.Framework
-import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
+--import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
 
 
 text2tz1 :: Text -> [TZ1]  -- test B -> C

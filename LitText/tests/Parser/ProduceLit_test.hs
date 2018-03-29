@@ -42,7 +42,7 @@ import Uniform.Test.TestHarness
 --import Data.RDF.FileTypes
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
-import LitTypes.ServerNames  (rdfBase)  -- for test
+--import LitTypes.ServerNames  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
 --import NLP2RDF.NLPvocabulary
 import Parser.ProduceLit

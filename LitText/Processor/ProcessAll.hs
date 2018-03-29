@@ -18,15 +18,15 @@
 
 module Processor.ProcessAll
     (module Processor.ProcessAll
-    , module LitTypes.TextDescriptor
+--    , module LitTypes.TextDescriptor
     , module Processor.Main2sub
     , serverBrest
     ) where
 
 --import           Test.Framework
 
-import LitTypes.TextDescriptor hiding ((<>) , (</>), (<.>))
-import LitTypes.ServerNames
+--import LitTypes.TextDescriptor hiding ((<>) , (</>), (<.>))
+--import LitTypes.ServerNames
 import Processor.Main2sub
 --import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
 
@@ -40,36 +40,7 @@ import Data.List (delete)
 
 --import Uniform.Error
 import Uniform.FileIO
---import Uniform.FileStatus
---import Uniform.Strings hiding ((</>),(<|>))
-import          Data.RDFext.FileTypes  -- (ntFileTriples,ntFileTriplesGZip)
-import LitTypes.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..) )
 
---processAll :: Bool ->  LitDirs-> URI -> Path ar File  -> ErrIO ()
----- | get all markup files in the partially filled TextState2
----- the output goes to the second, not the triples
----- debug flag is not yet used
---
---processAll debug litdirs  server file  =  do
---  let path = source litdirs
---  resFile <- makeAbsolute file
---  bracketErrIO (openFile2handle resFile WriteMode)
---        (closeFile2)
---        (\hand -> do
---              Pipe.runEffect $
---                getRecursiveContents path
---                >-> Pipe.filter isMarkup --
---                >-> Pipe.mapM (fmap t2s . processOneMarkup debug litdirs server)
---            --    >-> P.stdoutLn
---                >-> Pipe.toHandle hand
---        )
---
---isMarkup :: Path Abs File -> Bool
---isMarkup  = hasExtension (Extension "markup")
----- todo include in typedfiles - hasType ...
---
-----debugNLP = False
-----litDebugOnly = False
 
 processOneMarkup4 ::  LitTextFlags ->  URI -> Text -> Path Abs Dir -> Path Abs File
             -> ErrIO Text
@@ -120,40 +91,5 @@ processOneMarkup4  flags  server authorReplacement ntdir   file = do
                     , "not raised further to continue processing all"
                     ]
             return ""
-
---processOneMarkup :: Bool ->  LitDirs -> URI -> Path Abs File
---            -> ErrIO Text
----- process one markup file, if the nt file does not exist
---processOneMarkup debug  litDirs server lfp = do
---        let textstate2 = fillTextState4 litDirs server lfp
---        putIOwords ["\nprocessOneMarkup", showT server  ]
---        ntExist <- exist6 (destNT textstate2) ntFileTriples
---        if not ntExist
---            then do
---                putIOwords  ["\nprocessMarkup - process"
---                        , showT $ sourceMarkup textstate2, "\n"]
---                mainLitAndNLPproduction False False textstate2
---                -- first bool is debug output
---                -- second stops processing after lit (no nlp calls)
---                putIOwords  ["\nprocessMarkup - processed"
---                        , showT $ sourceMarkup textstate2, "\n"]
---                return (showT textstate2)
---            else do
---                putIOwords  ["\nprocessMarkup - nt file exist already"
---                        , showT $ sourceMarkup textstate2, "\n"]
---                return . unlinesT $ ["\nprocessMarkup - nt file exist already"
---                        , showT $ sourceMarkup textstate2, "\n"]
---
---    `catchError` \e -> do
---            putIOwords  ["\nprocessMarkup - error return for "
---                    , showT lfp, "\n"
---                    , "error", e
---                    , "not raised further to continue processing all"
---                    ]
---            return ""
-
-
-
-
 
 

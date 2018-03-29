@@ -19,9 +19,13 @@
 -- import the fundamental types from TextDescriptor, not from processing steps
 
 module Processor.Main2sub (mainLitAndNLPproduction
-        ) where
+         , ntFileTriples,ntFileTriplesGZip
+         , LitTextFlags (..), LitTextFlag (..)
+         , module LitTypes.TextDescriptor
+         , ErrIO (..)
+            ) where
 
-import            Parser.ReadMarkupAB (textstate2Text)
+import           Parser.ReadMarkupAB (textstate2Text)
 import           Lines2para.Lines2text  (text2tz1)
 
 import           Parser.ProduceLayout (produceLayoutTriples)
@@ -31,10 +35,12 @@ import           Lines2para.Lines2para (paragraphsTZ2TZ2) -- hiding ((</>))
 import           Parser.ProduceLit (produceLitTriples)
 import           Parser.ProduceNLP (produceNLPtriples, tz2toSnip)
 
-import Data.RDFext.FileTypes -- (ntFileTriples)
+import Data.RDFext.Extension (ntFileTriples, ntFileTriplesGZip
+            , writeHandleTriples
+            , openHandleTriples, closeHandleTriples)
 
-import           Uniform.FileIO (when, errorT)
-import           Uniform.Error
+import           Uniform.FileIO -- (when, errorT)
+--import           Uniform.Error
 
 --import LitTypes.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..))
 import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation

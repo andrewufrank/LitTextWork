@@ -26,7 +26,9 @@ module LitTypes.TextDescriptor (
     , RDFproperties (..)
     , NTdescriptor (..)
     , LitTextFlag (..), LitTextFlags
-    , PartURI (..), unPartURI
+    , PartURI (..), RDFsubj (..), unPartURI
+    , Zeros (..)
+--    , unPartURI
 --    , snipIsNull
 --    , SnipSigl (..)
 --    , module Path   -- to export IsString
@@ -34,8 +36,8 @@ module LitTypes.TextDescriptor (
 
 import Uniform.FileIO  ((</>), Path (..), Abs, Dir, File )
 import Uniform.Error
-import LitTypes.ServerNames  (URI, makeURI, serverBrest)  -- for test
-import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
+import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
+--import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
 import LitTypes.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )

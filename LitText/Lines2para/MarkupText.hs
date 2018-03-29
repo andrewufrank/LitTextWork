@@ -25,7 +25,7 @@
 module Lines2para.MarkupText
     (module Lines2para.MarkupText
     , module BuchCode.Classes4text
---    , module LitTypes.TextDescriptor
+    , module LitTypes.TextDescriptor
     ) where
 
 

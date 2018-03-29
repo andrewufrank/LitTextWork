@@ -21,7 +21,7 @@ module Processor.ProcessAll_test  where
 import           Test.Framework
 
 import Parser.TextDescriptor hiding ((<>) , (</>), (<.>))
-import LitTypes.ServerNames
+--import LitTypes.ServerNames
 import Processor.Main2sub
 import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
 

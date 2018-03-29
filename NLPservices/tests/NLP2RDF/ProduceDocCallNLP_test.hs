@@ -157,7 +157,7 @@ testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = do
 --        base -> FilePath -> FilePath -> (base -> a->   b) -> IO ()
 test_M_N1 :: IO ()
 test_M_N1 = testVar1FileIO progName englVars "resultM1" "resultN1" testOP_M_N
---test_M_N2 = testVar1FileIO progName germanVars "resultM2" "resultN2" testOP_M_N
+test_M_N2 = testVar1FileIO progName germanVars "resultM2" "resultN2" testOP_M_N
 test_M_N3 = testVar1FileIO progName frenchVars "resultM3" "resultN3" testOP_M_N
 test_M_N4 = testVar1FileIO progName spanishVars "resultM4" "resultN4" testOP_M_N
 test_M_N5 = testVar1FileIO progName italianVars "resultM5" "resultN5" testOP_M_N

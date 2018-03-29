@@ -22,13 +22,14 @@
 
 module NLP2RDF.LanguageSpecific
     (module NLP2RDF.LanguageSpecific
---    , module LitTypes.ServerNames
+    , module CoreNLP.CoreNLP
+    , module LitTypes.TextDescriptor
     ) where
 
 --import              Test.Framework
 --import              Uniform.TestHarness
-import LitTypes.LanguageTypedText
-import LitTypes.ServerNames
+--import LitTypes.LanguageTypedText
+--import LitTypes.ServerNames
 
 -- import CoreNLP.DocBase   -- should only get instances ?
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
@@ -40,7 +41,7 @@ import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
 import Text.Regex (mkRegex, subRegex)
 --import NLP2RDF.CompleteSentence (completeSentence)
 --import CoreNLP.Doc2ToLinear  -- for Doc1
-import LitTypes.LanguageTypedText
+import LitTypes.TextDescriptor
 --import NLP.Tags
 import NLP.TagSets.Conll  as Conll -- Conll for english
 import NLP.TagSets.ItalianTinT   as TinT-- for italian

@@ -23,7 +23,7 @@ module LitTypes.ServerNames (
 
 import Uniform.FileIO (makeAbsDir, makeRelDir)
 import Uniform.HttpURI -- hiding ((</>), (<.>))
-import Data.RDFext.Codes (PartURI (..), unPartURI)
+import Data.RDFext.Extension (PartURI (..), unPartURI)
 
 
 ---- an attempt to have a read for URI  ReadS

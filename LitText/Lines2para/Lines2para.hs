@@ -32,9 +32,9 @@ module Lines2para.Lines2para
 import           Data.List.Split
 -- TODO string s
 import Data.List (nub)
-import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
-import BuchCode.Classes4text
-import Lines2para.HandleLayout ()  -- instance for zeilen TZ1
+--import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
+--import BuchCode.Classes4text
+import Lines2para.HandleLayout    -- instance for zeilen TZ1
 
 paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA
 -- ^ produce the text files (ignores removed, language marked)
