@@ -46,6 +46,7 @@ data BuchToken =   -- just the markers
 -- attention: shorter strings must be before longer ones (with same start)
 -- the markup marker are derived from the names (strip Buch, convert to lower)
          BuchIgnoreLine    -- was BuchIgnore, but would confuse parser with BuchIgnoreTo
+        | BuchIgnore
         |  BuchIgnoreEnd   -- only for mark, no output
 
         | BuchIgnoreTo   -- replace with Text -TextEnd brackets
