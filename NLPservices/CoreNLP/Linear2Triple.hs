@@ -82,9 +82,9 @@ mkIRI_ note base ts = if null ts
                 (fromJustNote ("intercalate mkIRI  " ++ (t2s note))
                             $ intercalate' "/" . reverse $ ts)
 
-instance MakeIRI DocRelID where
-    mkIRI (PartURI base) (DocRelID ts)
-            =   mkIRI_ "DocRelID" base ts
+instance MakeIRI SnipIRelD where
+    mkIRI (PartURI base) (SnipIRelD ts)
+            =   mkIRI_ "SnipIRelD" base ts
 
 instance MakeIRI SentenceRelID where
     mkIRI (PartURI base) (SentenceRelID ts)

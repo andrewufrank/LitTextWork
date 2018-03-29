@@ -45,10 +45,10 @@ import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 
 to11op ::   (POStags postag) => postag -> (Doc1 postag) ->  (Doc11 postag)  -- the entry point
-to11op postag =  convertToAbsoluteID postag  (DocRelID ["doc11"])
+to11op postag =  convertToAbsoluteID postag  (SnipIRelD ["doc11"])
 
 to11opUD ::   (Doc1 UD.POStag) ->  (Doc11 UD.POStag)  -- the entry point
-to11opUD  =  convertToAbsoluteID UD.undefPOS  (DocRelID ["doc11"])
+to11opUD  =  convertToAbsoluteID UD.undefPOS  (SnipIRelD ["doc11"])
 
 class ConvertToAbsulteID postag relID a2 a1 where
 -- convert to the 1 or 0 records
@@ -56,7 +56,7 @@ class ConvertToAbsulteID postag relID a2 a1 where
 
 data Doc11 postag = Doc11 {doc11sents:: [Sentence11 postag]
                  , doc11corefs :: Maybe Coreferences11   -- only one
-                 , doc11id :: DocRelID     } deriving (Show, Read, Eq, Ord, Generic)
+                 , doc11id :: SnipIRelD     } deriving (Show, Read, Eq, Ord, Generic)
 
 
 instance Zeros (Doc11 postag) where zero = Doc11 [] zero zero
@@ -124,17 +124,17 @@ data Ner4 = Ner4 {ner4docTokenBegin :: TokenRelID
 
 
 instance (NLP.POStags postag)
-        => ConvertToAbsulteID postag DocRelID (Doc1 postag) (Doc11 postag) where
-    convertToAbsoluteID posPh d@(DocRelID _) Doc1{..} = Doc11 {..}
+        => ConvertToAbsulteID postag SnipIRelD (Doc1 postag) (Doc11 postag) where
+    convertToAbsoluteID posPh d@(SnipIRelD _) Doc1{..} = Doc11 {..}
       where
         doc11sents = map (convertToAbsoluteID posPh doc11id) doc1sents
         doc11corefs =  fmap (convertToAbsoluteID posPh doc11id) doc1corefs
         doc11id = d
 
 instance (NLP.POStags postag)
-    => ConvertToAbsulteID postag DocRelID (Sentence1 postag) (Sentence11 postag) where
+    => ConvertToAbsulteID postag SnipIRelD (Sentence1 postag) (Sentence11 postag) where
 
-    convertToAbsoluteID  posPh d@(DocRelID _) Sentence1 {..} = Sentence11 {..}
+    convertToAbsoluteID  posPh d@(SnipIRelD _) Sentence1 {..} = Sentence11 {..}
         where
             s11id = addSent2DocID d s1id
             s11parse = s1parse
@@ -173,12 +173,12 @@ instance ConvertToAbsulteID postag SentenceRelID Dependence1 Dependence11 where
             d11govGloss = d1govGloss
             d11depGloss = d1depGloss
 
-instance ConvertToAbsulteID postag DocRelID Coreferences1 Coreferences11 where
+instance ConvertToAbsulteID postag SnipIRelD Coreferences1 Coreferences11 where
     convertToAbsoluteID phP s Coreferences1{..} = Coreferences11{..}
         where
             co11chains = map (convertToAbsoluteID phP s) coChains
 
-instance ConvertToAbsulteID postag DocRelID MentionChain1 MentionChain11 where
+instance ConvertToAbsulteID postag SnipIRelD MentionChain1 MentionChain11 where
     convertToAbsoluteID phP s (MentionChain1 mentions) = MentionChain11 $
             map (markMentionsWithRep (ment11Head rep')) mentions2
 
@@ -191,7 +191,7 @@ instance ConvertToAbsulteID postag DocRelID MentionChain1 MentionChain11 where
                 _ -> errorT ["mkCoreTriple2 - mentions exist, but not a single true rep",
                         showT mentions, showT rep]
 
-instance ConvertToAbsulteID postag DocRelID (Mention1) Mention11 where
+instance ConvertToAbsulteID postag SnipIRelD (Mention1) Mention11 where
     convertToAbsoluteID _  s (Mention1 {..}) = Mention11 {..}
         where
             ment11Rep = mentRep

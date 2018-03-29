@@ -44,7 +44,7 @@ import Parser.FormNLPsnips (formSnips)
 produceNLPtriples :: LitTextFlags -> TextDescriptor -> [Snip] -> ErrIO [Triple]
             -- test C  -> X
 produceNLPtriples  flags textstate snips3 =  do
-    triples :: [[Triple]] <- mapM (convertOneSnip2Triples flags  textstate)  snips3
+    triples :: [[Triple]] <- mapM (convertOneSnip2Triples flags textstate) snips3
     return . concat $ triples
 
 tz2toSnip :: LitTextFlags -> TextDescriptor ->  [TZ2] ->  [Snip]
@@ -66,7 +66,8 @@ pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
 --pushSnipSigl2snip s  snip = snip {tz3snipsigl = s}
 
 
-convertOneSnip2Triples :: LitTextFlags ->   TextDescriptor ->   Snip ->  ErrIO [Triple]
+convertOneSnip2Triples :: LitTextFlags -> TextDescriptor
+            -> Snip ->  ErrIO [Triple]
 -- calls nlp to convert to doc
 -- the snip should have a type parameter language
 -- internal the text2nlp should have a tag type parameter
@@ -93,7 +94,8 @@ convertOneSnip2Triples flags textstate snip = do
 
 
 mkSnipPartOf :: TextDescriptor -> Snip -> (SnipSigl, [Triple])
--- make the triples to state that triple is part of book and part of paragraphs2TZlayout
+-- make the triples to state that triple is part of
+-- book and part of paragraphs2TZlayout
 mkSnipPartOf textstate snip = (snipsigl, [buchtrip, paratrip])
     where
         paranum = zero -- ??? tz3para snip

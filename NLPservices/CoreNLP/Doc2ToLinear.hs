@@ -40,11 +40,11 @@ toLin  postag  =  linearize postag ()
 --toLinUD ::   (Doc11 UD.POStag) ->  [DocAsList UD.POStag] -- the entry point
 --toLinUD   =  linearize UD.undefUPOS ()
 
-data DocAsList postag = DocAsList {d3id:: DocRelID}
+data DocAsList postag = DocAsList {d3id:: SnipIRelD}
     | SentenceLin { s3id :: SentenceRelID
                     , s3parse :: Maybe Text  -- the parse tree
                     , s3text :: LCtext -- the sentence text combined from the tokens
-                    , s3docid :: DocRelID  -- for the part of
+                    , s3docid :: SnipIRelD  -- for the part of
                 }
     | DependenceLin {d3type :: DepCode -- Text -- String
                         , d3orig :: Text -- the value given in the XML
@@ -101,7 +101,7 @@ instance Linearize (Doc11 postag) postag () where
         sents = concat $ map (linearize ph doc11id) doc11sents:: [DocAsList postag]
         cos = maybe [] (linearize ph doc11id) doc11corefs :: [DocAsList postag]
 
-instance Linearize (Sentence11 postag) postag DocRelID where
+instance Linearize (Sentence11 postag) postag SnipIRelD where
     linearize ph pa Sentence11{..} = SentenceLin {s3parse = s11parse
                                                 , s3id = s11id
                                                 , s3text = t2
@@ -143,7 +143,7 @@ instance Linearize (Token11 postag) postag SentenceRelID where
         t3end = t11end
         t3sentence = pa
 
-instance Linearize  Coreferences11 postag DocRelID where
+instance Linearize  Coreferences11 postag SnipIRelD where
     linearize _ _  Coreferences11{..} = map (linearizeMention) mc
         where
             cs = co11chains :: [MentionChain11]
