@@ -113,7 +113,7 @@ newtype CorefID = CorefID Int
             deriving (Show, Read, Eq, Ord, Generic)
 newtype MentionID = MentionID Int
             deriving (Show, Read, Eq, Ord, Generic)
-newtype DocID = DocID Int
+newtype SnipID = SnipID Int
             deriving (Show, Read, Eq, Ord, Generic)
 newtype SentenceID = SentenceID Int
             deriving (Show, Read, Eq, Ord, Generic)
@@ -125,7 +125,7 @@ newtype DepID = DepID Int
 instance Zeros ParaID where zero = ParaID zero
 instance Zeros CorefID where zero = CorefID zero
 instance Zeros MentionID where zero = MentionID zero
-instance Zeros DocID where zero = DocID zero
+instance Zeros SnipID where zero = SnipID zero
 instance Zeros SentenceID where zero = SentenceID zero
 instance Zeros TokenID where zero = TokenID zero
 instance Zeros DepID where zero = DepID zero
@@ -181,11 +181,11 @@ instance FormatID SentenceID where
     formatID  = formatID' "S" 6 -- <>) . s2t . printf ('%' : '0' : '6' : 'd' :[])
     unID (SentenceID i) = i
 
-instance FormatID DocID where
+instance FormatID SnipID where
 --formatSnipID ::Int -> Text
 -- format an Int to 2 decimals for Snis
     formatID  = formatID' "Doc" 5 -- "N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
-    unID (DocID i) = i
+    unID (SnipID i) = i
 
 
     --

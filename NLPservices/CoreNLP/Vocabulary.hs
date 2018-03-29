@@ -28,7 +28,7 @@ module CoreNLP.Vocabulary
 --import           CoreNLP.DocBase
 import           Data.RDFext.Extension  -- (RDFproperty)
 import           Uniform.Strings         hiding ((<|>))
-import LitTypes.TextDescriptor hiding ((</>), DocID) -- from Foundation
+import LitTypes.TextDescriptor hiding ((</>), SnipID) -- from Foundation
 import LitTypes.ServerNames
 --import LitTypes.TextDescriptor
 --import LitTypes.TextDescriptor (SnipSigl)
@@ -102,7 +102,7 @@ newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
 instance Zeros SnipSigl where zero = SnipSigl zero
 
 
-mkSnipSigl :: ParaSigl   -> DocID -> SnipSigl
+mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
 mkSnipSigl parasigl snipid =  SnipSigl
       . extendSlashRDFsubj  (formatID  snipid)
