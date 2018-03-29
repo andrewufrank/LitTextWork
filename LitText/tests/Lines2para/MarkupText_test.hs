@@ -17,7 +17,6 @@
 
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances      #-}
---{-# LANGUAGE OverlappingInstances      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
@@ -28,8 +27,6 @@ module Lines2para.MarkupText_test  where
 import           BuchCode.BuchToken hiding (try, (<|>), (</>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
---import           Text.Parsec
---import           Uniform.Error hiding (try, (<|>))
 import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB

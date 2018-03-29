@@ -5,7 +5,6 @@
 --
 -- | finds all markup files and process them to store in triple store
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -18,27 +17,17 @@
 
 module Processor.ProcessAll
     (module Processor.ProcessAll
---    , module LitTypes.TextDescriptor
     , module Processor.Main2sub
     , serverBrest
     ) where
 
---import           Test.Framework
-
---import LitTypes.TextDescriptor hiding ((<>) , (</>), (<.>))
---import LitTypes.ServerNames
 import Processor.Main2sub
---import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
-
--- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
 import Pipes ((>->), (~>))
 -- todo fileio - export for pipes
 import Data.List (delete)
-
---import Uniform.Error
 import Uniform.FileIO
 
 

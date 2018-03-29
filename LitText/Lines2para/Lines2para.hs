@@ -12,7 +12,6 @@
 -- seitenzahlen must be numbers (not alpha) - is used to parse!
 -- .ende is necessary to distribute page numbers!
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
@@ -30,10 +29,7 @@ module Lines2para.Lines2para
 
 
 import           Data.List.Split
--- TODO string s
 import Data.List (nub)
---import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
---import BuchCode.Classes4text
 import Lines2para.HandleLayout    -- instance for zeilen TZ1
 
 paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA

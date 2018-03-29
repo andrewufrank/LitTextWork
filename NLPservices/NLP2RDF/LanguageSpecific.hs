@@ -6,7 +6,6 @@
 -- | convert snip to doc
 
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -26,23 +25,13 @@ module NLP2RDF.LanguageSpecific
     , module LitTypes.TextDescriptor
     ) where
 
---import              Test.Framework
---import              Uniform.TestHarness
---import LitTypes.LanguageTypedText
---import LitTypes.ServerNames
-
--- import CoreNLP.DocBase   -- should only get instances ?
 import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
 import Uniform.Strings
 import Uniform.Error (ErrIO)
 import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
         , conllu2triples, json2triples)
---import CoreNLP.Conllu2doc1
 import Text.Regex (mkRegex, subRegex)
---import NLP2RDF.CompleteSentence (completeSentence)
---import CoreNLP.Doc2ToLinear  -- for Doc1
 import LitTypes.TextDescriptor
---import NLP.Tags
 import NLP.TagSets.Conll  as Conll -- Conll for english
 import NLP.TagSets.ItalianTinT   as TinT-- for italian
 import NLP.TagSets.German  as German --
@@ -77,16 +66,6 @@ class LanguageDependent lang where
 
 class ( POStags postag, LanguageDependent lang, LanguageTypedText lang)
         =>  LanguageTyped2 lang postag where
---    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc0 postag)
---    -- the nlp process, selected by language and postag
---    snip2doc lph pph debugNLP  text sloc = do
---        let debug2 = debugNLP
---        docs <-  convertTZ2makeNLPCall pph debug2
---                            (addPort2URI sloc (nlpPort lph pph))  -- server uri
---                            (nlpPath lph)   -- path
---                                (nlpParams lph pph)  (unLCtext text)
---        when debug2 $ putIOwords ["NLP end", showT text]
---        return docs
 
     nlpParams :: lang -> postag -> HttpVarParams
     nlpPort :: lang -> postag -> Int   -- should be a port type
@@ -106,31 +85,7 @@ instance LanguageDependent ItalianType where
     preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
---class (UD.POStags postag) => TaggedTyped postag where
---    postNLP :: postag -> LanguageCode -> Bool ->   PartURI -> Text -> ErrIO NTtext
---    -- postprocessing (e.g. adding POS to german)
---    postNLP pph lang debug  brdf txt = return $ json2NT pph lang brdf txt
 
-
-
---instance TaggedTyped Conll.POStag where
-----    postNLP pph debug  brdf txt = return $ json2NT brdf txt
---
---instance TaggedTyped UD.POStag where
---    postNLP pph lang debug  brdf txt = return $ conllu2NT brdf txt
---
---instance TaggedTyped German.POStag where
-----    postNLP pph debug sloc brdf txt  = do
-----        let sents1 = doc1Sents doc1
-----        sents2 <- mapM (completeSentence False
-----                    (addPort2URI sloc treeTaggerPort ) ) sents1
-----        let docs2 = doc1{doc1Sents = sents2}
-----        return docs2
-----
---instance TaggedTyped TinT.POStag
---instance TaggedTyped Spanish.POStag
---instance TaggedTyped French.POStag
---instance TaggedTyped FrenchUD.POStag
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish

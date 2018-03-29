@@ -28,8 +28,6 @@ import Uniform.Zero
 import Data.Maybe
 import GHC.Generics
 import qualified Data.Text as T   -- replace
---import LitTypes.LanguageTypedText  (unLCtext, LCtext (..), LanguageCodedText (..) )
--- should be imported
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 

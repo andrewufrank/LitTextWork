@@ -18,14 +18,7 @@
 
 module Lines2para.Lines2text_test where
 
-
---import BuchCode.MarkupText
---import BuchCode.BuchToken
 import Lines2para.HandleLayout
-
---import           Data.List.Split
--- TODO string s
---import Data.List (nub)
 import           Test.Framework
 import Uniform.Test.TestHarness
 import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
@@ -64,7 +57,6 @@ test_10BB_BC = test1File progName "resultBB10" "resultBC10" paragraphs2TZsimple
 test_11BB_BC = test1File progName "resultBB11" "resultBC11" paragraphs2TZsimple
 test_12BB_BC = test1File progName "resultBB12" "resultBC12" paragraphs2TZsimple
 
-------------LANGUAGE
 
 
 

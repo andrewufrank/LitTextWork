@@ -24,23 +24,11 @@ module CoreNLP.CoreNLP (
             , SpeakerTag (..), NERtag (..)
             , NTtext (..), unNT
         )  where
-
---import              Uniform.Strings
---import Uniform.Zero
---import   NLP.TagSets.Conll hiding (NERtag (..))
---import              NLP.TagSets.DEPcodes
---import              NLP.TagSets.NERcodes
---import              NLP.TagSets.SpeakerTags
 import CoreNLP.DocNLP_0or1
 import CoreNLP.Doc1_absoluteID
 import CoreNLP.Doc2ToLinear
 import CoreNLP.Linear2Triple
 import CoreNLP.Conllu2doc1
-
---import GHC.Generics
---import qualified NLP.Tags      as NLP
---import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
---import Data.Maybe
 --import Data.List
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD

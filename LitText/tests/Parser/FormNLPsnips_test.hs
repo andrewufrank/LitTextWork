@@ -26,12 +26,6 @@ import Data.Maybe -- todo
 import Lines2para.Lines2para
 import Lines2para.HandleLayout
 import Parser.ReadMarkupAB  -- todo  -- for test
---import LitTypes.ServerNames
---import           CoreNLP.Defs0
---import CoreNLP.CoreNLPxml (readDocString)
---import Data.List.Split
---import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
---import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 import Parser.FormNLPsnips
 

@@ -26,24 +26,7 @@ import qualified Conllu.Parse as P -- (document, Parser)
             -- this is the parser!
 import qualified Text.Megaparsec as M
 
---import              Uniform.Strings
---import Uniform.Zero
---import   NLP.TagSets.Conll hiding (NERtag (..))
---import              NLP.TagSets.DEPcodes
---import              NLP.TagSets.NERcodes
---import              NLP.TagSets.SpeakerTags
 import CoreNLP.DocNLP_0or1 -- (ConvertTo1 (..), LanguageCode (..))
---import CoreNLP.Doc1_absoluteID
---import CoreNLP.Doc2ToLinear
---import CoreNLP.Linear2Triple
-
-
---import GHC.Generics
---import qualified NLP.Tags      as NLP
---import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
---import Data.Maybe
---import Data.List
---import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 import qualified NLP.Tags as NLP
 

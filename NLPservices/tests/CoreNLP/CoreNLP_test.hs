@@ -22,12 +22,6 @@ import CoreNLP.CoreNLP
 import qualified NLP.TagSets.Conll  as Conll
 import CoreNLP.Vocabulary
 
---import LitTypes.ServerNames ( rdfBase)
---
---import LitTypes.LanguageTypedText (RDFsubj (..), LanguageCode (..))
-
-
--- instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness NTtext where
 
 progName = "nlpservices"

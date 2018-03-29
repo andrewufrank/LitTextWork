@@ -20,8 +20,5 @@
 module LitTypes.LanguageTypedText_test where
 
 import           Test.Framework
---import Uniform.Zero (Zeros (..))
---import Uniform.Error--  (undef)
---import LitTypes.LanguageTypedText
 
 

@@ -8,7 +8,6 @@
 -- snips are merged later
 
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -29,26 +28,6 @@ import BuchCode.Classes4text
 import LitTypes.TextDescriptor
 
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
-
-
----- | a single language piece of text with lanuage code,
---             length and start para number
---data Snip = Snip { snip3loc :: TextLoc
-----                        , snip3para :: ParaNum
---                        , snip3snipnr ::  SnipID
---                        , snip3baserdf :: PartURI
-----                        , snip3snipsigl :: SnipSigl
-----                        , snip3parasigl :: ParaSigl
---                        , snip3text:: LCtext
---                        , snip3textLength :: Int
---                        , snip3posTag :: Text
-----                        , snip3lang :: LanguageCode
---                        }
---            deriving (Read, Show, Eq )
-
---tz3fillLength :: Snip -> Snip
----- fill the length field
---tz3fillLength n = n{snip3textLength = getLengthLC . snip3text $ n}
 
 
 prepareTZ4nlp :: Text -> RDFsubj -> [TZ2] -> [Snip]

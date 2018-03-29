@@ -6,7 +6,6 @@
 -- | form pieces of literal text which are reasonably sized
 
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -22,16 +21,6 @@ module Parser.FormNLPsnips
      )
     where
 
---import Lines2para.Lines2para
---import Lines2para.HandleLayout
---import Parser.ReadMarkupAB  -- todo  -- for test
---import LitTypes.ServerNames
---import           CoreNLP.Defs0
---import CoreNLP.CoreNLPxml (readDocString)
---import Data.List.Split
---import Uniform.HttpCall (makeHttpPost7, addPort2URI)
---import Text.Regex (mkRegex, subRegex)
---import Parser.FilterTextForNLP
 import Uniform.Error (fromJustNote)
 import LitTypes.TextDescriptor
 
@@ -59,8 +48,6 @@ mergeNLPtext a b = if sameLang a b && (snip3textLength a + snip3textLength b) < 
                         else Nothing
 
     where
---        alength = lengthChar . snip3text $ a
---        blength = lengthChar . snip3text $ b
         sameLang a b = sameLanguageLC (snip3text a) (snip3text b)
 
 

@@ -18,20 +18,14 @@
 
 module Lines2para.Lines2text
     (module Lines2para.Lines2text
---    , Zeilen (..)
---    , BuchToken (..)
     , module Lines2para.HandleLayout
 
     ) where
 
 
---import Lines2para.MarkupText -- (parseMarkup)
---import BuchCode.Classes4text
 import Lines2para.HandleLayout -- (paragraphs2TZlayout)
 
 import           Data.List.Split
---import           Test.Framework
---import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
 
 
 text2tz1 :: Text -> [TZ1]  -- test B -> C
@@ -90,16 +84,6 @@ distributeLanguage tz0 = concat . markSublistLanguage . pages $ tz0
         markSublistLanguage2 sl2 = markTZsWithLanguage
                 (getLangCode sl2 . headNote "distributeLanguage" $ sl2) (tail sl2)
 
---readLanguageCode :: Text -> Text -> LanguageCode
----- ^ read the code for the language German, Deutsch, Englisch
-----readLanguageCode  = readNoteT
----- todo move to parser
---readLanguageCode _ "Deutsch" = German
---readLanguageCode _ "deutsch" = German
---readLanguageCode _ "german" = German
---readLanguageCode _ "english" = English
---readLanguageCode _ "Englisch" = English
---readLanguageCode msg l  = readNoteT msg l
 
 markTZsWithLanguage :: LanguageCode -> [TZ] -> [TZ1]
 -- put the page number into the list
@@ -132,10 +116,6 @@ distributeIgnore  = concat . markSublistIgnore . pages
         isIgnoreCode TZmarkup{tztok=BuchIgnoreEnd} = True
         isIgnoreCode _            = False
 
-        -- getLangCode _ tz3@TZmarkup{}  = readIgnoreCode "distributeIgnore" . tztext $ tz3
-        -- getLangCode l tz3 = errorT ["distributeIgnore - IgnoreCode 2", showT tz3, "\n"
-        --         , unlines' . map showT $ l
-        --         , "fulllist is \n", unlines' . map showT $ tz0]
 
         markSublistIgnore :: [[TZ]] -> [[TZ]]
         markSublistIgnore []       = []
@@ -166,5 +146,4 @@ markTZsWithIgnore  = map  markoneWithIgnore
 -- possibly automatic from guttenberg texts
         markoneWithIgnore  tz1 = tz1
 
--- #include "Lines2ignoreTestResults.res"
 

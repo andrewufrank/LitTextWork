@@ -22,13 +22,9 @@
 
 module CoreNLP.DocBase (
         module CoreNLP.DocBase
---        , module CoreNLP.POScodes
         ,  SpeakerTags (..)
---        , module CoreNLP.NERcodes -- import separately when needed
             , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)
---        , module CoreNLP.DEPcodes  -- import separately when needed
-        -- ,readDocString
          , LCtext (..)
          , module GHC.Generics
          , module Uniform.Zero
@@ -44,7 +40,6 @@ import              NLP.TagSets.NERcodes
 import              NLP.TagSets.SpeakerTags
 import           Text.Printf             (printf)
 import GHC.Generics
---import LitTypes.LanguageTypedText (LCtext (..))
 import LitTypes.TextDescriptor hiding ((<|>), (</>), (<>))
 
 newtype  Wordform0 = Wordform0 {word0 :: LCtext}
@@ -60,21 +55,12 @@ newtype  Lemma0 = Lemma0 {lemma0 :: LCtext}
 -- ^ a single word as lemma
 instance Zeros Lemma0 where zero =  Lemma0 zero
 
---newtype TokenID0 = TokenID0 {untid0 :: Int}
---deriving (Show, Read, Eq, Ord, Zeros)
-----instance Zeros TokenID0 where zero = TID0 zero
---instance NiceStrings TokenID0 where
---    shownice   = show' . untid0
 
 mkTokenID :: Text -> TokenID
 -- to make a sentence id, consist of coll id and number
 mkTokenID s = TokenID  $ readNoteT "mkTokenID" s
 
 --newtype  SentID0 = SentID0 {unSentID0 :: Int}
---deriving (Show, Read, Eq, Ord, Zeros)
-----instance Zeros SentID0 where zero = SentID0 zero
---instance NiceStrings SentID0 where
---    shownice   = show' . unSentID0
 
 mkSentID :: Text -> SentenceID
 -- to make a sentence id, consist of coll id and number
@@ -103,10 +89,6 @@ instance Zeros SentenceRelID where zero = SentenceRelID zero
 instance Zeros TokenRelID where zero = TokenRelID zero
 instance Zeros DepRelID where zero = DepRelID zero
 
---class AbsID abs0 relID abs1 where
---    addToAbsID :: abs0 -> relID -> abs1
---    -- add a new local relative id to the current abs ID
-----instance AbsID
 
 addDep2SentID (SentenceRelID d) s@(DepID s1) = DepRelID $ formatID s : d
 addSent2DocID (SnipRelID d) s@(SentenceID s1) = SentenceRelID $ formatID s : d

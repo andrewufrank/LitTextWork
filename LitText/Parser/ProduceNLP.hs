@@ -17,7 +17,6 @@
 -- done later, which will require a snap unit consisting of serveral paragraphs
 
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -29,12 +28,10 @@
 
 module Parser.ProduceNLP
     (module Parser.ProduceNLP
---    , module Parser.TextDescriptor
     , Triple, Snip, SnipID (..), TZ2
     , TextDescriptor (..)
     ) where
 
---import LitTypes.TextDescriptor
 import CoreNLP.Vocabulary
 import Uniform.Zero
 import NLP2RDF.ProduceDocCallNLP
@@ -57,14 +54,10 @@ tz2toSnip flags textstate tzs = snips3
         snips2 = formSnips snips1  :: [Snip]
         snips3 = zipWith pushSnipNumber2snip [1..] snips2
 
---pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
---pushPosTagset2snip textstate snip = snip {snip3posTag = txPosTagset textstate}
 
 pushSnipNumber2snip :: Int -> Snip -> Snip
 pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
 
---pushSnipSigl2snip :: SnipSigl -> Snip -> Snip
---pushSnipSigl2snip s  snip = snip {tz3snipsigl = s}
 
 
 convertOneSnip2Triples :: LitTextFlags -> TextDescriptor
@@ -110,6 +103,5 @@ mkSnipPartOf textstate snip = (snipsigl, [buchtrip, paratrip])
         buchtrip = mkTriplePartOf (unSnipSigl snipsigl) (buchURI)
 
 
---instance Zeros [Triple] where zero = []
 
 

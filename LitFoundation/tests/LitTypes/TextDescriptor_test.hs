@@ -17,26 +17,10 @@
 
 module LitTypes.TextDescriptor_test where
 
---import Uniform.HttpURI (URI, makeURI)
 import Uniform.FileIO
 import           Test.Framework
 import LitTypes.TextDescriptor
 import Data.String
---import LitTypes.ServerNames (serverBrest)
-
----- duplicates from Path.hs
---instance IsString (Path Abs File) where
---    fromString = f
---         where  f :: String -> Path Abs File
---                f s = read . show $ s
---instance IsString (Path Abs Dir) where
---    fromString = read
---instance IsString (Path Rel File) where
---    fromString = read
---instance IsString (Path Rel Dir) where
---    fromString = read
-
---deriving instance IsString (Path Abs File)
 
 nd1 =  NTdescriptor {destNT =  "/home/frank/Scratch/NT/LitTest/test/t1"
             , gzipFlag = False}
@@ -126,26 +110,5 @@ test_xt1 = do
 
 xt2 = Xt {p = "/somedir/more/afile.ext", q = "f3"}
 
---
---fillDestination :: DestGenerality -> FilePath -> FilePath -> Bool -> DestDescriptor
----- | build the description of the destination
----- either a file or a uri with grah
----- later add handle with switch - true for file append output
----- false for use a handle
---fillDestination  (DGoutDir dir) author buch True = OutFile (dir </> (author </> buch))
---fillDestination  t _ _ _ = errorT ["Foundation - fillDestination not defined for ", showT t]
---
---
---test_fillTextState10 = assertEqual res10 res
---    where
---        res = fillTextState2 sourceE1 generalityE1 "may" "test"
---res10 =  TextState2 {source = TextSource
---                        {server = makeURI "http://nlp.gerastree.at",
---                        sourceDir = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest/"},
---                authorDir ="may",
---                buchname = "test",
---            textfilename = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test",
---            tripleOutDesc = OutFile
---                {ddFile = makeAbsFile "/home/frank/additionalSpace/DataBig/LitTest/may/test"}}
 
 

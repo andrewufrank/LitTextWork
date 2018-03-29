@@ -20,16 +20,4 @@ module LitTypes.UtilsProcessing_test
     where
 
 import           Test.Framework
---import           Uniform.FileIO hiding ((<>), (</>), (<.>))
---import LitTypes.UtilsParseArgs
---import LitTypes.ServerNames (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
---import Uniform.HttpCall (callHTTP8post, addPort2URI, callHTTP10post
---            , URI, HttpVarParams)
---import           Uniform.Strings
---import LitTypes.UtilsProcessing
---
---import qualified Pipes as Pipe
---import qualified Pipes.Prelude as Pipe
---import Pipes ((>->), (~>))
--- todo fileio - export for pipes
 

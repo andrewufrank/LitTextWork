@@ -14,20 +14,11 @@
 module LitTypes.ServerNames_test where
 
 
--- import           Data.RDF.Extension
---import Uniform.Strings
 import Uniform.Error
---import Uniform.FileIO (makeAbsDir, makeRelDir)
---import Uniform.HttpCallWithConduit (makeAbsURI)
---import Uniform.HttpURI
---import Network.URI
 import           Test.Framework
 import Text.Read (Read (..))
 import LitTypes.ServerNames
 
--- an attempt to have a read for URI  ReadS
---instance Read URI where
---    readsPrec _  = readS'
 
 test_readURI = assertEqual localhost (read (show localhost))
 

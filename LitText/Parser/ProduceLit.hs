@@ -8,7 +8,6 @@
 -- especially fables
 
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -24,29 +23,15 @@ module Parser.ProduceLit (module Parser.ProduceLit
         , module LitTypes.TextDescriptor
     ) where
 
---import           Test.Framework
 import           Data.Char               (toLower)
 import           Data.Maybe               (isNothing)
---import           Data.RDF
---import           Data.RDFext.Extension
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 import Uniform.Strings ((</>))  -- for PartURI
 import Uniform.HttpURI (uriT)
---import Parser.ReadMarkupAB
---import Parser.ProduceLayout
---import BuchCode.BuchToken
---import BuchCode.MarkupText
---import Lines2para.Lines2para -- hiding ((</>))
---import Lines2para.HandleLayout
 import           Text.Printf         (printf)
 import           Uniform.Error      --     (errorT)
---import Uniform.TestHarness
---import Data.RDF.FileTypes hiding ((</>), (<.>))
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
---import LitTypes.ServerNames  (rdfBase)  -- for test
---import Parser.ProduceLayout (buchURIx)
---import Parser.NLPvocabulary hiding ((</>), (<.>))
 
 --litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: PartURI
 litURItext = append2partURI rdfBase "/lit_2014"

@@ -42,12 +42,6 @@ type LitTextFlags = [LitTextFlag]
 instance Zeros LitTextFlag where zero = NoFlagZero
 
 
---data LitTextFlagsX =   LitTextFlagsX {flagDebug :: Bool
---                    , flagForce :: Bool
---                    , flagFrenchUD :: Bool
---                    , flagIncludeText :: Bool
---                    , flagXML :: Bool }
---            deriving (Show, Read, Eq)
 
 -- check all filenames by converting to Path format
 

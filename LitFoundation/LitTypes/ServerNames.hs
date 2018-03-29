@@ -62,15 +62,3 @@ nlp = "nlp"::Text
 nlpURItext = PartURI $ (unPartURI vocabularyBase) </> "nlp_2017" :: PartURI
 -- the 2017 vocabulary represents the dependency codes as properties (written lower case)
 
--- -- todo move to uniform-http
--- makeAbsURI :: Text -> URI
--- makeAbsURI u = maybe (errorT ["makeURI in Foundation Servers", u])
---                 id
---                 (parseAbsoluteURI . t2s $ u)
--- makeURI :: Text -> URI
--- makeURI u = maybe (errorT ["makeURI in Foundation Servers", u])
---                 id
---                 (parseURI . t2s $ u)
-
--- test_makeURIok = assertEqual "" (showT  serverBrest)
--- test_makeURIfail = assertEqual "" (showT . parseAbsoluteURI $ "127.0.0.1")

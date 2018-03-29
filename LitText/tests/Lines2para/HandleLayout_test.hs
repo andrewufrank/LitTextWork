@@ -25,17 +25,7 @@ module Lines2para.HandleLayout_test
       where
 
 import Test.Framework
---import BuchCode.MarkupText
---import           Data.List.Split
--- todo strings
---import           Uniform.Error
---import Uniform.Zero
--- todo include zero  in error and strings
--- TODO string s
---import Data.List (nub)
---import           Text.Printf         (printf)
 import Uniform.Test.TestHarness
---import Parser.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 import Lines2para.HandleLayout
 
 --paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB

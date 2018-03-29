@@ -34,7 +34,6 @@ import NLP.Types.Tags
 import Parser.NLPvocabulary  -- from Foundation
 import Parser.LanguageTypedText
 import Data.List (partition)
--- import Parser.ReadMarkupAB -- is in LitText, which is above NLPservices
 import Parser.ProduceNLPtriples
 
 import Parser.ProduceLit

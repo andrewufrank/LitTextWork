@@ -6,7 +6,6 @@
 -- |  the common process to producing the lit and nlp triples
 -- could test initially if the services (treetagger, fuseki, corenlp are available
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -40,9 +39,6 @@ import Data.RDFext.Extension (ntFileTriples, ntFileTriplesGZip
             , openHandleTriples, closeHandleTriples)
 
 import           Uniform.FileIO -- (when, errorT)
---import           Uniform.Error
-
---import LitTypes.UtilsParseArgs ( LitTextFlags (..), LitTextFlag (..))
 import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()

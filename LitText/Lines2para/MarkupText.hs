@@ -12,12 +12,10 @@
 -- to use automatic hl2 detection - replace in gutenberg ".--" -- not required anymore
 -- does not read language
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances      #-}
---{-# LANGUAGE OverlappingInstances      #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
@@ -32,7 +30,6 @@ module Lines2para.MarkupText
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
---import Parser.ReadMarkupAB
 import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 import BuchCode.Classes4text -- (Zeilen (..), BuchToken (..))
 
@@ -48,12 +45,6 @@ data TextZeile =
         | NeueSeite
         deriving (Show, Read, Eq )
 
---instance Show TextZeile where
---    show t  = '\n' : show t
--- gives loop show -> show
---instance Show [TextZeile] where
---    show ts = unlines [show ts]
--- is not used
 
 parseMarkup :: Text ->  [TextZeile]  -- test B -> BA
 -- parse a text file to TextZeile form

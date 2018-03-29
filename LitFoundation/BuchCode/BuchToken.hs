@@ -18,19 +18,10 @@
 module BuchCode.BuchToken (module BuchCode.BuchToken
         , module Uniform.Error
         , module Data.RDFext.Extension
---        , module Parser.TextDescriptor
-            --     BuchTokenized(..)
-            -- , BuchToken (..), unusedTokens, tokenNLPanalysed
-            -- , Unparser (..)
-            -- , MarkupElement, mkBuchTKwithoutnum, numberBuchTK
-            -- , LanguageCode (..)
             ) where
 
 import           Data.RDFext.Extension hiding ((</>), (<.>), (<|>))-- (LanguageCode (..), PartURI)
 import           Uniform.Error hiding ((</>), (<.>), (<|>))
---import           Uniform.Strings
---import Safe  -- is export from Error
---import Parser.TextDescriptor hiding ((</>), (<.>))
 
 
 data BuchTokenized a = BuchTokenized { btokenType:: a
@@ -102,9 +93,6 @@ data BuchToken =   -- just the markers
                  deriving (Enum, Eq, Show, Read)
 
 
---tokenNLPanalysed = [BuchHL1, BuchHL2, BuchHL3, BuchGedicht, BuchParagraph]
---unusedTokens = [BuchLeer, BuchEnde, BuchIgnoreLine, BuchIgnoreTo
---                , BuchCopyright ]
 
 -- | unparse a sequence of tokens in a sequence of texts
 class Unparser  a where

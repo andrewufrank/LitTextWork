@@ -21,12 +21,9 @@ module LitTypes.UtilsProcessing
 --        , module LitTypes.UtilsParseArgs
         , getTimeout
         , dirQueries, URI
-
---    , URI, serverBrest, serverLocalhost
     )
     where
 
---import           Test.Framework
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import LitTypes.UtilsParseArgs
 import LitTypes.ServerNames -- (serverLocalhost, serverBrest
@@ -86,4 +83,4 @@ post2store debug appType fusekiServer pathName mgraph split qstring timeout  = d
     when True $ putIOwords ["post2store done", showT res]
     return res
 
---        D
+--

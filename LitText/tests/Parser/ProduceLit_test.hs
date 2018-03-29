@@ -24,26 +24,12 @@ module Parser.ProduceLit_test  where
 import           Test.Framework
 import           Data.Char               (toLower)
 import           Data.Maybe               (isNothing)
---import           Data.RDF
---import           Data.RDF.Extension
---import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
---import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB_test
---import Parser.ProduceLayout
---import BuchCode.BuchToken
---import BuchCode.MarkupText
---import Lines2para.Lines2para -- hiding ((</>))
---import Lines2para.HandleLayout
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
---import Uniform.FileIO
---import Path
 import Uniform.Test.TestHarness
---import Data.RDF.FileTypes
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
---import LitTypes.ServerNames  (rdfBase)  -- for test
---import Parser.ProduceLayout (buchURIx)
 --import NLP2RDF.NLPvocabulary
 import Parser.ProduceLit
 

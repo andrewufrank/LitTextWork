@@ -58,38 +58,7 @@ import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test   -- DA -> L, calls to NLP, ta
 
 
 
------ rest
 
-
---import {-@ HTF_TESTS @-} Parser.ProduceNLPtriples_test  --  E -> G and G -> L
---   does not yet work (ambigous var)
-
---import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test
-                    -- DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
-
-                 -- BAE=C -> D and BAE -> X1  -- overall test, run at end
---            --repeats calls to nlp
---            -- files go to
-----
-------
-------import   {-@ HTF_TESTS @-} Parser.CompleteSentence  -- no test
----------------------- calls 17701
-------------------
-------------import   {-@ HTF_TESTS @-} Parser.ProduceNLPtriples_test  -- removed -- E (doc) -> G  and L (triples)
-------
-------import   {-@ HTF_TESTS @-} CoreNLP.CoreNLPxml_test
------- tests tp check codes
-------import   {-@ HTF_TESTS @-}  CoreNLP.POScodesFrench_test
--------- old
-------import {-@ HTF_TESTS @-} Processor.CheckServer_tests
-----------import   {-@ HTF_TESTS @-} Parser.ConvertTaggerOutput_test
------------- no test for NLPvocabulary
---------
---------
----------- makes call to NLP
-----------import {-@ HTF_TESTS @-} Main2sub_test
---------import {-@ HTF_TESTS @-} Parser.Main2subTest_test
---------import  {-@ HTF_TESTS @-} Processor.ProcessAll_test
 
 main =  do
     putStrLn "Lit Text Test.hs:\n"

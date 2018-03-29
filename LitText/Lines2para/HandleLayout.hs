@@ -18,20 +18,16 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
---{-# OPTIONS_GHC -w #-}
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 module Lines2para.HandleLayout
     (module Lines2para.HandleLayout
     , TextZeile (..), TZ (..)
     , module Lines2para.MarkupText
     , module LitTypes.TextDescriptor
---    , module Uniform.Error
     ) where
 
 import Lines2para.MarkupText
 import           Data.List.Split
---import           Uniform.Error
 import LitTypes.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
 
 

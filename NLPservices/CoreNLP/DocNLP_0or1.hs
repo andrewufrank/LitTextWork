@@ -30,13 +30,9 @@
 module CoreNLP.DocNLP_0or1 (
         module CoreNLP.DocNLP_0or1
         , module CoreNLP.ParseJsonCoreNLP
---        , module CoreNLP.POScodes
         ,  SpeakerTags (..)
---        , module CoreNLP.NERcodes -- import separately when needed
-            , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
+            , DepCode (..), DEPtags (..)
             , DepCode1 (..), DepCode2 (..)
---        , module CoreNLP.DEPcodes  -- import separately when needed
-        -- ,readDocString
         , unLCtext, LCtext (..), LanguageCodedText (..)
         )  where
 
@@ -51,7 +47,6 @@ import GHC.Generics
 import qualified NLP.Tags      as NLP
 import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
---import LitTypes.LanguageTypedText (unLCtext, LCtext (..), LanguageCodedText (..) )
 import qualified NLP.TagSets.Conll  as Conll -- for test
 import LitTypes.TextDescriptor
 

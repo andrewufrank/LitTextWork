@@ -20,15 +20,8 @@
 module Parser.ProduceLayout_test where
 
 import           Test.Framework
---import           Data.Char               (toLower)
---import Uniform.Strings ((</>))  -- for PartURI
 import Parser.ReadMarkupAB_test    -- result1A etc.
---import           Text.Printf         (printf)
---import           Uniform.Error           (errorT)
 import Uniform.Test.TestHarness
---import Producer.Servers (rdfBase)  -- from Foundation
---import Parser.TextDescriptor hiding ((</>)) -- from Foundation
---import Parser.NLPvocabulary
 import Parser.ProduceLayout
 
 

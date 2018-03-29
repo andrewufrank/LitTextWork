@@ -32,12 +32,8 @@ import Uniform.FileIO
 import Data.Aeson
 import Data.Aeson.Types  -- for modifying the labels
 import GHC.Generics
---import Control.Monad (mzero)
 import qualified Data.HashMap.Strict as HM
---import LitTypes.LanguageTypedText (LTtext(..), LanguageTypedText(..) )
---import NLP2RDF.NLPvocabulary (SnipSigl(..) )
 import NLP.Tags (POStags(..))
---import Data.RDFext.Extension -- (Triple)  -- instance Show Triple
 import CoreNLP.Vocabulary
 
 decodeDoc2op :: Text ->   Doc2      -- the entry point

@@ -6,7 +6,6 @@
 -- | not used when not producing text included
 -- works with TZ1, language is marked
 -----------------------------------------------------------------------------
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
@@ -22,10 +21,8 @@ module Parser.ProduceLayout (module Parser.ProduceLayout
     ) where
 
 import LitTypes.TextDescriptor
---import Data.RDFext.Extension
 import CoreNLP.Vocabulary
 import           Text.Printf         (printf)
---import LitTypes.ServerNames (rdfBase)  -- from Foundation
 
 layoutURItext =   append2partURI rdfBase  "/layout_2017" :: PartURI
 
