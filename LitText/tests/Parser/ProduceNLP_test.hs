@@ -174,7 +174,7 @@ test_produceNLPtest    = do
     r <- runErr $
         do
             let trips = []
-            let dir = makeAbsFile "/home/frank/.LitTextTest/X1"
+            let dir = makeAbsFile "/home/frank/.tests/X1"
             let ntdescr = NTdescriptor {gzipFlag = True, destNT = dir }
             putIOwords ["produceNLPtest" , showT ntdescr ]
             r <- bracketErrIO (do

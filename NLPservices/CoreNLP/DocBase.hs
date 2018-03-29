@@ -82,7 +82,7 @@ newtype CorefRelID = CorefRelID [Text]
             deriving (Show, Read, Eq, Ord, Generic)
 newtype MentionRelID = MentionRelID [Text]
             deriving (Show, Read, Eq, Ord, Generic)
-newtype SnipIRelD = SnipIRelD [Text]
+newtype SnipRelID = SnipRelID [Text]
             deriving (Show, Read, Eq, Ord, Generic)
 newtype SentenceRelID = SentenceRelID [Text]
             deriving (Show, Read, Eq, Ord, Generic)
@@ -94,7 +94,7 @@ newtype DepRelID = DepRelID [Text]
 instance Zeros ParaRelID where zero = ParaRelID zero
 instance Zeros CorefRelID where zero = CorefRelID zero
 instance Zeros MentionRelID where zero = MentionRelID zero
-instance Zeros SnipIRelD where zero = SnipIRelD zero
+instance Zeros SnipRelID where zero = SnipRelID zero
 instance Zeros SentenceRelID where zero = SentenceRelID zero
 instance Zeros TokenRelID where zero = TokenRelID zero
 instance Zeros DepRelID where zero = DepRelID zero
@@ -105,7 +105,7 @@ instance Zeros DepRelID where zero = DepRelID zero
 ----instance AbsID
 
 addDep2SentID (SentenceRelID d) s@(DepID s1) = DepRelID $ formatID s : d
-addSent2DocID (SnipIRelD d) s@(SentenceID s1) = SentenceRelID $ formatID s : d
+addSent2DocID (SnipRelID d) s@(SentenceID s1) = SentenceRelID $ formatID s : d
 addTok2SentID (SentenceRelID d) s@(TokenID s1) = TokenRelID $ formatID s : d
 newtype ParaID = ParaID  Int
             deriving (Show, Read, Eq, Ord, Generic)

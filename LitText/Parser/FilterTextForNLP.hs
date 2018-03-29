@@ -17,7 +17,7 @@
     , RecordWildCards #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-{-# OPTIONS_GHC -w #-}
+--{-# OPTIONS_GHC -w #-}
 
 module Parser.FilterTextForNLP (
      prepareTZ4nlp
@@ -46,20 +46,22 @@ import LitTypes.TextDescriptor
 --                        }
 --            deriving (Read, Show, Eq )
 
-tz3fillLength :: Snip -> Snip
--- fill the length field
-tz3fillLength n = n{snip3textLength = getLengthLC . snip3text $ n}
+--tz3fillLength :: Snip -> Snip
+---- fill the length field
+--tz3fillLength n = n{snip3textLength = getLengthLC . snip3text $ n}
 
 
-prepareTZ4nlp :: Text -> [TZ2] -> [Snip]
+prepareTZ4nlp :: Text -> RDFsubj -> [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
-prepareTZ4nlp postag tz2s = map tz3fillLength . catMaybes
-        . map (prepareTZ4nlpOne postag) $ tz2s
+prepareTZ4nlp postag baserdf tz2s = --map tz3fillLength .
+    catMaybes
+        . map (prepareTZ4nlpOne postag baserdf) $ tz2s
 
 
-prepareTZ4nlpOne :: Text -> TZ2 -> Maybe Snip  -- test C  -> D
+prepareTZ4nlpOne :: Text -> RDFsubj -> TZ2 -> Maybe Snip  -- test C  -> D
 -- selecte the text from TZ and convert to text
-prepareTZ4nlpOne postag tz2 = if condNLPtext tz2 then Just $ formatParaText postag tz2
+prepareTZ4nlpOne postag baserdf tz2 = if condNLPtext tz2
+                    then Just $ formatParaText postag baserdf tz2
                     else Nothing
 
 --prepareTZ4nlp = map formatParaText . filter condNLPtext
@@ -68,7 +70,7 @@ prepareTZ4nlpOne postag tz2 = if condNLPtext tz2 then Just $ formatParaText post
 condNLPtext :: TZ2 -> Bool
 -- select the paragraphs and the titles to TZtext
 condNLPtext tz  = case tz of
---    TZzdahl {}  -> errorT ["condNLPtext","should not have TZzahl left", showT tz]
+--    TZzahl {}  -> errorT ["condNLPtext","should not have TZzahl left", showT tz]
     TZ2markup {} ->
             case tz2tok tz of
                 BuchTitel ->  True
@@ -78,36 +80,44 @@ condNLPtext tz  = case tz of
                 _         ->   False
     TZ2para {} -> True
 
-formatParaText :: Text -> TZ2 -> Snip
+formatParaText :: Text -> RDFsubj -> TZ2 -> Snip
 -- convert the headers to a tztext
-formatParaText postag tz@TZ2para{..} =
+formatParaText postag baserdf tz@TZ2para{..} =
         Snip {
             snip3loc = tz2loc
 --                , tz3para = tz2para
---                , snip3snipnr = zero  -- not acceptable snip nr, cannot be undef
+                , snip3snipnr = zero  -- not acceptable snip nr, cannot be undef
                                 -- would not work with test harness
+            , snip3baserdf = baserdf
 --                , tz3snipsigl = zero
-            , snip3posTag = postag
-            , snip3text = codeText lang (foldl1 combine2linesWithHyphenation
-                        . map (getText . twm1 . tztext1) $ (tz2tzs  ))
+            , snip3text = text
+            , snip3textLength = getLengthLC text
+                    -- is not filled later
+            , snip3posTagSetID = postag
         }
     where
             lang  = getLanguageCode . twm1 . tztext1
                         . headNote "formatParaText lang" $ tz2tzs   :: LanguageCode
+            text = codeText lang (foldl1 combine2linesWithHyphenation
+                        . map (getText . twm1 . tztext1) $ (tz2tzs  ))
 
-formatParaText postag tz@TZ2markup {..} =
+formatParaText postag baserdf tz@TZ2markup {..} =
     Snip {snip3loc = tz2loc
 --        , tz3lang = tz2lang
 --        , tz3para = tz2para
         , snip3snipnr = zero
+            , snip3baserdf = baserdf
 --        , tz3snipsigl = zero
-        , snip3text = codeText lang $ tx <> ". "     -- to make sure these are sentences for NLP
-                                      --    risk of two ..
-        , snip3posTag = postag
+        , snip3text = text
+        , snip3textLength = getLengthLC text
+        , snip3posTagSetID = postag
         }
 
     where
         tx = getText . twm1 $ tz2text
+        text = codeText lang $ tx <> ". "
+                        -- to make sure these are sentences for NLP
+                      --    risk of two ..
         lang = getLanguageCode . twm1 $ tz2text
 
 

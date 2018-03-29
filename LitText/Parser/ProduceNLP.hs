@@ -52,12 +52,13 @@ tz2toSnip :: LitTextFlags -> TextDescriptor ->  [TZ2] ->  [Snip]
 tz2toSnip flags textstate tzs = snips3
    where
         posTag = txPosTagset textstate
-        snips1 = prepareTZ4nlp posTag tzs :: [Snip]
+        baserdf = buchURIx $ textstate
+        snips1 = prepareTZ4nlp posTag baserdf tzs :: [Snip]
         snips2 = formSnips snips1  :: [Snip]
         snips3 = zipWith pushSnipNumber2snip [1..] snips2
 
-pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
-pushPosTagset2snip textstate snip = snip {snip3posTag = txPosTagset textstate}
+--pushPosTagset2snip :: TextDescriptor -> Snip -> Snip
+--pushPosTagset2snip textstate snip = snip {snip3posTag = txPosTagset textstate}
 
 pushSnipNumber2snip :: Int -> Snip -> Snip
 pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}

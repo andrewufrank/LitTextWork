@@ -58,17 +58,17 @@ instance ShowTestHarness [TZ2]
 instance ShowTestHarness [Triple]
 
 test_1CA_H = test2File progName "resultA1" "resultCA1" "resultH1" produceLitTriples
---test_2BAE_H = test2File progName result2A "resultBAE2" "resultH2" produceLitTriples
---test_3BAE_H = test2File progName result3A "resultBAE3" "resultH3" produceLitTriples
---test_4BAE_H = test2File progName result4A "resultBAE4" "resultH4" produceLitTriples
---test_5BAE_H = test2File progName result5A "resultBAE5" "resultH5" produceLitTriples
---test_6BAE_H = test2File progName result6A "resultBAE6" "resultH6" produceLitTriples
-----test_7BAE_H = test2File progName result7A "resultBAE7" "resultH7" produceLitTriples
---test_8BAE_H = test2File progName result8A "resultBAE8" "resultH8" produceLitTriples
---test_9BAE_H = test2File progName result9A "resultBAE9" "resultH9" produceLitTriples
---test_10BAE_H = test2File progName result10A "resultBAE10" "resultH10" produceLitTriples
---test_11BAE_H = test2File progName result11A "resultBAE11" "resultH11" produceLitTriples
---test_12BAE_H = test2File progName result12A "resultBAE12" "resultH12" produceLitTriples
+test_2CA_H = test2File progName "resultA2" "resultCA2" "resultH2" produceLitTriples
+test_3CA_H = test2File progName "resultA3" "resultCA3" "resultH3" produceLitTriples
+test_4CA_H = test2File progName "resultA4" "resultCA4" "resultH4" produceLitTriples
+test_5CA_H = test2File progName "resultA5" "resultCA5" "resultH5" produceLitTriples
+test_6CA_H = test2File progName "resultA6" "resultCA6" "resultH6" produceLitTriples
+--test_7CA_H = test2File progName result7A "resultCA7" "resultH7" produceLitTriples
+test_8CA_H = test2File progName "resultA8" "resultCA8" "resultH8" produceLitTriples
+test_9CA_H = test2File progName "resultA9" "resultCA9" "resultH9" produceLitTriples
+test_10CA_H = test2File progName "resultA10" "resultCA10" "resultH10" produceLitTriples
+test_11CA_H = test2File progName "resultA11" "resultCA11" "resultH11" produceLitTriples
+test_12CA_H = test2File progName "resultA12" "resultCA12" "resultH12" produceLitTriples
 
 
 --writeLitTriples :: FilePath -> FilePath ->  IO ()
@@ -86,16 +86,16 @@ test_1CA_H = test2File progName "resultA1" "resultCA1" "resultH1" produceLitTrip
 --
 --
 --test_1H_K = writeLitTriples   "resultH1" "resultK1"
-----test_2H_K = writeLitTriples   "resultH2" "resultK2"
-----test_3H_K = writeLitTriples   "resultH3" "resultK3"
-----test_4H_K = writeLitTriples   "resultH4" "resultK4"
-----test_5H_K = writeLitTriples   "resultH5" "resultK5"
-----test_6H_K = writeLitTriples   "resultH6" "resultK6"
-----test_7H_K = writeLitTriples   "resultH7" "resultK7"
-----test_8H_K = writeLitTriples   "resultH8" "resultK8"
-----test_9H_K = writeLitTriples   "resultH9" "resultK9"
-----test_10H_K = writeLitTriples   "resultH10" "resultK10"
-----test_11H_K = writeLitTriples   "resultH11" "resultK11"
-----test_12H_K = writeLitTriples   "resultH12" "resultK12"
-----
+--test_2H_K = writeLitTriples   "resultH2" "resultK2"
+--test_3H_K = writeLitTriples   "resultH3" "resultK3"
+--test_4H_K = writeLitTriples   "resultH4" "resultK4"
+--test_5H_K = writeLitTriples   "resultH5" "resultK5"
+--test_6H_K = writeLitTriples   "resultH6" "resultK6"
+--test_7H_K = writeLitTriples   "resultH7" "resultK7"
+--test_8H_K = writeLitTriples   "resultH8" "resultK8"
+--test_9H_K = writeLitTriples   "resultH9" "resultK9"
+--test_10H_K = writeLitTriples   "resultH10" "resultK10"
+--test_11H_K = writeLitTriples   "resultH11" "resultK11"
+--test_12H_K = writeLitTriples   "resultH12" "resultK12"
+------
 

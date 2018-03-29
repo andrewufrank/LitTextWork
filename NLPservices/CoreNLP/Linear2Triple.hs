@@ -39,7 +39,7 @@ import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 import NLP.TagSets.NERcodes (fromNERtag)
 
-toTriple ::  Show postag => postag -> PartURI
+toTriple ::  Show postag => postag -> RDFsubj
                     ->  [DocAsList postag] -> [DocAsTriple ]
 toTriple postag rdfbase ds  =  concat r
     where r =  map (makeTriple postag rdfbase) ds :: [[DocAsTriple ]]
@@ -72,7 +72,7 @@ unNLPtriple (NLPtriple t) = t
 
 class MakeIRI p where
 -- make an IRI from a nRelID
-    mkIRI ::  PartURI -> p -> RDFsubj
+    mkIRI ::  RDFsubj -> p -> RDFsubj
 
 mkIRI_ :: Text -> Text -> [Text] -> RDFsubj
 -- the internal code
@@ -82,16 +82,16 @@ mkIRI_ note base ts = if null ts
                 (fromJustNote ("intercalate mkIRI  " ++ (t2s note))
                             $ intercalate' "/" . reverse $ ts)
 
-instance MakeIRI SnipIRelD where
-    mkIRI (PartURI base) (SnipIRelD ts)
-            =   mkIRI_ "SnipIRelD" base ts
+instance MakeIRI SnipRelID where
+    mkIRI (RDFsubj base) (SnipRelID ts)
+            =   mkIRI_ "SnipRelID" base ts
 
 instance MakeIRI SentenceRelID where
-    mkIRI (PartURI base) (SentenceRelID ts)
+    mkIRI (RDFsubj base) (SentenceRelID ts)
             =  mkIRI_ "SentenceRelID" base ts
 
 instance MakeIRI TokenRelID where
-    mkIRI (PartURI base) (TokenRelID ts)
+    mkIRI (RDFsubj base) (TokenRelID ts)
             =   mkIRI_ "TokenRelID" base ts
 
 data DocAsTriple   =
@@ -117,19 +117,22 @@ data DocAsTriple   =
 
 instance Zeros (DocAsTriple  ) where zero = TriZero
 
-makeTriple :: (Show postag) =>  postag -> PartURI -> DocAsList postag -> [DocAsTriple ]
+makeTriple :: (Show postag) =>  postag -> RDFsubj
+                    -> DocAsList postag -> [DocAsTriple ]
 
 makeTriple _ base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Doc]
 
 makeTriple _ base SentenceLin{..} = [TriType triSubj Voc.Sentence
-                   , maybe zero (TriText2 triSubj  (mkRDFproperty Voc.SentenceParse)) s3parse
+                   , maybe zero (TriText2 triSubj
+                   (mkRDFproperty Voc.SentenceParse)) s3parse
                    , TriPartOf triSubj $ mkIRI base s3docid
                    , TriTextL2 triSubj (mkRDFproperty SentenceForm) s3text]
                                -- sentence form not in the data
     where triSubj = mkIRI base s3id
 
 -- | this gives all triples of a chain with the the same subj
-makeTriple _ base DependenceLin{..} = [ TriRel2 triSubj (mkRDFproperty d3type) $ mkIRI base d3depid
+makeTriple _ base DependenceLin{..} = [ TriRel2 triSubj (mkRDFproperty d3type)
+            $ mkIRI base d3depid
 --            ,TriType triSubj Dependence
 --            , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
 --            , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
@@ -144,7 +147,8 @@ makeTriple _ base DependenceLin{..} = [ TriRel2 triSubj (mkRDFproperty d3type) $
     where   triSubj = mkIRI base d3govid
 
 makeTriple _ base MentionLin{..} =
-                [TriRel2 triSubj (mkRDFproperty Voc.Mentions) $ mkIRI base ment3Ment
+                [TriRel2 triSubj (mkRDFproperty Voc.Mentions)
+                $ mkIRI base ment3Ment
 --                        , TriType triSubj Mention
                     -- the triSubj is the same for all chains
                     -- most of this is not really necessary

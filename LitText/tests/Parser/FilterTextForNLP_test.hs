@@ -29,6 +29,8 @@ import Lines2para.Lines2para
 import Lines2para.HandleLayout
 import Parser.ReadMarkupAB  -- todo  -- for test
 import LitTypes.ServerNames
+--import LitTypes.LanguageTypedText (RDFsubj (..), LanguageCode (..))
+import Data.RDFext.Extension (RDFsubj(..))
 --import           CoreNLP.Defs0
 --import CoreNLP.CoreNLPxml (readDocString)
 --import Data.List.Split
@@ -42,7 +44,7 @@ instance ShowTestHarness [Snip]
 
 prepareTZ4nlpTest :: [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
-prepareTZ4nlpTest  = prepareTZ4nlp ""
+prepareTZ4nlpTest  = prepareTZ4nlp "" (RDFsubj . unPartURI $  rdfBase)
 --    map tz3fillLength . catMaybes . map (prepareTZ4nlp "")
 
 

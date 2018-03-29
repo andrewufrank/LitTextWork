@@ -14,6 +14,7 @@
     ,TypeSynonymInstances
     , MultiParamTypeClasses
     , NoMonomorphismRestriction
+    , RecordWildCards
     , UndecidableInstances #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
@@ -64,43 +65,48 @@ convertOneSnip2triples_NLPservices :: LitTextFlags  -> TD.Snip -> ErrIO [Triple]
 -- this is just the conversion from tagged to typed
 -- which could not be moved earlier, because the snip is the highest
 -- single language text collection
-convertOneSnip2triples_NLPservices flags snip = if  TD.snipIsNull snip
+-- the tagset is selected in the snip, unless "" which  means default
+-- then selection on languageCode
+-- not used: LitTextFlag (contains the posTagSet, but this is used
+-- in LitText
+convertOneSnip2triples_NLPservices flags Snip{..} =
+  if  snip3textLength == 0
     then return zero
     else do
-        let lang = getLanguageCode . snip3text $  snip
+        let lang = getLanguageCode  snip3text
     --    let snipsigl = snip3snipsigl snip   -- remove later, something is needed
-        let snipBase = snip3baserdf  snip
-        let pt = ""  -- could be in flags
+        let snipBase = snip3baserdf
+        let postagsetID =  snip3posTagSetID
         let debugNLP = True --  DebugFlag `elem` flags
-        let text = snip3text snip
+        let text = snip3text
         let nlpserver = if LocalNLPserverFlag `elem` flags
                     then serverLocalhost
                     else serverBrest
-        trips <- case (lang, pt) of
+        trips <- case (lang, postagsetID) of
             (English, "") -> do
                     t <- snip2triples undefEnglish Conll.undefPOS
                          flags   (convertLC2LT text) snipBase  nlpserver
                     return t -- (map unNLPtriple t)
---        (German, "") -> do
---                t <- snip2triples undefGerman undefGermanPos
---                     flags   (convertLC2LT text) snipBase  nlpserver
---                return (map unNLPtriple t)
---        (Italian,"") -> do
---                t <- snip2triples undefItalian undefTinTPos
---                     flags   (convertLC2LT text) snipBase  nlpserver
---                return (map unNLPtriple t)
---        (French, "")-> do
---                t <-snip2triples undefFrench undefFrenchPos
---                     flags   (convertLC2LT text) snipBase  nlpserver
---                return (map unNLPtriple t)
---        (French, "FrenchUD")-> do
---                t <- snip2triples undefFrench undefFrenchUDPos
---                     flags   (convertLC2LT text) snipBase  nlpserver
---                return (map unNLPtriple t)
---        (Spanish,"") -> do
---                t <- snip2triples undefSpanish undefSpanishPos
---                     flags   (convertLC2LT text) snipBase  nlpserver
---                return (map unNLPtriple t)
+            (German, "") -> do
+                    t <- snip2triples undefGerman German.undefPOS
+                         flags   (convertLC2LT text) snipBase  nlpserver
+                    return t -- (map unNLPtriple t)
+            (Italian,"") -> do
+                    t <- snip2triples undefItalian TinT.undefPOS
+                         flags   (convertLC2LT text) snipBase  nlpserver
+                    return t -- (map unNLPtriple t)
+            (French, "")-> do
+                    t <-snip2triples undefFrench French.undefPOS
+                         flags   (convertLC2LT text) snipBase  nlpserver
+                    return t -- (map unNLPtriple t)
+            (French, "FrenchUD")-> do
+                    t <- snip2triples undefFrench FrenchUD.undefPOS
+                         flags   (convertLC2LT text) snipBase  nlpserver
+                    return t -- (map unNLPtriple t)
+            (Spanish,"") -> do
+                    t <- snip2triples undefSpanish Spanish.undefPOS
+                         flags   (convertLC2LT text) snipBase  nlpserver
+                    return t -- (map unNLPtriple t)
             _ -> return zero
         return trips
 
@@ -110,7 +116,7 @@ class  LanguageTyped22 lang postag where
 --    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlags ->  Snip2 lang -> URI
 --                -> ErrIO [NLPtriple postag]
     snip2triples :: lang -> postag -> LitTextFlags ->  LTtext lang
-                -> PartURI  -> URI
+                -> RDFsubj  -> URI
                 -> ErrIO [Triple]
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output

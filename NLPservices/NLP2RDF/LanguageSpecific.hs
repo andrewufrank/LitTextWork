@@ -90,7 +90,7 @@ class ( POStags postag, LanguageDependent lang, LanguageTypedText lang)
     nlpParams :: lang -> postag -> HttpVarParams
     nlpPort :: lang -> postag -> Int   -- should be a port type
 
-    postNLP :: postag -> lang -> Bool ->   PartURI -> Text -> [Triple]
+    postNLP :: postag -> lang -> Bool -> RDFsubj -> Text -> [Triple]
     -- postprocessing (e.g. adding POS to german)
     postNLP pph lang debug  brdf txt =   json2triples pph (languageCode lang) brdf txt
 
@@ -184,6 +184,12 @@ instance LanguageTyped2 FrenchType FrenchUD.POStag where
 --    nlpParams _ _ =  HttpVarParams [
 --                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
 --                                        ]
+
+instance LanguageTyped2 SpanishType Spanish.POStag where
+    nlpPort _ _ = portSpanish
+    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
+                                        ]
 
 instance LanguageTyped2 SpanishType UD.POStag where
     nlpPort _ _ = portSpanish

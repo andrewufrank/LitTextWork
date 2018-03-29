@@ -89,12 +89,14 @@ instance Zeros NTdescriptor where
 data Snip = Snip { snip3loc :: TextLoc
 --                        , snip3para :: ParaNum
                         , snip3snipnr ::  SnipID
-                        , snip3baserdf :: PartURI
+                        , snip3baserdf :: RDFsubj
 --                        , snip3snipsigl :: SnipSigl
 --                        , snip3parasigl :: ParaSigl
                         , snip3text:: LCtext
                         , snip3textLength :: Int
-                        , snip3posTag :: Text
+                        , snip3posTagSetID :: Text
+                        -- an identifier for the tagset to use
+                        -- currently
 --                        , snip3lang :: LanguageCode
                         }
             deriving (Read, Show, Eq )

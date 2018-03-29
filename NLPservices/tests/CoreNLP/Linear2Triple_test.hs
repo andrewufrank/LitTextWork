@@ -20,7 +20,7 @@ import Uniform.Test.TestHarness
 import CoreNLP.Linear2Triple
 import qualified NLP.TagSets.Conll  as Conll
 import Data.RDFext.Extension as RDF
-import LitTypes.ServerNames (rdfBase)
+import CoreNLP.Vocabulary
 
 
 instance ShowTestHarness [DocAsList Conll.POStag] where
@@ -31,7 +31,7 @@ instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
 test_c = test1File progName "short1.lin5" "short1.trips6"
-        (toTriple Conll.undefPOS rdfBase)
+        (toTriple Conll.undefPOS (RDFsubj . unPartURI $ rdfBase))
 
 test_d = test1File progName "short1.trips6" "short1.nt"
         (unNT . toNT)
