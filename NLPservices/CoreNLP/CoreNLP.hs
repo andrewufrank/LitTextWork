@@ -27,6 +27,7 @@ module CoreNLP.CoreNLP (
 import CoreNLP.DocNLP_0or1
 import CoreNLP.Doc1_absoluteID
 import CoreNLP.Doc2ToLinear
+    --  toLin ::  postag ->  (Doc11 postag) ->  [DocAsList postag]
 import CoreNLP.Linear2Triple
 import CoreNLP.Conllu2doc1
 --import Data.List

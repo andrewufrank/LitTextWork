@@ -33,7 +33,8 @@ module CoreNLP.DocNLP_0or1 (
         ,  SpeakerTags (..)
             , DepCode (..), DEPtags (..)
             , DepCode1 (..), DepCode2 (..)
-        , unLCtext, LCtext (..), LanguageCodedText (..)
+--        , unLCtext
+        , LCtext (..), LanguageCodedText (..)
         )  where
 
 import              Uniform.Strings

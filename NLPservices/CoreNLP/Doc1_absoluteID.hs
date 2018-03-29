@@ -5,7 +5,7 @@
 -- | the base data types for the Doc11
 -- Doc11 has all RelIDs relative to the SentenceID
 -- the postag is coded here
--- convertes .doc3 to .doc4 files
+-- convertes .doc3 to .doc4 (doc11) files
 -----------------------------------------------------------------------------
 {-# LANGUAGE
         ScopedTypeVariables
