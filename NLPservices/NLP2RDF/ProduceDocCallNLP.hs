@@ -58,13 +58,13 @@ import LitTypes.ServerNames (rdfBase)  -- replace!!
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
-convertOneSnip2triples :: LitTextFlags  -> TD.Snip -> ErrIO [Triple]
+convertOneSnip2triples_NLPservices :: LitTextFlags  -> TD.Snip -> ErrIO [Triple]
 -- | is is the overall process taking a snip and producing the NT as text
 -- construct a snipID from rdfBase (from LitTypes.ServerNames)
 -- this is just the conversion from tagged to typed
 -- which could not be moved earlier, because the snip is the highest
 -- single language text collection
-convertOneSnip2triples flags snip = if  TD.snipIsNull snip
+convertOneSnip2triples_NLPservices flags snip = if  TD.snipIsNull snip
     then return zero
     else do
         let lang = getLanguageCode . snip3text $  snip

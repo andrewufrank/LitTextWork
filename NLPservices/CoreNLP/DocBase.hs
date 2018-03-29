@@ -40,8 +40,8 @@ import              NLP.TagSets.NERcodes
 import              NLP.TagSets.SpeakerTags
 import           Text.Printf             (printf)
 import GHC.Generics
-import LitTypes.LanguageTypedText (LCtext (..))
-
+--import LitTypes.LanguageTypedText (LCtext (..))
+import LitTypes.TextDescriptor
 
 newtype  Wordform0 = Wordform0 {word0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic)
@@ -113,8 +113,8 @@ newtype CorefID = CorefID Int
             deriving (Show, Read, Eq, Ord, Generic)
 newtype MentionID = MentionID Int
             deriving (Show, Read, Eq, Ord, Generic)
-newtype SnipID = SnipID Int
-            deriving (Show, Read, Eq, Ord, Generic)
+--newtype SnipID = SnipID Int
+--            deriving (Show, Read, Eq, Ord, Generic)
 newtype SentenceID = SentenceID Int
             deriving (Show, Read, Eq, Ord, Generic)
 newtype TokenID = TokenID Int
@@ -125,7 +125,7 @@ newtype DepID = DepID Int
 instance Zeros ParaID where zero = ParaID zero
 instance Zeros CorefID where zero = CorefID zero
 instance Zeros MentionID where zero = MentionID zero
-instance Zeros SnipID where zero = SnipID zero
+--instance Zeros SnipID where zero = SnipID zero
 instance Zeros SentenceID where zero = SentenceID zero
 instance Zeros TokenID where zero = TokenID zero
 instance Zeros DepID where zero = DepID zero

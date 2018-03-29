@@ -87,7 +87,8 @@ convertOneSnip2Triples flags textstate snip = do
         then return []
         else do
 --            let snip2 = pushSnipSigl2snip snipsigl snip
-            trips <- convertOneSnip2Triples3 flags  snip
+            trips <- convertOneSnip2triples_NLPservices flags  snip
+            -- call NLPservices from here
             return trips
 
     return $ partOfTriples ++ trips2

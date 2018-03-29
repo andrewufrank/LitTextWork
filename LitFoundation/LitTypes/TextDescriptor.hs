@@ -11,6 +11,7 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE FlexibleInstances
+    , DeriveGeneric
     , RecordWildCards #-}
 
 module LitTypes.TextDescriptor (
@@ -38,6 +39,7 @@ import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
 import LitTypes.UtilsParseArgs ( LitTextFlag (..), LitTextFlags )
+import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
 
 -- directories:
@@ -97,7 +99,8 @@ data Snip = Snip { snip3loc :: TextLoc
                         }
             deriving (Read, Show, Eq )
 -- snip sigl uses the paragraph number of the first paragraph
-newtype SnipID  =   SnipID Int  deriving (Show, Read, Eq, Ord)
+newtype SnipID = SnipID Int
+            deriving (Show, Read, Eq, Ord, Generic)
 unSnipID (SnipID i) = i
 snipIsNull Snip {..} = snip3textLength == 0
 instance Zeros SnipID where zero = SnipID zero

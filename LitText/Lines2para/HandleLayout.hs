@@ -23,6 +23,7 @@
 
 module Lines2para.HandleLayout
     (module Lines2para.HandleLayout
+    , TextZeile (..), TZ (..)
 --    , module Lines2para.MarkupText
 --    , module LitTypes.TextDescriptor
 --    , module Uniform.Error

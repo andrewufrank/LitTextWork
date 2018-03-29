@@ -38,13 +38,13 @@ import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 --import Uniform.FileIO
 --import Path
-import Uniform.TestHarness
+import Uniform.Test.TestHarness
 --import Data.RDF.FileTypes
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.ServerNames  (rdfBase)  -- for test
 --import Parser.ProduceLayout (buchURIx)
-import NLP2RDF.NLPvocabulary
+--import NLP2RDF.NLPvocabulary
 import Parser.ProduceLit
 
 
@@ -54,19 +54,21 @@ test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
 --produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test CA -> H
 
 instance ShowTestHarness TextDescriptor
+instance ShowTestHarness [TZ2]
+instance ShowTestHarness [Triple]
 
-test_1CA_H = test3File "resultA1" "resultCA1" "resultH1" produceLitTriples
---test_2BAE_H = testVar3File result2A "resultBAE2" "resultH2" produceLitTriples
---test_3BAE_H = testVar3File result3A "resultBAE3" "resultH3" produceLitTriples
---test_4BAE_H = testVar3File result4A "resultBAE4" "resultH4" produceLitTriples
---test_5BAE_H = testVar3File result5A "resultBAE5" "resultH5" produceLitTriples
---test_6BAE_H = testVar3File result6A "resultBAE6" "resultH6" produceLitTriples
-----test_7BAE_H = testVar3File result7A "resultBAE7" "resultH7" produceLitTriples
---test_8BAE_H = testVar3File result8A "resultBAE8" "resultH8" produceLitTriples
---test_9BAE_H = testVar3File result9A "resultBAE9" "resultH9" produceLitTriples
---test_10BAE_H = testVar3File result10A "resultBAE10" "resultH10" produceLitTriples
---test_11BAE_H = testVar3File result11A "resultBAE11" "resultH11" produceLitTriples
---test_12BAE_H = testVar3File result12A "resultBAE12" "resultH12" produceLitTriples
+test_1CA_H = test2File progName "resultA1" "resultCA1" "resultH1" produceLitTriples
+--test_2BAE_H = test2File progName result2A "resultBAE2" "resultH2" produceLitTriples
+--test_3BAE_H = test2File progName result3A "resultBAE3" "resultH3" produceLitTriples
+--test_4BAE_H = test2File progName result4A "resultBAE4" "resultH4" produceLitTriples
+--test_5BAE_H = test2File progName result5A "resultBAE5" "resultH5" produceLitTriples
+--test_6BAE_H = test2File progName result6A "resultBAE6" "resultH6" produceLitTriples
+----test_7BAE_H = test2File progName result7A "resultBAE7" "resultH7" produceLitTriples
+--test_8BAE_H = test2File progName result8A "resultBAE8" "resultH8" produceLitTriples
+--test_9BAE_H = test2File progName result9A "resultBAE9" "resultH9" produceLitTriples
+--test_10BAE_H = test2File progName result10A "resultBAE10" "resultH10" produceLitTriples
+--test_11BAE_H = test2File progName result11A "resultBAE11" "resultH11" produceLitTriples
+--test_12BAE_H = test2File progName result12A "resultBAE12" "resultH12" produceLitTriples
 
 
 --writeLitTriples :: FilePath -> FilePath ->  IO ()

@@ -21,33 +21,36 @@ module Parser.FormNLPsnips_test
     where
 
 import           Test.Framework
-import Uniform.TestHarness
+import Uniform.Test.TestHarness
 import Data.Maybe -- todo
 import Lines2para.Lines2para
 import Lines2para.HandleLayout
 import Parser.ReadMarkupAB  -- todo  -- for test
 import LitTypes.ServerNames
-import           CoreNLP.Defs0
-import CoreNLP.CoreNLPxml (readDocString)
+--import           CoreNLP.Defs0
+--import CoreNLP.CoreNLPxml (readDocString)
 --import Data.List.Split
 --import Uniform.HttpCallWithConduit (makeHttpPost7, addPort2URI)
 --import Text.Regex (mkRegex, subRegex)
 import Parser.FilterTextForNLP
 import Parser.FormNLPsnips
 
+progName = "tests"
+-- instance ShowTestHarness [TextZeile]
+instance ShowTestHarness [Snip]
 
 
-test_1_D_DA = test1File "resultD1" "resultDA1" formSnips
-test_2_D_DA = test1File "resultD2" "resultDA2" formSnips
-test_3_D_DA = test1File "resultD3" "resultDA3" formSnips
-test_4_D_DA = test1File "resultD4" "resultDA4" formSnips
-test_5_D_DA = test1File "resultD5" "resultDA5" formSnips
-test_6_D_DA = test1File "resultD6" "resultDA6" formSnips
-test_8_D_DA = test1File "resultD8" "resultDA8" formSnips
-test_9_D_DA = test1File "resultD9" "resultDA9" formSnips
-test_10_D_DA = test1File "resultD10" "resultDA10" formSnips
-test_11_D_DA = test1File "resultD11" "resultDA11" formSnips
-test_12_D_DA = test1File "resultD12" "resultDA12" formSnips
+test_1_D_DA = test1File progName "resultD1" "resultDA1" formSnips
+test_2_D_DA = test1File progName "resultD2" "resultDA2" formSnips
+test_3_D_DA = test1File progName "resultD3" "resultDA3" formSnips
+test_4_D_DA = test1File progName "resultD4" "resultDA4" formSnips
+test_5_D_DA = test1File progName "resultD5" "resultDA5" formSnips
+test_6_D_DA = test1File progName "resultD6" "resultDA6" formSnips
+test_8_D_DA = test1File progName "resultD8" "resultDA8" formSnips
+test_9_D_DA = test1File progName "resultD9" "resultDA9" formSnips
+test_10_D_DA = test1File progName "resultD10" "resultDA10" formSnips
+test_11_D_DA = test1File progName "resultD11" "resultDA11" formSnips
+test_12_D_DA = test1File progName "resultD12" "resultDA12" formSnips
 
 
 

@@ -27,7 +27,7 @@ module Parser.ReadMarkupAB
 import           LitTypes.TextDescriptor
 import          LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 import           Uniform.FileIO
-import Uniform.TestHarnessUtilities.Utils
+--import Uniform.TestHarnessUtilities.Utils
 
 --testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
 --serverLocTest = serverBrest --

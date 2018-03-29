@@ -36,23 +36,27 @@ import Uniform.FileIO
 -- TODO string s
 import Data.List (nub)
 import           Test.Framework
-import Uniform.TestHarness
+import Uniform.Test.TestHarness
 import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
 import Lines2para.Lines2para
 
+instance ShowTestHarness [TZ1]
+instance ShowTestHarness [TZ2]
+
+progName = "tests"
 --paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA
-----test_0BA_BAC = test1File "resultBA0" "resultBAC0" paragraphs2TZpara
-test_1C_CA = test1File "resultC1" "resultCA1" paragraphsTZ2TZ2
-test_2C_CA = test1File "resultC2" "resultCA2" paragraphsTZ2TZ2
-test_3C_CA = test1File "resultC3" "resultCA3" paragraphsTZ2TZ2
-test_4C_CA = test1File "resultC4" "resultCA4" paragraphsTZ2TZ2
-test_5C_CA = test1File "resultC5" "resultCA5" paragraphsTZ2TZ2
-test_6C_CA = test1File "resultC6" "resultCA6" paragraphsTZ2TZ2
-test_8C_CA = test1File "resultC8" "resultCA8" paragraphsTZ2TZ2
-test_9C_CA = test1File "resultC9" "resultCA9" paragraphsTZ2TZ2
-test_10C_CA = test1File "resultC10" "resultCA10" paragraphsTZ2TZ2
-test_11C_CA = test1File "resultC11" "resultCA11" paragraphsTZ2TZ2
-test_12C_CA = test1File "resultC12" "resultCA12" paragraphsTZ2TZ2
+----test_0BA_BAC = test1File progName "resultBA0" "resultBAC0" paragraphs2TZpara
+test_1C_CA = test1File progName "resultC1" "resultCA1" paragraphsTZ2TZ2
+test_2C_CA = test1File progName "resultC2" "resultCA2" paragraphsTZ2TZ2
+test_3C_CA = test1File progName "resultC3" "resultCA3" paragraphsTZ2TZ2
+test_4C_CA = test1File progName "resultC4" "resultCA4" paragraphsTZ2TZ2
+test_5C_CA = test1File progName "resultC5" "resultCA5" paragraphsTZ2TZ2
+test_6C_CA = test1File progName "resultC6" "resultCA6" paragraphsTZ2TZ2
+test_8C_CA = test1File progName "resultC8" "resultCA8" paragraphsTZ2TZ2
+test_9C_CA = test1File progName "resultC9" "resultCA9" paragraphsTZ2TZ2
+test_10C_CA = test1File progName "resultC10" "resultCA10" paragraphsTZ2TZ2
+test_11C_CA = test1File progName "resultC11" "resultCA11" paragraphsTZ2TZ2
+test_12C_CA = test1File progName "resultC12" "resultCA12" paragraphsTZ2TZ2
 
 --test_8B_CA = test1File "resultBA8" "resultCA8" paragraphs2TZ
 

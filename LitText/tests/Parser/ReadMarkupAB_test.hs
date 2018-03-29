@@ -20,13 +20,16 @@
 module Parser.ReadMarkupAB_test where
 
 import           Test.Framework
-import Uniform.TestHarness
+import Uniform.Test.TestHarness
 
 import           LitTypes.TextDescriptor        hiding ((</>), (<.>))
 import          LitTypes.ServerNames
 import           Uniform.FileIO
-import Uniform.TestHarnessUtilities.Utils
+--import Uniform.TestHarnessUtilities.Utils
 import Parser.ReadMarkupAB
+
+progName = "tests"
+--instance ShowTestHarness [TextZeile]
 
 --testDir = makeAbsDir ("/home/frank/additionalSpace/DataBig/LitTest")
 --serverLocTest = serverBrest --
@@ -48,18 +51,18 @@ import Parser.ReadMarkupAB
 --testDataDir = makeAbsDir  "/home/frank/Workspace8/LitTextWorkGeras/LitTextWork/TestData"
 --        :: Path Abs Dir
 
-------test_0_A_B_textstate_text_1 =   testVar2File result0A "resultB0" textstate2Text
-test_1_A_B_textstate_text_1 =   testVar2File result1A "resultB1" textstate2Text
-test_2_A_B_textstate_text_2 =   testVar2File result2A "resultB2" textstate2Text
-test_3_A_B_textstate_text_3 =   testVar2File result3A "resultB3" textstate2Text
-test_4_A_B_textstate_text_4 =   testVar2File result4A "resultB4" textstate2Text
-test_5_A_B_textstate_text_5 =   testVar2File result5A "resultB5" textstate2Text
-test_6_A_B_textstate_text_6 =   testVar2File result6A "resultB6" textstate2Text
-test_8_A_B_textstate_text_8 =   testVar2File result8A "resultB8" textstate2Text
-test_9_A_B_textstate_text_9 =   testVar2File result9A "resultB9" textstate2Text
-test_10_A_B_textstate_text_10 =   testVar2File result10A "resultB10" textstate2Text
-test_11_A_B_textstate_text_11 =   testVar2File result11A "resultB11" textstate2Text
-test_12_A_B_textstate_text_12 =   testVar2File result12A "resultB12" textstate2Text
+------test_0_A_B_textstate_text_1 =   testVar0FileIO progName result0A "resultB0" textstate2Text
+test_1_A_B_textstate_text_1 =   testVar0FileIO progName result1A "resultB1" textstate2Text
+test_2_A_B_textstate_text_2 =   testVar0FileIO progName result2A "resultB2" textstate2Text
+test_3_A_B_textstate_text_3 =   testVar0FileIO progName result3A "resultB3" textstate2Text
+test_4_A_B_textstate_text_4 =   testVar0FileIO progName result4A "resultB4" textstate2Text
+test_5_A_B_textstate_text_5 =   testVar0FileIO progName result5A "resultB5" textstate2Text
+test_6_A_B_textstate_text_6 =   testVar0FileIO progName result6A "resultB6" textstate2Text
+test_8_A_B_textstate_text_8 =   testVar0FileIO progName result8A "resultB8" textstate2Text
+test_9_A_B_textstate_text_9 =   testVar0FileIO progName result9A "resultB9" textstate2Text
+test_10_A_B_textstate_text_10 =   testVar0FileIO progName result10A "resultB10" textstate2Text
+test_11_A_B_textstate_text_11 =   testVar0FileIO progName result11A "resultB11" textstate2Text
+test_12_A_B_textstate_text_12 =   testVar0FileIO progName result12A "resultB12" textstate2Text
 
 
 
@@ -88,15 +91,15 @@ result12A = fill_ "test" "t12"  -- italian character set issues
 --writeTextstate :: TextDescriptor -> ErrIO TextDescriptor
 writeTextstate textstate = return (showT textstate)
 
-test_1_A = testVar2File result1A "resultA1" writeTextstate
-test_2_A = testVar2File result2A "resultA2" writeTextstate
-test_3_A = testVar2File result3A "resultA3" writeTextstate
-test_4_A = testVar2File result4A "resultA4" writeTextstate
-test_5_A = testVar2File result5A "resultA5" writeTextstate
-test_6_A = testVar2File result6A "resultA6" writeTextstate
-test_7_A = testVar2File result7A "resultA7" writeTextstate
-test_8_A = testVar2File result8A "resultA8" writeTextstate
-test_9_A = testVar2File result9A "resultA9" writeTextstate
-test_10_A = testVar2File result10A "resultA10" writeTextstate
-test_11_A = testVar2File result11A "resultA11" writeTextstate
-test_12_A = testVar2File result12A "resultA12" writeTextstate
+test_1_A = testVar0FileIO progName result1A "resultA1" writeTextstate
+test_2_A = testVar0FileIO progName result2A "resultA2" writeTextstate
+test_3_A = testVar0FileIO progName result3A "resultA3" writeTextstate
+test_4_A = testVar0FileIO progName result4A "resultA4" writeTextstate
+test_5_A = testVar0FileIO progName result5A "resultA5" writeTextstate
+test_6_A = testVar0FileIO progName result6A "resultA6" writeTextstate
+test_7_A = testVar0FileIO progName result7A "resultA7" writeTextstate
+test_8_A = testVar0FileIO progName result8A "resultA8" writeTextstate
+test_9_A = testVar0FileIO progName result9A "resultA9" writeTextstate
+test_10_A = testVar0FileIO progName result10A "resultA10" writeTextstate
+test_11_A = testVar0FileIO progName result11A "resultA11" writeTextstate
+test_12_A = testVar0FileIO progName result12A "resultA12" writeTextstate

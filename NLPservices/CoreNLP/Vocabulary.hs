@@ -28,7 +28,7 @@ module CoreNLP.Vocabulary
 --import           CoreNLP.DocBase
 import           Data.RDFext.Extension  -- (RDFproperty)
 import           Uniform.Strings         hiding ((<|>))
-import LitTypes.TextDescriptor hiding ((</>), SnipID) -- from Foundation
+import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
 import LitTypes.ServerNames
 --import LitTypes.TextDescriptor
 --import LitTypes.TextDescriptor (SnipSigl)

@@ -33,34 +33,37 @@ import Data.Maybe  -- todo string - algebras?
 import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
 import Parser.ReadMarkupAB
-import Uniform.TestHarness hiding (try)
+import Uniform.Test.TestHarness hiding (try)
 import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 import Lines2para.MarkupText
 
+progName = "tests"
+instance ShowTestHarness [TextZeile]
+
 test_read1 = assertEqual "some text" (read . show $ "some text")
 
 parseMarkupTest :: Text -> [TextZeile]
-parseMarkupTest t =  parseMarkup    t
+parseMarkupTest =  parseMarkup
 
 --test_0B_BA = assertEqual result0BA (parseMarkup result0B)
 -- local test
 
 -- result1A, .. result6A is exported form ReadMarkupAB.
 
---test_0B_BA = test1File "resultB0" "resultBA0" parseMarkupTest
+--test_0B_BA = test1File progName "resultB0" "resultBA0" parseMarkupTest
 ----test_1B_BA :: IO ()
-test_1B_BA = test1File "resultB1" "resultBA1" parseMarkupTest
-test_2B_BA = test1File "resultB2" "resultBA2" parseMarkupTest
-test_3B_BA = test1File "resultB3" "resultBA3" parseMarkupTest
-test_4B_BA = test1File "resultB4" "resultBA4" parseMarkupTest
-test_5B_BA = test1File "resultB5" "resultBA5" parseMarkupTest
-test_6B_BA = test1File "resultB6" "resultBA6" parseMarkupTest
-test_8B_BA = test1File "resultB8" "resultBA8" parseMarkupTest  -- aesop
-test_9B_BA = test1File "resultB9" "resultBA9" parseMarkupTest  -- tawada
-test_10B_BA = test1File "resultB10" "resultBA10" parseMarkupTest  -- boccaccio
-test_11B_BA = test1File "resultB11" "resultBA11" parseMarkupTest  -- italian testing
-test_12B_BA = test1File "resultB12" "resultBA12" parseMarkupTest  -- italian testing
+test_1B_BA = test1File progName "resultB1" "resultBA1" parseMarkupTest
+test_2B_BA = test1File progName "resultB2" "resultBA2" parseMarkupTest
+test_3B_BA = test1File progName "resultB3" "resultBA3" parseMarkupTest
+test_4B_BA = test1File progName "resultB4" "resultBA4" parseMarkupTest
+test_5B_BA = test1File progName "resultB5" "resultBA5" parseMarkupTest
+test_6B_BA = test1File progName "resultB6" "resultBA6" parseMarkupTest
+test_8B_BA = test1File progName "resultB8" "resultBA8" parseMarkupTest  -- aesop
+test_9B_BA = test1File progName "resultB9" "resultBA9" parseMarkupTest  -- tawada
+test_10B_BA = test1File progName "resultB10" "resultBA10" parseMarkupTest  -- boccaccio
+test_11B_BA = test1File progName "resultB11" "resultBA11" parseMarkupTest  -- italian testing
+test_12B_BA = test1File progName "resultB12" "resultBA12" parseMarkupTest  -- italian testing
 
 
 
