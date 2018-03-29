@@ -3,7 +3,7 @@
 -- Module      :  reformat the output from parsing
 --  stanford corenlp 3.9. in json format
 
--- linearize doc4 and convert to triples  in .lin5
+-- linearize doc4 (doc11) and convert to triples  in .lin5
 -----------------------------------------------------------------------------
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
@@ -112,12 +112,19 @@ instance Linearize (Sentence11 postag) postag SnipRelID where
                 )
         where
             t2 = LCtext t1 lang
-            t1 = trim' . T.replace "  " " " . concat' . map getTokenText $ s11toks
+            t1 = trim' . T.replace "  " " " . concat'
+                            . map getTokenText $ s11toks
             -- replace double blanks by a single one for the sentence
             -- remove blanks front and back -
+                -- could also elliminate the blanks after ' (span ?!) and
+                -- before . , ! ?
             getTokenText :: Token11 postag -> Text
             getTokenText Token11{..} = concat'
-                . catMaybes $ [t11before, Just  . getText . word0 $ t11word, t11after]
+                . catMaybes $
+                    [maybe (Just " ") (Just . id)  t11before
+                    -- to have at least one blank if the
+                    -- before is Nothing
+                            , Just  . getText . word0 $ t11word, t11after]
             getLanguage Token11{..} = getLanguageCode . word0 $ t11word
             lang = if null s11toks then NoLanguage
                             else getLanguage . headNote "linearize sentence 11" $ s11toks
