@@ -19,6 +19,7 @@
 
 module CmdLineUtilities.UtilsProcessCmd
     (module CmdLineUtilities.UtilsProcessCmd
+    , LitTextFlag (..), LitTextFlags (..)
 --        , dirQueries
     )
     where
@@ -26,6 +27,8 @@ module CmdLineUtilities.UtilsProcessCmd
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 --import           Uniform.FileIO (homeDir2)
 import CmdLineUtilities.UtilsParseArgs
+import CmdLineUtilities.ProcessFlags
+
 --import Uniform.Error hiding ((<>), (</>), (<.>))
 --import           Data.Semigroup               ((<>))
 --import           Options.Applicative.Builder
@@ -35,26 +38,24 @@ import CmdLineUtilities.UtilsParseArgs
 --            , rdfBase, dirQueries, URI)
 --import Path.IO as Pathio
 
-data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
-            | OutputNLPflag | XMLflag | JSONflag
+--data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
+--            | OutputNLPflag | XMLflag | JSONflag
 --            | LocalNLPserverFlag
-            | SnipSet Int
-            | NoFlagZero
-            deriving (Show, Read, Eq, Ord, Generic)
-
-data ServerFlag = LocalServer | RemoteServer
-            deriving (Show, Read, Eq, Ord, Generic)
-
-type LitTextFlags = [LitTextFlag]
-instance Zeros LitTextFlag where zero = NoFlagZero
+--            | SnipSet Int
+--            | NoFlagZero
+--            deriving (Show, Read, Eq, Ord, Generic)
+--
+--data ServerFlag = LocalServer | RemoteServer
+--            deriving (Show, Read, Eq, Ord, Generic)
 
 
 
-selectServer :: LitArgs -> ServerFlag
--- select the server between localhost and brest
-selectServer args =  if  argLocalhost args
-                    then LocalServer
-                    else RemoteServer  -- default
+
+--selectServer :: LitArgs -> ServerFlag
+---- select the server between localhost and brest
+--selectServer args =  if  argLocalhost args
+--                    then LocalServer
+--                    else RemoteServer  -- default
 
 ----getLocalOriginDir
 ---- produces the abs dir combined from home origin and subfile dir
@@ -73,36 +74,38 @@ getTimeout args = fmap (60 *) t1
 --        t1 = readMay ("30"::String) :: Maybe Int
         t1 = readMay (argTimeout args)  :: Maybe Int
 
-data Inputs = Inputs {inArgs :: LitArgs
-                    , inDebug :: Bool
-                    , inForceFlag :: Bool
-                    , inServer :: ServerFlag
-                    , inDB :: Text
+data Inputs = Inputs {
+                     inDB :: Text
                     , inGraph :: Maybe Text
-                    , inTimeOut :: Maybe Int
-                    , inResultFile :: Path Abs File
                     , inOriginDir :: Path Abs Dir
                     , inFilename :: Maybe (Path Abs File)
+                    , inTimeOut :: Maybe Int
+                    , inFlags :: LitTextFlags
+--                    , inResultFile :: Path Abs File
+--                    inServer :: ServerFlag  -- localhost
+--        , inArgs :: LitArgs
+--                    , inDebug :: Bool
+--                    , inForceFlag :: Bool
                     } deriving (Show)
 
-parseAndStartExecute :: Bool -> Text -> Path Rel Dir
+parseAndStartExecute :: Bool -> Text
                     -> Text -> Text -> ErrIO Inputs
 -- the common operations to start the store, query and construct
 -- arguments: rel dir (to home) of origin
 -- name for result file
 -- debug flag value
-parseAndStartExecute debugFlag resultFileName originDir t1 t2 = do
+parseAndStartExecute debugFlag resultFileName  t1 t2 = do
     args1 <- getArgsParsed t1 t2
     homeDir :: Path Abs Dir <- homeDir2
     let args = args1
             -- setDefaultOriginDir args1 (toFilePath originDir)
     putIOwords ["parseAndStartExecute: process to store", showT args]
-    let server = selectServer args :: ServerFlag
+--    let server = selectServer args :: ServerFlag
     let resultFile = addFileName homeDir (t2s resultFileName ::FilePath)
                 :: Path Abs File
     -- not really interesting inofrmation
-    let forceFlag = argForceFlag args
-    let debugFlag = True
+--    let forceFlag = argForceFlag args
+--    let debugFlag = True
 --        putIOwords ["parseAndStartExecute: before making args "]
     let  timeout = getTimeout args
          mgraph = if null' . argGraph $ args then Nothing
@@ -115,19 +118,26 @@ parseAndStartExecute debugFlag resultFileName originDir t1 t2 = do
                 then Nothing
                 else Just . addFileName homeDir. argFn $ args :: Maybe (Path Abs File)
     putIOwords ["parseAndStartExecute:   the arguments always necessary or optional with defaults "
-                , "\n\tserver", showT server
+--                , "\n\tserver", showT server
                 , "\n\tdbarg", showT dbarg
                 , "\n\tgraph", showT mgraph  -- optional for queries with all graphs
                 , "\n\toriginDir", showT originDir
                 , "\n\ttimeout", showT timeout
 --                    , "\n\tqueryFile", showT fn
                 ]
-    let inp = Inputs {inArgs = args, inDebug = debugFlag
-                , inForceFlag = forceFlag
-                , inServer = server, inDB = dbarg, inGraph = mgraph
-                , inTimeOut = timeout, inResultFile = resultFile
+    let flags = args2flags args
+    putIOwords ["parseAndStartExecute flags", showT flags]
+    let inp = Inputs {
+                  inDB = dbarg
+                , inGraph = mgraph
                 , inOriginDir = originDir
                 , inFilename = fn
+                , inTimeOut = timeout
+--                inArgs = args
+--                , inDebug = debugFlag
+--                , inForceFlag = forceFlag
+--                , inServer = server
+--                , inResultFile = resultFile
                 }
     putIOwords ["parseAndStartExecute:  inputs ", showT inp]
     return inp

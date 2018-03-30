@@ -26,7 +26,7 @@ module LitTypes.TextDescriptor (
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
-    , LitTextFlag (..), LitTextFlags
+--    , LitTextFlag (..), LitTextFlags
     , PartURI (..), RDFsubj (..)
 --    , unPartURI
 --    , append2partURI
@@ -240,49 +240,49 @@ data LitDirs = LitDirs {
 dirsTest = LitDirs litTestDir1  litNTTestDir1
 dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 
-fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
-            -> Text -> LitTextFlags -> TextDescriptor
--- construct at text state for a gutenberg catalog markup file
--- output is gzip, text is not included
-fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
-        sourceMarkup = file
-        , nlpServer = server  -- could use/set the server flag
-        , authorDir = authordir
-        , buchName = buchname
-        , includeText = IncludeTextFlag `elem` flags
-        , txPosTagset =  ""
-        , ntdescriptor = fillNTdescriptor ntdir filename True
-        }
---        fillTextState3 litdirs server author buch
-    where
-            filename = getFileName file :: Path Rel File
---             = getImmediateParentDir fp
---            buch = getNakedFileName fp
-
-fillNTdescriptor :: Path Abs Dir -> Path Rel File -> Bool -> NTdescriptor
-fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
-          destNT = (ntdir </> filename) :: Path Abs File
-        , gzipFlag = gzip
---        , destHandle =  Nothing
-        }
-
-fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
-                -> TextDescriptor
-
--- construct at text state with authorDir and buchFilename as FilePath
-fillTextState3a litdirs server author buch includeText = TextDescriptor {
-    sourceMarkup = (source litdirs) </> (author </> buch)
---    , destNT = (dest litdirs) </> (author </> buch)
---    , gzipFlag = False
---    , destHandle = Nothing
-    , nlpServer = server
-    , authorDir = s2t author
-    , buchName = s2t buch
-    , includeText =  includeText
-    , txPosTagset = ""   -- take default
-    , ntdescriptor = fillNTdescriptor (dest litdirs) author_buch False
-    }
-        where
-            author_buch = makeRelFile (author </> buch) :: Path Rel File
+--fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
+--            -> Text -> LitTextFlags -> TextDescriptor
+---- construct at text state for a gutenberg catalog markup file
+---- output is gzip, text is not included
+--fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
+--        sourceMarkup = file
+--        , nlpServer = server  -- could use/set the server flag
+--        , authorDir = authordir
+--        , buchName = buchname
+--        , includeText = IncludeTextFlag `elem` flags
+--        , txPosTagset =  ""
+--        , ntdescriptor = fillNTdescriptor ntdir filename True
+--        }
+----        fillTextState3 litdirs server author buch
+--    where
+--            filename = getFileName file :: Path Rel File
+----             = getImmediateParentDir fp
+----            buch = getNakedFileName fp
+--
+--fillNTdescriptor :: Path Abs Dir -> Path Rel File -> Bool -> NTdescriptor
+--fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
+--          destNT = (ntdir </> filename) :: Path Abs File
+--        , gzipFlag = gzip
+----        , destHandle =  Nothing
+--        }
+--
+--fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
+--                -> TextDescriptor
+--
+---- construct at text state with authorDir and buchFilename as FilePath
+--fillTextState3a litdirs server author buch includeText = TextDescriptor {
+--    sourceMarkup = (source litdirs) </> (author </> buch)
+----    , destNT = (dest litdirs) </> (author </> buch)
+----    , gzipFlag = False
+----    , destHandle = Nothing
+--    , nlpServer = server
+--    , authorDir = s2t author
+--    , buchName = s2t buch
+--    , includeText =  includeText
+--    , txPosTagset = ""   -- take default
+--    , ntdescriptor = fillNTdescriptor (dest litdirs) author_buch False
+--    }
+--        where
+--            author_buch = makeRelFile (author </> buch) :: Path Rel File
 
 
