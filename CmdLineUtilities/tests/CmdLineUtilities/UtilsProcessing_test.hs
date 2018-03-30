@@ -16,8 +16,8 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module LitTypes.UtilsParseArgs_test  where
+module CmdLineUtilities.UtilsProcessing_test
+    where
 
 import           Test.Framework
-
 

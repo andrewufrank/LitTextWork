@@ -26,4 +26,4 @@ extra-deps:
 - hgal-2.0.0.2
 - test-invariant-0.4.5.0
 - validity-0.3.3.0
-resolver: lts-9.1
+resolver: lts-10.8

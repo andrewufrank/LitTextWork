@@ -43,7 +43,7 @@ import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
 --import Data.RDFext.Extension (LanguageCode (..), RDFtypes(..), RDFproperties (..))
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
-import LitTypes.UtilsParseArgs --( LitTextFlag (..), LitTextFlags )
+--import LitTypes.UtilsParseArgs --( LitTextFlag (..), LitTextFlags )
 import Data.RDFext.Extension hiding ((</>), (<.>))
 import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
@@ -240,8 +240,8 @@ data LitDirs = LitDirs {
 dirsTest = LitDirs litTestDir1  litNTTestDir1
 dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 
-fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text -> Text -> LitTextFlags
-                -> TextDescriptor
+fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
+            -> Text -> LitTextFlags -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
 -- output is gzip, text is not included
 fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {

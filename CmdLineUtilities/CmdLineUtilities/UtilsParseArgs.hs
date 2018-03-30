@@ -17,29 +17,39 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module LitTypes.UtilsParseArgs
-    (module LitTypes.UtilsParseArgs
-        , dirQueries, URI
+module CmdLineUtilities.UtilsParseArgs
+    (LitArgs (..), getArgsParsed
+--            module CmdLineUtilities.UtilsParseArgs
+--        , dirQueries, URI
+    , module GHC.Generics
+    , module Uniform.Error
+--    , module Uniform.Zero
     )
     where
 
-import           Uniform.FileIO hiding ((<>), (</>), (<.>))
-import Uniform.Error hiding ((<>), (</>), (<.>))
+--import           Uniform.FileIO hiding ((<>), (</>), (<.>))
+import           Uniform.Error hiding ((<>), (</>), (<.>))
+--import Uniform.Zero
 import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
 import           Options.Applicative
 import GHC.Generics
-import LitTypes.ServerNames (serverLocalhost, serverBrest, rdfBase, dirQueries, URI)
+--import LitTypes.TextDescriptor (serverLocalhost, serverBrest
+--            , rdfBase, dirQueries, URI)
+--import Path.IO as Pathio
 
-
-data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
-            | OutputNLPflag | XMLflag | JSONflag
-            | LocalNLPserverFlag | SnipSet Int
-            | NoFlagZero
-            deriving (Show, Read, Eq, Ord, Generic)
-
-type LitTextFlags = [LitTextFlag]
-instance Zeros LitTextFlag where zero = NoFlagZero
+--data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
+--            | OutputNLPflag | XMLflag | JSONflag
+----            | LocalNLPserverFlag
+--            | SnipSet Int
+--            | NoFlagZero
+--            deriving (Show, Read, Eq, Ord, Generic)
+--
+--data ServerFlag = LocalServer | RemoteServer
+--            deriving (Show, Read, Eq, Ord, Generic)
+--
+--type LitTextFlags = [LitTextFlag]
+--instance Zeros LitTextFlag where zero = NoFlagZero
 
 
 
@@ -133,10 +143,11 @@ cmdArgs = LitArgs
             metavar "timeout" <>
             help "timeout in minutes " )
      <*>  strOption
-        (long "origin dir (for queries relative to home, for nt set to NT/ by default)" <>
+        (long "origin dir (relative to home)" <>
             short 'o'  <>
             value "" <>
-            help "dir in which the nt?, markup or query files are (relative to home)" )
+            help "dir in which the nt?, markup or query files are \
+                        \(relative to home)" )
      <*> switch
           ( long "force" <>
 --            value False <>
@@ -149,9 +160,12 @@ cmdArgs = LitArgs
 --            value "" <> -- set to in main /home/frank/gutenberg" <>
 --            help "input file with the booknumbers - cvs, booknr in first column" )
 
-setDefaultOriginDir :: LitArgs -> String -> LitArgs
-setDefaultOriginDir args def = if null' $ argOrigin args then  args {argOrigin = def}
-                                                else args
+--setDefaultOriginDir :: LitArgs -> String -> LitArgs
+---- is always homedir
+--setDefaultOriginDir args def =
+--        if null' $ argOrigin args
+--            then  args {argOrigin = def}
+--            else args
 
 getArgsParsed :: Text -> Text -> ErrIO LitArgs
 getArgsParsed t1 t2 = do
@@ -162,80 +176,5 @@ getArgsParsed t1 t2 = do
           ( fullDesc
          <> (progDesc . t2s $ t1)
          <> (header . t2s $ t2 ))
-
-selectServer :: LitArgs -> URI
--- select the server between localhost and brest
-selectServer args =  if  argLocalhost args
-                    then serverLocalhost
-                    else serverBrest  -- default
-
---getLocalOriginDir
--- produces the abs dir combined from home origin and subfile dir
-getLocalOriginDir args = if null' subdir then orig
-                                        else addDir  orig subdir :: Path Abs Dir
-                where subdir = argSubDir args :: FilePath
-                      orig = addDir homeDir $  argOrigin args :: Path Abs Dir
-
-getFn args = addFileName (getLocalOriginDir args) (argFn args) :: Path Abs File
--- get filename (added to the local origin)
--- may fail or
-
-getTimeout :: LitArgs -> Maybe Int
-getTimeout args = fmap (60 *) t1
-    where
---        t1 = readMay ("30"::String) :: Maybe Int
-        t1 = readMay (argTimeout args)  :: Maybe Int
-
-data Inputs = Inputs {inArgs :: LitArgs
-                    , inDebug :: Bool
-                    , inForceFlag :: Bool
-                    , inServer :: URI
-                    , inDB :: Text
-                    , inGraph :: Maybe Text
-                    , inTimeOut :: Maybe Int
-                    , inResultFile :: Path Abs File
-                    , inOriginDir :: Path Abs Dir
-                    , inFilename :: Maybe (Path Abs File)
-                    } deriving (Show)
-
-parseAndStartExecute :: Bool -> Text -> Path Rel Dir -> Text -> Text -> ErrIO Inputs
--- the common operations to start the store, query and construct
--- arguments: rel dir (to home) of origin
--- name for result file
--- debug flag value
-parseAndStartExecute debugFlag resultFileName originDir t1 t2 = do
-        args1 <- getArgsParsed t1 t2
-        let args = setDefaultOriginDir args1 (toFilePath originDir)
-        putIOwords ["parseAndStartExecute: process to store", showT args]
-        let server = selectServer args :: URI
-        let resultFile = addFileName homeDir (t2s resultFileName ::FilePath) :: Path Abs File
-        -- not really interesting inofrmation
-        let forceFlag = argForceFlag args
-        let debugFlag = True
---        putIOwords ["parseAndStartExecute: before making args "]
-        let  timeout = getTimeout args
-             mgraph = if null' . argGraph $ args then Nothing
-                            else Just . s2t $  argGraph args  -- nothing if empty
---        putIOwords ["parseAndStartExecute: before making args 2"]
-        let  dbarg = s2t $ argDB args
-             originDir =  getLocalOriginDir args -- addDir homeDir (argOrigin args) :: Path Abs Dir
-             fn = if null . argFn $ args then Nothing
-                                    else Just . addFileName originDir . argFn $ args :: Maybe (Path Abs File)
-        putIOwords ["parseAndStartExecute:   the arguments always necessary or optional with defaults "
-                    , "\n\tserver", showT server
-                    , "\n\tdbarg", showT dbarg
-                    , "\n\tgraph", showT mgraph  -- optional for queries with all graphs
-                    , "\n\toriginDir", showT originDir
-                    , "\n\ttimeout", showT timeout
---                    , "\n\tqueryFile", showT fn
-                    ]
-        let inp = Inputs {inArgs = args, inDebug = debugFlag, inForceFlag = forceFlag
-                    , inServer = server, inDB = dbarg, inGraph = mgraph
-                    , inTimeOut = timeout, inResultFile = resultFile, inOriginDir = originDir
-                    , inFilename = fn
-                    }
-        putIOwords ["parseAndStartExecute:  inputs ", showT inp]
-        return inp
-
 
 --

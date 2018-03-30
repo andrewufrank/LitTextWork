@@ -1,13 +1,14 @@
-name: litFoundation
-version: 0.1.8.3
+name: CmdLineUtilities
+version: 0.1.0
 
 cabal-version: >=1.24
 build-type: Simple
 license: AllRightsReserved
 license-file: LICENSE
-synopsis: the code for reading the files
+synopsis: handling user interface stuff - cmd line oriented
 description:
-     the file read
+     handle cmd line stuff
+     process all files utility
 
 author: Andrew U. Frank
 
@@ -27,18 +28,13 @@ library
         , optparse-applicative
         , pipes
         , rdf4hextension
---        , path-io
+        , path-io
         -- import all what is lower, to avoid duplications
 
     exposed-modules:
-        LitTypes.TextDescriptor
-        LitTypes.LanguageTypedText
-        LitTypes.ServerNames
---        LitTypes.UtilsParseArgs
---        LitTypes.UtilsProcessing
-        BuchCode.BuchToken
-        BuchCode.Classes4text
-
+        CmdLineUtilities.UtilsParseArgs
+        CmdLineUtilities.UtilsProcessing
+        CmdLineUtilities.UtilsProcessCmd
 
     exposed: True
     buildable: True
@@ -54,17 +50,13 @@ Test-Suite  TestAuto
         , uniform-fileio
         , uniform-error
         , uniform-convenience
-        , litFoundation
+--        , litFoundation
 --        , rdf4hextension
         , uniform-http
---        , path
-        , pipes
+        , path
     hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
-        LitTypes.TextDescriptor_test
-        LitTypes.LanguageTypedText_test
-        LitTypes.ServerNames_test
---        LitTypes.UtilsParseArgs_test
---        LitTypes.UtilsProcessing_test
-        BuchCode.BuchToken_test
+        CmdLineUtilities.UtilsParseArgs_test
+        CmdLineUtilities.UtilsProcessing_test
+
