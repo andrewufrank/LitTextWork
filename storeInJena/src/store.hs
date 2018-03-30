@@ -46,19 +46,22 @@ main =  do
 parseAndExecute  :: Text -> Text ->  ErrIO ()
 parseAndExecute t1 t2    = do
     inp <- parseAndStartExecute True "storeReport.txt"  t1 t2
-    homeDir <- homeDir2
-    let resultFile = addFileName homeDir ("resultFileStore6.txt" ::FilePath)
+    homeDirz <- homeDir2
+    let resultFile = addFileName homeDirz ("resultFileStore6.txt" ::FilePath)
                              :: Path Abs File
 --    let args = inArgs inp
     case inFilename inp of
         Nothing -> do
             putIOwords ["parseAndExecute: process store - no Fn (filename) argument)"]
             if null . inFilename $ inp
-                then do putIOwords ["parseAndExecute: process store - no BookNr argument) - process all"]
+                then do
+                    putIOwords ["parseAndExecute: process store"
+                        , " - no BookNr argument  - process all"
+                        , "for", showT $ inOriginDir inp]
 --                            let originSub = if arg
 --                            processAll (putOneFile2 debugFlag forceFlag server  -- ntdir db
 --                                dbarg mgraph ) (\f -> isNT f || isGZ f) originDir resultFile
-                        processAll (putOneFile4 inp)  (\f -> isNT f || isGZ f)
+                    processAll (putOneFile4 inp)  (\f -> isNT f || isGZ f)
                                 (inOriginDir inp) resultFile
                 else do
                     putIOwords ["parseAndExecute: process store - with BookNr"

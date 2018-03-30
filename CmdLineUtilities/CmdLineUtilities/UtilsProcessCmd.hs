@@ -20,53 +20,15 @@
 module CmdLineUtilities.UtilsProcessCmd
     (module CmdLineUtilities.UtilsProcessCmd
     , LitTextFlag (..), LitTextFlags (..)
+    , PartURI (..)
 --        , dirQueries
     )
     where
 
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
---import           Uniform.FileIO (homeDir2)
 import CmdLineUtilities.UtilsParseArgs
 import CmdLineUtilities.ProcessFlags
-
---import Uniform.Error hiding ((<>), (</>), (<.>))
---import           Data.Semigroup               ((<>))
---import           Options.Applicative.Builder
---import           Options.Applicative
---import GHC.Generics
---import LitTypes.TextDescriptor (serverLocalhost, serverBrest
---            , rdfBase, dirQueries, URI)
---import Path.IO as Pathio
-
---data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
---            | OutputNLPflag | XMLflag | JSONflag
---            | LocalNLPserverFlag
---            | SnipSet Int
---            | NoFlagZero
---            deriving (Show, Read, Eq, Ord, Generic)
---
---data ServerFlag = LocalServer | RemoteServer
---            deriving (Show, Read, Eq, Ord, Generic)
-
-
-
-
---selectServer :: LitArgs -> ServerFlag
----- select the server between localhost and brest
---selectServer args =  if  argLocalhost args
---                    then LocalServer
---                    else RemoteServer  -- default
-
-----getLocalOriginDir
----- produces the abs dir combined from home origin and subfile dir
---getLocalOriginDir args = if null' subdir then orig
---                                  else addDir  orig subdir :: Path Abs Dir
---                where subdir = argSubDir args :: FilePath
---                      orig = addDir homeDir $  argOrigin args :: Path Abs Dir
-
---getFn args = addFileName (getLocalOriginDir args) (argFn args) :: Path Abs File
--- get filename (added to the local origin)
--- may fail or
+import Data.RDFext.Extension (PartURI (..))
 
 getTimeout :: LitArgs -> Maybe Int
 getTimeout args = fmap (60 *) t1
@@ -75,7 +37,7 @@ getTimeout args = fmap (60 *) t1
         t1 = readMay (argTimeout args)  :: Maybe Int
 
 data Inputs = Inputs {
-                     inDB :: Text
+                     inDB :: PartURI
                     , inGraph :: Maybe Text
                     , inOriginDir :: Path Abs Dir
                     , inFilename :: Maybe (Path Abs File)
@@ -112,7 +74,7 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
                         else Just . s2t $  argGraph args  -- nothing if empty
 --        putIOwords ["parseAndStartExecute: before making args 2"]
     let  dbarg = s2t $ argDB args
-         originDir =  homeDir :: Path Abs Dir
+         originDir =  addDir homeDir (argOrigin args) :: Path Abs Dir
             -- getLocalOriginDir args -- addDir homeDir (argOrigin args)
          fn = if null . argFn $ args
                 then Nothing
@@ -128,11 +90,12 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
     let flags = args2flags args
     putIOwords ["parseAndStartExecute flags", showT flags]
     let inp = Inputs {
-                  inDB = dbarg
+                  inDB = PartURI dbarg
                 , inGraph = mgraph
                 , inOriginDir = originDir
                 , inFilename = fn
                 , inTimeOut = timeout
+                , inFlags = flags
 --                inArgs = args
 --                , inDebug = debugFlag
 --                , inForceFlag = forceFlag

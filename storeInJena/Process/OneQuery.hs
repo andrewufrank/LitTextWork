@@ -88,19 +88,19 @@ oneQuery2 inp fn0 = do
         let respFilename =  addExtension resultExt fn0
                     :: Path Abs File
 
-        putIOwords ["putOneFile2 response\n",  resp2, "for", showT fn0]
+        putIOwords ["oneQuery2 response\n",  resp2, "for", showT fn0]
         -- write the response into the flag file
         writeFileOrCreate2   respFilename resp2
 
         return resp2
     `catchError` \e -> do
         -- problem is the timeout
-        putIOwords ["putOneFile3  error caught 11", showT e
+        putIOwords ["oneQuery2  error caught 11", showT e
                 , "\n filename is", showT fn0
                 , "error is not raised again"]
-        putIOwords ["putOneFile3 arguments were db - graph"
+        putIOwords ["oneQuery2 arguments were db - graph"
                 , (inDB inp), showT (inGraph inp), "file", showT fn0]
-        return . unwords' $ ["putOneFile3 return after error", showT e]
+        return . unwords' $ ["oneQuery2 return after error", showT e]
 --        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 
@@ -153,19 +153,19 @@ oneQuery debug server db mgraph maux timeout fn0 = do
         let respFilename =  addExtension resultExt fn0
                     :: Path Abs File
 
-        putIOwords ["putOneFile2 response\n",  resp2, "for", showT fn0]
+        putIOwords ["oneQuery response\n",  resp2, "for", showT fn0]
         -- write the response into the flag file
         writeFileOrCreate2   respFilename resp2
 
         return resp2
     `catchError` \e -> do
         -- problem is the timeout
-        putIOwords ["putOneFile3  error caught 11", showT e
+        putIOwords ["oneQuery  error caught 11", showT e
                 , "\n filename is", showT fn0
                 , "error is not raised again"]
-        putIOwords ["putOneFile3 arguments were db - graph"
+        putIOwords ["oneQuery arguments were db - graph"
                 , db, showT mgraph, "file", showT fn0]
-        return . unwords' $ ["putOneFile3 return after error", showT e]
+        return . unwords' $ ["oneQuery return after error", showT e]
 --        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 

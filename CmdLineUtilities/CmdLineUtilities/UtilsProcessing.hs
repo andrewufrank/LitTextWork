@@ -29,7 +29,9 @@ import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 --import CmdLineUtilities.UtilsParseArgs
 --import LitTypes.ServerNames -- (serverLocalhost, serverBrest
 ----                    , rdfBase, dirQueries, URI, HttpVarParams)
-import Uniform.HttpCall (callHTTP10post, URI, HttpVarParams(..), addPort2URI)
+import Uniform.HttpCall (callHTTP10post, URI, HttpVarParams(..)
+        , addPort2URI)
+import Data.RDFext.Extension (PartURI(..), unPartURI)
 import Uniform.Strings  ((<>))
 
 
@@ -66,7 +68,7 @@ processAll ops testFile dir file = do
 getServer server  = addPort2URI  server  3030 :: URI
 
 
-post2store ::  Bool -> Text -> URI -> Text -> Maybe Text ->  LazyByteString
+post2store ::  Bool -> Text -> URI -> PartURI -> Maybe PartURI ->  LazyByteString
             -> HttpVarParams -> Maybe Int ->   ErrIO Text
     -- ^ timeout in sec
 
@@ -74,16 +76,15 @@ post2store ::  Bool -> Text -> URI -> Text -> Maybe Text ->  LazyByteString
 --(see https://www.w3.org/TR/sparql11-http-rdf-update/#http-post)
 post2store debug appType fusekiServer pathName mgraph split qstring timeout = do
     -- form the instert query
-    let pathNamePlusGraph = pathName <> "?" <>
-             maybe "default"  (\t -> "graph=" <> t)
+    let pathNamePlusGraph = (unPartURI pathName) <> "?" <>
+             maybe "default"  (\t -> "graph=" <> (unPartURI t))
                     mgraph
 --    when debug $
 --    putIOwords ["\npost2store for",  fn, "path", pathNamePlusGraph ]
     putIOwords ["post2store", "pathNamePlusGraph"
             ,   pathNamePlusGraph, "qstring", showT qstring]
-
     res <- callHTTP10post True appType
-                fusekiServer pathNamePlusGraph
+                (getServer fusekiServer) pathNamePlusGraph
                 split qstring   timeout
     when True $ putIOwords ["post2store done", showT res]
     return res

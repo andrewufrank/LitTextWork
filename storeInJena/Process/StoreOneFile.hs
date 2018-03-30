@@ -33,10 +33,11 @@ import CmdLineUtilities.UtilsProcessing
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
 import Uniform.HttpCall (callHTTP10post, callHTTP8post
-                , addPort2URI, makeHttpPost7, URI, HttpVarParams(..))
+                , addPort2URI, makeHttpPost7, URI, HttpVarParams(..)
+                , makeAbsURI)
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
-            , rdfBase, dirQueries)
+            , rdfBase, dirQueries, PartURI, unPartURI)
 import Data.List.Split (chunksOf)
 import Data.Either (isRight)
 
@@ -89,8 +90,7 @@ putOneFile4 :: Inputs -> Path Abs File -> ErrIO Text
 -- but does separately check (and possibly duplicate) an nt and a nt.gz file
 
 putOneFile4 inp@Inputs{..} fn = do
-    putIOwords ["putOneFile4 db - graph", "file", showT fn ]
-
+    putIOwords ["putOneFile4 x", "file", showT fn ]
     -- check for flagexisting
     let fnFlag = addExtension
             (flagExtension (maybe "default" id inGraph)) fn
@@ -106,6 +106,7 @@ putOneFile4 inp@Inputs{..} fn = do
     if (ForceFlag `elem` inFlags) &&  (ntTime < flagTime)
             then return . unwords' $ ["putOneFile4 - nothing to do", showT fn]
             else do
+                putIOwords ["putOneFile4 file to process", showT fn ]
                 resp <- putOneFile5 inp fn
                 writeFile2 fnFlag resp--
                 return resp
@@ -113,12 +114,12 @@ putOneFile4 inp@Inputs{..} fn = do
 putOneFile5 :: Inputs -> Path Abs File
     ->  ErrIO Text
 -- put one file into the db and graph
--- db
 putOneFile5 Inputs{..} fn = do
 --        let fn = fromJustNote "putOneFile5 - filename is empty" $ fn
-        putIOwords ["putOneFile5 db - graph", inDB
-                , showT  inGraph  , "file", showT fn]
+        putIOwords ["putOneFile5 db - graph", showT inDB
+                , showT  inGraph  , "\nfile", showT fn]
         let ext0 =  unExtension . getExtension $  fn :: String
+        putIOwords ["putOneFile5 db - extension",  s2t ext0]
         trips :: LazyByteString<- case ext0 of
             "" -> do
                 putIOwords ["putOneFile5", "extension is null"]
@@ -136,9 +137,10 @@ putOneFile5 Inputs{..} fn = do
                 return unzipped
 
         let pathName = inDB  -- </> "update"
-        let mgraph2 = fmap (\p -> (showT rdfBase) </> p) inGraph
+        let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
+--        let mgraph2 = makeAbsURI rdfBase  (unPartURI inGraph)
         when True $ putIOwords ["putOneFile5 db - path"
-                ,  pathName, "mgraph2", showT mgraph2]
+                ,  showT pathName, "mgraph2", showT mgraph2]
 
         let fusekiServer = if (LocalNLPserverFlag `elem` inFlags)
                             then serverLocalhost
@@ -156,11 +158,11 @@ putOneFile5 Inputs{..} fn = do
         putIOwords ["\n\n ERROR: putOneFile5  error caught"
                 , "\n typically timeout of server - start process again"
                 , "error is not raised again"]
-        putIOwords ["putOneFile3 arguments were db - graph"
-                , inDB , showT inGraph  , "file"
-                , showT inFilename ]
-        return . unwords' $ ["putOneFile3 return after error", showT e]
---        fail . unwords $  [ "putOneFile3 from callHTTP8post httperror 3", show e]
+        putIOwords ["putOneFile5 arguments were db - graph"
+                , showT inDB , showT inGraph  , "file"
+                , showT inFilename , "\n\n"]
+        return . unwords' $ ["putOneFile5 return after error", showT e]
+--        fail . unwords $  [ "putOneFile5 from callHTTP8post httperror 3", show e]
 
 
 ------------------------------------------
