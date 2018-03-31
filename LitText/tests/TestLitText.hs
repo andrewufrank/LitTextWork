@@ -41,7 +41,8 @@ import {-@ HTF_TESTS @-} Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Sn
 ----        -- and snip4test :: [TZ1] -> [Snip] C -> D
 -------------------- filters literal text, but not ideal snips yet
 ----
-import {-@ HTF_TESTS @-} Parser.FormNLPsnips_test   -- D -> DB formSnips :: [Snip] -> [Snip]
+import {-@ HTF_TESTS @-} Parser.FormNLPsnips_test
+    -- D -> DB formSnips :: [Snip] -> [Snip]
 ------------ form snips which go to NLP (optimal size)
 --
 import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test   -- DA -> L, calls to NLP, takes time

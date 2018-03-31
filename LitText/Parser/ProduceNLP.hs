@@ -53,10 +53,10 @@ tz2toSnip flags textstate tzs = snips3
         snips1 = prepareTZ4nlp posTag baserdf tzs :: [Snip]
         snips2 = formSnips snips1  :: [Snip]
         snips3 = zipWith pushSnipNumber2snip [1..] snips2
+        -- set snipnumber at end
 
-
-pushSnipNumber2snip :: Int -> Snip -> Snip
-pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
+        pushSnipNumber2snip :: Int -> Snip -> Snip
+        pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
 
 
 

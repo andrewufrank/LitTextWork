@@ -72,7 +72,7 @@ data TextDescriptor = TextDescriptor
     , includeText :: Bool -- ^ full text is included in triples
 --                    (false - only the analysis, sentence can be reconstructed
 --                      but not the remainder of the text)
-    , txPosTagset :: Text
+    , txPosTagset :: Text -- ^ the tagset to be used as text ("" default)
     , ntdescriptor :: NTdescriptor
     } deriving (Show, Read,  Eq)
 
@@ -94,17 +94,17 @@ instance Zeros NTdescriptor where
 -- | a single language piece of text with lanuage code, length and start para number
 data Snip = Snip { snip3loc :: TextLoc
 --                        , snip3para :: ParaNum
-                        , snip3snipnr ::  SnipID
-                        , snip3baserdf :: RDFsubj
+        , snip3snipnr ::  SnipID  -- ^ a running number withing the baserdf
+        , snip3baserdf :: RDFsubj -- ^ the base rdf, must be unique
 --                        , snip3snipsigl :: SnipSigl
 --                        , snip3parasigl :: ParaSigl
-                        , snip3text:: LCtext
-                        , snip3textLength :: Int
-                        , snip3posTagSetID :: Text
-                        -- an identifier for the tagset to use
-                        -- currently
+        , snip3text:: LCtext
+        , snip3textLength :: Int
+        , snip3posTagSetID :: Text
+        -- an identifier for the tagset to use
+        -- currently
 --                        , snip3lang :: LanguageCode
-                        }
+        }
             deriving (Read, Show, Eq )
 -- snip sigl uses the paragraph number of the first paragraph
 newtype SnipID = SnipID Int
