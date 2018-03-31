@@ -145,6 +145,9 @@ putOneFile5 Inputs{..} fn = do
         let fusekiServer = if (LocalNLPserverFlag `elem` inFlags)
                             then serverLocalhost
                             else  serverBrest
+        when True $ putIOwords ["putOneFile5 db - path"
+                ,  showT pathName, "mgraph2", showT mgraph2]
+--        errorT ["sfda"]
         resp <- post2store (DebugFlag `elem` inFlags)  "text/turtle"
                     fusekiServer pathName mgraph2   trips zero Nothing
 

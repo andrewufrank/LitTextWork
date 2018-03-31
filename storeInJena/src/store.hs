@@ -54,7 +54,7 @@ parseAndExecute t1 t2    = do
             errorT ["parseAndExecute: process store - requires base (dataset)"]
     when (isNothing . inGraph $ inp) $
             errorT ["parseAndExecute: process store - requires graph "]
-    when (isNothing . inOriginDir $ inp) $
+    when (isZero . showT . inOriginDir $ inp) $
             errorT ["parseAndExecute: process store - requires origin (source) dir "]
 
     case inFilename inp of

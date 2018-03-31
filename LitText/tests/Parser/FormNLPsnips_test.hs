@@ -36,20 +36,6 @@ instance ShowTestHarness [Snip]
 instance ShowTestHarness [TZ2]
 instance ShowTestHarness TextDescriptor
 
---formSnips :: [Snip] -> [Snip]
-
-test_1_D_DA = test1File progName "resultD1" "resultDA1" formSnips
-test_2_D_DA = test1File progName "resultD2" "resultDA2" formSnips
-test_3_D_DA = test1File progName "resultD3" "resultDA3" formSnips
-test_4_D_DA = test1File progName "resultD4" "resultDA4" formSnips
-test_5_D_DA = test1File progName "resultD5" "resultDA5" formSnips
-test_6_D_DA = test1File progName "resultD6" "resultDA6" formSnips
-test_8_D_DA = test1File progName "resultD8" "resultDA8" formSnips
-test_9_D_DA = test1File progName "resultD9" "resultDA9" formSnips
-test_10_D_DA = test1File progName "resultD10" "resultDA10" formSnips
-test_11_D_DA = test1File progName "resultD11" "resultDA11" formSnips
-test_12_D_DA = test1File progName "resultD12" "resultDA12" formSnips
-
 snip4test :: TextDescriptor -> [TZ2] -> [Snip]  -- change to TZ1 -> Snip
 snip4test    = tz2toSnip
 ----
@@ -64,6 +50,21 @@ test_9_C_D = test2File progName "resultA9" "resultCA9" "resultD9" snip4test
 test_10_C_D = test2File progName "resultA10" "resultCA10" "resultD10" snip4test
 test_11_C_D = test2File progName "resultA11" "resultCA11" "resultD11" snip4test
 test_12_C_D = test2File progName "resultA12" "resultCA12" "resultD12" snip4test
+
+--formSnips :: [Snip] -> [Snip]
+
+test_1_D_DA = test1File progName "resultD1" "resultDA1" formSnips
+test_2_D_DA = test1File progName "resultD2" "resultDA2" formSnips
+test_3_D_DA = test1File progName "resultD3" "resultDA3" formSnips
+test_4_D_DA = test1File progName "resultD4" "resultDA4" formSnips
+test_5_D_DA = test1File progName "resultD5" "resultDA5" formSnips
+test_6_D_DA = test1File progName "resultD6" "resultDA6" formSnips
+test_8_D_DA = test1File progName "resultD8" "resultDA8" formSnips
+test_9_D_DA = test1File progName "resultD9" "resultDA9" formSnips
+test_10_D_DA = test1File progName "resultD10" "resultDA10" formSnips
+test_11_D_DA = test1File progName "resultD11" "resultDA11" formSnips
+test_12_D_DA = test1File progName "resultD12" "resultDA12" formSnips
+
 
 
 ---- test mergeNLP

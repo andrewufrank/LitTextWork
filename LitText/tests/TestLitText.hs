@@ -18,7 +18,7 @@ import  Test.Framework
 -- for layout and lit triples :
 --
 --import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Ax and Bx
---------
+----
 --import {-@ HTF_TESTS @-} Lines2para.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
 --import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test
 --                                        -- [TextZeile] -> [TZ]  -- test BA -> BB
@@ -35,17 +35,18 @@ import  Test.Framework
 --import   {-@ HTF_TESTS @-} Parser.ProduceLit_test
 --            -- [TZ2] -> [Triple] CA -> Hx (triples) and H -> K (nt)
 --
-------
---import {-@ HTF_TESTS @-} Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Snip]
-----            -- DA is the same as D
-----        -- and snip4test :: [TZ1] -> [Snip] C -> D
--------------------- filters literal text, but not ideal snips yet
-----
---import {-@ HTF_TESTS @-} Parser.FormNLPsnips_test
-    -- D -> DB formSnips :: [Snip] -> [Snip]
------------- form snips which go to NLP (optimal size)
 --
-import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test   -- DA -> L, calls to NLP, takes time
+--import {-@ HTF_TESTS @-} Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Snip]
+--            -- DA is the same as D
+--        -- and snip4test :: [TZ1] -> [Snip] C -> D
+---------------- filters literal text, but not ideal snips yet
+--
+--import {-@ HTF_TESTS @-} Parser.FormNLPsnips_test
+--    -- D -> DB formSnips :: [Snip] -> [Snip]
+-------- form snips which go to NLP (optimal size)
+--
+import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test
+        -- DA -> L, calls to NLP, takes time
 
 
 
