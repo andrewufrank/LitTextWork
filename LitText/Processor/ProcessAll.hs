@@ -29,17 +29,23 @@ import Pipes ((>->), (~>))
 -- todo fileio - export for pipes
 import Data.List (delete)
 import Uniform.FileIO
+import LitTypes.TextDescriptor  hiding (try, (<|>))
 
-
-processOneMarkup4 ::  LitTextFlags ->  URI -> Text -> Path Abs Dir -> Path Abs File
+processOneMarkup4 ::  LitTextFlags -> Path Abs Dir -> Path Abs Dir -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
-processOneMarkup4  flags  server authorReplacement ntdir   file = do
+processOneMarkup4  flags origindir ntdir   file = do
     let buchReplacement = s2t $ getNakedFileName file
         flags2 = delete IncludeTextFlag flags
-        textstate2 = fillTextState4a file server ntdir authorReplacement buchReplacement flags2
+        nlpserver = if LocalNLPserverFlag `elem` flags
+                    then serverLocalhost
+                    else serverBrest
+        authorReplacement = s2t . getNakedDir $ origindir
+        textstate2 = fillTextState4a file nlpserver ntdir
+                        authorReplacement buchReplacement flags2
     -- forces gzip in fillTextState4a
-    putIOwords ["\n processOneMarkup", showT textstate2  ]
+    putIOwords ["\n processOneMarkup", showT textstate2
+                , " server", showT nlpserver  ]
     if  gzipFlag . ntdescriptor $ textstate2
         then do
             ntgzExist <- exist6 (destNT . ntdescriptor $ textstate2) ntFileTriplesGZip

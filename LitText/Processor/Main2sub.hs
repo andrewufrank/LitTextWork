@@ -20,26 +20,29 @@
 module Processor.Main2sub (mainLitAndNLPproduction
          , ntFileTriples,ntFileTriplesGZip
          , LitTextFlags (..), LitTextFlag (..)
-         , module LitTypes.TextDescriptor
-         , ErrIO (..), URI (..)
+         , TextDescriptor (..)
+         , ErrIO (..)
+--         , URI (..)
             ) where
 
-import           Parser.ReadMarkupAB (textstate2Text)
-import           Lines2para.Lines2text  (text2tz1)
+import           Parser.ReadMarkupAB (textstate2Text
+                        , LitTextFlag (..), LitTextFlags (..)
+                        , TextDescriptor (..))
+import           Lines2para.Lines2text  (text2tz1, TZ1)
 
 import           Parser.ProduceLayout (produceLayoutTriples)
 
-import           Lines2para.Lines2para (paragraphsTZ2TZ2) -- hiding ((</>))
+import           Lines2para.Lines2para (paragraphsTZ2TZ2, TZ2) -- hiding ((</>))
 
-import           Parser.ProduceLit (produceLitTriples)
-import           Parser.ProduceNLP (produceNLPtriples, tz2toSnip)
+import           Parser.ProduceLit (produceLitTriples, Triple)
+import           Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
 
 import Data.RDFext.Extension (ntFileTriples, ntFileTriplesGZip
             , writeHandleTriples
             , openHandleTriples, closeHandleTriples)
 
 import           Uniform.FileIO -- (when, errorT)
-import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
+--import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction flags  textstate = do
@@ -68,7 +71,7 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $  putIOwords ["triples \n", unlines' . map showT $ litTriples]
 
-    let snips = tz2toSnip flags textstate tzpara  :: [Snip]
+    let snips = tz2toSnip  textstate tzpara  :: [Snip]
 
     nlpTriples <- produceNLPtriples flags textstate snips -- test D ->
 

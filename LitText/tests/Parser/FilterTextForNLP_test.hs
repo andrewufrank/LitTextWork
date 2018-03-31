@@ -38,22 +38,23 @@ instance ShowTestHarness [Snip]
 prepareTZ4nlpTest :: [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
 prepareTZ4nlpTest  = prepareTZ4nlp "" (RDFsubj "testFilterForNLP")
+-- first "" is postag default - second must be different for each
 --    map tz3fillLength . catMaybes . map (prepareTZ4nlp "")
 
 
 
 
-test_1_CA_DA = test1File progName "resultCA1" "resultD1" prepareTZ4nlpTest
-test_2_C_D = test1File progName "resultCA2" "resultD2" prepareTZ4nlpTest
-test_3_C_D = test1File progName "resultCA3" "resultD3" prepareTZ4nlpTest
-test_4_C_D = test1File progName "resultCA4" "resultD4" prepareTZ4nlpTest
-test_5_C_D = test1File progName "resultCA5" "resultD5" prepareTZ4nlpTest
-test_6_C_D = test1File progName "resultCA6" "resultD6" prepareTZ4nlpTest
-test_8_C_D = test1File progName "resultCA8" "resultD8" prepareTZ4nlpTest
-test_9_C_D = test1File progName "resultCA9" "resultD9" prepareTZ4nlpTest
-test_10_C_D = test1File progName "resultCA10" "resultD10" prepareTZ4nlpTest
-test_11_C_D = test1File progName "resultCA11" "resultD11" prepareTZ4nlpTest
-test_12_C_D = test1File progName "resultCA12" "resultD12" prepareTZ4nlpTest
+test_1_CA_DA = test1File progName "resultCA1" "resultDZ1" prepareTZ4nlpTest
+test_2_C_D = test1File progName "resultCA2" "resultDZ2" prepareTZ4nlpTest
+test_3_C_D = test1File progName "resultCA3" "resultDZ3" prepareTZ4nlpTest
+test_4_C_D = test1File progName "resultCA4" "resultDZ4" prepareTZ4nlpTest
+test_5_C_D = test1File progName "resultCA5" "resultDZ5" prepareTZ4nlpTest
+test_6_C_D = test1File progName "resultCA6" "resultDZ6" prepareTZ4nlpTest
+test_8_C_D = test1File progName "resultCA8" "resultDZ8" prepareTZ4nlpTest
+test_9_C_D = test1File progName "resultCA9" "resultDZ9" prepareTZ4nlpTest
+test_10_C_D = test1File progName "resultCA10" "resultDZ10" prepareTZ4nlpTest
+test_11_C_D = test1File progName "resultCA11" "resultDZ11" prepareTZ4nlpTest
+test_12_C_D = test1File progName "resultCA12" "resultDZ12" prepareTZ4nlpTest
 
 --snip4test :: [TZ1] -> [Snip]  -- change to TZ1 -> Snip
 --snip4test = prepareTZ4nlp "" . paragraphsTZ2TZ2

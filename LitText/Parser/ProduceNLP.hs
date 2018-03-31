@@ -36,21 +36,22 @@ import CoreNLP.Vocabulary
 import Uniform.Zero
 import NLP2RDF.ProduceDocCallNLP
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
-import Parser.FormNLPsnips -- (formSnips)
+import Parser.FormNLPsnips (formSnips)
 
 produceNLPtriples :: LitTextFlags -> TextDescriptor -> [Snip] -> ErrIO [Triple]
             -- test C  -> X
 produceNLPtriples  flags textstate snips3 =  do
-    triples :: [[Triple]] <- mapM (convertOneSnip2Triples flags textstate) snips3
+    triples :: [[Triple]] <- mapM
+                (convertOneSnip2Triples flags textstate) snips3
     return . concat $ triples
 
-tz2toSnip :: LitTextFlags -> TextDescriptor ->  [TZ2] ->  [Snip]
+tz2toSnip ::  TextDescriptor ->  [TZ2] ->  [Snip]
 -- convert the text to sinle language snips
-tz2toSnip flags textstate tzs = snips3
+tz2toSnip textstate tzs = snips3
    where
         posTag = txPosTagset textstate
-        baserdf = buchURIx $ textstate
-        snips1 = prepareTZ4nlp posTag baserdf tzs :: [Snip]
+        baserdfx = buchURIx $ textstate
+        snips1 = prepareTZ4nlp posTag baserdfx tzs :: [Snip]
         snips2 = formSnips snips1  :: [Snip]
         snips3 = zipWith pushSnipNumber2snip [1..] snips2
         -- set snipnumber at end

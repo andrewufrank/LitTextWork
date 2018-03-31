@@ -41,6 +41,8 @@ import Uniform.FileIO (getAppUserDataDir')
 --progName = "tests"
 instance ShowTestHarness [[Triple]]
 instance ShowTestHarness [Snip]
+--instance ShowTestHarness [TZ2]
+--instance ShowTestHarness TextDescriptor
 
 
 testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]

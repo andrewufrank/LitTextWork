@@ -34,4 +34,7 @@ data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
 type LitTextFlags = [LitTextFlag]
 instance Zeros LitTextFlag where zero = NoFlagZero
 
+--        let nlpserver = if LocalNLPserverFlag `elem` flags
+--                    then serverLocalhost
+--                    else serverBrest
 

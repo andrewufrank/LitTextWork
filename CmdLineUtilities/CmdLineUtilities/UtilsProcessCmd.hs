@@ -37,13 +37,16 @@ getTimeout args = fmap (60 *) t1
         t1 = readMay (argTimeout args)  :: Maybe Int
 
 data Inputs = Inputs {
-                     inDB :: PartURI
-                    , inGraph :: Maybe Text
-                    , inOriginDir :: Path Abs Dir
-                    , inFilename :: Maybe (Path Abs File)
-                    , inTimeOut :: Maybe Int
-                    , inFlags :: LitTextFlags
---                    , inResultFile :: Path Abs File
+         inDB :: PartURI  -- ^ the db to use
+        , inGraph :: Maybe Text -- ^ the graph
+        , inOriginDir :: Path Abs Dir -- ^ where the in files are
+        , inDestinationDir :: Path Abs Dir -- ^ where the produced files go
+        , inFilename :: Maybe (Path Abs File)
+                    -- ^ a filename, if only one to process
+        , inTimeOut :: Maybe Int  -- ^ set a timeout for the process
+        , inFlags :: LitTextFlags -- ^ all flags
+        , inResultFile :: Path Abs File -- ^ file to keep result output
+                    -- perhaps sufficient to return ?
 --                    inServer :: ServerFlag  -- localhost
 --        , inArgs :: LitArgs
 --                    , inDebug :: Bool
@@ -75,11 +78,16 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
 --        putIOwords ["parseAndStartExecute: before making args 2"]
     let  dbarg = s2t $ argDB args
          originDir =  addDir homeDir (argOrigin args) :: Path Abs Dir
+         destinationDir =  addDir homeDir (argDestination args) :: Path Abs Dir
             -- getLocalOriginDir args -- addDir homeDir (argOrigin args)
          fn = if null . argFn $ args
                 then Nothing
-                else Just . addFileName homeDir. argFn $ args :: Maybe (Path Abs File)
-    putIOwords ["parseAndStartExecute:   the arguments always necessary or optional with defaults "
+                else Just . addFileName homeDir. argFn $ args
+                                :: Maybe (Path Abs File)
+    createDirIfMissing' destinationDir
+    createDirIfMissing' (getParentDir resultFile)
+    putIOwords ["parseAndStartExecute:"
+            , " the arguments always necessary or optional with defaults "
 --                , "\n\tserver", showT server
                 , "\n\tdbarg", showT dbarg
                 , "\n\tgraph", showT mgraph  -- optional for queries with all graphs
@@ -90,12 +98,14 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
     let flags = args2flags args
     putIOwords ["parseAndStartExecute flags", showT flags]
     let inp = Inputs {
-                  inDB = PartURI dbarg
-                , inGraph = mgraph
-                , inOriginDir = originDir
-                , inFilename = fn
-                , inTimeOut = timeout
-                , inFlags = flags
+          inDB = PartURI dbarg
+        , inGraph = mgraph
+        , inOriginDir = originDir
+        , inDestinationDir = destinationDir
+        , inFilename = fn
+        , inTimeOut = timeout
+        , inFlags = flags
+        , inResultFile = resultFile
 --                inArgs = args
 --                , inDebug = debugFlag
 --                , inForceFlag = forceFlag

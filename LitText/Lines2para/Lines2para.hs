@@ -25,6 +25,7 @@
 
 module Lines2para.Lines2para
     (module Lines2para.Lines2para
+    , TZ2
         ) where
 
 
