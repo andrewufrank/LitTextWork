@@ -44,11 +44,16 @@ import Data.List
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 
-to11op ::   (POStags postag) => postag -> (Doc1 postag) ->  (Doc11 postag)  -- the entry point
-to11op postag =  convertToAbsoluteID postag  (SnipRelID ["doc11"])
+--build here the chain of relative ids, but include the
+-- base rdf only at the end (intercalate does not
+-- support pieces which include the intercalated string (ie. /)
 
-to11opUD ::   (Doc1 UD.POStag) ->  (Doc11 UD.POStag)  -- the entry point
-to11opUD  =  convertToAbsoluteID UD.undefPOS  (SnipRelID ["doc11"])
+to11op ::   (POStags postag) => postag ->  (Doc1 postag) ->  (Doc11 postag)  -- the entry point
+to11op postag  =  convertToAbsoluteID postag
+                        (SnipRelID [])
+
+to11opUD ::    (Doc1 UD.POStag) ->  (Doc11 UD.POStag)  -- the entry point
+to11opUD   =  convertToAbsoluteID UD.undefPOS  (SnipRelID [])
 
 class ConvertToAbsulteID postag relID a2 a1 where
 -- convert to the 1 or 0 records

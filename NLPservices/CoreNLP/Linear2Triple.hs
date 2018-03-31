@@ -74,10 +74,12 @@ class MakeIRI p where
 
 mkIRI_ :: Text -> Text -> [Text] -> RDFsubj
 -- the internal code
+-- the snip/doc SnipRelID is empty
 mkIRI_ note base ts = if null ts
-        then errorT ["mkIRI with empty list for ", note]
+        then RDFsubj base
         else RDFsubj $ base </>
-                (fromJustNote ("intercalate mkIRI  " ++ (t2s note))
+                (fromJustNote ("intercalate mkIRI  " ++ (t2s note)
+                            ++ (concat . map show $ ts))
                             $ intercalate' "/" . reverse $ ts)
 
 instance MakeIRI SnipRelID where
@@ -118,7 +120,7 @@ instance Zeros (DocAsTriple  ) where zero = TriZero
 makeTriple :: (Show postag) =>  postag -> RDFsubj
                     -> DocAsList postag -> [DocAsTriple ]
 
-makeTriple _ base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Doc]
+makeTriple _ base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Snip]
 
 makeTriple _ base SentenceLin{..} = [TriType triSubj Voc.Sentence
                    , maybe zero (TriText2 triSubj

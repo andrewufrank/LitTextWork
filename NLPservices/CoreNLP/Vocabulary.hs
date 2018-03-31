@@ -22,7 +22,8 @@ module CoreNLP.Vocabulary
       , module CoreNLP.DocBase
       , RDFsubj (..), PartURI (..)
     ) where
-import CoreNLP.DocBase
+import CoreNLP.DocBase hiding (Snip)
+--import Data.RDFext.Extension (RDFproperties (..), RDFtypes (..))
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma
             | TokenLemma3
@@ -57,7 +58,7 @@ instance RDFproperties DepCode where
     mkRDFproperty c = RDFproperty $ unPartURI nlpURItext <#> (toLower' . fromDEPtag $ c)
 
             -- should be changed to 2017
-data NLPtype = Doc  -- | Snip
+data NLPtype =  Snip
     | Sentence | Token
 --    | DepType
     | Dependence | Mention  -- | Coreference
