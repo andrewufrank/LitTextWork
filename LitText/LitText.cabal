@@ -39,6 +39,7 @@ library
         , parsec-extra
         , split
         , regex-compat
+        , CmdLineUtilities
 
     exposed-modules:
         -- in order of inclusion
