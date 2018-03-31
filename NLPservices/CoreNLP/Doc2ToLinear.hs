@@ -71,7 +71,7 @@ data DocAsList postag = DocAsList {d3id:: SnipRelID}
                     , t3ner :: [NERtagExt] -- [Text] -- String
                     , t3nerOrig :: Maybe [Text]
                     , t3speaker :: [SpeakerTag] -- Text -- String
-                    , t3sentence :: SentenceRelID -- for partOf
+                    , t3sentenceID :: SentenceRelID -- for partOf
                     }
                         -- | the record from the s_entitymentions
     | NerLin {ner5docTokenBegin :: TokenRelID
@@ -146,7 +146,7 @@ instance Linearize (Token11 postag) postag SentenceRelID where
         t3after = t11after
         t3begin = t11begin
         t3end = t11end
-        t3sentence = pa
+        t3sentenceID = pa
 
 instance Linearize  Coreferences11 postag SnipRelID where
     linearize _ _  Coreferences11{..} = map (linearizeMention) mc

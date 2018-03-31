@@ -61,4 +61,6 @@ nlp = "nlp"::Text
 --nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
 nlpURItext = PartURI $ (unPartURI vocabularyBase) </> "nlp_2017" :: PartURI
 -- the 2017 vocabulary represents the dependency codes as properties (written lower case)
-
+nlpUDEPtext = PartURI $ (unPartURI vocabularyBase) </> "udep" :: PartURI
+-- the udep namespace is used only for the universal dependencies
+-- not version specific but could be added

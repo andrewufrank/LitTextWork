@@ -55,7 +55,8 @@ instance RDFproperties NLPproperty where
     mkRDFproperty p = RDFproperty $ unPartURI nlpURItext <#> (toLowerStart . showT $ p)
 
 instance RDFproperties DepCode where
-    mkRDFproperty c = RDFproperty $ unPartURI nlpURItext <#> (toLower' . fromDEPtag $ c)
+    mkRDFproperty c = RDFproperty $ unPartURI nlpUDEPtext <#> (toLower' . fromDEPtag $ c)
+-- the dep codes used as rdf properties are in a separate prefix
 
             -- should be changed to 2017
 data NLPtype =  Snip
