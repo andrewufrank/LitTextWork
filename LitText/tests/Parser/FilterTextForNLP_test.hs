@@ -37,7 +37,7 @@ instance ShowTestHarness [Snip]
 
 prepareTZ4nlpTest :: [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
-prepareTZ4nlpTest  = prepareTZ4nlp "" (RDFsubj . unPartURI $  rdfBase)
+prepareTZ4nlpTest  = prepareTZ4nlp "" (RDFsubj "testFilterForNLP")
 --    map tz3fillLength . catMaybes . map (prepareTZ4nlp "")
 
 

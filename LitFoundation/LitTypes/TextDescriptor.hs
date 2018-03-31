@@ -26,7 +26,7 @@ module LitTypes.TextDescriptor (
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
---    , LitTextFlag (..), LitTextFlags
+    , LitTextFlag (..), LitTextFlags
     , PartURI (..), RDFsubj (..)
 --    , unPartURI
 --    , append2partURI
@@ -45,6 +45,7 @@ import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
 --import LitTypes.UtilsParseArgs --( LitTextFlag (..), LitTextFlags )
 import Data.RDFext.Extension hiding ((</>), (<.>))
+import LitTypes.Flags
 import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
 
@@ -240,31 +241,31 @@ data LitDirs = LitDirs {
 dirsTest = LitDirs litTestDir1  litNTTestDir1
 dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 
---fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
---            -> Text -> LitTextFlags -> TextDescriptor
----- construct at text state for a gutenberg catalog markup file
----- output is gzip, text is not included
---fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
---        sourceMarkup = file
---        , nlpServer = server  -- could use/set the server flag
---        , authorDir = authordir
---        , buchName = buchname
---        , includeText = IncludeTextFlag `elem` flags
---        , txPosTagset =  ""
---        , ntdescriptor = fillNTdescriptor ntdir filename True
---        }
-----        fillTextState3 litdirs server author buch
---    where
---            filename = getFileName file :: Path Rel File
-----             = getImmediateParentDir fp
-----            buch = getNakedFileName fp
---
---fillNTdescriptor :: Path Abs Dir -> Path Rel File -> Bool -> NTdescriptor
---fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
---          destNT = (ntdir </> filename) :: Path Abs File
---        , gzipFlag = gzip
-----        , destHandle =  Nothing
---        }
+fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
+            -> Text -> LitTextFlags -> TextDescriptor
+-- construct at text state for a gutenberg catalog markup file
+-- output is gzip, text is not included
+fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
+        sourceMarkup = file
+        , nlpServer = server  -- could use/set the server flag
+        , authorDir = authordir
+        , buchName = buchname
+        , includeText = IncludeTextFlag `elem` flags
+        , txPosTagset =  ""
+        , ntdescriptor = fillNTdescriptor ntdir filename True
+        }
+--        fillTextState3 litdirs server author buch
+    where
+            filename = getFileName file :: Path Rel File
+--             = getImmediateParentDir fp
+--            buch = getNakedFileName fp
+
+fillNTdescriptor :: Path Abs Dir -> Path Rel File -> Bool -> NTdescriptor
+fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
+          destNT = (ntdir </> filename) :: Path Abs File
+        , gzipFlag = gzip
+--        , destHandle =  Nothing
+        }
 --
 --fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
 --                -> TextDescriptor

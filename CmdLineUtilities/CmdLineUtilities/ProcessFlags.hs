@@ -35,18 +35,19 @@ import Uniform.Zero
 --import           Options.Applicative
 import GHC.Generics
 import CmdLineUtilities.UtilsParseArgs
+import LitTypes.Flags
 
-data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
-            | OutputNLPflag
---            | XMLflag
-            | JSONflag
-            | LocalNLPserverFlag
-            | SnipSet Int
-            | NoFlagZero
-            deriving (Show, Read, Eq, Ord, Generic)
-
-type LitTextFlags = [LitTextFlag]
-instance Zeros LitTextFlag where zero = NoFlagZero
+--data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
+--            | OutputNLPflag
+----            | XMLflag
+--            | JSONflag
+--            | LocalNLPserverFlag
+--            | SnipSet Int
+--            | NoFlagZero
+--            deriving (Show, Read, Eq, Ord, Generic)
+--
+--type LitTextFlags = [LitTextFlag]
+--instance Zeros LitTextFlag where zero = NoFlagZero
 
 convertFlags2list :: f -> LitTextFlags
 -- convert the flags to a list of LitTextFlag values

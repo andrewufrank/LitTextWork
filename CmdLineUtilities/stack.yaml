@@ -9,7 +9,7 @@ packages:
 - /home/frank/Workspace8/uniform/uniform-time
 - /home/frank/Workspace8/uniform/uniform-http
 - /home/frank/Workspace8/rdf4h
-#- ../LitFoundation
+- ../LitFoundation
 - ../rdf4hextension
 - .
 extra-deps:

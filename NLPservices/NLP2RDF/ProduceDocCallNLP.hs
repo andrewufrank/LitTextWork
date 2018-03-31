@@ -37,6 +37,7 @@ import NLP.TagSets.French as French --
 import NLP.TagSets.FrenchUD as FrenchUD --
 import NLP.Tags
 import NLP2RDF.LanguageSpecific
+--import LitTypes.TextDescriptor (LitTextFlags)
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 

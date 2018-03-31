@@ -34,6 +34,7 @@ library
         LitTypes.TextDescriptor
         LitTypes.LanguageTypedText
         LitTypes.ServerNames
+        LitTypes.Flags
 --        LitTypes.UtilsParseArgs
 --        LitTypes.UtilsProcessing
         BuchCode.BuchToken
