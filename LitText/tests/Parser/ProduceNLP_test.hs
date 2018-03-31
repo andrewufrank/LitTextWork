@@ -45,24 +45,43 @@ instance ShowTestHarness [Snip]
 --instance ShowTestHarness TextDescriptor
 
 
-testOP_DA_L :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
-testOP_DA_L textstate =  mapM (convertOneSnip2Triples  [] textstate )
+testOP_DA_E :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
+testOP_DA_E textstate =  mapM (convertOneSnip2Triples  [] textstate )
           --   fmap concat .
 
-test_1_DA_L = testVar1FileIO progName result1A "resultDA1" "resultE1" testOP_DA_L
-test_2_DA_L = testVar1FileIO progName result2A "resultDA2" "resultE2" testOP_DA_L
-test_3_DA_L = testVar1FileIO progName result3A "resultDA3" "resultE3" testOP_DA_L
-test_4_DA_L = testVar1FileIO progName result4A "resultDA4" "resultE4" testOP_DA_L
-test_5_DA_L = testVar1FileIO progName result5A "resultDA5" "resultE5" testOP_DA_L
+test_1_DA_E = testVar1FileIO progName result1A "resultDA1" "resultE1" testOP_DA_E
+test_2_DA_E = testVar1FileIO progName result2A "resultDA2" "resultE2" testOP_DA_E
+test_3_DA_E = testVar1FileIO progName result3A "resultDA3" "resultE3" testOP_DA_E
+test_4_DA_E = testVar1FileIO progName result4A "resultDA4" "resultE4" testOP_DA_E
+test_5_DA_E = testVar1FileIO progName result5A "resultDA5" "resultE5" testOP_DA_E
             -- lafayette
-test_6_DA_L = testVar1FileIO progName result6A "resultDA6" "resultE6" testOP_DA_L
-test_8_DA_L = testVar1FileIO progName result8A "resultDA8" "resultE8" testOP_DA_L
-test_9_DA_L = testVar1FileIO progName result9A "resultDA9" "resultE9" testOP_DA_L
+test_6_DA_E = testVar1FileIO progName result6A "resultDA6" "resultE6" testOP_DA_E
+test_8_DA_E = testVar1FileIO progName result8A "resultDA8" "resultE8" testOP_DA_E
+test_9_DA_E = testVar1FileIO progName result9A "resultDA9" "resultE9" testOP_DA_E
             -- multiple language - not a single head
-test_10_DA_L = testVar1FileIO progName result10A "resultDA10" "resultE10" testOP_DA_L
-test_11_DA_L = testVar1FileIO progName result11A "resultDA11" "resultE11" testOP_DA_L
-test_12_DA_L = testVar1FileIO progName result12A "resultDA12" "resultE12" testOP_DA_L
-test_13_DA_L = testVar1FileIO progName result12A "resultDA12" "resultE12UD" testOP_DA_L
+test_10_DA_E = testVar1FileIO progName result10A "resultDA10" "resultE10" testOP_DA_E
+test_11_DA_E = testVar1FileIO progName result11A "resultDA11" "resultE11" testOP_DA_E
+test_12_DA_E = testVar1FileIO progName result12A "resultDA12" "resultE12" testOP_DA_E
+test_13_DA_E = testVar1FileIO progName result12A "resultDA12" "resultE12UD" testOP_DA_E
+
+testOP_DA_EZ :: TextDescriptor -> [Snip]-> [Snip]
+testOP_DA_EZ textstate =  map (convertOneSnip2TriplesX  [] textstate )
+          --   fmap concat .
+
+test_1_DA_EZ = testVar1File progName result1A "resultDA1" "resultEZ1" testOP_DA_EZ
+test_2_DA_EZ = testVar1File progName result2A "resultDA2" "resultEZ2" testOP_DA_EZ
+test_3_DA_EZ = testVar1File progName result3A "resultDA3" "resultEZ3" testOP_DA_EZ
+test_4_DA_EZ = testVar1File progName result4A "resultDA4" "resultEZ4" testOP_DA_EZ
+test_5_DA_EZ = testVar1File progName result5A "resultDA5" "resultEZ5" testOP_DA_EZ
+            -- lafayette
+test_6_DA_EZ = testVar1File progName result6A "resultDA6" "resultEZ6" testOP_DA_EZ
+test_8_DA_EZ = testVar1File progName result8A "resultDA8" "resultEZ8" testOP_DA_EZ
+test_9_DA_EZ = testVar1File progName result9A "resultDA9" "resultEZ9" testOP_DA_EZ
+            -- multiple language - not a single head
+test_10_DA_EZ = testVar1File progName result10A "resultDA10" "resultEZ10" testOP_DA_EZ
+test_11_DA_EZ = testVar1File progName result11A "resultDA11" "resultEZ11" testOP_DA_EZ
+test_12_DA_EZ = testVar1File progName result12A "resultDA12" "resultEZ12" testOP_DA_EZ
+test_13_DA_EZ = testVar1File progName result12A "resultDA12" "resultEZ12UD" testOP_DA_EZ
 
 produceNLPtest ::  TextDescriptor ->  [Snip] -> ErrIO Text
 produceNLPtest textstate snips  = do

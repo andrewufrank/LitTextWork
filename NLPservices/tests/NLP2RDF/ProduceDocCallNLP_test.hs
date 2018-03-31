@@ -100,7 +100,7 @@ tx1 = "  Knots of idle-men  \
     \on the South Bridge, for 3s. 2d. .   \
     \This street named the _Via Dolorosa_."
 
-instance Zeros PartURI where zero = PartURI ""
+--instance Zeros PartURI where zero = PartURI ""
 
 -- the vars (always the same
 englVars = (undefEnglish, Conll.undefPOS, entz3text, 1)

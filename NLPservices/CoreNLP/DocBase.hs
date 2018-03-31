@@ -170,7 +170,7 @@ instance FormatID SentenceID where
 instance FormatID SnipID where
 --formatSnipID ::Int -> Text
 -- format an Int to 2 decimals for Snis
-    formatID  = formatID' "Doc" 5 -- "N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
+    formatID  = formatID' "Snip" 5 -- "N" <>) . s2t . printf ('%' : '0' : '5' : 'd' :[])
     unID (SnipID i) = i
 
 

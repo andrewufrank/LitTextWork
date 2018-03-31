@@ -45,6 +45,8 @@ import  GHC.Generics
 
 newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord, Generic)
 unPartURI (PartURI t) = t
+instance Zeros PartURI where zero = PartURI zero
+
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type - Network.URI, which is checked (and problems with Read class)
 -- conversion from URI to text use uriT (not showT)

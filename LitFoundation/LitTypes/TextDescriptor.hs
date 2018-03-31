@@ -114,6 +114,12 @@ unSnipID (SnipID i) = i
 snipIsNull Snip {..} = snip3textLength == 0
 instance Zeros SnipID where zero = SnipID zero
 
+pushSnipNumber2snip :: SnipID -> Snip -> Snip
+pushSnipNumber2snip i  snip = snip {snip3snipnr =  i}
+
+pushSnipSigl2snip :: RDFsubj -> Snip -> Snip
+pushSnipSigl2snip i  snip = snip {snip3baserdf =   i}
+
 
 -------------- definitinos of TZ2
 

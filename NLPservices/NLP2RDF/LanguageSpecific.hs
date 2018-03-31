@@ -72,7 +72,8 @@ class ( POStags postag, LanguageDependent lang, LanguageTypedText lang)
 
     postNLP :: postag -> lang -> Bool -> RDFsubj -> Text -> [Triple]
     -- postprocessing (e.g. adding POS to german)
-    postNLP pph lang debug  brdf txt =   json2triples pph (languageCode lang) brdf txt
+    postNLP pph lang debug  brdf txt =
+            json2triples pph (languageCode lang) brdf txt
 
 instance LanguageDependent EnglishType where
     preNLP    =  LTtext . cleanTextEnglish . unLCtext

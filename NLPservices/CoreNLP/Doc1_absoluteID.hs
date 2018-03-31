@@ -55,8 +55,10 @@ class ConvertToAbsulteID postag relID a2 a1 where
     convertToAbsoluteID :: postag -> relID -> a2 -> a1
 
 data Doc11 postag = Doc11 {doc11sents:: [Sentence11 postag]
-                 , doc11corefs :: Maybe Coreferences11   -- only one
-                 , doc11id :: SnipRelID     } deriving (Show, Read, Eq, Ord, Generic)
+             , doc11corefs :: Maybe Coreferences11   -- only one
+             , doc11id :: SnipRelID
+             }
+                deriving (Show, Read, Eq, Ord, Generic)
 
 
 instance Zeros (Doc11 postag) where zero = Doc11 [] zero zero

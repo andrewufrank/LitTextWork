@@ -87,11 +87,11 @@ cmdArgs = LitArgs
             short 'l' <>
             help "localhost not serverBrest (default)" )
      <*> strOption
-          ( long "database (was corpus)" <>
-            short 'd' <>
+          ( long "(data)base (was corpus)" <>
+            short 'b' <>
         --   long "subdir" <>
             value "" <>
-            metavar "db (was corpus) - required for store, queries etc." <>
+            metavar "base - dataset - required for store, queries etc." <>
             help "dbname from fuseki (was corpus)" )
      <*> strOption
           ( long "graph - required" <>
@@ -102,12 +102,12 @@ cmdArgs = LitArgs
      <*>  strOption
         (long "origin dir" <>
             short 'o'  <>
-            value "" <>
+--            value "" <>  -- at least one value must be given
             help "dir in which the markup or query files are (relative to home)" )
      <*> strOption
           ( long "destinationDir" <>
             short 'd' <>
-            value "NT" <>
+            value "" <>
             metavar "Destination directory"
             <> help "directory for the nt files " )
      <*> strOption

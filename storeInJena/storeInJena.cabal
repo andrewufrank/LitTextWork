@@ -67,7 +67,7 @@ executable store6
         , litFoundation
         , storeInJena
         , pipes
-        , CmdLineUtilities ==0.1.0.2
+        , CmdLineUtilities
   other-modules:
 --
 --

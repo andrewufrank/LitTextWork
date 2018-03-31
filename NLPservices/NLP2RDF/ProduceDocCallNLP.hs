@@ -117,6 +117,7 @@ class  LanguageTyped22 lang postag where
     snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI
                 -> ErrIO Text
     -- the nlp process, selected by language and postag
+    -- the base rdf for the snip is in the URI parameter
     -- results in a text as json
 
 

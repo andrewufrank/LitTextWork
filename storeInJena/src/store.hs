@@ -50,6 +50,13 @@ parseAndExecute t1 t2    = do
     let resultFile = addFileName homeDirz ("resultFileStore6.txt" ::FilePath)
                              :: Path Abs File
 --    let args = inArgs inp
+    when (isZero . inDB $ inp) $
+            errorT ["parseAndExecute: process store - requires base (dataset)"]
+    when (isNothing . inGraph $ inp) $
+            errorT ["parseAndExecute: process store - requires graph "]
+    when (isNothing . inOriginDir $ inp) $
+            errorT ["parseAndExecute: process store - requires origin (source) dir "]
+
     case inFilename inp of
         Nothing -> do
             putIOwords ["parseAndExecute: process store - no Fn (filename) argument)"]

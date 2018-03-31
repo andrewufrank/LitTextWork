@@ -53,11 +53,11 @@ tz2toSnip textstate tzs = snips3
         baserdfx = buchURIx $ textstate
         snips1 = prepareTZ4nlp posTag baserdfx tzs :: [Snip]
         snips2 = formSnips snips1  :: [Snip]
-        snips3 = zipWith pushSnipNumber2snip [1..] snips2
+        snips3 = zipWith pushSnipNumber2snip (map SnipID [1..]) snips2
         -- set snipnumber at end
 
-        pushSnipNumber2snip :: Int -> Snip -> Snip
-        pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
+--        pushSnipNumber2snip :: Int -> Snip -> Snip
+--        pushSnipNumber2snip i  snip = snip {snip3snipnr = SnipID i}
 
 
 
@@ -71,22 +71,27 @@ convertOneSnip2Triples :: LitTextFlags -> TextDescriptor
 -- the following is just the bridges, which should go earlier
 convertOneSnip2Triples flags textstate snip = do
     let text = snip3text snip
+    let (_, partOfTriples) = mkSnipPartOf textstate snip
+    trips2 <- if not . notNullLC $ text
+        then return []
+        else do
+            let snip2 = convertOneSnip2TriplesX flags textstate snip
+            trips <- convertOneSnip2triples_NLPservices flags  snip2
+            -- call NLPservices from here
+            return trips
+
+    return $ partOfTriples ++ trips2
+
+convertOneSnip2TriplesX flags textstate snip = do
+    let text = snip3text snip
     let lang = getLanguageCode . snip3text $  snip
             -- reduce for some special cases _italics_
 
 --    let nlpserver = nlpServer textstate
 --    let pt = txPosTagset textstate
-    let (snipsigl, partOfTriples) = mkSnipPartOf textstate snip
+    let (snipsigl, _) = mkSnipPartOf textstate snip
 
-    trips2 <- if not . notNullLC $ text
-        then return []
-        else do
---            let snip2 = pushSnipSigl2snip snipsigl snip
-            trips <- convertOneSnip2triples_NLPservices flags  snip
-            -- call NLPservices from here
-            return trips
-
-    return $ partOfTriples ++ trips2
+    pushSnipSigl2snip (unSnipSigl snipsigl) snip
 
 
 mkSnipPartOf :: TextDescriptor -> Snip -> (SnipSigl, [Triple])
