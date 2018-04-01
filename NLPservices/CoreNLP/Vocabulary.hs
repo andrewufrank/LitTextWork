@@ -26,9 +26,10 @@ import CoreNLP.DocBase hiding (Snip)
 --import Data.RDFext.Extension (RDFproperties (..), RDFtypes (..))
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma
-            | TokenLemma3
-          | TokenPOS | TokenPOSorig | TokenWordForm | TokenNER
-          | TokenNERorig | TokenSpeaker | TokenPosTT
+            | Lemma3
+          | Pos | TokenPOSorig | WordForm | Ner
+          | TokenNERorig | TokenSpeaker
+--          | TokenPosTT
 --          | DependencyType   -- in CoreNLPxml is the best (last) selected
           -- | Dep  | DepOrig -- not used in nlp_2017
           -- check separately that no unrecognized codes are occuring?

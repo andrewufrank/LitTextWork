@@ -131,7 +131,7 @@ data Ner3 = Ner3 {ner3docTokenBegin :: TokenID
 
 ----instance Zeros Bool where zero = False
 
-data NERtagExt = NERtagValue Text | NER NERtag
+data NERtagExt = NERtagValue Text | NERx NERtag
   deriving (Show, Read, Eq, Ord, Generic)
 
 data Token0 postag = Token0 { tid :: TokenID
@@ -233,7 +233,7 @@ instance (NLP.POStags postag)
         -- missig a test that parse was complete
 --        tpostt = Nothing
         tner = parseNERtagList [tok_ner] -- when is this a list?
-        tnerOrig = if (any (==(NER NERunk)) $ tner) then Just [tok_ner] else Nothing
+        tnerOrig = if (any (==(NERx NERunk)) $ tner) then Just [tok_ner] else Nothing
                         -- use the Ner2 values?
         tspeaker = parseSpeakerTagList . maybeToList $ tok_speaker
 --                    maybe [] (\a -> [a]) $ tok_speaker
@@ -245,8 +245,8 @@ instance (NLP.POStags postag)
 
 parseNERtagList :: [Text] -> [NERtagExt]
 parseNERtagList [] = []
-parseNERtagList [a] = [NER $ toNERtag a]
-parseNERtagList (a:as) = (NER $ toNERtag a) : map NERtagValue as
+parseNERtagList [a] = [NERx $ toNERtag a]
+parseNERtagList (a:as) = (NERx $ toNERtag a) : map NERtagValue as
     -- assume the first is the code and the rest is detail
     -- check with actual values
 
