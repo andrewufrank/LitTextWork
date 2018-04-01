@@ -16,7 +16,9 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE TypeFamilies  #-}
+{-# LANGUAGE TypeFamilies
+    , DeriveGeneric
+    , DeriveAnyClass  #-}
 --{-# Option -w #-}
 
 module Data.RDFext.FileTypes (
@@ -245,7 +247,7 @@ data NTdescriptor = NTdescriptor {
        destNT :: Path Abs File   -- the nt file
 --     , destHandle :: Maybe Handle -- ^ the handle to write the nt triples to
      , gzipFlag :: Bool         -- ^ indicates whether the nt files should be gzip
-    } deriving (Show, Read, Eq)
+    } deriving (Show, Read, Eq, Generic, Zeros)
 
 openHandleTriples  :: NTdescriptor -> ErrIO  Handle
 openHandleTriples textstate  = do

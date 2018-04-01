@@ -66,7 +66,7 @@ data Doc11 postag = Doc11 {doc11sents:: [Sentence11 postag]
                 deriving (Show, Read, Eq, Ord, Generic)
 
 
-instance Zeros (Doc11 postag) where zero = Doc11 [] zero zero
+--instance Zeros (Doc11 postag) where zero = Doc11 [] zero zero
 
 data Sentence11 postag = Sentence11 {s11id :: SentenceRelID
                         , s11parse :: Maybe Text  -- the parse tree
@@ -86,10 +86,10 @@ data Dependence11 = Dependence11 {d11type :: DepCode -- Text -- String
                         } deriving (Show, Read, Eq, Ord, Generic)
 
 data Coreferences11 = Coreferences11 {co11chains:: [MentionChain11]}
-                deriving (Show, Read, Eq, Ord, Generic)
+                deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 data MentionChain11 = MentionChain11 {mentions:: [Mention11]}
-        deriving (Show, Read, Eq, Ord, Generic)
+        deriving (Show, Read, Eq, Ord, Generic, Zeros)
 
 data Mention11 = Mention11 {ment11Rep ::  Bool -- , indicates the representative mention
         , ment11Sent :: SentenceRelID

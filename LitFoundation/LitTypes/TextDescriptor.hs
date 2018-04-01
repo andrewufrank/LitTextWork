@@ -12,7 +12,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE FlexibleInstances
     , DeriveGeneric
-    , RecordWildCards #-}
+    , RecordWildCards
+    , DeriveAnyClass #-}
 
 module LitTypes.TextDescriptor (
         module LitTypes.TextDescriptor
@@ -46,7 +47,7 @@ import LitTypes.LanguageTypedText hiding ((</>), (<.>))
 --import LitTypes.UtilsParseArgs --( LitTextFlag (..), LitTextFlags )
 import Data.RDFext.Extension hiding ((</>), (<.>))
 import LitTypes.Flags
-import GHC.Generics
+--import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
 
 -- directories:
@@ -75,20 +76,16 @@ data TextDescriptor = TextDescriptor
 --                      but not the remainder of the text)
     , txPosTagset :: Text -- ^ the tagset to be used as text ("" default)
     , ntdescriptor :: NTdescriptor
-    } deriving (Show, Read,  Eq)
+    } deriving (Show, Read,  Eq, Generic, Zeros)
 
-instance Zeros TextDescriptor where
-    zero = TextDescriptor zero zero zero zero zero zero zero
+--instance Zeros TextDescriptor where
+--    zero = TextDescriptor zero zero zero zero zero zero zero
 --instance IsString (Path Abs File)
 
-instance Zeros (Path Abs File) where
-    zero = makeAbsFile ""
-instance Zeros URI where
-    zero = makeURI ""
-instance Zeros Bool where
-    zero = False
-instance Zeros NTdescriptor where
-    zero = NTdescriptor zero zero
+--instance Zeros Bool where
+--    zero = False
+--instance Zeros NTdescriptor where
+--    zero = NTdescriptor zero zero
 
 -- S N I P , SnipID, SnipSigl -- input
 
@@ -109,10 +106,10 @@ data Snip = Snip { snip3loc :: TextLoc
             deriving (Read, Show, Eq )
 -- snip sigl uses the paragraph number of the first paragraph
 newtype SnipID = SnipID Int
-            deriving (Show, Read, Eq, Ord, Generic)
+            deriving (Show, Read, Eq, Ord, Generic, Zeros)
 unSnipID (SnipID i) = i
 snipIsNull Snip {..} = snip3textLength == 0
-instance Zeros SnipID where zero = SnipID zero
+--instance Zeros SnipID where zero = SnipID zero
 
 pushSnipNumber2snip :: SnipID -> Snip -> Snip
 pushSnipNumber2snip i  snip = snip {snip3snipnr =  i}
@@ -123,14 +120,15 @@ pushSnipSigl2snip i  snip = snip {snip3baserdf =   i}
 
 -------------- definitinos of TZ2
 
-data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int} deriving (Read, Show, Eq)
+data TextLoc = TextLoc {tlpage :: Maybe Text, tlline :: Int}
+    deriving (Read, Show, Eq, Generic, Zeros)
 -- ^ the place of a line in the full text
 -- for simplification, all counts are from the start of the text
 -- not relative to the page or paragraph (can be computed, if desired)
 -- page number (tlline) is text, to deal with III etc.
     -- removed paraid
 
-instance Zeros TextLoc where zero = TextLoc Nothing zero
+--instance Zeros TextLoc where zero = TextLoc Nothing zero
 
 -- the type of the line
 data TextType = Text0 | Zahl0 | Fussnote0 | Kurz0 | Para0
@@ -166,12 +164,12 @@ data TZ =
         | TZleer  {tzloc :: TextLoc}
         | TZneueSeite  {tzloc :: TextLoc}
         | TZignore {tzloc :: TextLoc, tztext:: TextWithMarks}
-            deriving (Read, Show, Eq )
+            deriving (Read, Show, Eq, Generic )
 
 instance Zeros TZ where zero = TZleer zero
 
 data TextWithMarks1 = TextWithMarks1 {twm1::LCtext, twmMarks1::[(Int, Text)]}
-        deriving (Show, Read, Eq )
+        deriving (Show, Read, Eq, Generic, Zeros )
 -- the text is without markers, the markers are a list
 -- of offset of the marker from start of line resp. previous marker
 -- and the marker as text
@@ -217,10 +215,10 @@ copyTZtoTZ1 x = error ("copyTZtoTZ1 missing case: " ++ show x)
 getLanguage3TZ1 :: TZ1 -> LanguageCode
 getLanguage3TZ1 = getLanguageCode . twm1 . tztext1
 
-newtype ParaNum = ParaNum Int deriving (Read, Show, Eq)
+newtype ParaNum = ParaNum Int deriving (Read, Show, Eq, Generic, Zeros)
 -- just to avoid confusions
 unparaNum (ParaNum t) = t
-instance Zeros ParaNum where zero =  ParaNum zero
+--instance Zeros ParaNum where zero =  ParaNum zero
 
 -- the format accumulation all detail info to build the triples.
 -- only tzpara and tzmarkup in final result

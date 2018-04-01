@@ -17,7 +17,8 @@
 {-# LANGUAGE OverloadedStrings
     , RecordWildCards     #-}
 
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric
+    , DeriveAnyClass  #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
@@ -43,9 +44,10 @@ import           Uniform.Zero
 import  GHC.Generics
 
 
-newtype PartURI = PartURI Text deriving (Show, Read, Eq, Ord, Generic)
+newtype PartURI = PartURI Text
+    deriving (Show, Read, Eq, Ord, Generic, Zeros)
 unPartURI (PartURI t) = t
-instance Zeros PartURI where zero = PartURI zero
+--instance Zeros PartURI where zero = PartURI zero
 
 -- ^ TOOD should be used wherever a Text string is a URI code
 -- there is another type - Network.URI, which is checked (and problems with Read class)
@@ -68,11 +70,12 @@ class RDFproperties p where
 -- class URIs a b where
 --   extendURI :: a -> b
 
-newtype RDFsubj = RDFsubj Text deriving (Show, Read, Eq, Ord, Generic)
+newtype RDFsubj = RDFsubj Text
+    deriving (Show, Read, Eq, Ord, Generic, Zeros)
 -- ^ a type to identify the RDF subject value
 -- is a text, not a URI
 unRDFsubj (RDFsubj a) = a
-instance Zeros RDFsubj where zero = RDFsubj zero
+--instance Zeros RDFsubj where zero = RDFsubj zero
 
 --instance Functor RDFsubj where fmap op (RDFsubj a) = RDFsubj (op a)
 -- would applicative work?

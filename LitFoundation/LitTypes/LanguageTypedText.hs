@@ -12,7 +12,9 @@
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE FlexibleInstances   #-}
 {-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables, MultiParamTypeClasses #-}
+{-# LANGUAGE ScopedTypeVariables, MultiParamTypeClasses
+    , DeriveGeneric
+    , DeriveAnyClass  #-}
 {-# OPTIONS_GHC -fno-warn-missing-methods #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
@@ -23,7 +25,7 @@ module LitTypes.LanguageTypedText
 
     ) where
 
-import Uniform.Zero (Zeros (..))
+import Uniform.Zero (Zeros (..), Generic(..))
 import Uniform.Error -- (undef)
 import Data.RDFext.Extension (LanguageCode (..)
             , RDFsubj, RDFproperty, Triple (..), mkTripleLang3)
@@ -43,10 +45,10 @@ undefSpanish = undef "convertOneSnip2Triples lang spanish":: SpanishType
 undefNoLanguage = undef "convertOneSnip2Triples no lang":: NoLanguageType
 
 
-newtype LTtext a = LTtext Text  deriving (Show, Eq, Ord, Read)
+newtype LTtext a = LTtext Text  deriving (Show, Eq, Ord, Read, Generic, Zeros)
 -- a piece of text in one language typed
 unLCtext (LTtext text) = text
-instance Zeros (LTtext a) where zero = LTtext zero
+--instance Zeros (LTtext a) where zero = LTtext zero
 
 class LanguageTypedText lang where
     typeText :: lang -> Text -> LTtext lang
@@ -93,9 +95,9 @@ instance LanguageTypedText NoLanguageType where
 
 data LCtext = LCtext {ltxt :: Text
                         , llang :: LanguageCode
-                      } deriving (Read, Show, Eq, Ord)
-instance Zeros LCtext where
-    zero = LCtext "" NoLanguage
+                      } deriving (Read, Show, Eq, Ord, Generic, Zeros)
+--instance Zeros LCtext where
+--    zero = LCtext "" NoLanguage
 
 class LanguageCodedText l where
     codeText  :: LanguageCode-> Text -> l

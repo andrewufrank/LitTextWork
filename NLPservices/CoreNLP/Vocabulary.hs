@@ -13,7 +13,9 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings
-    , RecordWildCards     #-}
+    , RecordWildCards
+    , DeriveGeneric
+    , DeriveAnyClass     #-}
 
 {-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
@@ -89,8 +91,8 @@ buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
 
 
 --
-newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq)
-instance Zeros SnipSigl where zero = SnipSigl zero
+newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq, Generic, Zeros)
+--instance Zeros SnipSigl where zero = SnipSigl zero
 
 
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
