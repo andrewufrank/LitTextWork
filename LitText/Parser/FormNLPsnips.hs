@@ -33,8 +33,8 @@ formSnips (n1:n2:ns) =  case mergeNLPtext n1 n2 of
         Just ab ->  formSnips (ab:ns)
 
 
-minSnipSize = 5000 -- 1000 -- 5000 -- char
-maxSnipSize = 10000 -- 2000  -- 10000
+minSnipSize = 50000 -- 1000 -- 5000 -- char
+maxSnipSize = 100000 -- 2000  -- 10000
 
 
 mergeNLPtext :: Snip -> Snip -> Maybe Snip

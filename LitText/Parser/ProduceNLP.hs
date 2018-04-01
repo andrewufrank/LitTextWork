@@ -79,6 +79,8 @@ convertOneSnip2Triples flags textstate snip = do
             trips <- convertOneSnip2triples_NLPservices flags  snip2
             -- call NLPservices from here
             return trips
+    putIOwords ["convertOneSnip2Triples", "a snip of length "
+                    , showT (snip3textLength snip), "char converted"]
 
     return $ partOfTriples ++ trips2
 
