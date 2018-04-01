@@ -47,12 +47,15 @@ processAll :: (Path Abs File -> ErrIO Text) -> (Path Abs File -> Bool)
 -- the file is the result report, not informativ
 processAll ops testFile dir file = do
         -- debug forceFlag server dir db mgraph  file =  do
-    putIOwords ["processAllNTGZ", "dir", showT dir, "file", showT file]
+    putIOwords ["processAll", "dir", showT dir, "file", showT file]
 --            db - graph", db, showT mgraph, "debug", showT debug]
     let path = toFilePath dir
     resFile :: Path Abs File <- makeAbsoluteFile' file
     bracketErrIO (FN.openFile2handle resFile WriteMode)
-                closeFile2  -- not with transaction tmp
+                (\hand -> do
+                    putIOwords ["processAll close"]
+                    closeFile2 hand -- not with transaction tmp
+                    )
                 (\hand ->
                       Pipe.runEffect $
                         getRecursiveContents dir
@@ -62,7 +65,7 @@ processAll ops testFile dir file = do
                     --    >-> P.stdoutLn
                         >-> Pipe.toHandle hand
                 )
-    return $ unwords' ["processAll", showT dir, showT file , "ok"]
+    return $ unwords' ["processAll end", showT dir, showT file , "ok"]
 
 
 getServer server  = addPort2URI  server  3030 :: URI

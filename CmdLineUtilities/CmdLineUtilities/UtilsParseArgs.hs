@@ -58,14 +58,14 @@ import GHC.Generics
 --- cmd line parsing
 data LitArgs = LitArgs
   {
-    argLocalhost :: Bool -- ^ use localhost as fuseki server
-  , argDB :: String -- ^ the database name
-  , argGraph  :: String  -- ^ the graph
-   , argOrigin :: String -- ^ the directoy in which the markup
+    argLocalhost :: Bool -- ^ l - use localhost as fuseki server
+  , argDB :: String -- ^ b - the database name
+  , argGraph  :: String  -- ^ g - the graph
+   , argOrigin :: String -- ^ o - the directoy in which the markup
 --                            or query files are
-   , argDestination :: String -- ^ the directory for the nt or result files
+   , argDestination :: String -- ^ d - the directory for the nt or result files
 
-  , argFn  :: String -- ^ the filename without extension - if any
+  , argFn  :: String -- ^ f - the filename without extension - if any
   , argTimeout  :: String -- ^ the timeout (if any) in minutes
   , argDebug :: Bool -- ^ controls debug output
   , argForceFlag :: Bool -- ^ force processing, even if newer exist

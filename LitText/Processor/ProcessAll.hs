@@ -31,10 +31,14 @@ import Data.List (delete)
 import Uniform.FileIO
 import LitTypes.TextDescriptor  hiding (try, (<|>))
 
-processOneMarkup4 ::  LitTextFlags -> Path Abs Dir -> Path Abs Dir -> Path Abs File
+processOneMarkup4 ::  LitTextFlags -> Path Abs Dir
+            -> Path Abs Dir -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
 processOneMarkup4  flags origindir ntdir   file = do
+    putIOwords ["\n processOneMarkup4", showT flags
+                , "\n\t originDir", showT origindir
+                , "\n\t ntdir " , showT ntdir ]
     let buchReplacement = s2t $ getNakedFileName file
         flags2 = delete IncludeTextFlag flags
         nlpserver = if LocalNLPserverFlag `elem` flags
@@ -44,15 +48,19 @@ processOneMarkup4  flags origindir ntdir   file = do
         textstate2 = fillTextState4a file nlpserver ntdir
                         authorReplacement buchReplacement flags2
     -- forces gzip in fillTextState4a
-    putIOwords ["\n processOneMarkup", showT textstate2
+    putIOwords ["\n processOneMarkup4", showT textstate2
                 , " server", showT nlpserver  ]
     if  gzipFlag . ntdescriptor $ textstate2
         then do
-            ntgzExist <- exist6 (destNT . ntdescriptor $ textstate2) ntFileTriplesGZip
+            ntgzExist <- exist6
+                        (destNT . ntdescriptor $ textstate2)
+                        ntFileTriplesGZip
             processNeeded <-
                 if ntgzExist
                 then do
-                    nttime <- modificationTime6 (destNT . ntdescriptor $ textstate2) ntFileTriplesGZip
+                    nttime <- modificationTime6
+                            (destNT . ntdescriptor $ textstate2)
+                            ntFileTriplesGZip
                     markuptime <- getFileModificationTime file
                     return $ nttime < markuptime
                 else
@@ -69,9 +77,11 @@ processOneMarkup4  flags origindir ntdir   file = do
                             , showT $ sourceMarkup textstate2, "\n"]
                     return (showT textstate2)
                 else do
-                    putIOwords  ["\n processOneMarkup4 - newer nt file exist already"
+                    putIOwords  ["\n processOneMarkup4 - \
+                                        \newer nt file exist already"
                             , showT $ sourceMarkup textstate2, "\n"]
-                    return . unlinesT $ ["\n processOneMarkup4 - nt file exist already"
+                    return . unlinesT $ ["\n processOneMarkup4 - \
+                                        \nt file exist already"
                             , showT $ sourceMarkup textstate2, "\n"]
 
         else do -- not gzipflag  -- not expected anymore

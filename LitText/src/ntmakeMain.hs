@@ -28,7 +28,7 @@ import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import Processor.NTmake
 
 
-programName = "ntmake6 0.0.4.5" :: Text
+programName = "ntmake6 0.0.4.6" :: Text
 progTitle = "produce the lit for all markup files " :: Text
 
 main :: IO ()

@@ -37,8 +37,7 @@ paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA
 -- ^ produce the text files (ignores removed, language marked)
 -- paragraphs formed etc.  (all together in LinesToParagraph)
 -- page number and line numbers are in layout
-paragraphsTZ2TZ2 =
-    paragraphs2TZpara
+paragraphsTZ2TZ2 = paragraphs2TZpara
 --            . paragraphs2TZsimple -- now in layout
 
 paragraphs2TZpara :: [TZ1] -> [TZ2]  -- test BA -> C

@@ -51,34 +51,43 @@ import Processor.ProcessAll hiding ((<>))
 parseAndExecuteNTmake  :: Text -> Text ->  ErrIO ()
 parseAndExecuteNTmake t1 t2    = do
     inp <- parseAndStartExecute True "ntmakeReport.txt"  t1 t2
+    homeDirz <- homeDir2  -- used only to place the result file
+    let resultFile = addFileName homeDirz ("resultFileNTmake6.txt" ::FilePath)
+                             :: Path Abs File
 --    let args = inArgs inp
+    when (isZero . showT . inDestinationDir $ inp) $
+            errorT ["parseAndExecuteNTmake: process store - requires base (dataset)"]
+--    when (isNothing . inGraph $ inp) $
+--            errorT ["parseAndExecuteNTmake: process store - requires graph "]
+    when (isZero . showT . inOriginDir $ inp) $
+            errorT ["parseAndExecuteNTmake: process store - requires origin (source) dir "]
     case inFilename inp of
         Nothing -> do
-            putIOwords ["parseAndExecute: process store - no Fn (filename) argument)"]
+            putIOwords ["parseAndExecuteNTmake: process store - no Fn (filename) argument)"]
             if null . inFilename $ inp
                 then do
-                    putIOwords ["parseAndExecute: process store"
+                    putIOwords ["parseAndExecuteNTmake: process store"
                         , " - no BookNr argument  - process all"
-                        , "for", showT $ inOriginDir inp]
+                        , "\n\tfor", showT $ inOriginDir inp]
 --                            let originSub = if arg
 --                            processAll (putOneFile2 debugFlag forceFlag server  -- ntdir db
 --                                dbarg mgraph ) (\f -> isNT f || isGZ f) originDir resultFile
                     processAll (putOneFileX inp)
-                                (\f -> isNT f || isGZ f)
+                                isMarkup  -- (\f -> isNT f || isGZ f)
                                 (inOriginDir inp) (inResultFile inp)
                 else do
-                    putIOwords ["parseAndExecute: process store - with BookNr"
+                    putIOwords ["parseAndExecuteNTmake: process store - with BookNr"
 --                                    , s2t . argBookNrFile $ args]
                                 , "storing with booknr is not implemented anymore"]
 --                    let csvfilename = addFileName homeDir (inFilename inp)
---                    putIOwords ["parseAndExecute: process a csv file with book numbers"
+--                    putIOwords ["parseAndExecuteNTmake: process a csv file with book numbers"
 --                                    , showT csvfilename]
 --                    putFilesFromCVS3  inp csvfilename
                     return ""
         Just fn -> do
-            putIOwords ["parseAndExecute: process store  - with filename)"
+            putIOwords ["parseAndExecuteNTmake: process store  - with filename)"
                     ]
-            putIOwords ["parseAndExecute: completed filename", showT fn]
+            putIOwords ["parseAndExecuteNTmake: completed filename", showT fn]
             -- fails if fn is null
             putOneFileX inp fn
     return ()
@@ -86,13 +95,16 @@ parseAndExecuteNTmake t1 t2    = do
     putOneFileX inp  = processOneMarkup4 (inFlags inp)
                                 (inOriginDir inp) (inDestinationDir inp)
 
+isMarkup :: Path Abs File -> Bool
+isMarkup  = hasExtension (Extension "markup")
 
 
-isNT :: Path Abs File -> Bool
-isNT  = hasExtension (Extension "nt") -- ntExtension
+--isNT :: Path Abs File -> Bool
+--isNT  = hasExtension (Extension "nt") -- ntExtension
+--
+--isGZ :: Path Abs File -> Bool
+--isGZ = hasExtension (Extension "gz")
 
-isGZ :: Path Abs File -> Bool
-isGZ = hasExtension (Extension "gz")
 
 --parseAndExecute  :: Text -> Text ->  ErrIO ()
 ---- TODO change to use subparsers and store results in a record
@@ -226,7 +238,5 @@ isGZ = hasExtension (Extension "gz")
 --
 --
 --
---isMarkup :: Path Abs File -> Bool
---isMarkup  = hasExtension (Extension "markup")
 ---- todo include in typedfiles - hasType ...
 

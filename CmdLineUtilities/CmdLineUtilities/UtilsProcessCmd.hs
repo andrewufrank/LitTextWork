@@ -89,10 +89,12 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
     putIOwords ["parseAndStartExecute:"
             , " the arguments always necessary or optional with defaults "
 --                , "\n\tserver", showT server
-                , "\n\tdbarg", showT dbarg
-                , "\n\tgraph", showT mgraph  -- optional for queries with all graphs
-                , "\n\toriginDir", showT originDir
-                , "\n\ttimeout", showT timeout
+                , "\n\tdbarg (-b)", showT dbarg
+                , "\n\tgraph (-g)", showT mgraph  -- optional for queries with all graphs
+                , "\n\toriginDir (-o)", showT originDir
+                , "\n\tfilename (-f)", showT fn
+                , "\n\tdestinationDir (-d)", showT destinationDir
+                , "\n\ttimeout (-t)", showT timeout
 --                    , "\n\tqueryFile", showT fn
                 ]
     let flags = args2flags args
