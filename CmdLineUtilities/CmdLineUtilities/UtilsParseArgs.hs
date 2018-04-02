@@ -66,6 +66,7 @@ data LitArgs = LitArgs
    , argDestination :: String -- ^ d - the directory for the nt or result files
 
   , argFn  :: String -- ^ f - the filename without extension - if any
+                -- relative to origin
   , argTimeout  :: String -- ^ the timeout (if any) in minutes
   , argDebug :: Bool -- ^ controls debug output
   , argForceFlag :: Bool -- ^ force processing, even if newer exist
@@ -115,7 +116,8 @@ cmdArgs = LitArgs
             short 'f' <>
             value "" <>
             metavar "query (filename)" <>
-            help "filename (without .construct), will also be name of resulting .ttl" )
+            help "filename (without .construct), relative to origin, \
+                            \will also be name of resulting .ttl" )
      <*> strOption
           ( long "timeout" <>
             short 't' <>

@@ -39,7 +39,7 @@ library
         Process.StoreOneFile
 --        Process.AllNTGZ
 --        Process.OneQuery
---        Process.OneConstruct
+        Process.OneConstruct
 --        Process.OneUpdate
 --        Process.DeleteOneGraph
 
@@ -89,22 +89,23 @@ executable store6
 --  other-modules:
 --
 --
---executable construct6
---  hs-source-dirs:      src
---  main-is:             construct.hs
---  default-language:    Haskell2010
---  build-depends:       base >= 4.7 && < 5
---        , HTF
---        , uniform-strings
---        , uniform-fileio
---        , uniform-convenience
---        , uniform-error
---        , uniform-http
---        , text
---        , pipes
---        , litFoundation
---        , storeInJena
---  other-modules:
+executable construct6
+  hs-source-dirs:      src
+  main-is:             construct.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5
+        , HTF
+        , uniform-strings
+        , uniform-fileio
+        , uniform-convenience
+        , uniform-error
+        , uniform-http
+        , text
+        , pipes
+        , litFoundation
+        , storeInJena
+        , CmdLineUtilities
+  other-modules:
 --
 --Test-Suite storeTestAuto
 --    type:       exitcode-stdio-1.0

@@ -21,6 +21,7 @@ module CmdLineUtilities.UtilsProcessCmd
     (module CmdLineUtilities.UtilsProcessCmd
     , LitTextFlag (..), LitTextFlags (..)
     , PartURI (..)
+    , addFusekiPort
 --        , dirQueries
     )
     where
@@ -29,6 +30,7 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import CmdLineUtilities.UtilsParseArgs
 import CmdLineUtilities.ProcessFlags
 import Data.RDFext.Extension (PartURI (..))
+import CmdLineUtilities.UtilsProcessing (addFusekiPort)
 
 getTimeout :: LitArgs -> Maybe Int
 getTimeout args = fmap (60 *) t1
@@ -41,8 +43,9 @@ data Inputs = Inputs {
         , inGraph :: Maybe Text -- ^ the graph
         , inOriginDir :: Path Abs Dir -- ^ where the in files are
         , inDestinationDir :: Path Abs Dir -- ^ where the produced files go
-        , inFilename :: Maybe (Path Abs File)
+        , inFilename :: Maybe (Path Rel File)
                     -- ^ a filename, if only one to process
+                    -- ^ relative to OriginDir
         , inTimeOut :: Maybe Int  -- ^ set a timeout for the process
         , inFlags :: LitTextFlags -- ^ all flags
         , inResultFile :: Path Abs File -- ^ file to keep result output
@@ -82,8 +85,9 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
             -- getLocalOriginDir args -- addDir homeDir (argOrigin args)
          fn = if null . argFn $ args
                 then Nothing
-                else Just . addFileName homeDir. argFn $ args
-                                :: Maybe (Path Abs File)
+                else Just . makeRelFile . argFn $ args
+--                        . addFileName homeDir. argFn $ args
+                                :: Maybe (Path Rel File)
     createDirIfMissing' destinationDir
     createDirIfMissing' (getParentDir resultFile)
     putIOwords ["parseAndStartExecute:"

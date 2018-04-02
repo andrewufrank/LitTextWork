@@ -68,16 +68,18 @@ processAll ops testFile dir file = do
     return $ unwords' ["processAll end", showT dir, showT file , "ok"]
 
 
-getServer server  = addPort2URI  server  3030 :: URI
+addFusekiPort server  = addPort2URI  server  3030 :: URI
 
 
-post2store ::  Bool -> Text -> URI -> PartURI -> Maybe PartURI ->  LazyByteString
+post2store ::  Bool -> Text -> URI -> PartURI
+                -> Maybe PartURI ->  LazyByteString
             -> HttpVarParams -> Maybe Int ->   ErrIO Text
     -- ^ timeout in sec
 
 -- use post with multipart form to store
 --(see https://www.w3.org/TR/sparql11-http-rdf-update/#http-post)
-post2store debug appType fusekiServer pathName mgraph split qstring timeout = do
+post2store debug appType fusekiServer pathName
+                mgraph payload varparms timeout = do
     -- form the instert query
     let pathNamePlusGraph = (unPartURI pathName) <> "?" <>
              maybe "default"  (\t -> "graph=" <> (unPartURI t))
@@ -85,10 +87,10 @@ post2store debug appType fusekiServer pathName mgraph split qstring timeout = do
 --    when debug $
 --    putIOwords ["\npost2store for",  fn, "path", pathNamePlusGraph ]
     putIOwords ["post2store", "pathNamePlusGraph"
-            ,   pathNamePlusGraph, "qstring", showT qstring]
-    res <- callHTTP10post True appType
-                (getServer fusekiServer) pathNamePlusGraph
-                split qstring   timeout
+            ,   pathNamePlusGraph, "qstring", showT varparms]
+    res <- callHTTP10post debug appType
+                (addFusekiPort fusekiServer) pathNamePlusGraph
+                payload varparms   timeout
     when True $ putIOwords ["post2store done", showT res]
     return res
 

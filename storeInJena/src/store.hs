@@ -84,7 +84,8 @@ parseAndExecute t1 t2    = do
                     ]
             putIOwords ["parseAndExecute: completed filename", showT fn]
             -- fails if fn is null
-            putOneFile4 inp fn
+            putOneFile4 inp (addFileName  (inOriginDir inp) fn)
+
     return ()
 
 isNT :: Path Abs File -> Bool
