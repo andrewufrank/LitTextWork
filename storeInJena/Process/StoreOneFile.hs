@@ -103,12 +103,12 @@ putOneFile4 inp@Inputs{..} fn = do
 
     when (DebugFlag `elem` inFlags) $ putIOwords ["putOneFile4 db - flag"
                     ,  showT fnFlag, "exist", showT flagExist]
-    if (ForceFlag `elem` inFlags) &&  (ntTime < flagTime)
+    if not (ForceFlag `elem` inFlags) &&  (ntTime < flagTime)
             then return . unwords' $ ["putOneFile4 - nothing to do", showT fn]
             else do
-                putIOwords ["putOneFile4 file to process", showT fn ]
+                putIOwords ["putOneFile4 file to process - call putOneFile5", showT fn ]
                 resp <- putOneFile5 inp fn
-                writeFile2 fnFlag resp--
+                writeFile2 fnFlag resp
                 return resp
 
 putOneFile5 :: Inputs -> Path Abs File
@@ -116,10 +116,10 @@ putOneFile5 :: Inputs -> Path Abs File
 -- put one file into the db and graph
 putOneFile5 Inputs{..} fn = do
 --        let fn = fromJustNote "putOneFile5 - filename is empty" $ fn
-        putIOwords ["putOneFile5 db - graph", showT inDB
+        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - graph", showT inDB
                 , showT  inGraph  , "\nfile", showT fn]
         let ext0 =  unExtension . getExtension $  fn :: String
-        putIOwords ["putOneFile5 db - extension",  s2t ext0]
+        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - extension",  s2t ext0]
         trips :: LazyByteString<- case ext0 of
             "" -> do
                 putIOwords ["putOneFile5", "extension is null"]
@@ -139,20 +139,21 @@ putOneFile5 Inputs{..} fn = do
         let pathName = inDB  -- </> "update"
         let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
 --        let mgraph2 = makeAbsURI rdfBase  (unPartURI inGraph)
-        when True $ putIOwords ["putOneFile5 db - path"
+        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - path"
                 ,  showT pathName, "mgraph2", showT mgraph2]
 
         let fusekiServer = if (LocalNLPserverFlag `elem` inFlags)
                             then serverLocalhost
                             else  serverBrest
-        when True $ putIOwords ["putOneFile5 db - path"
+        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - path"
                 ,  showT pathName, "mgraph2", showT mgraph2]
 --        errorT ["sfda"]
-        resp <- post2store (DebugFlag `elem` inFlags)  "text/turtle"
-                    fusekiServer pathName mgraph2   trips zero Nothing
+        resp <- post2store False -- (DebugFlag `elem` inFlags)  
+                        "text/turtle"
+                        fusekiServer pathName mgraph2   trips zero Nothing
 
 
-        putIOwords ["putOneFile5 response\n",  resp, "for", showT fn]
+        when True  $ putIOwords ["putOneFile5 response\n",  resp, "for", showT fn]
         -- write the response into the flag file
         let resp2 = "putOneFile5 ok " <> (showT fn) <> resp
         return resp2
