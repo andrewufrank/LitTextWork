@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "LitText"
+		},
+		{
+			"path": "storeInJena"
+		},
+		{
+			"path": "CmdLineUtilities"
+		},
+		{
+			"path": "MainLitText"
+		},
+		{
+			"path": "NLPservices"
+		}
+	],
+	"settings": {}
+}

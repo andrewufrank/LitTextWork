@@ -1,7 +1,7 @@
 flags: {}
 extra-package-dbs: []
 packages:
-- '.'
+- .
 - /home/frank/Workspace8/uniform/uniform-strings
 - /home/frank/Workspace8/uniform/uniform-convenience
 - /home/frank/Workspace8/uniform/uniform-algebras
@@ -9,18 +9,13 @@ packages:
 - /home/frank/Workspace8/uniform/uniform-fileio
 - /home/frank/Workspace8/uniform/uniform-time
 - /home/frank/Workspace8/uniform/uniform-http
-
 - /home/frank/Workspace8/rdf4h
-
-- /home/frank/Workspace8/TreeTagSets
-- /home/frank/Workspace8/fromOthers/hs-conllu
-
-- ../NLPservices
 - ../LitFoundation
+- ../LitText
 - ../rdf4hextension
 - ../CmdLineUtilities
+- ../NLPservices
 extra-deps:
 - hgal-2.0.0.2
-- parsec-extra-0.2.0.0
 - test-invariant-0.4.5.0
 resolver: lts-11.2
