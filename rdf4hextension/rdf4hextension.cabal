@@ -7,7 +7,7 @@ license-file: LICENSE.txt
 synopsis: Extensions to the  library for RDF processing in Haskell
 description:
     'RDF for Haskell' is a library for working with RDF in Haskell.
-    0.0.7 + 8  for RDF used in litText
+    0.0.7, 8,9  for RDF used in litText
 category: RDF
 author: andrew frank
 
@@ -28,7 +28,7 @@ library
         ,uniform-algebras
         ,uniform-http
 --        ,uniform-convenience
-        ,rdf4h 
+        ,rdf4h ==3.0.1.2 
 --        ,network-uri
         ,text
 --        , HTF

@@ -2,23 +2,15 @@ flags: {}
 extra-package-dbs: []
 packages:
 - '.'
-- location: /home/frank/Workspace8/uniform/uniform-strings
-  extra-dep: true
-- location: /home/frank/Workspace8/uniform/uniform-convenience
-  extra-dep: true
-- location: /home/frank/Workspace8/uniform/uniform-algebras
-  extra-dep: true
-- location: /home/frank/Workspace8/uniform/uniform-error
-  extra-dep: true
-- location: /home/frank/Workspace8/uniform/uniform-fileio
-  extra-dep: true
-- location: /home/frank/Workspace8/uniform/uniform-time
-  extra-dep: true
-- location: /home/frank/Workspace8/uniform/uniform-http
-  extra-dep: true
-- location: /home/frank/Workspace8/rdf4h
-  extra-dep: true
+- /home/frank/Workspace8/uniform/uniform-strings
+- /home/frank/Workspace8/uniform/uniform-convenience
+- /home/frank/Workspace8/uniform/uniform-algebras
+- /home/frank/Workspace8/uniform/uniform-error
+- /home/frank/Workspace8/uniform/uniform-fileio
+- /home/frank/Workspace8/uniform/uniform-time
+- /home/frank/Workspace8/uniform/uniform-http
+- /home/frank/Workspace8/rdf4h
 extra-deps:
 - hgal-2.0.0.2
 - test-invariant-0.4.5.0
-resolver: lts-10.8
+resolver: lts-11.2
