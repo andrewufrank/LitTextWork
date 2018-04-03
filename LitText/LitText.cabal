@@ -1,5 +1,5 @@
 name: LitText
-version: 0.0.4.7
+version: 0.0.4.8
  -- changed 0.0.4.1 -> 2 changed language for wordform to 3 letters (same as lemma3)
 --        - new make is ntmake5,
 -- 0.0.4.2 added the coreNLP POS data
@@ -14,6 +14,8 @@ description:
     main driver for the conversion of literary texts to rdf/semantic web format
     0.0.4 layout is separately converted to RDF
     0.0.4.5 test in tests, source in src
+    0.0.4.7 use NLPservices
+    0.0.4.8 move mains to MainLitText
 library
     build-depends:
        base -any
@@ -23,12 +25,12 @@ library
         , uniform-error
         , uniform-algebras
         , uniform-http
-        , litFoundation >=0.1.8.3
+        , litFoundation 
         , split
         , rdf4hextension
         , rdf4h
         , text
-        , NLPservices >=0.0.4.7
+        , NLPservices  
             -- is support for POS codes (could use haskell-conll)
                 -- used in  POS module
         , HTF

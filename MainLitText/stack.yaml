@@ -10,12 +10,16 @@ packages:
 - /home/frank/Workspace8/uniform/uniform-time
 - /home/frank/Workspace8/uniform/uniform-http
 - /home/frank/Workspace8/rdf4h
+- /home/frank/Workspace8/fromOthers/hs-conllu
+- /home/frank/Workspace8/TreeTagSets
 - ../LitFoundation
 - ../LitText
 - ../rdf4hextension
 - ../CmdLineUtilities
 - ../NLPservices
+- ../StoreInJena
 extra-deps:
 - hgal-2.0.0.2
+- parsec-extra-0.2.0.0
 - test-invariant-0.4.5.0
 resolver: lts-11.2

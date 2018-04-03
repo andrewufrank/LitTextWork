@@ -1,14 +1,14 @@
 name:                MainLitText
-version:             0.1.2
-synopsis:            store a file in jena
-description:         store rdf in ntriple format in jena
+version:             0.0.1
+synopsis:            the mains for LitText processing
+description:         store, query and update rdf in ntriple format in jena
 homepage:            https://github.com/githubuser/LitTextWork#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Andrew U. Frank
 maintainer:          frank@geoinfo.tuwien.ac.at
 copyright:           2017 andrew u frank
-category:            Web
+category:            Data
 build-type:          Simple
 cabal-version:       >=1.20
 extra-source-files:  README.md

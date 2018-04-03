@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "LitText"
+		},
+		{
+			"path": "LitFoundation"
+		},
+		{
+			"path": "CmdLineUtilities"
+		},
+		{
+			"path": "rdf4hextension"
+		},
+		{
+			"path": "MainLitText"
+		},
+		{
+			"path": "NLPservices"
+		},
+		{
+			"path": "StoreInJena"
+		}
+	],
+	"settings": {}
+}
