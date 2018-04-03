@@ -1,4 +1,4 @@
-name:                storeInJena
+name:                StoreInJena
 version:             0.1.2
 synopsis:            store a file in jena
 description:         store rdf in ntriple format in jena
@@ -65,7 +65,7 @@ executable store6
         , text
         , optparse-applicative
         , litFoundation
-        , storeInJena
+        , StoreInJena
         , pipes
         , CmdLineUtilities
   other-modules:
@@ -103,7 +103,7 @@ executable construct6
         , text
         , pipes
         , litFoundation
-        , storeInJena
+        , StoreInJena
         , CmdLineUtilities
   other-modules:
 --
