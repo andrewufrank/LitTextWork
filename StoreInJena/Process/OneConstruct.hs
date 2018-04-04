@@ -91,7 +91,7 @@ oneConstruct2 inp@Inputs{..}  fn0 = do
         resp <- callHTTP10post (isDebugFlag inp) appType
                     (addFusekiPort fusekiServer)  pathName
                     (b2bl . t2b $ query4)
-                    query  (inTimeOut)
+                    query  (TimeOutSec $ inTimeOut)
 
 --        let resp2 =   resp
 --        let resultExt = makeExtension . t2s $ ( db <.>  "csv") :: Extension

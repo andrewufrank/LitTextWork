@@ -35,9 +35,10 @@ import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
 import           Options.Applicative
 import GHC.Generics
+-- import Uniform.HttpURI hiding ((<>), (</>), (<.>))  -- remove later
 
-getTimeout :: LitArgs -> Maybe Int
-getTimeout args = fmap (60 *) t1
+getTimeout :: LitArgs -> TimeOutSec
+getTimeout args = maybe (mkTimeOutDefautl) (mkTimeOut (60 *) t1)
     where
 --        t1 = readMay ("30"::String) :: Maybe Int
         t1 = readMay (argTimeout args)  :: Maybe Int

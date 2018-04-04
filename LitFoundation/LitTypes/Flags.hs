@@ -23,8 +23,8 @@ module LitTypes.Flags (
     ) where
 
 
-import Uniform.FileIO (makeAbsDir, makeRelDir)
-import Uniform.HttpURI -- hiding ((</>), (<.>))
+import Uniform.FileIO (makeAbsDir, makeRelDir, Zeros (..))
+-- import Uniform.HttpURI -- hiding ((</>), (<.>))
 import Data.RDFext.Extension (PartURI (..), unPartURI)
 import GHC.Generics
 

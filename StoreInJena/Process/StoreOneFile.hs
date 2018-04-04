@@ -45,7 +45,7 @@ import Data.Either (isRight)
 import qualified Data.ByteString as BS
 import qualified Codec.Compression.GZip as GZip
 --import Uniform.StringInfix ((<>))
-import Uniform.HttpURI (addToURI)
+import Uniform.HttpCall (addToURI)
 import Uniform.Convenience.ReadCSV
 
 ntExtension = Extension "nt"

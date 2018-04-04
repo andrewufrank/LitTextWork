@@ -27,7 +27,7 @@ import           Data.Char               (toLower)
 import           Data.Maybe               (isNothing)
 import           Data.Text.Encoding      (decodeLatin1, encodeUtf8)
 import Uniform.Strings ((</>))  -- for PartURI
-import Uniform.HttpURI (uriT)
+-- import Uniform.HttpURI (uriT)
 import           Text.Printf         (printf)
 import           Uniform.Error      --     (errorT)
 import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation

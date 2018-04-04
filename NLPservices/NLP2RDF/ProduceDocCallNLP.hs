@@ -62,9 +62,7 @@ convertOneSnip2triples_NLPservices flags Snip{..} =
         let postagsetID =  snip3posTagSetID
         let debugNLP = True --  DebugFlag `elem` flags
         let text = snip3text
-        let nlpserver = if isLocalServer flags
-                    then serverLocalhost
-                    else serverBrest
+        let nlpserver = getServer flags 
         trips <- case (lang, postagsetID) of
             (English, "") -> do
                     t <- snip2triples undefEnglish Conll.undefPOS
@@ -189,7 +187,7 @@ text2nlpCode debugNLP  nlpServer path vars text = do
             nlpCode :: Text <- callHTTP10post debugNLP
                             "multipart/form-data"  nlpServer path
                             (b2bl . t2b $ text) vars
-                            (Just 300)   -- timeout in seconds
+                            (mkTimeOutSec 300)   -- timeout in seconds
 --            when debugNLP  $
 
             putIOwords ["text2nlpCode end \n", take' 200 . showT    $  nlpCode]

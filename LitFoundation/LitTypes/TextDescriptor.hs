@@ -68,7 +68,7 @@ data TextDescriptor = TextDescriptor
                 -- add the element number
      sourceMarkup :: Path Abs File -- the markup file
      -- selects then the type of the ntfile (nt or nt.gz)
-     , nlpServer :: URI -- ^ where the nlp server is
+     , nlpServer :: ServerURI -- ^ where the nlp server is
     , authorDir    :: Text -- ^ the directory where the inputs in the LitOriginal directory are
                         -- the project
                                  -- and where the converted data go
@@ -80,6 +80,8 @@ data TextDescriptor = TextDescriptor
     , ntdescriptor :: NTdescriptor
     } deriving (Show, Read,  Eq, Generic, Zeros)
 
+
+getServer :: f -> ServerURI 
 getServer f = if isLocalServer f
                             then serverLocalhost
                             else  serverBrest

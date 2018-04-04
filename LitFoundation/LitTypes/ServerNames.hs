@@ -21,10 +21,10 @@ module LitTypes.ServerNames (
     ) where
 
 
-import Uniform.FileIO (makeAbsDir, makeRelDir)
-import Uniform.HttpURI -- hiding ((</>), (<.>))
+import Uniform.FileIO (makeAbsDir, makeRelDir, Text)
+-- import Uniform.HttpURI -- hiding ((</>), (<.>))
 import Data.RDFext.Extension (PartURI (..), unPartURI)
-
+import Uniform.HttpCall (mkServerURI, ServerURI, URI, uriT, makeAbsURI)
 
 ---- an attempt to have a read for URI  ReadS
 --instance Read URI where
@@ -36,12 +36,12 @@ import Data.RDFext.Extension (PartURI (..), unPartURI)
 --        -- is defined in RDF.Extension
 
 
-serverLocalhost, serverBrest :: URI
+serverLocalhost, serverBrest :: ServerURI
 
 serverLocalhost = localhost
-serverBrest = makeAbsURI "http://nlp.gerastree.at"
+serverBrest = mkServerURI "http://nlp.gerastree.at"
 
-localhost = makeAbsURI "http://127.0.0.1"
+localhost = mkServerURI "http://127.0.0.1"
 
 rdfBase, vocabularyBase :: PartURI  -- not a real URI
 rdfBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"

@@ -42,9 +42,7 @@ processOneMarkup4  flags origindir ntdir   file = do
                 , "\n\t file", showT file]
     let buchReplacement = s2t $ getNakedFileName file
         flags2 = flags -- why delete? delete IncludeTextFlag flags
-        nlpserver = if isLocalServer flags
-                    then serverLocalhost
-                    else serverBrest
+        nlpserver = getServer flags 
         authorReplacement = s2t . getNakedDir $ origindir
         textstate2 = fillTextState4a file nlpserver ntdir
                         authorReplacement buchReplacement flags2

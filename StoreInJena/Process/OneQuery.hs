@@ -80,7 +80,7 @@ oneQuery2 inp fn0 = do
         let appType = "application/sparql-query"
 
         resp <- callHTTP10post (isDebugFlag inp) appType  fusekiServer  pathName
-                    (b2bl . t2b $ query3) query  (inTimeOut inp)
+                    (b2bl . t2b $ query3) query  (TimeOutSec $ inTimeOut inp)
 --        resp <- post2store debug "application/sparql-query" fusekiServer pathName mgraph
 --                (b2bl . t2b $ query4) [ ("output", Just "csv")] Nothing
 --        resp <- makeHttpPost7 debug fusekiServer pathName

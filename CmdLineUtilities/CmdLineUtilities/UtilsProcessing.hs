@@ -30,7 +30,7 @@ import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 --import LitTypes.ServerNames -- (serverLocalhost, serverBrest
 ----                    , rdfBase, dirQueries, URI, HttpVarParams)
 import Uniform.HttpCall (callHTTP10post, URI, HttpVarParams(..)
-        , addPort2URI)
+        , addPort2URI, mkTimeOutSec)
 import Data.RDFext.Extension (PartURI(..), unPartURI)
 import Uniform.Strings  ((<>))
 
@@ -90,7 +90,7 @@ post2store debug appType fusekiServer pathName
             ,   pathNamePlusGraph, "qstring", showT varparms]
     res <- callHTTP10post debug appType
                 (addFusekiPort fusekiServer) pathNamePlusGraph
-                payload varparms   timeout
+                payload varparms   (TimeOutSec timeout)
     when True $ putIOwords ["post2store done", showT res]
     return res
 

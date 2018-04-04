@@ -99,7 +99,7 @@ oneUpdate debug server db mgraph mdest wordnetgrah fn = do
 --                mgraph
         -- not clear what the names of the graphs would be
         resp <- callHTTP10post debug "application/sparql-update"  
-                    server2 pathName zero query5 (Just 300)
+                    server2 pathName zero query5 (TimeOutSec $ Just 300)
         -- resp <- makeHttpPost7 False server2 pathName
         --              zero -- (HttpVarParams [])
         --                 "application/sparql-update" query5

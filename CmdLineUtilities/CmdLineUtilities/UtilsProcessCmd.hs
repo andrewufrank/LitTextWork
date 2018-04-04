@@ -45,7 +45,7 @@ data Inputs = Inputs {
         , inFilename :: Maybe (Path Rel File)
                     -- ^ a filename, if only one to process
                     -- ^ relative to OriginDir
-        , inTimeOut :: Maybe Int  -- ^ set a timeout for the process
+        , inTimeOut :: TimeOutSec  -- ^ set a timeout for the process
         , inFlags :: LitTextFlagSet -- ^ all flags
         , inResultFile :: Path Abs File -- ^ file to keep result output
                     -- perhaps sufficient to return ?
@@ -77,7 +77,7 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
 --    let forceFlag = argForceFlag args
 --    let debugFlag = True
 --        putIOwords ["parseAndStartExecute: before making args "]
-    let  timeout = getTimeout args
+    let  timeout = mkTimeOutSec $ getTimeout args
          mgraph = if null' . argGraph $ args then Nothing
                         else Just . s2t $  argGraph args  -- nothing if empty
 --        putIOwords ["parseAndStartExecute: before making args 2"]

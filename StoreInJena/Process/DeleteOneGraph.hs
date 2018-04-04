@@ -75,7 +75,7 @@ deleteOneGraph debug server db graph   = do
         -- not clear what the names of the graphs would be
 --        resp <- return ""
         resp <- callHTTP10post debug "application/sparql-update"  
-                    server pathName (b2bl . t2b $ query4) zero (Just 300)
+                    server pathName (b2bl . t2b $ query4) zero (TimeOutSec $ Just 300)
                 -- makeHttpPost7 False server pathName
                 --  zero --    (HttpVarParams [ ])
                 --         "application/sparql-update" query4
