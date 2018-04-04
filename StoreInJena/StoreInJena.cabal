@@ -49,26 +49,26 @@ library
     hs-source-dirs: .
 
 
-executable store6
--- store all nt.gz files in fuseki expand in haskell
--- because fuseki cannot unzip multi-session and pass as multipart to fuseki server
-  hs-source-dirs:      src
-  main-is:             store.hs
-  default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5
-        , HTF
-        , uniform-strings
-        , uniform-fileio
-        , uniform-convenience
-        , uniform-error
-        , uniform-http
-        , text
-        , optparse-applicative
-        , litFoundation
-        , StoreInJena
-        , pipes
-        , CmdLineUtilities
-  other-modules:
+--executable store6
+---- store all nt.gz files in fuseki expand in haskell
+---- because fuseki cannot unzip multi-session and pass as multipart to fuseki server
+--  hs-source-dirs:      src
+--  main-is:             store.hs
+--  default-language:    Haskell2010
+--  build-depends:       base >= 4.7 && < 5
+--        , HTF
+--        , uniform-strings
+--        , uniform-fileio
+--        , uniform-convenience
+--        , uniform-error
+--        , uniform-http
+--        , text
+--        , optparse-applicative
+--        , litFoundation
+--        , StoreInJena
+--        , pipes
+--        , CmdLineUtilities
+--  other-modules:
 --
 --
 --executable query6
@@ -89,23 +89,23 @@ executable store6
 --  other-modules:
 --
 --
-executable construct6
-  hs-source-dirs:      src
-  main-is:             construct.hs
-  default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5
-        , HTF
-        , uniform-strings
-        , uniform-fileio
-        , uniform-convenience
-        , uniform-error
-        , uniform-http
-        , text
-        , pipes
-        , litFoundation
-        , StoreInJena
-        , CmdLineUtilities
-  other-modules:
+--executable construct6
+--  hs-source-dirs:      src
+--  main-is:             construct.hs
+--  default-language:    Haskell2010
+--  build-depends:       base >= 4.7 && < 5
+--        , HTF
+--        , uniform-strings
+--        , uniform-fileio
+--        , uniform-convenience
+--        , uniform-error
+--        , uniform-http
+--        , text
+--        , pipes
+--        , litFoundation
+--        , StoreInJena
+--        , CmdLineUtilities
+--  other-modules:
 --
 --Test-Suite storeTestAuto
 --    type:       exitcode-stdio-1.0

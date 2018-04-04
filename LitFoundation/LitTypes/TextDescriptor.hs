@@ -27,8 +27,10 @@ module LitTypes.TextDescriptor (
     , RDFtypes (..)
     , RDFproperties (..)
     , NTdescriptor (..)
-    , LitTextFlag (..), LitTextFlags
+--    , LitTextFlag (..), LitTextFlags
+    , LitTextFlagSet,  LitTextFlags (..)
     , PartURI (..), RDFsubj (..)
+--    , getServer  -- from flags
 --    , unPartURI
 --    , append2partURI
     , Zeros (..)
@@ -78,14 +80,10 @@ data TextDescriptor = TextDescriptor
     , ntdescriptor :: NTdescriptor
     } deriving (Show, Read,  Eq, Generic, Zeros)
 
---instance Zeros TextDescriptor where
---    zero = TextDescriptor zero zero zero zero zero zero zero
---instance IsString (Path Abs File)
+getServer f = if isLocalServer f
+                            then serverLocalhost
+                            else  serverBrest
 
---instance Zeros Bool where
---    zero = False
---instance Zeros NTdescriptor where
---    zero = NTdescriptor zero zero
 
 -- S N I P , SnipID, SnipSigl -- input
 
@@ -246,7 +244,7 @@ dirsTest = LitDirs litTestDir1  litNTTestDir1
 dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 
 fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
-            -> Text -> LitTextFlags -> TextDescriptor
+            -> Text -> LitTextFlagSet -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
 -- output is gzip, text is not included
 -- used for ntmake
@@ -255,7 +253,7 @@ fillTextState4a file server ntdir authordir buchname flags = TextDescriptor {
         , nlpServer = server  -- could use/set the server flag
         , authorDir = authordir
         , buchName = buchname
-        , includeText = IncludeTextFlag `elem` flags
+        , includeText = isIncludeText flags  -- IncludeTextFlag `elem` flags
         , txPosTagset =  ""
         , ntdescriptor = fillNTdescriptor ntdir filename True
         }

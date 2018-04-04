@@ -18,7 +18,8 @@
 
 
 module CmdLineUtilities.UtilsParseArgs
-    (LitArgs (..), getArgsParsed
+    (LitArgs (..)
+        , getArgsParsed, flag2bool, getTimeout
 --            module CmdLineUtilities.UtilsParseArgs
 --        , dirQueries, URI
     , module GHC.Generics
@@ -34,26 +35,12 @@ import           Data.Semigroup               ((<>))
 import           Options.Applicative.Builder
 import           Options.Applicative
 import GHC.Generics
---import LitTypes.TextDescriptor (serverLocalhost, serverBrest
---            , rdfBase, dirQueries, URI)
---import Path.IO as Pathio
 
---data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag
---            | OutputNLPflag | XMLflag | JSONflag
-----            | LocalNLPserverFlag
---            | SnipSet Int
---            | NoFlagZero
---            deriving (Show, Read, Eq, Ord, Generic)
---
---data ServerFlag = LocalServer | RemoteServer
---            deriving (Show, Read, Eq, Ord, Generic)
---
---type LitTextFlags = [LitTextFlag]
---instance Zeros LitTextFlag where zero = NoFlagZero
-
-
--- all dir names are relative to home dir of user
--- check all filenames by converting to Path format
+getTimeout :: LitArgs -> Maybe Int
+getTimeout args = fmap (60 *) t1
+    where
+--        t1 = readMay ("30"::String) :: Maybe Int
+        t1 = readMay (argTimeout args)  :: Maybe Int
 
 --- cmd line parsing
 data LitArgs = LitArgs
@@ -80,6 +67,10 @@ data LitArgs = LitArgs
 --  , argBookNrFile :: String -- ^ a single book (not a full link)
 
   } deriving (Show)
+
+
+flag2bool :: [(LitArgs -> Bool)] -> LitArgs -> [Bool]
+flag2bool fs args = map (\f -> f args) fs
 
 cmdArgs :: Parser LitArgs
 cmdArgs = LitArgs

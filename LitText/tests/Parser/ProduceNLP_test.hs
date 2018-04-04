@@ -46,7 +46,7 @@ instance ShowTestHarness [Snip]
 
 
 testOP_DA_E :: TextDescriptor -> [Snip]-> ErrIO [[Triple]]
-testOP_DA_E textstate =  mapM (convertOneSnip2Triples  [] textstate )
+testOP_DA_E textstate =  mapM (convertOneSnip2Triples  zero textstate )
           --   fmap concat .
 
 test_1_DA_E = testVar1FileIO progName result1A "resultDA1" "resultE1" testOP_DA_E
@@ -85,7 +85,7 @@ test_13_DA_EZ = testVar1File progName result12A "resultDA12" "resultEZ12UD" test
 
 produceNLPtest ::  TextDescriptor ->  [Snip] -> ErrIO Text
 produceNLPtest textstate snips  = do
-    trips <- produceNLPtriples [] textstate snips
+    trips <- produceNLPtriples zero textstate snips
     let ntdescr = (ntdescriptor textstate) {gzipFlag = True}
     putIOwords ["produceNLPtest" , showT ntdescr ]
     bracketErrIO (do

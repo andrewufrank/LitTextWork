@@ -28,7 +28,7 @@ import           Uniform.Strings
 import           Uniform.Error
 
 import CmdLineUtilities.UtilsProcessCmd
-import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
+--import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
 import CmdLineUtilities.UtilsProcessing
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
@@ -37,7 +37,8 @@ import Uniform.HttpCall (callHTTP10post, callHTTP8post
                 , makeAbsURI)
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
-            , rdfBase, dirQueries, PartURI, unPartURI)
+            , rdfBase, dirQueries, PartURI, unPartURI
+            , LitTextFlags(..), getServer)
 import Data.List.Split (chunksOf)
 import Data.Either (isRight)
 
@@ -60,7 +61,7 @@ putFilesFromCVS3 inp@Inputs{..} csvFileName = do
         putIOwords ["putFilesFromCVS header", showT header]
         let csvfile2 = reverse . tail . reverse . tail $ csvfile
         -- to get rid of the empty trailing and the header line
-        when (DebugFlag `elem` inFlags) $ putIOwords
+        when (isDebugFlag inp) $ putIOwords
                 ["putFilesFromCVS content csvfile2", showT csvfile2]
 
         let booknrs = map s2t . map (!!0) $ csvfile2
@@ -101,9 +102,9 @@ putOneFile4 inp@Inputs{..} fn = do
                                 else return 0
     ntTime :: EpochTime <- getFileModificationTime fn
 
-    when (DebugFlag `elem` inFlags) $ putIOwords ["putOneFile4 db - flag"
+    when (isDebugFlag inp) $ putIOwords ["putOneFile4 db - flag"
                     ,  showT fnFlag, "exist", showT flagExist]
-    if not (ForceFlag `elem` inFlags) &&  (ntTime < flagTime)
+    if not (isForceFlag inp) &&  (ntTime < flagTime)
             then return . unwords' $ ["putOneFile4 - nothing to do", showT fn]
             else do
                 putIOwords ["putOneFile4 file to process - call putOneFile5", showT fn ]
@@ -114,12 +115,12 @@ putOneFile4 inp@Inputs{..} fn = do
 putOneFile5 :: Inputs -> Path Abs File
     ->  ErrIO Text
 -- put one file into the db and graph
-putOneFile5 Inputs{..} fn = do
+putOneFile5 inp@Inputs{..} fn = do
 --        let fn = fromJustNote "putOneFile5 - filename is empty" $ fn
-        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - graph", showT inDB
+        when (isDebugFlag inp) $ putIOwords ["putOneFile5 db - graph", showT inDB
                 , showT  inGraph  , "\nfile", showT fn]
         let ext0 =  unExtension . getExtension $  fn :: String
-        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - extension",  s2t ext0]
+        when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - extension",  s2t ext0]
         trips :: LazyByteString<- case ext0 of
             "" -> do
                 putIOwords ["putOneFile5", "extension is null"]
@@ -139,16 +140,14 @@ putOneFile5 Inputs{..} fn = do
         let pathName = inDB  -- </> "update"
         let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
 --        let mgraph2 = makeAbsURI rdfBase  (unPartURI inGraph)
-        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - path"
+        when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - path"
                 ,  showT pathName, "mgraph2", showT mgraph2]
 
-        let fusekiServer = if (LocalNLPserverFlag `elem` inFlags)
-                            then serverLocalhost
-                            else  serverBrest
-        when (DebugFlag `elem` inFlags)  $ putIOwords ["putOneFile5 db - path"
+        let fusekiServer = getServer inp
+        when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - path"
                 ,  showT pathName, "mgraph2", showT mgraph2]
 --        errorT ["sfda"]
-        resp <- post2store False -- (DebugFlag `elem` inFlags)  
+        resp <- post2store False -- (DebugFlag `elem` inFlags)
                         "text/turtle"
                         fusekiServer pathName mgraph2   trips zero Nothing
 

@@ -38,7 +38,7 @@ import NLP2RDF.ProduceDocCallNLP
 import Parser.FilterTextForNLP  (prepareTZ4nlp)
 import Parser.FormNLPsnips (formSnips)
 
-produceNLPtriples :: LitTextFlags -> TextDescriptor -> [Snip] -> ErrIO [Triple]
+produceNLPtriples :: LitTextFlagSet -> TextDescriptor -> [Snip] -> ErrIO [Triple]
             -- test C  -> X
 produceNLPtriples  flags textstate snips3 =  do
     triples :: [[Triple]] <- mapM
@@ -61,7 +61,7 @@ tz2toSnip textstate tzs = snips3
 
 
 
-convertOneSnip2Triples :: LitTextFlags -> TextDescriptor
+convertOneSnip2Triples ::   LitTextFlagSet -> TextDescriptor
             -> Snip ->  ErrIO [Triple]
 -- calls nlp to convert to doc
 -- the snip should have a type parameter language

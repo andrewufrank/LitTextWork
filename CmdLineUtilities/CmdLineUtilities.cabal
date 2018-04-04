@@ -1,5 +1,5 @@
 name: CmdLineUtilities
-version: 0.1.0.8
+version: 0.1.0.10
 
 cabal-version: >=1.24
 build-type: Simple
@@ -37,7 +37,7 @@ library
         CmdLineUtilities.UtilsProcessing
         CmdLineUtilities.UtilsProcessCmd
 --        CmdLineUtilities.CmdLineNtmake
-        CmdLineUtilities.ProcessFlags
+--        CmdLineUtilities.ProcessFlags
 
     exposed: True
     buildable: True

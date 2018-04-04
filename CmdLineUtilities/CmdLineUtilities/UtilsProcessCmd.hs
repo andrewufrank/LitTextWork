@@ -19,7 +19,8 @@
 
 module CmdLineUtilities.UtilsProcessCmd
     (module CmdLineUtilities.UtilsProcessCmd
-    , LitTextFlag (..), LitTextFlags (..)
+--    , LitTextFlag (..), LitTextFlags (..)
+    , LitTextFlagSet
     , PartURI (..)
     , addFusekiPort
 --        , dirQueries
@@ -27,16 +28,14 @@ module CmdLineUtilities.UtilsProcessCmd
     where
 
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
-import CmdLineUtilities.UtilsParseArgs
-import CmdLineUtilities.ProcessFlags
+import CmdLineUtilities.UtilsParseArgs -- (getArgsParsed, getTimeout)
+-- imports the Litargs internals, but does not export them
+
+--import CmdLineUtilities.ProcessFlags
 import Data.RDFext.Extension (PartURI (..))
 import CmdLineUtilities.UtilsProcessing (addFusekiPort)
+import LitTypes.Flags
 
-getTimeout :: LitArgs -> Maybe Int
-getTimeout args = fmap (60 *) t1
-    where
---        t1 = readMay ("30"::String) :: Maybe Int
-        t1 = readMay (argTimeout args)  :: Maybe Int
 
 data Inputs = Inputs {
          inDB :: PartURI  -- ^ the db to use
@@ -47,7 +46,7 @@ data Inputs = Inputs {
                     -- ^ a filename, if only one to process
                     -- ^ relative to OriginDir
         , inTimeOut :: Maybe Int  -- ^ set a timeout for the process
-        , inFlags :: LitTextFlags -- ^ all flags
+        , inFlags :: LitTextFlagSet -- ^ all flags
         , inResultFile :: Path Abs File -- ^ file to keep result output
                     -- perhaps sufficient to return ?
 --                    inServer :: ServerFlag  -- localhost
@@ -55,6 +54,9 @@ data Inputs = Inputs {
 --                    , inDebug :: Bool
 --                    , inForceFlag :: Bool
                     } deriving (Show)
+
+instance LitTextFlags Inputs where
+    isFlagSet f  Inputs {..} = isFlagSet f inFlags
 
 parseAndStartExecute :: Bool -> Text
                     -> Text -> Text -> ErrIO Inputs
@@ -101,7 +103,8 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
                 , "\n\ttimeout (-t)", showT timeout
 --                    , "\n\tqueryFile", showT fn
                 ]
-    let flags = args2flags args
+    let boolSwitches = flag2bool [argLocalhost, argForceFlag, argDebug] args
+        flags = setFlags [LocalNLPserverFlag, ForceFlag, DebugFlag] boolSwitches
     putIOwords ["parseAndStartExecute flags", showT flags]
     let inp = Inputs {
           inDB = PartURI dbarg
@@ -122,4 +125,6 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
     return inp
 
 
---
+--getSwitches :: LitArgs -> [Bool]
+--getSwitches args = flag2bool [argLocalhost, argForceFlag, argDebug] args
+

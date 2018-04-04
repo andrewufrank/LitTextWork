@@ -26,6 +26,8 @@ import qualified NLP.TagSets.Conll  as Conll
 instance ShowTestHarness (Doc11 Conll.POStag) where
 instance ShowTestHarness (Doc1 Conll.POStag) where
 
+--instance Zeros Conll.POStag where zero = Conll.Unk
+
 progName = "nlpservices"
 test_c :: IO ()
 test_c = test1File progName "short1.doc3" "short1.doc4"

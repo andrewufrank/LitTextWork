@@ -23,7 +23,8 @@
 module NLP2RDF.ProduceDocCallNLP
     (module NLP2RDF.ProduceDocCallNLP
     , module NLP2RDF.LanguageSpecific
-    , LitTextFlags (..), LitTextFlag (..), SnipID (..)
+    , LitTextFlagSet
+--     LitTextFlags (..), LitTextFlag (..), SnipID (..)
     ) where
 
 import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
@@ -41,7 +42,7 @@ import NLP2RDF.LanguageSpecific
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode
 
-convertOneSnip2triples_NLPservices :: LitTextFlags  -> Snip -> ErrIO [Triple]
+convertOneSnip2triples_NLPservices :: LitTextFlagSet  -> Snip -> ErrIO [Triple]
 -- | is is the overall process taking a snip and producing the NT as text
 -- construct a snipID from rdfBase (from LitTypes.ServerNames)
 -- this is just the conversion from tagged to typed
@@ -61,7 +62,7 @@ convertOneSnip2triples_NLPservices flags Snip{..} =
         let postagsetID =  snip3posTagSetID
         let debugNLP = True --  DebugFlag `elem` flags
         let text = snip3text
-        let nlpserver = if LocalNLPserverFlag `elem` flags
+        let nlpserver = if isLocalServer flags
                     then serverLocalhost
                     else serverBrest
         trips <- case (lang, postagsetID) of
@@ -95,9 +96,9 @@ convertOneSnip2triples_NLPservices flags Snip{..} =
 
 class  LanguageTyped22 lang postag where
 
---    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlags ->  Snip2 lang -> URI
+--    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlagSet ->  Snip2 lang -> URI
 --                -> ErrIO [NLPtriple postag]
-    snip2triples :: lang -> postag -> LitTextFlags ->  LTtext lang
+    snip2triples :: lang -> postag -> LitTextFlagSet ->  LTtext lang
                 -> RDFsubj  -> URI
                 -> ErrIO [Triple]
     -- this should be the entry point for conversion of a text to nlp
@@ -131,7 +132,7 @@ instance (-- LanguageDependent lang,
     =>
     LanguageTyped22 lang postag where
     snip2triples lph pph flags lttext baserdf sloc = do
-        let debugNLP = DebugFlag `elem` flags
+        let debugNLP = isDebugFlag flags
 
         let text = lttext -- snip2text snip
         when debugNLP $ putIOwords ["convertOneSnip2Triples" -- , sayLanguageOfText text

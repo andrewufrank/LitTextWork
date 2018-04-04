@@ -19,14 +19,16 @@
 
 module Processor.Main2sub (mainLitAndNLPproduction
          , ntFileTriples,ntFileTriplesGZip
-         , LitTextFlags (..), LitTextFlag (..)
+--         , LitTextFlags (..), LitTextFlag (..)
+            , LitTextFlags, LitTextFlags (..)
          , TextDescriptor (..)
          , ErrIO (..)
 --         , URI (..)
             ) where
 
 import           Parser.ReadMarkupAB (textstate2Text
-                        , LitTextFlag (..), LitTextFlags (..)
+--                        , LitTextFlag (..), LitTextFlags (..)
+                        , LitTextFlagSet , LitTextFlags (..)
                         , TextDescriptor (..))
 import           Lines2para.Lines2text  (text2tz1, TZ1)
 
@@ -44,9 +46,9 @@ import Data.RDFext.Extension (ntFileTriples, ntFileTriplesGZip
 import           Uniform.FileIO -- (when, errorT)
 --import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
-mainLitAndNLPproduction :: LitTextFlags -> TextDescriptor -> ErrIO ()
+mainLitAndNLPproduction :: LitTextFlagSet -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction flags  textstate = do
-    let debugLit = DebugFlag `elem` flags
+    let debugLit = isDebugFlag flags -- DebugFlag `elem` flags
 
     -- read text input
     when debugLit $ putIOwords ["mainLitAndNLPproduction start", showT textstate]
@@ -86,7 +88,7 @@ mainLitAndNLPproduction flags  textstate = do
                 (closeHandleTriples ntdescr )
                 (\h -> do
                     writeHandleTriples ntdescr h layoutTriples
-                    when (IncludeTextFlag `elem` flags) $ writeHandleTriples ntdescr h litTriples
+                    when (isIncludeText flags) $ writeHandleTriples ntdescr h litTriples
                     writeHandleTriples ntdescr h nlpTriples
                     )
 

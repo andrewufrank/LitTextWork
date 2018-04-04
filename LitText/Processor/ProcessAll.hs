@@ -31,7 +31,7 @@ import Data.List (delete)
 import Uniform.FileIO
 import LitTypes.TextDescriptor  hiding (try, (<|>))
 
-processOneMarkup4 ::  LitTextFlags -> Path Abs Dir
+processOneMarkup4 ::  LitTextFlagSet -> Path Abs Dir
             -> Path Abs Dir -> Path Abs File
             -> ErrIO Text
 -- process one markup file, if the nt file does not exist
@@ -41,8 +41,8 @@ processOneMarkup4  flags origindir ntdir   file = do
                 , "\n\t ntdir " , showT ntdir
                 , "\n\t file", showT file]
     let buchReplacement = s2t $ getNakedFileName file
-        flags2 = delete IncludeTextFlag flags
-        nlpserver = if LocalNLPserverFlag `elem` flags
+        flags2 = flags -- why delete? delete IncludeTextFlag flags
+        nlpserver = if isLocalServer flags
                     then serverLocalhost
                     else serverBrest
         authorReplacement = s2t . getNakedDir $ origindir
@@ -67,7 +67,7 @@ processOneMarkup4  flags origindir ntdir   file = do
                 else
                     return True
 
-            if processNeeded || (ForceFlag `elem` flags2)
+            if processNeeded || (isLocalServer flags2)
                 then do
                     putIOwords  ["\n processOneMarkup4 - process"
                             , showT $ sourceMarkup textstate2, "\n"]

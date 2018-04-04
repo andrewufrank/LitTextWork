@@ -30,7 +30,8 @@ import Uniform.HttpCall (callHTTP10post, callHTTP8post
                 , addPort2URI, makeHttpPost7, URI, HttpVarParams(..))
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
-            , rdfBase, dirQueries, PartURI, unPartURI)
+            , rdfBase, dirQueries, PartURI, unPartURI
+           , getServer, LitTextFlags (..))
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)
@@ -45,7 +46,7 @@ oneConstruct2 :: Inputs ->  Path Abs File -> ErrIO Text
 -- execute the construct query in fn against the fuseki store db in graph
 -- db
 -- timeout in sec (or nothing)
-oneConstruct2 Inputs{..}  fn0 = do
+oneConstruct2 inp@Inputs{..}  fn0 = do
         putIOwords ["oneConstruct db - graph"
                     , "file", showT fn0
                     ]
@@ -82,15 +83,14 @@ oneConstruct2 Inputs{..}  fn0 = do
         -- not clear what the names of the graphs would be
 
         -- construct the call
-        let fusekiServer = if (LocalNLPserverFlag `elem` inFlags)
-                            then serverLocalhost
-                            else  serverBrest
+        let fusekiServer = getServer inp
+
 --        resp <- makeHttpPost7 debug server2 pathName
         let query = HttpVarParams  [ ("output", turtleType)]
 
         let appType = "application/sparql-query"
 
-        resp <- callHTTP10post (DebugFlag `elem` inFlags) appType
+        resp <- callHTTP10post (isDebugFlag inp) appType
                     (addFusekiPort fusekiServer)  pathName
                     (b2bl . t2b $ query4)
                     query  (inTimeOut)

@@ -146,7 +146,8 @@ testOP_M_N :: (-- TaggedTyped t1,
         LanguageTypedText t0, LanguageTyped2 t0 t1) =>
          (t0, t1, Text, Int) -> Snip2 t0 -> ErrIO Text
 testOP_M_N (langPh, postagPh, text, i) (Snip2 txt base)   = do
-         res <- snip2triples langPh postagPh [DebugFlag] txt base serverBrest
+         res <- snip2triples langPh postagPh zero txt base serverBrest
+                    -- keine flags (not even debug)
          let res2 = map triple2text res
          return . unlines' $ res2
 
