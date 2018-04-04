@@ -89,7 +89,7 @@ parseAndExecuteNTmake t1 t2    = do
                     ]
             putIOwords ["parseAndExecuteNTmake: completed filename", showT fn]
             -- fails if fn is null
-            putOneFileX inp fn
+            putOneFileX inp (addFileName (inOriginDir inp) fn)
     return ()
   where
     putOneFileX inp  = processOneMarkup4 (inFlags inp)

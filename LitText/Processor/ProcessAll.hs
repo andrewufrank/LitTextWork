@@ -38,7 +38,8 @@ processOneMarkup4 ::  LitTextFlags -> Path Abs Dir
 processOneMarkup4  flags origindir ntdir   file = do
     putIOwords ["\n processOneMarkup4", showT flags
                 , "\n\t originDir", showT origindir
-                , "\n\t ntdir " , showT ntdir ]
+                , "\n\t ntdir " , showT ntdir
+                , "\n\t file", showT file]
     let buchReplacement = s2t $ getNakedFileName file
         flags2 = delete IncludeTextFlag flags
         nlpserver = if LocalNLPserverFlag `elem` flags
