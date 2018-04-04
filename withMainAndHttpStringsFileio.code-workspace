@@ -29,6 +29,9 @@
 		},
 		{
 			"path": "/home/frank/Workspace8/uniform/uniform-http"
+		},
+		{
+			"path": "."
 		}
 	],
 	"settings": {}

@@ -8,8 +8,7 @@
             "type": "shell",
             "command": "stack install",
             "group": {
-                "kind": "build",
-                "isDefault": true
+                "kind": "build" 
             },
             "problemMatcher": []
         }
