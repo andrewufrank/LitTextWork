@@ -8,7 +8,7 @@
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
-{-# LANGUAGE OverloadedStrings   #-}
+
 {-# LANGUAGE ScopedTypeVariables
         , DeriveGeneric #-}
 

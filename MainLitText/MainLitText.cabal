@@ -31,10 +31,10 @@ executable store6
         , text
         , optparse-applicative
         , litFoundation
-        , storeInJena
+        , StoreInJena
         , pipes
         , CmdLineUtilities
-        , LitText 
+        , LitText
   other-modules:
 --
 --
@@ -52,7 +52,7 @@ executable store6
 --        , text
 --        , pipes
 --        , litFoundation
---        , storeInJena
+--        , StoreInJena
 --  other-modules:
 --
 --
@@ -70,18 +70,18 @@ executable construct6
         , text
         , pipes
         , litFoundation
-        , storeInJena
+        , StoreInJena
         , CmdLineUtilities
-        , LitText 
+        , LitText
   other-modules:
-  
+
 executable ntmake6
     main-is: ntmakeMain.hs
     build-depends: base, HTF
         , uniform-strings
         , uniform-fileio
         , uniform-convenience
---        , storeInJena
+--        , StoreInJena
         , LitText
         , pipes
         , rdf4hextension

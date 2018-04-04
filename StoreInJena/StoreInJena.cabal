@@ -85,7 +85,7 @@ executable store6
 --        , text
 --        , pipes
 --        , litFoundation
---        , storeInJena
+--        , StoreInJena
 --  other-modules:
 --
 --
@@ -118,7 +118,7 @@ executable construct6
 --        , uniform-error
 --        , uniform-http
 --        , text
---        , storeInJena
+--        , StoreInJena
 --    default-language: Haskell2010
 --    hs-source-dirs: src
 --    other-modules:

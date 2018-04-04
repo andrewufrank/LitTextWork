@@ -20,6 +20,12 @@
 		},
 		{
 			"path": "StoreInJena"
+		},
+		{
+			"path": "/home/frank/Workspace8/uniform/uniform-strings"
+		},
+		{
+			"path": "/home/frank/Workspace8/uniform/uniform-fileio"
 		}
 	],
 	"settings": {}
