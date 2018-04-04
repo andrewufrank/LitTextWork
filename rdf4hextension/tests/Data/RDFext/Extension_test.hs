@@ -22,6 +22,7 @@ module Data.RDFext.Extension_test  where
 import           Test.Framework
 import Text.Printf
 import Data.RDFext.Extension
+import Data.RDFext.Codes
 
 --import           Data.Map            as Map (fromList)
 --import           Data.RDF            (Node, Triple (..), lnode, objectOf,
@@ -53,3 +54,10 @@ test_typedneg20 = assertEqual (zo (-20))
 test_german1 = assertEqual German (readLanguageCode "test_german1" "Deutsch")
 test_german2 = assertEqual German (readLanguageCode "test_german1" "German")
 
+ex1 = Triple (UNode "http://gerastree.at/kurz#kurz-005")
+    (UNode "http://gerastree.at/lit_2014#BuchParagraph")
+    (LNode (PlainLL "und mehr text in deutsch. test2 erfuellt?" "de"))
+
+t1 = getTripleLanguage ex1
+s1 = RDFsubj "http://gerastree.at/kurz#kurz-005"
+r1 = RDFproperty "testint"

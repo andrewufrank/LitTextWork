@@ -37,7 +37,7 @@ import Uniform.HttpCall (callHTTP10post
                 , makeAbsURI)
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
-            , rdfBase, dirQueries, PartURI, unPartURI
+            , rdfBase, IRI,
             , LitTextFlags(..), getServer)
 import Data.List.Split (chunksOf)
 import Data.Either (isRight)

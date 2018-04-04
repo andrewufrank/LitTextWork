@@ -15,6 +15,8 @@ module LitTypes.ServerNames (
     module LitTypes.ServerNames
 --    , module Uniform.HttpURI
 --    , module Uniform.HttpCall
+    , IRI, mkIRI
+    , ServerURI 
     , PartURI (..), unPartURI
     , URI, makeURI, makeAbsURI, parseAbsoluteURI
     , addPort2URI, addToURI, HttpVarParams (..)
@@ -23,7 +25,7 @@ module LitTypes.ServerNames (
 
 import Uniform.FileIO (makeAbsDir, makeRelDir, Text)
 -- import Uniform.HttpURI -- hiding ((</>), (<.>))
-import Data.RDFext.Extension (PartURI (..), unPartURI)
+import Data.RDFext.Extension (IRI, mkIRI)  -- (PartURI (..), unPartURI)
 import Uniform.HttpCall (mkServerURI, ServerURI, URI, uriT, makeAbsURI)
 
 ---- an attempt to have a read for URI  ReadS
@@ -43,24 +45,24 @@ serverBrest = mkServerURI "http://nlp.gerastree.at"
 
 localhost = mkServerURI "http://127.0.0.1"
 
-rdfBase, vocabularyBase :: PartURI  -- not a real URI
-rdfBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"
+rdfBase, vocabularyBase :: IRI  -- not a real URI
+rdfBase = IRI  "http://gerastree.at"
 -- ^ for the text
 
-vocabularyBase = PartURI . uriT $ makeAbsURI "http://gerastree.at"
+vocabularyBase = IRI "http://gerastree.at"
 -- for the vocabularies
 
-dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
-dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"
+-- dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
+-- dirQueriesRel = makeRelDir "additionalSpace/DataBig/Queries"
 
-ntDirsRel = makeRelDir "NT"  -- where it is for testing (can be expanded
+-- ntDirsRel = makeRelDir "NT"  -- where it is for testing (can be expanded
 
 treeTaggerPort = 9010 :: Int -- current range 9000 - 9010  -- is Wai warp port = Int
 
 nlp = "nlp"::Text
 --nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
-nlpURItext = PartURI $ (unPartURI vocabularyBase) </> "nlp_2017" :: PartURI
+nlpIRItext = append2IRI vocabularyBase  "nlp_2017" :: IRI
 -- the 2017 vocabulary represents the dependency codes as properties (written lower case)
-nlpUDEPtext = PartURI $ (unPartURI vocabularyBase) </> "udep" :: PartURI
+nlpUDEPtext = append2IRI vocabularyBase  "udep" :: IRI
 -- the udep namespace is used only for the universal dependencies
 -- not version specific but could be added

@@ -23,7 +23,7 @@
 
 
 
-module Data.RDFext.Codes (
+module Data.RDFext.Codes (IRI, mkIRI 
     module Data.RDFext.Codes
     , (</>)
     )     where
@@ -44,16 +44,25 @@ import           Uniform.Zero
 import  GHC.Generics
 
 
-newtype PartURI = PartURI Text
-    deriving (Show, Read, Eq, Ord, Generic, Zeros)
-unPartURI (PartURI t) = t
---instance Zeros PartURI where zero = PartURI zero
+newType IRI = IRI Text 
+-- ^ a type for an IRI in the RDF setting (not used for server URI)
+-- could be tested for validity 
+mkIRI = IRI 
+unIRI (IRI t) = t   -- do not export!
 
--- ^ TOOD should be used wherever a Text string is a URI code
--- there is another type - Network.URI, which is checked (and problems with Read class)
--- conversion from URI to text use uriT (not showT)
-append2partURI :: PartURI -> Text -> PartURI
-append2partURI u1 t = PartURI $  unPartURI u1  <> t
+append2IRI :: IRI -> Text -> IRI
+append2IRI u1 t = IRI $ unIRI u1  <> t
+
+-- newtype PartURI = PartURI Text
+--     deriving (Show, Read, Eq, Ord, Generic, Zeros)
+-- unPartURI (PartURI t) = t
+-- --instance Zeros PartURI where zero = PartURI zero
+
+-- -- ^ TOOD should be used wherever a Text string is a URI code
+-- -- there is another type - Network.URI, which is checked (and problems with Read class)
+-- -- conversion from URI to text use uriT (not showT)
+-- append2partURI :: PartURI -> Text -> PartURI
+-- append2partURI u1 t = PartURI $  unPartURI u1  <> t
 
 --gerastreeURI =    "http://gerastree.at"  :: PartURI
 -- the base url - with no closing
@@ -90,7 +99,7 @@ extendSlashRDFsubj e a = RDFsubj .  (</> e) . unRDFsubj $ a
 -- makeRDFtype :: PartURI -> Text -> RDFtype
 -- makeRDFtype a e = RDFtype $ a <#> e
 
-newtype RDFtype = RDFtype Text deriving (Show, Read, Eq, Ord, Generic)
+newtype RDFtype = RDFtype Text deriving (Show, Read, Eq, Ord, Generic, Zeros)
 -- ^ the types for the rdf type values
 unRDFtype (RDFtype a) = a
 
@@ -156,13 +165,6 @@ getTripleLanguage :: Triple -> LanguageCode
 -- find the language code in the triple (2 or 3 char)
 getTripleLanguage = getLangCode . objectOf
 
-ex1 = Triple (UNode "http://gerastree.at/kurz#kurz-005")
-    (UNode "http://gerastree.at/lit_2014#BuchParagraph")
-    (LNode (PlainLL "und mehr text in deutsch. test2 erfuellt?" "de"))
-
-t1 = getTripleLanguage ex1
-s1 = RDFsubj "http://gerastree.at/kurz#kurz-005"
-r1 = RDFproperty "testint"
 
 getLangCode :: Node -> LanguageCode
 getLangCode (RDF.LNode (RDF.PlainLL _ l)) = parseLanguageCode l
