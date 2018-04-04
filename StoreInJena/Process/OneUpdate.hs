@@ -26,7 +26,7 @@ import           Uniform.Strings
 import           Uniform.Error
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (callHTTP8post, addPort2URI, makeHttpPost7, URI
+import Uniform.HttpCall (addPort2URI, URI
             ,  HttpVarParams(..))
 import Data.RDFext.Extension (ntFileTriples, sparqlUpdateFile)
 import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
@@ -98,9 +98,11 @@ oneUpdate debug server db mgraph mdest wordnetgrah fn = do
 --                (\a -> ("named-graph-uri", Just $ showT rdfBase </> a) )
 --                mgraph
         -- not clear what the names of the graphs would be
-        resp <- makeHttpPost7 False server2 pathName
-                     zero -- (HttpVarParams [])
-                        "application/sparql-update" query5
+        resp <- callHTTP10post debug "application/sparql-update"  
+                    server2 pathName zero query5 (Just 300)
+        -- resp <- makeHttpPost7 False server2 pathName
+        --              zero -- (HttpVarParams [])
+        --                 "application/sparql-update" query5
 
         let resp2 =   resp
 
@@ -115,7 +117,6 @@ oneUpdate debug server db mgraph mdest wordnetgrah fn = do
         putIOwords ["oneUpdate arguments were db - graph"
                 , db, showT mgraph, "file", showT fn]
         return . unwords' $ ["oneUpdate return after error",  e]
---        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 {- example and test query test6.query
     insert  {  #_graphDest

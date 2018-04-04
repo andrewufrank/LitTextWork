@@ -32,8 +32,8 @@ import CmdLineUtilities.UtilsProcessCmd
 import CmdLineUtilities.UtilsProcessing
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (callHTTP10post, callHTTP8post
-                , addPort2URI, makeHttpPost7, URI, HttpVarParams(..)
+import Uniform.HttpCall (callHTTP10post
+                , addPort2URI, URI, HttpVarParams(..)
                 , makeAbsURI)
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
@@ -165,7 +165,6 @@ putOneFile5 inp@Inputs{..} fn = do
                 , showT inDB , showT inGraph  , "file"
                 , showT inFilename , "\n\n"]
         return . unwords' $ ["putOneFile5 return after error", showT e]
---        fail . unwords $  [ "putOneFile5 from callHTTP8post httperror 3", show e]
 
 
 ------------------------------------------

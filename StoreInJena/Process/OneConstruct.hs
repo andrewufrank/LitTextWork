@@ -26,8 +26,7 @@ import           Uniform.Strings
 import           Uniform.Error
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (callHTTP10post, callHTTP8post
-                , addPort2URI, makeHttpPost7, URI, HttpVarParams(..))
+import Uniform.HttpCall (callHTTP10post, addPort2URI, URI, HttpVarParams(..))
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
             , rdfBase, dirQueries, PartURI, unPartURI
@@ -85,7 +84,6 @@ oneConstruct2 inp@Inputs{..}  fn0 = do
         -- construct the call
         let fusekiServer = getServer inp
 
---        resp <- makeHttpPost7 debug server2 pathName
         let query = HttpVarParams  [ ("output", turtleType)]
 
         let appType = "application/sparql-query"
@@ -120,7 +118,6 @@ oneConstruct2 inp@Inputs{..}  fn0 = do
 --                , db, showT mgraph
                 , "file", showT fn0]
         return . unwords' $ ["oneConstruct return after error", showT e]
---        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 
 

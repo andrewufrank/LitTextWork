@@ -25,14 +25,18 @@ import           Uniform.Strings
 import           Uniform.Error
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (callHTTP8post, addPort2URI, makeHttpPost7
-            , callHTTP10post, URI, HttpVarParams (..))
+import Uniform.HttpCall
+        --          ( addPort2URI
+        --     , callHTTP10post, URI, HttpVarParams (..))
 import Data.RDFext.Extension (ntFileTriples, sparqlQueryFile)
-import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
+import LitTypes.TextDescriptor (serverBrest, serverLocalhost
+            , rdfBase, dirQueries, PartURI, unPartURI
+           , getServer, LitTextFlags (..))
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)
 import CmdLineUtilities.UtilsProcessCmd
+import CmdLineUtilities.UtilsProcessing
 --import Process.UtilsParseArgs
 
 ntExtension = Extension "nt"
@@ -44,7 +48,7 @@ oneQuery2 inp fn0 = do
         putIOwords ["oneQuery" , showT fn0]
         queryText :: [Text] <- read6  fn0 sparqlQueryFile
         -- cannot use the typedfile - would produce triples...
-        when (inDebug inp) $ putIOwords ["oneQuery db -  \n",  unlines' queryText ]
+        when (isDebugFlag inp) $ putIOwords ["oneQuery db -  \n",  unlines' queryText ]
 
 
         let query2 =  unlines' queryText
@@ -68,14 +72,14 @@ oneQuery2 inp fn0 = do
 --                mgraph
         -- not clear what the names of the graphs would be
         -- needs to insert the graph in the query
-        let pathName = (inDB inp)  </> "sparql" -- "query"
+        let pathName = (unPartURI $ inDB inp)  </> "sparql" -- "query"
 
-        let fusekiServer = getServer . inServer $ inp
+        let fusekiServer = getServer  inp
 
         let query =  HttpVarParams [ ("output", Just "csv")]
         let appType = "application/sparql-query"
 
-        resp <- callHTTP10post (inDebug inp) appType  fusekiServer  pathName
+        resp <- callHTTP10post (isDebugFlag inp) appType  fusekiServer  pathName
                     (b2bl . t2b $ query3) query  (inTimeOut inp)
 --        resp <- post2store debug "application/sparql-query" fusekiServer pathName mgraph
 --                (b2bl . t2b $ query4) [ ("output", Just "csv")] Nothing
@@ -84,7 +88,7 @@ oneQuery2 inp fn0 = do
 --                        "application/sparql-query" query4
 
         let resp2 =   resp
-        let resultExt = makeExtension . t2s $ ( (inDB inp)  <.>  "csv") :: Extension
+        let resultExt = makeExtension . t2s $ ( (unPartURI $ inDB inp)  <.>  "csv") :: Extension
         let respFilename =  addExtension resultExt fn0
                     :: Path Abs File
 
@@ -99,9 +103,8 @@ oneQuery2 inp fn0 = do
                 , "\n filename is", showT fn0
                 , "error is not raised again"]
         putIOwords ["oneQuery2 arguments were db - graph"
-                , (inDB inp), showT (inGraph inp), "file", showT fn0]
+                , (unPartURI $ inDB inp), showT (inGraph inp), "file", showT fn0]
         return . unwords' $ ["oneQuery2 return after error", showT e]
---        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 
 oneQuery :: Bool -> URI -> Text -> Maybe Text -> Maybe Text -> Maybe Int -> Path Abs File -> ErrIO Text
@@ -166,7 +169,6 @@ oneQuery debug server db mgraph maux timeout fn0 = do
         putIOwords ["oneQuery arguments were db - graph"
                 , db, showT mgraph, "file", showT fn0]
         return . unwords' $ ["oneQuery return after error", showT e]
---        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 
 testfn0 = addFileName (dirQueries :: Path Abs Dir)

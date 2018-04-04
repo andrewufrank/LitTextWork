@@ -26,7 +26,7 @@ import           Uniform.Strings
 import           Uniform.Error
 
 --import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (callHTTP8post, addPort2URI, makeHttpPost7, URI)
+import Uniform.HttpCall (addPort2URI, URI, callHTTP10post)
 --import Data.RDF.FileTypes (ntFileTriples, sparqlUpdateFile)
 import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
 import Data.List.Split (chunksOf)
@@ -74,9 +74,11 @@ deleteOneGraph debug server db graph   = do
 --                mgraph
         -- not clear what the names of the graphs would be
 --        resp <- return ""
-        resp <- makeHttpPost7 False server pathName
-                 zero --    (HttpVarParams [ ])
-                        "application/sparql-update" query4
+        resp <- callHTTP10post debug "application/sparql-update"  
+                    server pathName (b2bl . t2b $ query4) zero (Just 300)
+                -- makeHttpPost7 False server pathName
+                --  zero --    (HttpVarParams [ ])
+                --         "application/sparql-update" query4
 
         let resp2 =  resp
 
@@ -92,7 +94,6 @@ deleteOneGraph debug server db graph   = do
         putIOwords ["deleteOneGraph arguments were db - graph"
                 , db, showT graph, "file"]
         return . unwords' $ ["deleteOneGraph return after error", showT e]
---        fail . unwords $  [ "callHTTP8post httperror 3", show e]
 
 {- example and test query test6.query
     insert  {  #_graphDest
