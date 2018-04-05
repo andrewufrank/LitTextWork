@@ -25,6 +25,7 @@ module LitTypes.LanguageTypedText
 
 import Uniform.Zero (Zeros (..), Generic(..))
 import Uniform.Error -- (undef)
+import Data.RDFext
 
 data EnglishType
 data GermanType

@@ -20,7 +20,7 @@ module BuchCode.BuchToken (module BuchCode.BuchToken
             ) where
 
 import           Uniform.Error hiding ((</>), (<.>), (<|>))
-
+import Data.RDFext
 
 data BuchTokenized a = BuchTokenized { btokenType:: a
                                     , btokenText  :: Text

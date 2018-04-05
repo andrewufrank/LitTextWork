@@ -5,7 +5,7 @@
 
 {-# LANGUAGE FlexibleContexts     #-}
 {-# LANGUAGE FlexibleInstances    #-}
-{-# LANGUAGE OverloadedStrings    #-}
+
 {-# LANGUAGE ScopedTypeVariables  #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 
@@ -16,7 +16,8 @@ module Data.RDFext (
     , module Data.RDFext.Predicates
     , module  Data.RDFext.Triple2text
     -- , module Data.RDFext.Codes
-    , IRI, mkIRI, append2IRI
+    , IRI, mkIRI, append2IRI, LanguageCode (..)  --
+    , RDFsubj, RDFproperty, mkTripleLang3
     , module Uniform.FileIO
     )     where
 

@@ -8,23 +8,19 @@
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
-{-# LANGUAGE OverloadedStrings   #-}s
-{-# LANGUAGE ScopedTypeVariables #-} 
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module LitTypes.ServerNames (
     module LitTypes.ServerNames
-   , module Uniform.Http 
+   , module Uniform.Http
     , IRI, mkIRI
-    , ServerURI 
-    , PartURI (..), unPartURI
-    -- , URI, makeURI, makeAbsURI, parseAbsoluteURI
-    -- , addPort2URI, addToURI, HttpVarParams (..)
     ) where
 
 
 import Uniform.FileIO (makeAbsDir, makeRelDir, Text)
-import Uniform.Http 
-
+import Uniform.Http
+import Data.RDFext
 
 serverLocalhost, serverBrest :: ServerURI
 
@@ -34,10 +30,10 @@ serverBrest = mkServerURI "http://nlp.gerastree.at"
 localhost = mkServerURI "http://127.0.0.1"
 
 rdfBase, vocabularyBase :: IRI  -- not a real URI
-rdfBase = IRI  "http://gerastree.at"
+rdfBase = mkIRI  "http://gerastree.at"
 -- ^ for the text
 
-vocabularyBase = IRI "http://gerastree.at"
+vocabularyBase = mkIRI "http://gerastree.at"
 -- for the vocabularies
 
 -- dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"

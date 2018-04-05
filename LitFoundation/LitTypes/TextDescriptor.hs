@@ -31,12 +31,13 @@ module LitTypes.TextDescriptor (
     , Zeros (..)
     ) where
 
-import Uniform.FileIO  ((</>), Path (..), Abs, Dir, File )
+import Uniform.FileIO -- ((</>), Path (..), Abs, Dir, File )
 import Uniform.Error
 import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
 import BuchCode.BuchToken hiding ((</>), (<.>))
 import LitTypes.LanguageTypedText hiding ((</>), (<.>))
 import LitTypes.Flags
+import Data.RDFext
 --import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
 
@@ -69,7 +70,7 @@ data TextDescriptor = TextDescriptor
     } deriving (Show, Read,  Eq, Generic, Zeros)
 
 
-getServer :: f -> ServerURI 
+getServer :: f -> ServerURI
 getServer f = if isLocalServer f
                             then serverLocalhost
                             else  serverBrest

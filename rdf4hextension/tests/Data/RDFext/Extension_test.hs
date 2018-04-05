@@ -21,7 +21,6 @@ module Data.RDFext.Extension_test  where
 
 import           Test.Framework
 import Text.Printf
-import Data.RDFext.Extension
 import Data.RDFext.Codes
 
 --import           Data.Map            as Map (fromList)
@@ -41,7 +40,7 @@ import Data.RDFext.Codes
 ----import           Uniform.Convenience.LitTypes
 
 
-test_typed0 = assertEqual (zo 0)
+test_typed0 = assertEqual (zo 0) 
             (mkTripleInteger s1 r1 0 )
 test_typed100 = assertEqual (zo 100)
             (mkTripleInteger s1 r1 100 )

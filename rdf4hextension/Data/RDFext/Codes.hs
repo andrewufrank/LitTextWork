@@ -14,8 +14,7 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 --{-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
-{-# LANGUAGE OverloadedStrings
-    , RecordWildCards     #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 {-# LANGUAGE DeriveGeneric
     , DeriveAnyClass  #-}
@@ -23,9 +22,9 @@
 
 
 
-module Data.RDFext.Codes (IRI, mkIRI 
-    , module Data.RDFext.Codes
-    , (</>)
+
+module Data.RDFext.Codes ( module Data.RDFext.Codes
+    , Triple (..), Node (..), LValue (..)
     )     where
 
 
@@ -44,10 +43,10 @@ import           Uniform.Zero
 import  GHC.Generics
 
 
-newtype IRI = IRI Text 
+newtype IRI = IRI Text
 -- ^ a type for an IRI in the RDF setting (not used for server URI)
--- could be tested for validity 
-mkIRI = IRI 
+-- could be tested for validity
+mkIRI = IRI
 unIRI (IRI t) = t   -- do not export!
 
 append2IRI :: IRI -> Text -> IRI
@@ -194,7 +193,7 @@ mkTripleLang lg s p o = triple subj pred obj
         where
             subj = unode . unRDFsubj $ s
             pred = unode (unRDFproperty p)
-            obj = lnode (plainLL (  o) ( giveCode lg))  -- fuer sprachorientierten text
+            obj = lnode (plainLL o ( giveCode lg))  -- fuer sprachorientierten text
 
 mkTripleLang3 :: LanguageCode ->  RDFsubj -> RDFproperty -> Text ->  Triple
 -- | make a single triple with a language Code using the 3 char codes from wordnet
@@ -202,7 +201,7 @@ mkTripleLang3 lg s p o = triple subj pred obj
         where
             subj = unode . unRDFsubj $ s
             pred = unode (unRDFproperty p)
-            obj = lnode (plainLL (  o) ( giveCode3 lg))  -- fuer sprachorientierten text
+            obj = lnode (plainLL o ( giveCode3 lg))  -- fuer sprachorientierten text
 
 mkTripleDE1 ::    RDFsubj -> RDFproperty -> Text ->  Triple
 -- | make a triple for a german text
@@ -210,7 +209,7 @@ mkTripleDE1 s p o = triple subj pred obj
         where
             subj = unode . unRDFsubj $ s
             pred = unode (unRDFproperty p)
-            obj = lnode (plainLL (  o) ( "de"))  -- fuer deutschen text
+            obj = lnode (plainLL o "de")  -- fuer deutschen text
 
 mkTripleRef ::    RDFsubj -> RDFproperty -> RDFsubj ->  Triple
 mkTripleRef s p o = triple subj pred obj
