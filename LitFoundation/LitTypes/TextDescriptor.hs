@@ -23,11 +23,8 @@ module LitTypes.TextDescriptor (
     , module Uniform.FileIO
     , module Uniform.Error
     , LanguageCode (..) -- from rdf4hextension
-    , RDFtypes (..)
-    , RDFproperties (..)
     , NTdescriptor (..)
     , LitTextFlagSet,  LitTextFlags (..)
-    , PartURI (..), RDFsubj (..)
     , Zeros (..)
     ) where
 
@@ -70,7 +67,7 @@ data TextDescriptor = TextDescriptor
     } deriving (Show, Read,  Eq, Generic, Zeros)
 
 
-getServer :: f -> ServerURI
+getServer :: LitTextFlags f => f -> ServerURI
 getServer f = if isLocalServer f
                             then serverLocalhost
                             else  serverBrest
@@ -234,7 +231,7 @@ data LitDirs = LitDirs {
 dirsTest = LitDirs litTestDir1  litNTTestDir1
 dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 
-fillTextState4a :: Path Abs File -> URI -> Path Abs Dir -> Text
+fillTextState4a :: Path Abs File -> ServerURI -> Path Abs Dir -> Text
             -> Text -> LitTextFlagSet -> TextDescriptor
 -- construct at text state for a gutenberg catalog markup file
 -- output is gzip, text is not included
@@ -261,7 +258,7 @@ fillNTdescriptor  ntdir filename gzip   = NTdescriptor {
 --        , destHandle =  Nothing
         }
 --
-fillTextState3a :: LitDirs -> URI -> FilePath -> FilePath -> Bool
+fillTextState3a :: LitDirs -> ServerURI -> FilePath -> FilePath -> Bool
                 -> TextDescriptor
 
 -- construct at text state with authorDir and buchFilename as FilePath

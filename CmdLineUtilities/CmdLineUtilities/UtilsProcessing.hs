@@ -18,16 +18,13 @@
 
 module CmdLineUtilities.UtilsProcessing
     (module CmdLineUtilities.UtilsProcessing
---        , module CmdLineUtilities.UtilsParseArgs
---        , getTimeout
---        , dirQueries,
        , URI, HttpVarParams
     )
     where
 
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import Uniform.Strings  ((<>))
-
+import Uniform.Http 
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe

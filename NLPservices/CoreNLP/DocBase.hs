@@ -40,7 +40,7 @@ import              NLP.TagSets.NERcodes
 import              NLP.TagSets.SpeakerTags
 import           Text.Printf             (printf)
 import GHC.Generics
-import LitTypes.TextDescriptor hiding ((<|>), (</>), (<>))
+import LitTypes.TextDescriptor hiding ((<|>), (</>),(<.>), (<>))
 
 newtype  Wordform0 = Wordform0 {word0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic, Zeros)
