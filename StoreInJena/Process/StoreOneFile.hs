@@ -31,10 +31,6 @@ import CmdLineUtilities.UtilsProcessCmd
 --import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
 import CmdLineUtilities.UtilsProcessing
 
---import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (callHTTP10post
-                , addPort2URI, URI, HttpVarParams(..)
-                , makeAbsURI)
 import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
             , rdfBase, IRI,
@@ -45,7 +41,6 @@ import Data.Either (isRight)
 import qualified Data.ByteString as BS
 import qualified Codec.Compression.GZip as GZip
 --import Uniform.StringInfix ((<>))
-import Uniform.HttpCall (addToURI)
 import Uniform.Convenience.ReadCSV
 
 ntExtension = Extension "nt"

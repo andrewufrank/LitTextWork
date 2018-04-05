@@ -24,10 +24,6 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
---import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall
-        --          ( addPort2URI
-        --     , callHTTP10post, URI, HttpVarParams (..))
 import Data.RDFext.Extension (ntFileTriples, sparqlQueryFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
             , rdfBase, dirQueries, PartURI, unPartURI

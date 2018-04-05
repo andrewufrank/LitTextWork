@@ -24,10 +24,6 @@ import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
-
---import Uniform.HttpGet (makeHttpGet7, addPort2URI)
-import Uniform.HttpCall (addPort2URI, URI, callHTTP10post)
---import Data.RDF.FileTypes (ntFileTriples, sparqlUpdateFile)
 import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)

@@ -25,7 +25,7 @@ module NLP2RDF.LanguageSpecific
     , module LitTypes.TextDescriptor
     ) where
 
-import Uniform.HttpCall (URI, callHTTP10post, HttpVarParams(..))
+import Uniform.Http
 import Uniform.Strings
 import Uniform.Error (ErrIO)
 import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT

@@ -27,8 +27,7 @@ module NLP2RDF.ProduceDocCallNLP
 --     LitTextFlags (..), LitTextFlag (..), SnipID (..)
     ) where
 
-import Uniform.HttpCall (callHTTP10post, addPort2URI, addToURI
-            , URI, HttpVarParams(..), combineHttpVarParams)
+import Uniform.Http
 
 import NLP.TagSets.Conll  as Conll -- Conll for english
 import NLP.TagSets.ItalianTinT   as TinT-- for italian

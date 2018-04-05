@@ -13,20 +13,19 @@
 
 module LitTypes.ServerNames (
     module LitTypes.ServerNames
---    , module Uniform.HttpURI
---    , module Uniform.HttpCall
+   , module Uniform.Http 
     , IRI, mkIRI
     , ServerURI 
     , PartURI (..), unPartURI
-    , URI, makeURI, makeAbsURI, parseAbsoluteURI
-    , addPort2URI, addToURI, HttpVarParams (..)
+    -- , URI, makeURI, makeAbsURI, parseAbsoluteURI
+    -- , addPort2URI, addToURI, HttpVarParams (..)
     ) where
 
 
 import Uniform.FileIO (makeAbsDir, makeRelDir, Text)
 -- import Uniform.HttpURI -- hiding ((</>), (<.>))
 import Data.RDFext.Extension (IRI, mkIRI)  -- (PartURI (..), unPartURI)
-import Uniform.HttpCall (mkServerURI, ServerURI, URI, uriT, makeAbsURI)
+import Uniform.Http 
 
 ---- an attempt to have a read for URI  ReadS
 --instance Read URI where

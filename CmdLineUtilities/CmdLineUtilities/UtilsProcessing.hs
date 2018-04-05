@@ -26,11 +26,6 @@ module CmdLineUtilities.UtilsProcessing
     where
 
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
---import CmdLineUtilities.UtilsParseArgs
---import LitTypes.ServerNames -- (serverLocalhost, serverBrest
-----                    , rdfBase, dirQueries, URI, HttpVarParams)
-import Uniform.HttpCall (callHTTP10post, URI, HttpVarParams(..)
-        , addPort2URI, mkTimeOutSec)
 import Data.RDFext.Extension (PartURI(..), unPartURI)
 import Uniform.Strings  ((<>))
 
