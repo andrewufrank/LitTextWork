@@ -11,12 +11,12 @@
 
 
 module Data.RDFext (
-    , module Data.RDF
-    , module Data.RDFext.Prefs
+      module Data.RDFext.Prefs
     , module Data.RDFext.FileTypes
     , module Data.RDFext.Predicates
     , module  Data.RDFext.Triple2text
-    , module Data.RDFext.Codes
+    -- , module Data.RDFext.Codes
+    , IRI, mkIRI, append2IRI
     , module Uniform.FileIO
     )     where
 

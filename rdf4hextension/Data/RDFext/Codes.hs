@@ -24,7 +24,7 @@
 
 
 module Data.RDFext.Codes (IRI, mkIRI 
-    module Data.RDFext.Codes
+    , module Data.RDFext.Codes
     , (</>)
     )     where
 
@@ -44,7 +44,7 @@ import           Uniform.Zero
 import  GHC.Generics
 
 
-newType IRI = IRI Text 
+newtype IRI = IRI Text 
 -- ^ a type for an IRI in the RDF setting (not used for server URI)
 -- could be tested for validity 
 mkIRI = IRI 

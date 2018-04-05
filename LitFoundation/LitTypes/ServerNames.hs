@@ -8,8 +8,8 @@
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
 {-# LANGUAGE FlexibleContexts    #-}
-{-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE OverloadedStrings   #-}s
+{-# LANGUAGE ScopedTypeVariables #-} 
 
 module LitTypes.ServerNames (
     module LitTypes.ServerNames
@@ -24,15 +24,6 @@ module LitTypes.ServerNames (
 
 import Uniform.FileIO (makeAbsDir, makeRelDir, Text)
 import Uniform.Http 
-
----- an attempt to have a read for URI  ReadS
---instance Read URI where
---    readsPrec _  = readS'
---
---readS' :: String -> [(URI, String)]
---readS' uri = [(fromJustNote ("read uri failed " ++ uri) . parseURI $ uri,"")]
-----type PartURI = Text   -- should be defined in uniform.http?? todo
---        -- is defined in RDF.Extension
 
 
 serverLocalhost, serverBrest :: ServerURI
