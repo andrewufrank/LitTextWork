@@ -25,7 +25,6 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
-import Data.RDFext.Extension (ntFileTriples, sparqlUpdateFile)
 import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)

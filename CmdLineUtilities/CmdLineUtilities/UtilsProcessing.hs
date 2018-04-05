@@ -26,7 +26,6 @@ module CmdLineUtilities.UtilsProcessing
     where
 
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
-import Data.RDFext.Extension (PartURI(..), unPartURI)
 import Uniform.Strings  ((<>))
 
 

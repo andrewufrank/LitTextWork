@@ -25,7 +25,6 @@ module CoreNLP.Vocabulary
       , RDFsubj (..), PartURI (..)
     ) where
 import CoreNLP.DocBase hiding (Snip)
---import Data.RDFext.Extension (RDFproperties (..), RDFtypes (..))
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma
             | Lemma3

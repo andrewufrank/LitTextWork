@@ -17,10 +17,8 @@
 
 module BuchCode.BuchToken (module BuchCode.BuchToken
         , module Uniform.Error
-        , module Data.RDFext.Extension
             ) where
 
-import           Data.RDFext.Extension hiding ((</>), (<.>), (<|>))-- (LanguageCode (..), PartURI)
 import           Uniform.Error hiding ((</>), (<.>), (<|>))
 
 

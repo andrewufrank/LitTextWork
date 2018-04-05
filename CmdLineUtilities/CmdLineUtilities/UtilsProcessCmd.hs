@@ -29,10 +29,6 @@ module CmdLineUtilities.UtilsProcessCmd
 
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import CmdLineUtilities.UtilsParseArgs -- (getArgsParsed, getTimeout)
--- imports the Litargs internals, but does not export them
-
---import CmdLineUtilities.ProcessFlags
-import Data.RDFext.Extension (PartURI (..))
 import CmdLineUtilities.UtilsProcessing (addFusekiPort)
 import LitTypes.Flags
 

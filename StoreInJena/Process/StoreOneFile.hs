@@ -31,7 +31,6 @@ import CmdLineUtilities.UtilsProcessCmd
 --import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
 import CmdLineUtilities.UtilsProcessing
 
-import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
             , rdfBase, IRI,
             , LitTextFlags(..), getServer)

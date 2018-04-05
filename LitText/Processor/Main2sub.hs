@@ -39,12 +39,8 @@ import           Lines2para.Lines2para (paragraphsTZ2TZ2, TZ2) -- hiding ((</>))
 import           Parser.ProduceLit (produceLitTriples, Triple)
 import           Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
 
-import Data.RDFext.Extension (ntFileTriples, ntFileTriplesGZip
-            , writeHandleTriples
-            , openHandleTriples, closeHandleTriples)
 
 import           Uniform.FileIO -- (when, errorT)
---import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
 
 mainLitAndNLPproduction :: LitTextFlagSet -> TextDescriptor -> ErrIO ()
 mainLitAndNLPproduction flags  textstate = do

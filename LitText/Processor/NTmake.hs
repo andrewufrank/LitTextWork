@@ -36,7 +36,6 @@ import           Options.Applicative
 
 --import LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 --import LitTypes.TextDescriptor hiding ((<>))
-import Data.RDFext.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import Processor.Main2sub (mainLitAndNLPproduction)
 
 import CmdLineUtilities.UtilsProcessing (processAll)

@@ -25,7 +25,6 @@ module LitTypes.Flags (
 
 import Uniform.FileIO (makeAbsDir, makeRelDir, Zeros (..))
 -- import Uniform.HttpURI -- hiding ((</>), (<.>))
-import Data.RDFext.Extension (PartURI (..), unPartURI)
 import GHC.Generics
 
 data LitTextFlag = DebugFlag | ForceFlag | IncludeTextFlag

@@ -16,24 +16,12 @@
 module Main     where      -- must have Main (main) or Main where
 
 import Uniform.FileIO
---import Data.RDF.FileTypes
---import System.Exit
-
---import           ClosedClass
---import           Lib.BlogExample
---import  Lib.Tutorial1
 import CoreNLP.ParseJsonCoreNLP
---import CoreNLP.Doc2ToLinear
---import CoreNLP.ProduceNLPtriples2
 
 import Uniform.Convenience.StartApp
 import qualified NLP.TagSets.Conll  as Conll
 
 import Data.Aeson (eitherDecode)
---import LitTypes.LanguageTypedText (undefEnglish)
---import CoreNLP.ProduceNLPtriples (unNLPtriple)
---import NLP2RDF.NLPvocabulary
---import Data.RDFext.Extension
 import LitTypes.ServerNames -- (PartURI)
 import LitTypes.TextDescriptor -- (SnipID (..))
 

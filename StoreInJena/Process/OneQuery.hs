@@ -24,7 +24,6 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
-import Data.RDFext.Extension (ntFileTriples, sparqlQueryFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
             , rdfBase, dirQueries, PartURI, unPartURI
            , getServer, LitTextFlags (..))

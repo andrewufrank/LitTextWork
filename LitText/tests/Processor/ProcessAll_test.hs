@@ -31,7 +31,6 @@ import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
 import Pipes ((>->), (~>))
 import Uniform.FileIO
-import          Data.RDFext.FileTypes (ntFileTriples,ntFileTriplesGZip)
 import LitTypes.UtilsParseArgs ( LitTextFlags (..) )
 import Processor.ProcessAll
 

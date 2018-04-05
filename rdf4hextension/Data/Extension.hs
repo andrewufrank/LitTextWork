@@ -1,10 +1,4 @@
--- | extension for triple making and similar
--- but not the codes for the relations - these go to the specific
--- construction programs, to link directly with the definitions
--- and not the prefix stuff, which goes to prefs
---
--- the URI are always open at end and connecting must add separator
---{-# OPTIONS_GHC -F -pgmF htfpp #-}
+-- | the top level export
 
 {-# OPTIONS_GHC -fno-warn-missing-methods  #-}
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns  #-}
@@ -16,8 +10,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 
 
-module Data.RDFext.Extension (
-    module Data.RDFext.Extension
+module Data.RDFext (
     , module Data.RDF
     , module Data.RDFext.Prefs
     , module Data.RDFext.FileTypes

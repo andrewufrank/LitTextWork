@@ -24,8 +24,6 @@ import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
-
-import Data.RDFext.Extension (ntFileTriples, sparqlConstructFile, turtleFile)
 import LitTypes.TextDescriptor (serverBrest, serverLocalhost
             , rdfBase, dirQueries, PartURI, unPartURI
            , getServer, LitTextFlags (..))
@@ -33,7 +31,6 @@ import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)
 import CmdLineUtilities.UtilsProcessCmd
---import Process.UtilsParseArgs
 
 ntExtension = Extension "nt"
 --turtleExtension = Extension "ttl"  -- is typed file

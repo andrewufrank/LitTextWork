@@ -21,14 +21,10 @@
 
 module LitTypes.LanguageTypedText
     (module LitTypes.LanguageTypedText
-    , module Data.RDFext.Extension
-
     ) where
 
 import Uniform.Zero (Zeros (..), Generic(..))
 import Uniform.Error -- (undef)
-import Data.RDFext.Extension (LanguageCode (..)
-            , RDFsubj, RDFproperty, Triple (..), mkTripleLang3)
 
 data EnglishType
 data GermanType

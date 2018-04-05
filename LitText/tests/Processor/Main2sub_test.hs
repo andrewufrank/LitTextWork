@@ -29,8 +29,6 @@ import           Parser.ProduceNLP
 import           Uniform.FileIO (when, errorT)
 --import           Uniform.Strings
 import Lines2para.HandleLayout
-import Data.RDFext.FileTypes (ntFileTriples)
--- (parseMarkup, result1B, result2B, result3B, result4B)
 import LitTypes.UtilsParseArgs ( LitTextFlags (..) )
 import Processor.Main2sub
 
