@@ -52,8 +52,8 @@ unIRI (IRI t) = t   -- do not export!
 append2IRI :: IRI -> Text -> IRI
 append2IRI u1 t = IRI $ unIRI u1  <> t
 
--- newtype PartURI = PartURI Text
---     deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype PartURI = PartURI Text
+    deriving (Show, Read, Eq, Ord, Generic, Zeros)
 -- unPartURI (PartURI t) = t
 -- --instance Zeros PartURI where zero = PartURI zero
 

@@ -18,6 +18,7 @@ module Data.RDFext (
     -- , module Data.RDFext.Codes
     , IRI, mkIRI, append2IRI, LanguageCode (..)  --
     , RDFsubj, RDFproperty, mkTripleLang3
+    , PartURI 
     , module Uniform.FileIO
     )     where
 

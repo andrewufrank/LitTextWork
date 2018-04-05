@@ -25,6 +25,7 @@ module CmdLineUtilities.UtilsProcessing
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import Uniform.Strings  ((<>))
 import Uniform.Http 
+import Data.RDFext 
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
@@ -59,30 +60,8 @@ processAll ops testFile dir file = do
     return $ unwords' ["processAll end", showT dir, showT file , "ok"]
 
 
-addFusekiPort server  = addPort2URI  server  3030 :: URI
+addFusekiPort server  = addPort2ServerURI  server  (mkPortNumber 3030) :: ServerURI
 
 
-post2store ::  Bool -> Text -> URI -> PartURI
-                -> Maybe PartURI ->  LazyByteString
-            -> HttpVarParams -> Maybe Int ->   ErrIO Text
-    -- ^ timeout in sec
-
--- use post with multipart form to store
---(see https://www.w3.org/TR/sparql11-http-rdf-update/#http-post)
-post2store debug appType fusekiServer pathName
-                mgraph payload varparms timeout = do
-    -- form the instert query
-    let pathNamePlusGraph = (unPartURI pathName) <> "?" <>
-             maybe "default"  (\t -> "graph=" <> (unPartURI t))
-                    mgraph
---    when debug $
---    putIOwords ["\npost2store for",  fn, "path", pathNamePlusGraph ]
-    putIOwords ["post2store", "pathNamePlusGraph"
-            ,   pathNamePlusGraph, "qstring", showT varparms]
-    res <- callHTTP10post debug appType
-                (addFusekiPort fusekiServer) pathNamePlusGraph
-                payload varparms   (TimeOutSec timeout)
-    when True $ putIOwords ["post2store done", showT res]
-    return res
 
 --
