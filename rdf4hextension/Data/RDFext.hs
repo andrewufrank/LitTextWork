@@ -25,6 +25,9 @@ module Data.RDFext (
     , GraphName, mkGraphName
     , RDFdataset, mkRDFdataset
     , PartURI  -- should be removed
+    , mkTripleText, mkTripleLang, mkTripleLang3
+    , mkTripleRef, mkTripleInt, mkTripleInteger
+    ,mkTripleType, mkTriplePartOf
     , module Uniform.FileIO
     )     where
 

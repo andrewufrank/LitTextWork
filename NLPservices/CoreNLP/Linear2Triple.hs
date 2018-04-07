@@ -70,29 +70,30 @@ unNLPtriple (NLPtriple t) = t
 
 class MakeIRI p where
 -- make an IRI from a nRelID
-    mkIRI ::  RDFsubj -> p -> RDFsubj
+    constructIRI ::  RDFsubj -> p -> RDFsubj
 
-mkIRI_ :: Text -> Text -> [Text] -> RDFsubj
+constructIRI_ :: Text -> RDFsubj -> [Text] -> RDFsubj
 -- the internal code
 -- the snip/doc SnipRelID is empty
-mkIRI_ note base ts = if null ts
-        then mkRDFsubj base
-        else mkRDFsubj $ base </>
-                (fromJustNote ("intercalate mkIRI  " ++ (t2s note)
+constructIRI_ note rbase ts = if null ts
+        then rbase
+        else append2IRIwithSlash rbase
+                (fromJustNote ("intercalate constructIRI  " ++ (t2s note)
                             ++ (concat . map show $ ts))
                             $ intercalate' "/" . reverse $ ts)
+--            where base = toIRI rbase
 
 instance MakeIRI SnipRelID where
-    mkIRI (RDFsubj base) (SnipRelID ts)
-            =   mkIRI_ "SnipRelID" base ts
+    constructIRI rbase (SnipRelID ts)
+            =   constructIRI_ "SnipRelID" rbase ts
 
 instance MakeIRI SentenceRelID where
-    mkIRI (RDFsubj base) (SentenceRelID ts)
-            =  mkIRI_ "SentenceRelID" base ts
+    constructIRI rbase (SentenceRelID ts)
+            =  constructIRI_ "SentenceRelID" rbase ts
 
 instance MakeIRI TokenRelID where
-    mkIRI (RDFsubj base) (TokenRelID ts)
-            =   mkIRI_ "TokenRelID" base ts
+    constructIRI rbase (TokenRelID ts)
+            =   constructIRI_ "TokenRelID" rbase ts
 
 data DocAsTriple   =
     TriType {triSubj::RDFsubj , ty ::NLPtype}
@@ -120,44 +121,44 @@ instance Zeros (DocAsTriple  ) where zero = TriZero
 makeTriple :: (Show postag) =>  postag -> RDFsubj
                     -> DocAsList postag -> [DocAsTriple ]
 
-makeTriple _ base DocAsList {..} = [TriType (mkIRI base d3id)  Voc.Snip]
+makeTriple _ base DocAsList {..} = [TriType (constructIRI base d3id)  Voc.Snip]
 
 makeTriple _ base SentenceLin{..} = [TriType triSubj Voc.Sentence
                    , maybe zero (TriText2 triSubj
                    (mkRDFproperty Voc.SentenceParse)) s3parse
-                   , TriPartOf triSubj $ mkIRI base s3docid
+                   , TriPartOf triSubj $ constructIRI base s3docid
                    , TriTextL2 triSubj (mkRDFproperty SentenceForm) s3text]
                                -- sentence form not in the data
-    where triSubj = mkIRI base s3id
+    where triSubj = constructIRI base s3id
 
 -- | this gives all triples of a chain with the the same subj
 makeTriple _ base DependenceLin{..} = [TriRel2 triSubj (mkRDFproperty d3type)
-            $ mkIRI base d3depid
+            $ constructIRI base d3depid
 --            ,TriType triSubj Dependence
 --            , TriText2 triSubj (mkRDFproperty DepOrigin) d3orig
---            , TriRel2 triSubj (mkRDFproperty DepGovernor) (mkIRI base d3govid)
---            , TriRel2 triSubj (mkRDFproperty DepDependent) (mkIRI base d3depid)
+--            , TriRel2 triSubj (mkRDFproperty DepGovernor) (constructIRI base d3govid)
+--            , TriRel2 triSubj (mkRDFproperty DepDependent) (constructIRI base d3depid)
 --            , TriText2 triSubj (mkRDFproperty DepGovGloss) d3govGloss
 --            , TriText2 triSubj (mkRDFproperty DepDepGloss) d3depGloss
---            , TriPartOf triSubj $ mkIRI base d3sentence
+--            , TriPartOf triSubj $ constructIRI base d3sentence
                         ]
         -- uses the correct nlp prefix because d3type is a DepType
         -- how to find the places where the original type is not parsed?
         -- find earlier ??
-    where   triSubj = mkIRI base d3govid
+    where   triSubj = constructIRI base d3govid
 
 makeTriple _ base MentionLin{..} =
                 [TriRel2 triSubj (mkRDFproperty Voc.Mentions)
-                $ mkIRI base ment3Ment
+                $ constructIRI base ment3Ment
 --                        , TriType triSubj Mention
                     -- the triSubj is the same for all chains
                     -- most of this is not really necessary
 --      , TriText2 triSubj (mkRDFproperty MentionRepresentative) (showT ment3Rep)
                                             -- is Bool
---      , TriRel2 triSubj (mkRDFproperty MentionSentence) $ mkIRI base ment3Sent
---      , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3Start
---      , TriRel2 triSubj (mkRDFproperty MentionStart) $ mkIRI base ment3End
---      , TriRel2 triSubj (mkRDFproperty MentionHead) $ mkIRI base ment3Head
+--      , TriRel2 triSubj (mkRDFproperty MentionSentence) $ constructIRI base ment3Sent
+--      , TriRel2 triSubj (mkRDFproperty MentionStart) $ constructIRI base ment3Start
+--      , TriRel2 triSubj (mkRDFproperty MentionStart) $ constructIRI base ment3End
+--      , TriRel2 triSubj (mkRDFproperty MentionHead) $ constructIRI base ment3Head
             , TriTextL2 triSubj (mkRDFproperty MentionText) ment3Text
             , TriText2 triSubj (mkRDFproperty MentionType) ment3Type
             , TriText2 triSubj (mkRDFproperty MentionNumber) ment3Number
@@ -165,7 +166,7 @@ makeTriple _ base MentionLin{..} =
             , TriText2 triSubj (mkRDFproperty MentionAnimacy) ment3Animacy
                         ]
         --  triSubj is a refers to o (mentions o
-    where   triSubj = mkIRI base ment3Head
+    where   triSubj = constructIRI base ment3Head
 
 makeTriple _ base TokenLin{..} = [TriType
  triSubj Voc.Token
@@ -180,7 +181,7 @@ makeTriple _ base TokenLin{..} = [TriType
     , TriList2 triSubj (mkRDFproperty Voc.Ner) (map showT t3ner)
 --                       (if t3ner == [NERunk "0"] then [] else map showT t3ner)
     , TriList2 triSubj (mkRDFproperty TokenSpeaker)(map fromSpeakerTag t3speaker)
-   , TriPartOf triSubj $ mkIRI base t3sentenceID
+   , TriPartOf triSubj $ constructIRI base t3sentenceID
     , TriList2 triSubj (mkRDFproperty TokenNERorig)
         (maybe [] id t3nerOrig)
     , (TriList2 triSubj (mkRDFproperty TokenPOSorig))
@@ -188,7 +189,7 @@ makeTriple _ base TokenLin{..} = [TriType
                                ]
 
     where
-        triSubj = mkIRI base t3id
+        triSubj = constructIRI base t3id
 --        mbs = TriList2 triSubj (mkRDFproperty TokenNERorig)
 --                (maybe [] id t3nerOrig)
 --            ++ [fmap (TriText2 triSubj (mkRDFproperty TokenPOSorig)) t3posOrig
@@ -197,13 +198,13 @@ makeTriple _ base TokenLin{..} = [TriType
 
 makeTriple _ base NerLin{..} = [TriType triSubj NERentity
         , TriTextL2 triSubj (mkRDFproperty NerText) ner5text
-        , TriRel2 triSubj (mkRDFproperty NerTokenEnd) $ mkIRI base ner5docTokenEnd
-        , TriRel2 triSubj (mkRDFproperty NerTokenBegin2)$ mkIRI base  ner5docTokenEnd
-        , TriRel2 triSubj (mkRDFproperty NerTokenEnd2) $ mkIRI base ner5docTokenEnd
+        , TriRel2 triSubj (mkRDFproperty NerTokenEnd) $ constructIRI base ner5docTokenEnd
+        , TriRel2 triSubj (mkRDFproperty NerTokenBegin2)$ constructIRI base  ner5docTokenEnd
+        , TriRel2 triSubj (mkRDFproperty NerTokenEnd2) $ constructIRI base ner5docTokenEnd
         , TriText2 triSubj (mkRDFproperty NerType) (fromNERtag ner5ner)
             ]
     where
-            triSubj = mkIRI base ner5docTokenBegin
+            triSubj = constructIRI base ner5docTokenBegin
 
 makeRDFnt :: DocAsTriple -> [Triple]
 -- | convert to a real RDF triple

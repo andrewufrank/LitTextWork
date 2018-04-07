@@ -248,13 +248,13 @@ mkTripleLang3 lg s p o = triple subj pred obj
             pred = toUNode p
             obj = lnode (plainLL o ( giveCode3 lg))  -- fuer sprachorientierten text
 
-mkTripleDE1 ::    RDFsubj -> RDFproperty -> Text ->  Triple
--- | make a triple for a german text
-mkTripleDE1 s p o = triple subj pred obj
-        where
-            subj = toUNode s
-            pred = toUNode p
-            obj = lnode (plainLL o "de")  -- fuer deutschen text
+--mkTripleDE1 ::    RDFsubj -> RDFproperty -> Text ->  Triple
+---- | make a triple for a german text
+--mkTripleDE1 s p o = triple subj pred obj
+--        where
+--            subj = toUNode s
+--            pred = toUNode p
+--            obj = lnode (plainLL o "de")  -- fuer deutschen text
 
 mkTripleRef ::    RDFsubj -> RDFproperty -> RDFsubj ->  Triple
 mkTripleRef s p o = triple subj pred obj
