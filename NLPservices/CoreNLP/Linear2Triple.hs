@@ -76,8 +76,8 @@ mkIRI_ :: Text -> Text -> [Text] -> RDFsubj
 -- the internal code
 -- the snip/doc SnipRelID is empty
 mkIRI_ note base ts = if null ts
-        then RDFsubj base
-        else RDFsubj $ base </>
+        then mkRDFsubj base
+        else mkRDFsubj $ base </>
                 (fromJustNote ("intercalate mkIRI  " ++ (t2s note)
                             ++ (concat . map show $ ts))
                             $ intercalate' "/" . reverse $ ts)
