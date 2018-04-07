@@ -61,7 +61,7 @@ convertOneSnip2triples_NLPservices flags Snip{..} =
         let postagsetID =  snip3posTagSetID
         let debugNLP = True --  DebugFlag `elem` flags
         let text = snip3text
-        let nlpserver = getServer flags 
+        let nlpserver = getServer flags
         trips <- case (lang, postagsetID) of
             (English, "") -> do
                     t <- snip2triples undefEnglish Conll.undefPOS
@@ -96,7 +96,7 @@ class  LanguageTyped22 lang postag where
 --    convertOneSnip2Triples2 :: lang -> postag -> LitTextFlagSet ->  Snip2 lang -> URI
 --                -> ErrIO [NLPtriple postag]
     snip2triples :: lang -> postag -> LitTextFlagSet ->  LTtext lang
-                -> RDFsubj  -> URI
+                -> RDFsubj  -> ServerURI
                 -> ErrIO [Triple]
     -- this should be the entry point for conversion of a text to nlp
     -- typed in and output
@@ -112,7 +112,7 @@ class  LanguageTyped22 lang postag where
     -- the triples (i.e. NLPtriples should have a tag parameter
 
 --    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI -> ErrIO (Doc1 postag)
-    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> URI
+    snip2doc :: lang -> postag -> Bool ->  LTtext lang -> ServerURI
                 -> ErrIO Text
     -- the nlp process, selected by language and postag
     -- the base rdf for the snip is in the URI parameter
@@ -152,7 +152,7 @@ instance (-- LanguageDependent lang,
     snip2doc lph pph debugNLP  text  sloc = do
         let debug2 = debugNLP
         code1 <-  text2nlpCode  debug2
-                            (addPort2URI sloc (nlpPort lph pph))  -- server uri
+                            (addPort2ServerURI sloc (nlpPort lph pph))  -- server uri
                             (nlpPath lph)   -- path
                                 (nlpParams lph pph)  (unLCtext text)
 --        docs <- nlpCode2doc1 pph debugNLP code1
@@ -161,7 +161,7 @@ instance (-- LanguageDependent lang,
 
 
 --class Docs2 postag where
-text2nlpCode :: Bool -> URI -> Text -> HttpVarParams -> Text
+text2nlpCode :: Bool -> ServerURI -> HttpPath -> HttpQueryParams -> Text
                     ->  ErrIO Text
 --                    ph debugNLP  nlpServer path vars text
 --    nlpCode2doc1 :: postag -> Bool ->  Text ->  ErrIO (Doc1 postag)
@@ -180,7 +180,7 @@ text2nlpCode debugNLP  nlpServer path vars text = do
                             , showT . lengthChar $ text
                             , showT . take' 100 $ text ]
 --            let vars2 = combineHttpVarParams vars
---                    (HttpVarParams [("outputFormat", Just "json")])
+--                    (mkHttpQueryParams [("outputFormat", Just "json")])
             -- alternative ("outputFormat", Just "xml"),
             -- or conllu
             nlpCode :: Text <- callHTTP10post debugNLP

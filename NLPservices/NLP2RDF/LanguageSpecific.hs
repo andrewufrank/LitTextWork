@@ -42,12 +42,12 @@ import NLP.TagSets.UD as UD --
 
 import Data.Text as T
 
-portGerman = 9001 -- make port type
-portEnglish = 9002
-portFrench = 9003
-portSpanish = 9004
-portTinT = 9005
-portFrenchUD = 9006
+portGerman = mkPortNumber 9001 -- make port type
+portEnglish = mkPortNumber 9002
+portFrench = mkPortNumber 9003
+portSpanish = mkPortNumber 9004
+portTinT = mkPortNumber 9005
+portFrenchUD = mkPortNumber 9006
 
 -- moved to individual POS tag files
 --undefConll = undef "convertOneSnip2Triples postag conll":: Conll.POStag
@@ -61,14 +61,14 @@ class LanguageDependent lang where
     preNLP :: LTtext lang -> LTtext lang
     -- the processing of the text before NLP
     preNLP = LTtext . cleanTextOther . unLCtext
-    nlpPath :: lang -> Text
-    nlpPath _ = ""   -- only italian uses a path
+    nlpPath :: lang -> HttpPath
+    nlpPath _ = mkHttpPath ""   -- only italian uses a path
 
 class ( POStags postag, LanguageDependent lang, LanguageTypedText lang)
         =>  LanguageTyped2 lang postag where
 
-    nlpParams :: lang -> postag -> HttpVarParams
-    nlpPort :: lang -> postag -> Int   -- should be a port type
+    nlpParams :: lang -> postag -> HttpQueryParams
+    nlpPort :: lang -> postag -> PortNumber   -- should be a port type
 
     postNLP :: postag -> lang -> Bool -> RDFsubj -> Text -> [Triple]
     -- postprocessing (e.g. adding POS to german)
@@ -82,7 +82,7 @@ instance LanguageDependent GermanType
 instance LanguageDependent FrenchType
 instance LanguageDependent SpanishType
 instance LanguageDependent ItalianType where
-    nlpPath _ = "tint"
+    nlpPath _ = mkHttpPath "tint"
     preNLP    =  LTtext . cleanTextItalian . unLCtext
 
 
@@ -90,7 +90,7 @@ instance LanguageDependent ItalianType where
 
 instance LanguageTyped2 EnglishType Conll.POStag where
     nlpPort _ _ = portEnglish
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+    nlpParams _ _ =  mkHttpQueryParams [("outputFormat", Just "json"),
             -- only use json for english ?? TODO
               ("annotators", Just "tokenize,ssplit,parse,pos\
                             \,lemma,ner,depparse,coref")]
@@ -99,7 +99,7 @@ instance LanguageTyped2 EnglishType Conll.POStag where
 
 instance LanguageTyped2 EnglishType UD.POStag where
     nlpPort _ _ = portEnglish
-    nlpParams _ _ =  HttpVarParams
+    nlpParams _ _ =  mkHttpQueryParams
         [("outputFormat", Just "conllu"),
          ("annotators", Just
           "tokenize,ssplit,pos,lemma,ner,parse,dcoref,udfeats"
@@ -112,13 +112,13 @@ instance LanguageTyped2 EnglishType UD.POStag where
 
 instance LanguageTyped2 GermanType German.POStag where
     nlpPort _ _ = portGerman
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+    nlpParams _ _ =  mkHttpQueryParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
 instance LanguageTyped2 ItalianType TinT.POStag where
     nlpPort _ _ = portTinT
-    nlpParams _ _ =  HttpVarParams []
+    nlpParams _ _ =  mkHttpQueryParams []
 
 --    nlpParams _ _ =   [("outputFormat", Just "xml"),
 --                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
@@ -126,31 +126,31 @@ instance LanguageTyped2 ItalianType TinT.POStag where
 
 instance LanguageTyped2 FrenchType French.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+    nlpParams _ _ =  mkHttpQueryParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 instance LanguageTyped2 FrenchType FrenchUD.POStag where
     nlpPort _ _ = portFrench
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+    nlpParams _ _ =  mkHttpQueryParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,lemma,ner,depparse,coref")
                                         ]
 
 --instance LanguageTyped2 SpanishType Spanish.POStag where
 --    nlpPort _ _ = portSpanish
---    nlpParams _ _ =  HttpVarParams [
+--    nlpParams _ _ =  mkHttpQueryParams [
 --                        ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
 --                                        ]
 
 instance LanguageTyped2 SpanishType Spanish.POStag where
     nlpPort _ _ = portSpanish
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+    nlpParams _ _ =  mkHttpQueryParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 
 instance LanguageTyped2 SpanishType UD.POStag where
     nlpPort _ _ = portSpanish
-    nlpParams _ _ =  HttpVarParams [("outputFormat", Just "json"),
+    nlpParams _ _ =  mkHttpQueryParams [("outputFormat", Just "json"),
                         ("annotators", Just "tokenize,ssplit,pos,ner,depparse")
                                         ]
 

@@ -26,7 +26,7 @@ module CoreNLP.Vocabulary
     ) where
 import CoreNLP.DocBase hiding (Snip)
 import Uniform.Http
-import Data.RDFext
+--import Data.RDFext
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma
             | Lemma3
