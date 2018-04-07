@@ -29,7 +29,7 @@ module LitTypes.TextDescriptor (
     , Zeros (..)
     ) where
 
-import Uniform.FileIO -- ((</>), Path (..), Abs, Dir, File )
+import Uniform.FileIO
 import Uniform.Error
 import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
 import BuchCode.BuchToken  hiding ((<>), (</>), (<.>))
@@ -39,15 +39,15 @@ import Data.RDFext
 --import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))
 
--- directories:
-litOriginals = makeRelDir "LitOriginals"
-litTests =    makeRelDir "LitTest"
-litDir = makeAbsDir "/home/frank/additionalSpace/DataBig"
-litOrigDir1 = litDir </>litOriginals
-litTestDir1 = litDir </> litTests
-ntDir = makeAbsDir "/home/frank/Scratch/NT"
-litNTOrigDir1 = ntDir </> litOriginals
-litNTTestDir1 = ntDir </> litTests
+---- directories:
+--litOriginals = makeRelDir "LitOriginals"
+--litTests =    makeRelDir "LitTest"
+--litDir = makeAbsDir "/home/frank/additionalSpace/DataBig"
+--litOrigDir1 = litDir </>litOriginals
+--litTestDir1 = litDir </> litTests
+--ntDir = makeAbsDir "/home/frank/Scratch/NT"
+--litNTOrigDir1 = ntDir </> litOriginals
+--litNTTestDir1 = ntDir </> litTests
 
 -- | the description of a file to operate as texts - make legalfilen, when needed
 data TextDescriptor = TextDescriptor
@@ -229,8 +229,8 @@ data LitDirs = LitDirs {
         , dest :: Path Abs Dir
         }
 
-dirsTest = LitDirs litTestDir1  litNTTestDir1
-dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
+--dirsTest = LitDirs litTestDir1  litNTTestDir1
+--dirsOrig = LitDirs litOrigDir1  litNTOrigDir1
 
 fillTextState4a :: Path Abs File -> ServerURI -> Path Abs Dir -> Text
             -> Text -> LitTextFlagSet -> TextDescriptor
