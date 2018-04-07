@@ -27,7 +27,7 @@ nd1 =  NTdescriptor {destNT =  "/home/frank/Scratch/NT/LitTest/test/t1"
 
 td1 = TextDescriptor {
         sourceMarkup = "/home/frank/additionalSpace/DataBig/LitTest/test/t1"
-        , nlpServer =  "http://nlp.gerastree.at"
+        , nlpServer =  mkServerURI "http://nlp.gerastree.at"
         , authorDir = "test"
         , buchName = "t1"
         , includeText = False
@@ -44,8 +44,9 @@ td2 = "TextDescriptor {sourceMarkup = \"/home/frank/additionalSpace/DataBig/LitT
 test_r2 = assertEqual td1 (read td2) -- fail
 
 td3 = TextDescriptor {sourceMarkup = "/home/frank/additionalSpace/DataBig/LitTest/test/t1",
-    nlpServer = "http://nlp.gerastree.at", authorDir = "test", buchName = "t1",
-    includeText = False, txPosTagset = ""
+    nlpServer = mkServerURI "http://nlp.gerastree.at"
+    , authorDir = "test", buchName = "t1"
+    , includeText = False, txPosTagset = ""
     , ntdescriptor = NTdescriptor
          {destNT = "/home/frank/Scratch/NT/LitTest/test/t1", gzipFlag = False}
          }

@@ -25,9 +25,10 @@ test_readURI = assertEqual localhost (read (show localhost))
 
 test_makeURIok = assertEqual "\"http://nlp.gerastree.at\"" (showT  serverBrest)
 
-test_makeURIfail = assertEqual "Nothing" (showT . parseAbsoluteURI $ "127.0.0.1")
+test_makeURIfail = assertEqual "Nothing"
+                (showT . mkServerURI $ "127.0.0.1")
 
-ur1 = makeAbsURI "http://nlp.gerastree.at" :: URI
+ur1 = mkServerURI "http://nlp.gerastree.at" :: ServerURI
 ur1s = show ur1 :: String
 
 test_re1 = assertEqual ur1 (read ur1s)

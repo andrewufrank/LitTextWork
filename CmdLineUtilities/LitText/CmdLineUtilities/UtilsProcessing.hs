@@ -16,16 +16,16 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module CmdLineUtilities.UtilsProcessing
-    (module CmdLineUtilities.UtilsProcessing
-       , URI, HttpVarParams
+module LitText.CmdLineUtilities.UtilsProcessing
+    (module LitText.CmdLineUtilities.UtilsProcessing
+--       , URI, HttpVarParams
     )
     where
 
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import Uniform.Strings  ((<>))
-import Uniform.Http 
-import Data.RDFext 
+import Uniform.Http
+import Data.RDFext
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe

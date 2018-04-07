@@ -17,24 +17,27 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module CmdLineUtilities.UtilsProcessCmd
-    (module CmdLineUtilities.UtilsProcessCmd
+module LitText.CmdLineUtilities.UtilsProcessCmd
+    (
+--        module CmdLineUtilities.UtilsProcessCmd
 --    , LitTextFlag (..), LitTextFlags (..)
-    , LitTextFlagSet
-    , PartURI (..)
-    , addFusekiPort
+      ErrIO, Inputs (..)
+    , LitTextFlags (..) -- class
+--    , PartURI (..)
+--    , addFusekiPort
 --        , dirQueries
     )
     where
 
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
-import CmdLineUtilities.UtilsParseArgs -- (getArgsParsed, getTimeout)
-import CmdLineUtilities.UtilsProcessing (addFusekiPort)
+import LitText.CmdLineUtilities.UtilsParseArgs -- (getArgsParsed, getTimeout)
+import LitText.CmdLineUtilities.UtilsProcessing (addFusekiPort)
 import LitTypes.Flags
-
+import Uniform.Http --  (TimeOutSec)
+import Data.RDFext
 
 data Inputs = Inputs {
-         inDB :: PartURI  -- ^ the db to use
+         inDB :: RDFdataset  -- ^ the db to use
         , inGraph :: Maybe Text -- ^ the graph
         , inOriginDir :: Path Abs Dir -- ^ where the in files are
         , inDestinationDir :: Path Abs Dir -- ^ where the produced files go
@@ -73,7 +76,7 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
 --    let forceFlag = argForceFlag args
 --    let debugFlag = True
 --        putIOwords ["parseAndStartExecute: before making args "]
-    let  timeout = mkTimeOutSec $ getTimeout args
+    let  timeout = getTimeout args
          mgraph = if null' . argGraph $ args then Nothing
                         else Just . s2t $  argGraph args  -- nothing if empty
 --        putIOwords ["parseAndStartExecute: before making args 2"]
@@ -103,7 +106,7 @@ parseAndStartExecute debugFlag resultFileName  t1 t2 = do
         flags = setFlags [LocalNLPserverFlag, ForceFlag, DebugFlag] boolSwitches
     putIOwords ["parseAndStartExecute flags", showT flags]
     let inp = Inputs {
-          inDB = PartURI dbarg
+          inDB = mkRDFdataset dbarg
         , inGraph = mgraph
         , inOriginDir = originDir
         , inDestinationDir = destinationDir

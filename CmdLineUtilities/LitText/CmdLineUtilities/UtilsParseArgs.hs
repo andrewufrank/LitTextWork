@@ -17,7 +17,7 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module CmdLineUtilities.UtilsParseArgs
+module LitText.CmdLineUtilities.UtilsParseArgs
     (LitArgs (..)
         , getArgsParsed, flag2bool, getTimeout
 --            module CmdLineUtilities.UtilsParseArgs

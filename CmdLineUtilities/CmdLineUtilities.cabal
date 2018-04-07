@@ -1,5 +1,5 @@
 name: CmdLineUtilities
-version: 0.1.0.10
+version: 0.1.1.0
 
 cabal-version: >=1.24
 build-type: Simple
@@ -9,6 +9,7 @@ synopsis: handling user interface stuff - cmd line oriented
 description:
      handle cmd line stuff
      process all files utility
+     0.1.1.0 part of LitText
 
 author: Andrew U. Frank
 
@@ -33,11 +34,9 @@ library
         -- import all what is lower, to avoid duplications
 
     exposed-modules:
-        CmdLineUtilities.UtilsParseArgs
-        CmdLineUtilities.UtilsProcessing
-        CmdLineUtilities.UtilsProcessCmd
---        CmdLineUtilities.CmdLineNtmake
---        CmdLineUtilities.ProcessFlags
+        LitText.CmdLineUtilities.UtilsParseArgs
+        LitText.CmdLineUtilities.UtilsProcessing
+        LitText.CmdLineUtilities.UtilsProcessCmd
 
     exposed: True
     buildable: True
@@ -60,6 +59,6 @@ library
 --    hs-source-dirs: tests
 --    default-language: Haskell2010
 --    other-modules:
---        CmdLineUtilities.UtilsParseArgs_test
---        CmdLineUtilities.UtilsProcessing_test
+--        LitText.CmdLineUtilities.UtilsParseArgs_test
+--        LitText.CmdLineUtilities.UtilsProcessing_test
 
