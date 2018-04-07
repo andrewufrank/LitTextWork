@@ -16,9 +16,15 @@ module Data.RDFext (
     , module Data.RDFext.Predicates
     , module  Data.RDFext.Triple2text
     -- , module Data.RDFext.Codes
-    , IRI, mkIRI, append2IRI, LanguageCode (..)  --
-    , RDFsubj, RDFproperty, mkTripleLang3
-    , PartURI 
+    , IRI, mkIRI, append2IRI, append2IRIwithSlash
+    , LanguageCode (..)  --
+    , RDFproperties (..)
+    , RDFtypes (..)
+    , RDFsubj, mkRDFsubj
+    , RDFproperty, mkTripleLang3
+    , GraphName, mkGraphName
+    , RDFdataset, mkRDFdataset
+    , PartURI  -- should be removed
     , module Uniform.FileIO
     )     where
 

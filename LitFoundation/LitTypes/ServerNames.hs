@@ -45,8 +45,8 @@ treeTaggerPort = 9010 :: Int -- current range 9000 - 9010  -- is Wai warp port =
 
 nlp = "nlp"::Text
 --nlpURItext =  ( vocabularyBase) </> "nlp_2015" :: PartURI
-nlpIRItext = append2IRI vocabularyBase  "nlp_2017" :: IRI
+nlpIRItext = append2IRI vocabularyBase  "nlp_2017#" :: IRI
 -- the 2017 vocabulary represents the dependency codes as properties (written lower case)
-nlpUDEPtext = append2IRI vocabularyBase  "udep" :: IRI
+nlpUDEPtext = append2IRI vocabularyBase  "udep#" :: IRI
 -- the udep namespace is used only for the universal dependencies
 -- not version specific but could be added

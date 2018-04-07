@@ -25,6 +25,8 @@ module CoreNLP.Vocabulary
       , RDFsubj (..), PartURI (..)
     ) where
 import CoreNLP.DocBase hiding (Snip)
+import Uniform.Http
+import Data.RDFext
 
 data NLPproperty = LanguageTag | FileName | Parse | Lemma
             | Lemma3
@@ -54,10 +56,10 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma
           -- do not capitalize second and following (not DEPorig)
 
 instance RDFproperties NLPproperty where
-    mkRDFproperty p = RDFproperty $ unPartURI nlpURItext <#> (toLowerStart . showT $ p)
+    mkRDFproperty p =  mkRDFproperty $ append2IRI nlpIRItext (toLowerStart . showT $ p)
 
 instance RDFproperties DepCode where
-    mkRDFproperty c = RDFproperty $ unPartURI nlpUDEPtext <#> (toLower' . fromDEPtag $ c)
+    mkRDFproperty c = mkRDFproperty $  append2IRI nlpUDEPtext (toLower' . fromDEPtag $ c)
 -- the dep codes used as rdf properties are in a separate prefix
 
             -- should be changed to 2017
@@ -70,21 +72,21 @@ data NLPtype =  Snip
   deriving (Show, Read, Eq, Ord, Generic)
 
 instance RDFtypes NLPtype where
-      mkRDFtype p = RDFtype $ unPartURI nlpURItext <#> (toTitle . showT $ p)
+      mkRDFtype p = mkRDFtype $ append2IRI nlpIRItext  (toTitle . showT $ p)
 
 
 newtype ParaSigl = ParaSigl RDFsubj deriving (Show, Read, Eq, Ord)
 unParaSigl (ParaSigl t) = t
 
 paraSigl :: TextDescriptor -> ParaID -> ParaSigl
-paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
+paraSigl textstate pn = ParaSigl $ append2IRIwithSlash
                 (formatID  pn)
                       ( buchURIx $ textstate)
-                  )
 
 
-buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
-            <#> authorDir textstate <-> buchName textstate
+
+buchURIx textstate = mkRDFsubj $ append2IRI rdfBase
+            (authorDir textstate <-> buchName textstate)
 -- id of buch, part and sentence or page is attached
 
 
@@ -97,7 +99,7 @@ newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq, Generic, Zeros)
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
 mkSnipSigl parasigl snipid =  SnipSigl
-      . extendSlashRDFsubj  (formatID  snipid)
+      . append2IRIwithSlash  (formatID  snipid)
       . unParaSigl $ parasigl
   where
 
@@ -108,7 +110,7 @@ unSentSigl (SentSigl a) = a
 -- make the sentence id from buchsigl (docid) and sentnumber
 -- mkSentSigl docid sentid =  RDFsubj $ docid <+> "S" <> (formatSentenceID  . unSentID0 $    sentid)
 mkSentSigl docsigl sentid =  SentSigl
-      . extendSlashRDFsubj  (formatID   sentid)
+      . append2IRIwithSlash  (formatID   sentid)
       . unSnipSigl $ docsigl
   where
 
@@ -118,7 +120,7 @@ unTokenSigl (TokenSigl a) = a
 mkTokenSigl :: SentSigl -> TokenID -> TokenSigl
 -- make the token sigl from sentence id
 mkTokenSigl sentsigl  tok =  TokenSigl
-      . extendSlashRDFsubj  (formatID tok)
+      . append2IRIwithSlash  (formatID tok)
       . unSentSigl $ sentsigl
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
   where
@@ -129,7 +131,7 @@ mkTokenSigl sentsigl  tok =  TokenSigl
 --mkDepTypeSigl :: SentSigl -> DepID -> DepTypeSigl
 ---- make the token sigl from sentence id
 --mkDepTypeSigl sentsigl  did =  DepTypeSigl
---      . extendSlashRDFsubj did   -- is a Text
+--      . append2IRIwithSlash did   -- is a Text
 --      . unSentSigl $ sentsigl
 
 newtype DepSigl = DepSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic)
@@ -139,7 +141,7 @@ unDepSigl (DepSigl a) = a
 mkDepSigl2 :: SentSigl -> DepID  -> DepSigl
 -- make the dependency sigl (these must be numbered)
 mkDepSigl2 sentsigl  i =  DepSigl
-      . extendSlashRDFsubj (formatID i)   -- is a Text
+      . append2IRIwithSlash (formatID i)   -- is a Text
       . unSentSigl $ sentsigl
     where
 

@@ -40,7 +40,7 @@ import Data.RDFext.Codes
 ----import           Uniform.Convenience.LitTypes
 
 
-test_typed0 = assertEqual (zo 0) 
+test_typed0 = assertEqual (zo 0)
             (mkTripleInteger s1 r1 0 )
 test_typed100 = assertEqual (zo 100)
             (mkTripleInteger s1 r1 100 )
@@ -58,5 +58,5 @@ ex1 = Triple (UNode "http://gerastree.at/kurz#kurz-005")
     (LNode (PlainLL "und mehr text in deutsch. test2 erfuellt?" "de"))
 
 t1 = getTripleLanguage ex1
-s1 = RDFsubj "http://gerastree.at/kurz#kurz-005"
+s1 = RDFsubj . IRI $ "http://gerastree.at/kurz#kurz-005"
 r1 = RDFproperty "testint"
