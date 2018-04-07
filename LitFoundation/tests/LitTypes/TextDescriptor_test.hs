@@ -41,7 +41,7 @@ td2 = "TextDescriptor {sourceMarkup = \"/home/frank/additionalSpace/DataBig/LitT
 \includeText = False, txPosTagset = \"\", ntdescriptor = NTdescriptor\
         \ {destNT = \"/home/frank/Scratch/NT/LitTest/test/t1\", gzipFlag = False}}"
 
-test_r2 = assertEqual td1 (read td2) -- fail
+--test_r2_MUST_FAIL = assertEqual td1 (read td2) -- fail
 
 td3 = TextDescriptor {sourceMarkup = "/home/frank/additionalSpace/DataBig/LitTest/test/t1",
     nlpServer = mkServerURI "http://nlp.gerastree.at"

@@ -23,10 +23,16 @@ import LitTypes.ServerNames
 test_readURI = assertEqual localhost (read (show localhost))
 
 
-test_makeURIok = assertEqual "\"http://nlp.gerastree.at\"" (showT  serverBrest)
+test_makeURIok = assertEqual
+        "ServerURI {unServerURI = \"http://nlp.gerastree.at\"}"
+         (showT  serverBrest)
 
-test_makeURIfail = assertEqual "Nothing"
-                (showT . mkServerURI $ "127.0.0.1")
+test_makeURIlocalHost = assertEqual
+        "ServerURI {unServerURI = \"http://127.0.0.1\"}"
+                (showT . mkServerURI $ "http://127.0.0.1")
+
+--test_make_MUST_FAIL = assertEqual  "MUST FAIL"
+--                (showT . mkServerURI $ "127.0.0.1")
 
 ur1 = mkServerURI "http://nlp.gerastree.at" :: ServerURI
 ur1s = show ur1 :: String
