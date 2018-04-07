@@ -25,7 +25,7 @@ module LitText.CmdLineUtilities.UtilsProcessing
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
 import Uniform.Strings  ((<>))
 import Uniform.Http
-import Data.RDFext
+--import Data.RDFext
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe

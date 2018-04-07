@@ -28,7 +28,7 @@ library
 --        , HTF
         , optparse-applicative
         , pipes
-        , rdf4hextension
+--        , rdf4hextension
         , path-io
         , litFoundation
         -- import all what is lower, to avoid duplications

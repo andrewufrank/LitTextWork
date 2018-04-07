@@ -22,6 +22,7 @@ module LitTypes.TextDescriptor (
 --    , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
     , module Uniform.Error
+    , module Data.RDFext
     , LanguageCode (..) -- from rdf4hextension
     , NTdescriptor (..)
     , LitTextFlagSet,  LitTextFlags (..)

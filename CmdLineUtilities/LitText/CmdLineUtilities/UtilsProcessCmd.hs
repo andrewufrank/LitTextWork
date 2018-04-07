@@ -34,7 +34,7 @@ import LitText.CmdLineUtilities.UtilsParseArgs -- (getArgsParsed, getTimeout)
 import LitText.CmdLineUtilities.UtilsProcessing (addFusekiPort)
 import LitTypes.Flags
 import Uniform.Http --  (TimeOutSec)
-import Data.RDFext
+--import Data.RDFext
 
 data Inputs = Inputs {
          inDB :: RDFdataset  -- ^ the db to use
