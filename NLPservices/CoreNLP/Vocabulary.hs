@@ -55,10 +55,10 @@ data NLPproperty = LanguageTag | FileName | Parse | Lemma
           -- attention: these values will be used with lowercase first letter
           -- do not capitalize second and following (not DEPorig)
 
-instance RDFproperties NLPproperty where
+instance RDFtypes NLPproperty where
     mkRDFproperty p =  mkRDFproperty $ append2IRI nlpIRItext (toLowerStart . showT $ p)
 
-instance RDFproperties DepCode where
+instance RDFtypes DepCode where
     mkRDFproperty c = mkRDFproperty $  append2IRI nlpUDEPtext (toLower' . fromDEPtag $ c)
 -- the dep codes used as rdf properties are in a separate prefix
 
@@ -80,8 +80,8 @@ unParaSigl (ParaSigl t) = t
 
 paraSigl :: TextDescriptor -> ParaID -> ParaSigl
 paraSigl textstate pn = ParaSigl $ append2IRIwithSlash
-                (formatID  pn)
-                      ( buchURIx $ textstate)
+               ( buchURIx $ textstate)  (formatID  pn)
+
 
 
 
@@ -99,8 +99,9 @@ newtype SnipSigl = SnipSigl RDFsubj deriving (Show, Read, Eq, Generic, Zeros)
 mkSnipSigl :: ParaSigl   -> SnipID -> SnipSigl
 unSnipSigl (SnipSigl a) = a
 mkSnipSigl parasigl snipid =  SnipSigl
-      . append2IRIwithSlash  (formatID  snipid)
-      . unParaSigl $ parasigl
+     $ append2IRIwithSlash
+        (unParaSigl $ parasigl)  (formatID  snipid)
+
   where
 
 
@@ -110,8 +111,9 @@ unSentSigl (SentSigl a) = a
 -- make the sentence id from buchsigl (docid) and sentnumber
 -- mkSentSigl docid sentid =  RDFsubj $ docid <+> "S" <> (formatSentenceID  . unSentID0 $    sentid)
 mkSentSigl docsigl sentid =  SentSigl
-      . append2IRIwithSlash  (formatID   sentid)
-      . unSnipSigl $ docsigl
+      $ append2IRIwithSlash
+        ( unSnipSigl $ docsigl ) (formatID   sentid)
+
   where
 
 newtype TokenSigl = TokenSigl RDFsubj deriving (Show, Read, Eq, Ord, Generic)
@@ -120,8 +122,9 @@ unTokenSigl (TokenSigl a) = a
 mkTokenSigl :: SentSigl -> TokenID -> TokenSigl
 -- make the token sigl from sentence id
 mkTokenSigl sentsigl  tok =  TokenSigl
-      . append2IRIwithSlash  (formatID tok)
-      . unSentSigl $ sentsigl
+      $ append2IRIwithSlash
+            (unSentSigl $ sentsigl) (formatID tok)
+
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
   where
 
@@ -141,8 +144,9 @@ unDepSigl (DepSigl a) = a
 mkDepSigl2 :: SentSigl -> DepID  -> DepSigl
 -- make the dependency sigl (these must be numbered)
 mkDepSigl2 sentsigl  i =  DepSigl
-      . append2IRIwithSlash (formatID i)   -- is a Text
-      . unSentSigl $ sentsigl
+      $ append2IRIwithSlash
+         (unSentSigl $ sentsigl) (formatID i)   -- is a Text
+
     where
 
 -- mkTokenSigl sentid  tok =  RDFsubj $ sentid <+>  "T" <>  (formatTokenID . untid0   $ tok)
@@ -152,8 +156,9 @@ unCorefSigl (CorefSigl a) = a
 mkCorefsigl :: SnipSigl -> CorefID -> CorefSigl
 -- given a snip id produce a corefid with the number given
 mkCorefsigl snip c =   CorefSigl
-      . extendSlashRDFsubj  (formatID     c)
-      . unSnipSigl $ snip
+        $ append2IRIwithSlash
+         (unSnipSigl  snip) (formatID c)
+
 
 type MentionNr = Int
 newtype MentionSigl = MentionSigl RDFsubj deriving  (Show, Read, Eq, Ord, Generic)
@@ -162,7 +167,7 @@ unMentionSigl (MentionSigl a) = a
 mkMentionsigl :: CorefSigl -> MentionID -> MentionSigl
 -- given a snip id produce a Mentionid with the number given
 mkMentionsigl corefsigl c =   MentionSigl
-      . extendSlashRDFsubj  (formatID c)
-      . unCorefSigl $ corefsigl
+        $ append2IRIwithSlash
+         (unCorefSigl  corefsigl) (formatID c)
 
 

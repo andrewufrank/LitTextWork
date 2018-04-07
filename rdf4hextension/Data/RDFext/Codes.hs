@@ -58,6 +58,10 @@ instance IRIs IRI where
     append2IRI u1 t = IRI $ unIRI u1  <> t
     append2IRIwithSlash u1 t = IRI $ unIRI u1  </> t
 
+instance IRIs RDFsubj where
+    append2IRI u1 t = mkRDFsubj $ append2IRI (toIRI u1) t
+    append2IRIwithSlash u1 t = mkRDFsubj $ append2IRIwithSlash (toIRI u1) t
+
 newtype GraphName = GraphName Text
 -- ^ the name for a graph
     deriving (Show, Read, Eq, Ord, Generic, Zeros)

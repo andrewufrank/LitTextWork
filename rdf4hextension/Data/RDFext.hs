@@ -18,7 +18,7 @@ module Data.RDFext (
     -- , module Data.RDFext.Codes
     , IRI, mkIRI, append2IRI, append2IRIwithSlash
     , LanguageCode (..)  --
-    , RDFproperties (..)
+--    , RDFproperties (..)
     , RDFtypes (..)
     , RDFsubj, mkRDFsubj
     , RDFproperty, mkTripleLang3
