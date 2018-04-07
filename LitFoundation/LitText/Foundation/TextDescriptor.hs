@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :  LitTypes . TextDescriptor
+-- Module      :  LitText.Foundation . TextDescriptor
 -- Copyright   :  andrew u frank -
 --
 -- | the definitions of the descrption of the text and related types (e.g. Language)
@@ -15,10 +15,10 @@
     , RecordWildCards
     , DeriveAnyClass #-}
 
-module LitTypes.TextDescriptor (
-        module LitTypes.TextDescriptor
-    , module LitTypes.ServerNames
-    , module LitTypes.LanguageTypedText
+module LitText.Foundation.TextDescriptor (
+        module LitText.Foundation.TextDescriptor
+    , module LitText.Foundation.ServerNames
+    , module LitText.Foundation.LanguageTypedText
 --    , module Uniform.Strings  -- cannot export FileIO as well
     , module Uniform.FileIO
     , module Uniform.Error
@@ -30,11 +30,12 @@ module LitTypes.TextDescriptor (
     ) where
 
 import Uniform.FileIO
+--import Uniform.Strings  -- gives the <> etc.
 import Uniform.Error
-import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
-import BuchCode.BuchToken  hiding ((<>), (</>), (<.>))
-import LitTypes.LanguageTypedText  hiding ((<>), (</>), (<.>))
-import LitTypes.Flags
+import LitText.Foundation.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
+import LitText.Foundation.BuchToken
+import LitText.Foundation.LanguageTypedText
+import LitText.Foundation.Flags
 import Data.RDFext
 --import GHC.Generics
 --import CoreNLP.Vocabulary (ParaSigl (..))

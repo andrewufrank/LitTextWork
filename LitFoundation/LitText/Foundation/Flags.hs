@@ -13,8 +13,8 @@
         , DeriveGeneric
         , DeriveAnyClass #-}
 
-module LitTypes.Flags (
---    module LitTypes.Flags
+module LitText.Foundation.Flags (
+--    module LitText.Foundation.Flags
 --        args2flags,
       setFlags
        , LitTextFlag (..)

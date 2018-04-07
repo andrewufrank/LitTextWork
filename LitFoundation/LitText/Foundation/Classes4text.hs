@@ -15,11 +15,11 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module BuchCode.Classes4text (module BuchCode.Classes4text
-        , module BuchCode.BuchToken
+module LitText.Foundation.Classes4text (module LitText.Foundation.Classes4text
+        , module LitText.Foundation.BuchToken
             ) where
 
-import BuchCode.BuchToken hiding (try)
+import LitText.Foundation.BuchToken hiding (try)
 
 
 

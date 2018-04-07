@@ -1,5 +1,5 @@
 name: litFoundation
-version: 0.1.8.6
+version: 0.1.9.1
 
 cabal-version: >=1.24
 build-type: Simple
@@ -8,6 +8,7 @@ license-file: LICENSE
 synopsis: the code for reading the files
 description:
      the file read
+     0.1.9.1   LitText.Foundation as structure
 
 author: Andrew U. Frank
 
@@ -25,12 +26,12 @@ library
         , rdf4hextension
 
     exposed-modules:
-        LitTypes.TextDescriptor
-        LitTypes.LanguageTypedText
-        LitTypes.ServerNames
-        LitTypes.Flags
-        BuchCode.BuchToken
-        BuchCode.Classes4text
+        LitText.Foundation.TextDescriptor
+        LitText.Foundation.LanguageTypedText
+        LitText.Foundation.ServerNames
+        LitText.Foundation.Flags
+        LitText.Foundation.BuchToken
+        LitText.Foundation.Classes4text
 
     exposed: True
     buildable: True
@@ -52,7 +53,7 @@ Test-Suite  TestAuto
     hs-source-dirs: tests
     default-language: Haskell2010
     other-modules:
-        LitTypes.TextDescriptor_test
-        LitTypes.LanguageTypedText_test
-        LitTypes.ServerNames_test
-        BuchCode.BuchToken_test
+        LitText.Foundation.TextDescriptor_test
+        LitText.Foundation.LanguageTypedText_test
+        LitText.Foundation.ServerNames_test
+        LitText.Foundation.BuchToken_test

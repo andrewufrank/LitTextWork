@@ -19,8 +19,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module LitTypes.LanguageTypedText
-    (module LitTypes.LanguageTypedText
+module LitText.Foundation.LanguageTypedText
+    (module LitText.Foundation.LanguageTypedText
     ) where
 
 import Uniform.Zero (Zeros (..), Generic(..))

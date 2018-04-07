@@ -31,7 +31,7 @@ import LitTypes.TextDescriptor
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)
-import CmdLineUtilities.UtilsProcessCmd
+import LitText.CmdLineUtilities.UtilsProcessCmd
 
 ntExtension = Extension "nt"
 --turtleExtension = Extension "ttl"  -- is typed file

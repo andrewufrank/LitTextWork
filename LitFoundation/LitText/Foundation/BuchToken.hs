@@ -15,7 +15,7 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module BuchCode.BuchToken (module BuchCode.BuchToken
+module LitText.Foundation.BuchToken (module LitText.Foundation.BuchToken
         , module Uniform.Error
             ) where
 

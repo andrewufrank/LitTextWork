@@ -11,8 +11,8 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module LitTypes.ServerNames (
-    module LitTypes.ServerNames
+module LitText.Foundation.ServerNames (
+    module LitText.Foundation.ServerNames
    , module Uniform.Http
     , IRI, mkIRI
     ) where
