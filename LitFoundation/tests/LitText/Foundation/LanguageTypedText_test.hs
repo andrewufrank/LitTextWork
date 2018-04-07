@@ -17,7 +17,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module LitTypes.LanguageTypedText_test where
+module LitText.Foundation.LanguageTypedText_test where
 
 import           Test.Framework
 

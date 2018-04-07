@@ -29,7 +29,7 @@ module CoreNLP.DocBase (
          , module GHC.Generics
          , module Uniform.Zero
          , module Uniform.Strings
-         , module LitTypes.TextDescriptor
+         , module LitText.Foundation
         )  where
 
 import              Uniform.Strings
@@ -40,7 +40,7 @@ import              NLP.TagSets.NERcodes
 import              NLP.TagSets.SpeakerTags
 import           Text.Printf             (printf)
 import GHC.Generics
-import LitTypes.TextDescriptor hiding ((<|>), (</>),(<.>), (<>))
+import LitText.Foundation
 
 newtype  Wordform0 = Wordform0 {word0 :: LCtext}
             deriving (Show, Read, Eq, Ord, Generic, Zeros)

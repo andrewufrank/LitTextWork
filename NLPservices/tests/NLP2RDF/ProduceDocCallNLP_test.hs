@@ -62,8 +62,9 @@ spantz3text = "El t\237o vol\243 a Boston. Cuando entr\243 en la \
 ittz3text = "Lo zio vol\242 a Boston. Quando entr\242 nella stanza, \
     \port\242 un libro. Era rosso."
 
-paraSigl1 =  ParaSigl ( extendSlashRDFsubj "produceDocCallNLP"
-                            (RDFsubj $ (unPartURI rdfBase))  )
+paraSigl1 =  ParaSigl $ append2IRIwithSlash
+                            (mkRDFsubj   rdfBase) "produceDocCallNLP"
+
 
 data Snip2 lang = Snip2 (LTtext lang) RDFsubj
     deriving (Eq, Ord, Read, Show)
@@ -117,7 +118,7 @@ testOP_Snip_M :: LanguageTypedText t0 =>
 testOP_Snip_M (langPh, postagPh, text, i)= do
         putIOwords [ "testOP"]
         let snip  = Snip2 (typeText langPh text)
-                         (RDFsubj . unPartURI $ rdfBase)  -- )
+                         (mkRDFsubj  rdfBase)  -- )
 --                        (mkSnipSigl paraSigl1 (SnipID i))
         return snip
 
@@ -180,7 +181,7 @@ testOP_M_MA (langPh, postagPh, _, _) (Snip2 txt base) = do
             return json1
         where   vars = nlpParams langPh postagPh
                 path = nlpPath langPh
-                server = addPort2URI serverBrest (nlpPort langPh postagPh)
+                server = addPort2ServerURI serverBrest (nlpPort langPh postagPh)
 
 test_M_MA1 :: IO ()
 test_M_MA1 = testVar1FileIO progName englVars "resultM1" "resultMA1" testOP_M_MA
@@ -203,7 +204,7 @@ testOP_M_MB ::  (Show postag
 testOP_M_MB (langPh, postagPh, text, i)   =
             unlines' . map triple2text
              . postNLP  postagPh langPh True
-                    (RDFsubj . unPartURI $ rdfBase)
+                    (mkRDFsubj rdfBase)
 
 test_M_MB1 :: IO ()
 test_M_MB1 = testVar1File progName englVars "resultMA1" "resultMB1" testOP_M_MB

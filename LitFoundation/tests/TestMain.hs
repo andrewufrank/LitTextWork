@@ -10,12 +10,12 @@ module Main     where      -- must have Main (main) or Main where
 
 import Uniform.Strings
 import           Test.Framework
-import {-@ HTF_TESTS @-} LitTypes.ServerNames_test
-import {-@ HTF_TESTS @-} LitTypes.TextDescriptor_test
+import {-@ HTF_TESTS @-} LitText.Foundation.ServerNames_test
+import {-@ HTF_TESTS @-} LitText.Foundation.TextDescriptor_test
 
 main =  do
     twoOut
-    putStrLn "LitFoundation.hs:\n"
+    putStrLn "LitText.Foundation \n"
     -- r <- htfMain htf_thisModulesTests  -- if local tests
     -- putStrLn ("tree tagger test:\n" ++ show r)
     r <- htfMain htf_importedTests

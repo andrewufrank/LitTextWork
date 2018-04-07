@@ -17,11 +17,11 @@
 {-# LANGUAGE ScopedTypeVariables   #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module BuchCode.BuchToken_test  where
+module LitText.Foundation.BuchToken_test  where
 
 
 import           Test.Framework
 --import Uniform.TestHarness (testVar3File)
-import BuchCode.BuchToken
+import LitText.Foundation.BuchToken
 
 

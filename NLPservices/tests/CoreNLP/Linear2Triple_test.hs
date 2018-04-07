@@ -30,7 +30,7 @@ instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
 test_c = test1File progName "short1.lin5" "short1.trips6"
-        (toTriple Conll.undefPOS (RDFsubj . unPartURI $ rdfBase))
+        (toTriple Conll.undefPOS (mkRDFsubj rdfBase))
 
 test_d = test1File progName "short1.trips6" "short1.nt"
         (unNT . toNT)

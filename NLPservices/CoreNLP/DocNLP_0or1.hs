@@ -49,7 +49,7 @@ import qualified NLP.Tags      as NLP
 import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
 import qualified NLP.TagSets.Conll  as Conll -- for test
-import LitTypes.TextDescriptor
+import LitText.Foundation
 
 to1op :: (POStags postag) =>
         postag -> LanguageCode -> Doc2  ->   (Doc1 postag)

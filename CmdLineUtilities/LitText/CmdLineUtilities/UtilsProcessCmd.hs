@@ -32,10 +32,9 @@ module LitText.CmdLineUtilities.UtilsProcessCmd
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import LitText.CmdLineUtilities.UtilsParseArgs -- (getArgsParsed, getTimeout)
 import LitText.CmdLineUtilities.UtilsProcessing (addFusekiPort)
-import LitTypes.Flags
+import LitText.Foundation
 import Uniform.Http --  (TimeOutSec)
 --import Data.RDFext
-import LitTypes.TextDescriptor
 
 data Inputs = Inputs {
          inDB :: RDFdataset  -- ^ the db to use

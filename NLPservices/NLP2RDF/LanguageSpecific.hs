@@ -22,7 +22,7 @@
 module NLP2RDF.LanguageSpecific
     (module NLP2RDF.LanguageSpecific
     , module CoreNLP.CoreNLP
-    , module LitTypes.TextDescriptor
+    , module LitText.Foundation
     ) where
 
 import Uniform.Http
@@ -31,7 +31,7 @@ import Uniform.Error (ErrIO)
 import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
         , conllu2triples, json2triples)
 import Text.Regex (mkRegex, subRegex)
-import LitTypes.TextDescriptor
+import LitText.Foundation
 import NLP.TagSets.Conll  as Conll -- Conll for english
 import NLP.TagSets.ItalianTinT   as TinT-- for italian
 import NLP.TagSets.German  as German --

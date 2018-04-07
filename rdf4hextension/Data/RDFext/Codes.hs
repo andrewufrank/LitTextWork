@@ -104,7 +104,8 @@ unRDFtype (RDFtype a) = a
 
 class RDFtypes f where
     toIRI :: f -> IRI
-    mkRDFtype :: f -> RDFtype
+    mkRDFtype :: Show f => f -> RDFtype
+    mkRDFtype f = errorT ["mkRDFtype ", showT f]
     mkRDFproperty :: f -> RDFproperty
     toUNode :: f -> Node
 

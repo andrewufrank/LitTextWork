@@ -20,7 +20,7 @@ import Uniform.Test.TestHarness
 import           Uniform.Strings
 import CoreNLP.CoreNLP
 import qualified NLP.TagSets.Conll  as Conll
-import LitTypes.ServerNames (rdfBase)
+import LitText.Foundation
 
 
 -- instance ShowTestHarness (Doc11 Conll.POStag) where

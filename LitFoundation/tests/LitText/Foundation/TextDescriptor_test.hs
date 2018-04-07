@@ -15,11 +15,11 @@
 {-# LANGUAGE FlexibleInstances #-}
 
 
-module LitTypes.TextDescriptor_test where
+module LitText.Foundation.TextDescriptor_test where
 
 import Uniform.FileIO
 import           Test.Framework
-import LitTypes.TextDescriptor
+import LitText.Foundation.TextDescriptor
 import Data.String
 
 nd1 =  NTdescriptor {destNT =  "/home/frank/Scratch/NT/LitTest/test/t1"

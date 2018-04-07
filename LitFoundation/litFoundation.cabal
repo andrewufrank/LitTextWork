@@ -26,6 +26,7 @@ library
         , rdf4hextension
 
     exposed-modules:
+        LitText.Foundation
         LitText.Foundation.TextDescriptor
         LitText.Foundation.LanguageTypedText
         LitText.Foundation.ServerNames

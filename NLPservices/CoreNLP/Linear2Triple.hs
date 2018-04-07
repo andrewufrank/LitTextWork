@@ -32,7 +32,7 @@ import Uniform.Zero
 import Uniform.Strings
 import Data.Maybe
 import GHC.Generics
-import LitTypes.TextDescriptor hiding ((</>))
+import LitText.Foundation
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD
 import NLP.TagSets.NERcodes (fromNERtag)

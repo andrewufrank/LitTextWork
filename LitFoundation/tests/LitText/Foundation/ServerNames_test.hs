@@ -11,13 +11,13 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module LitTypes.ServerNames_test where
+module LitText.Foundation.ServerNames_test where
 
 
 import Uniform.Error
 import           Test.Framework
 import Text.Read (Read (..))
-import LitTypes.ServerNames
+import LitText.Foundation.ServerNames
 
 
 test_readURI = assertEqual localhost (read (show localhost))
