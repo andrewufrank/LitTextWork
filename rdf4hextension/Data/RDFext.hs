@@ -16,18 +16,19 @@ module Data.RDFext (
     , module Data.RDFext.Predicates
     , module  Data.RDFext.Triple2text
     -- , module Data.RDFext.Codes
-    , IRI, mkIRI, append2IRI, append2IRIwithSlash
+    , IRI, mkIRI, append2IRI, append2IRIwithSlash, unIRI
+--    , mkHttPathFromIRI
     , LanguageCode (..)  --
 --    , RDFproperties (..)
     , RDFtypes (..)
     , RDFsubj, mkRDFsubj
-    , RDFproperty, mkTripleLang3
+    , RDFproperty
     , GraphName, mkGraphName
     , RDFdataset, mkRDFdataset
     , PartURI  -- should be removed
     , mkTripleText, mkTripleLang, mkTripleLang3
     , mkTripleRef, mkTripleInt, mkTripleInteger
-    ,mkTripleType, mkTriplePartOf
+    , mkTripleType, mkTriplePartOf
     , parseLanguageCode, readLanguageCode
     , module Uniform.FileIO
     )     where

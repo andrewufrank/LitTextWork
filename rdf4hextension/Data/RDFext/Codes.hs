@@ -41,7 +41,7 @@ import           Uniform.Error
 import           Uniform.Strings ((</>))
 import           Uniform.Zero
 import  GHC.Generics
-
+import Uniform.Http
 
 newtype IRI = IRI Text
     deriving (Show, Read, Eq, Ord, Generic, Zeros)
@@ -49,6 +49,9 @@ newtype IRI = IRI Text
 -- could be tested for validity
 mkIRI = IRI
 unIRI (IRI t) = t   -- do not export!
+        -- necessary to use graph names for file names etc.
+
+--mkHttPathFromIRI = mkHttpPath . unIRI
 
 class IRIs i where
     append2IRI :: i -> Text -> i
@@ -67,10 +70,16 @@ newtype GraphName = GraphName Text
     deriving (Show, Read, Eq, Ord, Generic, Zeros)
 mkGraphName = GraphName
 
+instance RDFtypes GraphName where
+    toIRI (GraphName s) = IRI s
+
 newtype RDFdataset = RDFdataset Text
 -- ^ the name for a dataset in a sparql endpoint
     deriving (Show, Read, Eq, Ord, Generic, Zeros)
 mkRDFdataset = RDFdataset
+
+instance RDFtypes RDFdataset where
+    toIRI (RDFdataset s) = IRI s
 
 
 newtype PartURI = PartURI Text
@@ -102,12 +111,15 @@ unRDFtype (RDFtype a) = a
 --class RDFtypes p where
 --    mkRDFtype :: p -> RDFtype
 
-class RDFtypes f where
+class Show f => RDFtypes f where
     toIRI :: f -> IRI
-    mkRDFtype :: Show f => f -> RDFtype
-    mkRDFtype f = errorT ["mkRDFtype ", showT f]
+    toIRI f = errorT ["toIRI missing in RDFtypes", showT f]
+    mkRDFtype ::  f -> RDFtype
+    mkRDFtype f = errorT ["mkRDFtype  missing in RDFtypes", showT f]
     mkRDFproperty :: f -> RDFproperty
+    mkRDFproperty f = errorT ["mkRDFproperty  missing in RDFtypes", showT f]
     toUNode :: f -> Node
+    toUNode f = errorT ["toUNode  missing in RDFtypes", showT f]
 
 instance RDFtypes RDFproperty where
     toIRI (RDFproperty t) = IRI t

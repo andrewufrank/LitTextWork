@@ -24,7 +24,7 @@ import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
-import LitTypes.TextDescriptor
+import LitText.Foundation
 --        (serverBrest, serverLocalhost
 --            , rdfBase, dirQueries, PartURI, unPartURI
 --           , getServer, LitTextFlags (..))
@@ -32,7 +32,7 @@ import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)
 import LitText.CmdLineUtilities.UtilsProcessCmd
-
+import LitText.CmdLineUtilities.UtilsProcessing (addFusekiPort)
 ntExtension = Extension "nt"
 --turtleExtension = Extension "ttl"  -- is typed file
 turtleType =   Just "ttl"    -- for http call
@@ -67,7 +67,9 @@ oneConstruct2 inp@Inputs{..}  fn0 = do
                         . t2s $ query2
 --        let query4 = s2t . replace "#_auxgraphSource" (t2s auxgraphDescription)
 --                    . t2s $ query3
-        let pathName = (unPartURI inDB )   </> "sparql" -- "query"
+        let pathName = mkHttpPath . unIRI $
+                            append2IRIwithSlash (toIRI inDB) "sparql"
+                               :: HttpPath   -- "query"
 
 --        when debug $ putIOwords ["oneConstruct query processed \n",  query4,
 --                    "\npathName", pathName  ]
@@ -80,23 +82,25 @@ oneConstruct2 inp@Inputs{..}  fn0 = do
         -- construct the call
         let fusekiServer = getServer inp
 
-        let query = HttpVarParams  [ ("output", turtleType)]
+        let query = mkHttpQueryParams [ ("output", turtleType)]
 
-        let appType = "application/sparql-query"
+        let appType = mkAppType "application/sparql-query"
 
         resp <- callHTTP10post (isDebugFlag inp) appType
                     (addFusekiPort fusekiServer)  pathName
                     (b2bl . t2b $ query4)
-                    query  (TimeOutSec $ inTimeOut)
+                    query  (inTimeOut)
 
 --        let resp2 =   resp
 --        let resultExt = makeExtension . t2s $ ( db <.>  "csv") :: Extension
         let respRoot = makeAbsDir $ getParentDir fn0 :: Path Abs Dir
                     -- the dir where the query is
         let queryName = getNakedFileName fn0 -- the query name
-        let graphDesc = t2s $ (unPartURI inDB )
-                    <-> (maybe "" id (inGraph )) :: FilePath
-        let respDir = addDir respRoot graphDesc
+        let graphDesc = makeRelDir . t2s .   unIRI $ append2IRI (toIRI inDB )
+                   (maybe "" (""<->) inGraph)
+                   :: Path Rel Dir
+        let respDir = addFileName respRoot graphDesc :: Path Abs Dir
+        -- falscher funct name ...
         let respFilename =     addFileName  respDir queryName :: Path Abs File
 
         putIOwords ["oneConstruct response\n" -- ,  resp
@@ -117,9 +121,9 @@ oneConstruct2 inp@Inputs{..}  fn0 = do
 
 
 
-testfn0 = addFileName (dirQueries :: Path Abs Dir)
-                             (t2s (("test" :: Text) </> ("test1" :: Text))  )
-                                :: Path Abs File
+--testfn0 = addFileName (dirQueries :: Path Abs Dir)
+--                             (t2s (("test" :: Text) </> ("test1" :: Text))  )
+--                                :: Path Abs File
 
 --test_1 = do
 --    r <- runErr $ oneConstruct True serverBrest "testDB"

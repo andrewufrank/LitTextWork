@@ -31,7 +31,7 @@ import LitText.CmdLineUtilities.UtilsProcessCmd
 --import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
 import LitText.CmdLineUtilities.UtilsProcessing
 
-import LitTypes.TextDescriptor  hiding ((<>), (</>), (<.>))
+import LitText.Foundation -- hiding ((<>), (</>), (<.>))
         -- (serverBrest, serverLocalhost
         --     , rdfBase, IRI,
         --     , LitTextFlags(..), getServer)
