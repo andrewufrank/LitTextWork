@@ -39,7 +39,7 @@ import Uniform.Http hiding ((<>), (</>), (<.>))
 -- import Uniform.HttpURI hiding ((<>), (</>), (<.>))  -- remove later
 
 getTimeout :: LitArgs -> TimeOutSec
-getTimeout args = maybe (mkTimeOutDefault) (mkTimeOut . (60 *)) t1
+getTimeout args = maybe (mkTimeOutDefault) (mkTimeOutSec . (60 *)) t1
     where
         t1 = readMay (argTimeout args)  :: Maybe Int
 

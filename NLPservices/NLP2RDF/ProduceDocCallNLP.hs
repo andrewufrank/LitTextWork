@@ -184,7 +184,8 @@ text2nlpCode debugNLP  nlpServer path vars text = do
             -- alternative ("outputFormat", Just "xml"),
             -- or conllu
             nlpCode :: Text <- callHTTP10post debugNLP
-                            "multipart/form-data"  nlpServer path
+                            (mkAppType "multipart/form-data")
+                            nlpServer path
                             (b2bl . t2b $ text) vars
                             (mkTimeOutSec 300)   -- timeout in seconds
 --            when debugNLP  $
