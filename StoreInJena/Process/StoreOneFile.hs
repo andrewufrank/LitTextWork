@@ -27,13 +27,14 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
-import CmdLineUtilities.UtilsProcessCmd
+import LitText.CmdLineUtilities.UtilsProcessCmd
 --import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
-import CmdLineUtilities.UtilsProcessing
+import LitText.CmdLineUtilities.UtilsProcessing
 
-import LitTypes.TextDescriptor (serverBrest, serverLocalhost
-            , rdfBase, IRI,
-            , LitTextFlags(..), getServer)
+import LitTypes.TextDescriptor  hiding ((<>), (</>), (<.>))
+        -- (serverBrest, serverLocalhost
+        --     , rdfBase, IRI,
+        --     , LitTextFlags(..), getServer)
 import Data.List.Split (chunksOf)
 import Data.Either (isRight)
 
@@ -41,6 +42,7 @@ import qualified Data.ByteString as BS
 import qualified Codec.Compression.GZip as GZip
 --import Uniform.StringInfix ((<>))
 import Uniform.Convenience.ReadCSV
+import Uniform.Http
 
 ntExtension = Extension "nt"
 ntgzExtension = Extension "nt.gz"
@@ -114,7 +116,8 @@ putOneFile5 inp@Inputs{..} fn = do
         when (isDebugFlag inp) $ putIOwords ["putOneFile5 db - graph", showT inDB
                 , showT  inGraph  , "\nfile", showT fn]
         let ext0 =  unExtension . getExtension $  fn :: String
-        when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - extension",  s2t ext0]
+        when (isDebugFlag inp)
+                $ putIOwords ["putOneFile5 db - extension",  s2t ext0]
         trips :: LazyByteString<- case ext0 of
             "" -> do
                 putIOwords ["putOneFile5", "extension is null"]
@@ -131,19 +134,22 @@ putOneFile5 inp@Inputs{..} fn = do
                 let unzipped = GZip.decompress gz
                 return unzipped
 
-        let pathName = inDB  -- </> "update"
-        let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
+        let pathNameForDatase =  inDB  -- </> "update"
+        let mgraph2 = fmap
+                (\p -> mkGraphName $ append2IRIwithSlash rdfBase p)
+                inGraph
+        -- let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
 --        let mgraph2 = makeAbsURI rdfBase  (unPartURI inGraph)
         when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - path"
-                ,  showT pathName, "mgraph2", showT mgraph2]
+                ,  showT pathNameForDatase, "mgraph2", showT mgraph2]
 
         let fusekiServer = getServer inp
         when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - path"
-                ,  showT pathName, "mgraph2", showT mgraph2]
+                ,  showT pathNameForDatase, "mgraph2", showT mgraph2]
 --        errorT ["sfda"]
         resp <- post2store False -- (DebugFlag `elem` inFlags)
-                        "text/turtle"
-                        fusekiServer pathName mgraph2   trips zero Nothing
+                        mkAppData ("text/turtle")
+                        fusekiServer pathNameForDatase mgraph2   trips zero Nothing
 
 
         when True  $ putIOwords ["putOneFile5 response\n",  resp, "for", showT fn]

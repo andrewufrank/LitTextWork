@@ -28,6 +28,7 @@ module Data.RDFext (
     , mkTripleText, mkTripleLang, mkTripleLang3
     , mkTripleRef, mkTripleInt, mkTripleInteger
     ,mkTripleType, mkTriplePartOf
+    , parseLanguageCode, readLanguageCode
     , module Uniform.FileIO
     )     where
 

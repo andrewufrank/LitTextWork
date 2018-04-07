@@ -32,8 +32,8 @@ module LitTypes.TextDescriptor (
 import Uniform.FileIO -- ((</>), Path (..), Abs, Dir, File )
 import Uniform.Error
 import LitTypes.ServerNames  -- (URI, makeURI, serverBrest)  -- for test
-import BuchCode.BuchToken hiding ((</>), (<.>))
-import LitTypes.LanguageTypedText hiding ((</>), (<.>))
+import BuchCode.BuchToken  hiding ((<>), (</>), (<.>))
+import LitTypes.LanguageTypedText  hiding ((<>), (</>), (<.>))
 import LitTypes.Flags
 import Data.RDFext
 --import GHC.Generics
