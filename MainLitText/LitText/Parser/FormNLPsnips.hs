@@ -15,14 +15,14 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.FormNLPsnips
-     (module Parser.FormNLPsnips
-     , module LitTypes.TextDescriptor
+module LitText.Parser.FormNLPsnips
+     (module LitText.Parser.FormNLPsnips
+     , module LitText.Foundation
      )
     where
 
 import Uniform.Error (fromJustNote)
-import LitTypes.TextDescriptor
+import LitText.Foundation
 
 formSnips :: [Snip] -> [Snip]
 -- collect paragraphis in reasonalbe snips for NLP processing

@@ -27,13 +27,13 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceNLP_test where
+module LitText.Parser.ProduceNLP_test where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import Parser.ReadMarkupAB_test
-import Parser.ProduceNLP
+import LitText.Parser.ReadMarkupAB_test
+import LitText.Parser.ProduceNLP
 import Uniform.FileIO (getAppUserDataDir')
 
 --progName = "tests"

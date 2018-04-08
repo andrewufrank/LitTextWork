@@ -19,20 +19,20 @@ import  Test.Framework
 --
 --import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Ax and Bx
 ----
---import {-@ HTF_TESTS @-} Lines2para.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
---import   {-@ HTF_TESTS @-} Lines2para.HandleLayout_test
+--import {-@ HTF_TESTS @-} LitText.Lines2para.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
+--import   {-@ HTF_TESTS @-} LitText.Lines2para.HandleLayout_test
 --                                        -- [TextZeile] -> [TZ]  -- test BA -> BB
 --
---import   {-@ HTF_TESTS @-} Lines2para.Lines2text_test  --   Text -> [TZ1]  -- test B -> C
+--import   {-@ HTF_TESTS @-} LitText.Lines2para.Lines2text_test  --   Text -> [TZ1]  -- test B -> C
 --                        -- and [TZ] -> [TZ1]  -- test BB -> BC
 --
---import   {-@ HTF_TESTS @-} Lines2para.Lines2para_test  -- [TZ1] -> [TZ2]
+--import   {-@ HTF_TESTS @-} LitText.Lines2para.Lines2para_test  -- [TZ1] -> [TZ2]
 --                                    -- test C -> CA
 --
 --import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test
 --                --  TextDescriptor -> [TZ1] -> Text  -- test C -> J
 --
---import   {-@ HTF_TESTS @-} Parser.ProduceLit_test
+--import   {-@ HTF_TESTS @-} LitText.Parser.ProduceLit_test
 --            -- [TZ2] -> [Triple] CA -> Hx (triples) and H -> K (nt)
 --
 --
@@ -45,7 +45,7 @@ import  Test.Framework
 --    -- D -> DB formSnips :: [Snip] -> [Snip]
 -------- form snips which go to NLP (optimal size)
 --
-import   {-@ HTF_TESTS @-} Parser.ProduceNLP_test
+import   {-@ HTF_TESTS @-} LitText.Parser.ProduceNLP_test
         -- DA -> L, calls to NLP, takes time
 
 

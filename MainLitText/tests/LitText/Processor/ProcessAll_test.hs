@@ -16,14 +16,14 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Processor.ProcessAll_test  where
+module LitText.Processor.ProcessAll_test  where
 
 import           Test.Framework
 
-import Parser.TextDescriptor hiding ((<>) , (</>), (<.>))
+import LitText.Parser.TextDescriptor hiding ((<>) , (</>), (<.>))
 --import LitTypes.ServerNames
-import Processor.Main2sub
-import Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
+import LitText.Processor.Main2sub
+import LitText.Lines2para.Lines2ignore (LanguageCode(..)) -- hiding ((<>) , (</>), (<.>))
 
 -- import CoreNLP.Snippets2nt as Snippets2nt (nlp_serverLoc, host_serverLoc)
 
@@ -32,5 +32,5 @@ import qualified Pipes.Prelude as Pipe
 import Pipes ((>->), (~>))
 import Uniform.FileIO
 import LitTypes.UtilsParseArgs ( LitTextFlags (..) )
-import Processor.ProcessAll
+import LitText.Processor.ProcessAll
 

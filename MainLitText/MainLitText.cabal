@@ -13,6 +13,55 @@ build-type:          Simple
 cabal-version:       >=1.20
 extra-source-files:  README.md
 
+library
+    build-depends:
+       base -any
+        , uniform-strings
+        , uniform-fileio
+        , uniform-convenience
+        , uniform-error
+        , uniform-algebras
+        , uniform-http
+        , split
+        , rdf4h
+        , text
+        , HTF
+        , safe
+        , pipes
+        , hxt
+        , parsec
+        , parsec-extra
+        , split
+        , zlib
+        , regex-compat
+        , optparse-applicative
+        , optparse-generic
+        , containers
+
+    exposed-modules:
+        LitText.Foundation
+        LitText.Parser.ProduceLit
+        LitText.Parser.ProduceLayout
+        LitText.Parser.ProduceNLP
+        LitText.Parser.FilterTextForNLP
+        LitText.Parser.FormNLPsnips
+        LitText.Parser.ReadMarkupAB
+        LitText.Processor.ProcessAll
+--        Processor.CheckServers  -- delete file?
+        LitText.Lines2para.Lines2para
+        LitText.Lines2para.Lines2text
+        LitText.Lines2para.HandleLayout
+        LitText.Lines2para.MarkupText
+        LitText.Processor.Main2sub
+        LitText.Processor.NTmake
+        Data.RDFext
+    exposed: True
+    buildable: True
+    default-language: Haskell2010
+    hs-source-dirs: .
+    other-modules:
+        LitText.Foundation.TextDescriptor
+        LitText.Foundation.BuchToken
 
 
 executable store6
@@ -29,6 +78,7 @@ executable store6
         , uniform-error
         , uniform-http
         , text
+        , MainLitText
 --        , optparse-applicative
 --        , litFoundation
 --        , StoreInJena
@@ -69,6 +119,7 @@ executable construct6
         , uniform-error
         , uniform-http
         , text
+        , MainLitText
 --        , pipes
 --        , litFoundation
 --        , StoreInJena
@@ -89,6 +140,7 @@ executable ntmake6
 --        , rdf4hextension
 --        , litFoundation
         , directory
+        , MainLitText
 --        , NLPservices
 --        , CmdLineUtilities
 

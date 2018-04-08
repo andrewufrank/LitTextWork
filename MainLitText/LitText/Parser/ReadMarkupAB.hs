@@ -17,12 +17,12 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ReadMarkupAB
-    (module Parser.ReadMarkupAB
-    , module LitTypes.TextDescriptor
+module LitText.Parser.ReadMarkupAB
+    (module LitText.Parser.ReadMarkupAB
+    , module LitText.Foundation
         ) where
 
-import           LitTypes.TextDescriptor
+import           LitText.Foundation
 import           Uniform.FileIO
 
 

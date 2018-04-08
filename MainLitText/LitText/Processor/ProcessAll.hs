@@ -15,13 +15,13 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Processor.ProcessAll
-    (module Processor.ProcessAll
-    , module Processor.Main2sub
+module LitText.Processor.ProcessAll
+    (module LitText.Processor.ProcessAll
+    , module LitText.Processor.Main2sub
     , serverBrest
     ) where
 
-import Processor.Main2sub
+import LitText.Processor.Main2sub
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
@@ -29,7 +29,8 @@ import Pipes ((>->), (~>))
 -- todo fileio - export for pipes
 import Data.List (delete)
 import Uniform.FileIO
-import LitTypes.TextDescriptor  hiding (try, (<|>))
+import LitText.Foundation
+--         hiding (try, (<|>))
 
 processOneMarkup4 ::  LitTextFlagSet -> Path Abs Dir
             -> Path Abs Dir -> Path Abs File
@@ -42,7 +43,7 @@ processOneMarkup4  flags origindir ntdir   file = do
                 , "\n\t file", showT file]
     let buchReplacement = s2t $ getNakedFileName file
         flags2 = flags -- why delete? delete IncludeTextFlag flags
-        nlpserver = getServer flags 
+        nlpserver = getServer flags
         authorReplacement = s2t . getNakedDir $ origindir
         textstate2 = fillTextState4a file nlpserver ntdir
                         authorReplacement buchReplacement flags2

@@ -18,18 +18,18 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.FilterTextForNLP_test
+module LitText.Parser.FilterTextForNLP_test
     where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 
 import Data.Maybe -- todo
-import Lines2para.Lines2para
-import Lines2para.HandleLayout
-import Parser.ReadMarkupAB  -- todo  -- for test
+import LitText.Lines2para.Lines2para
+import LitText.Lines2para.HandleLayout
+import LitText.Parser.ReadMarkupAB  -- todo  -- for test
 --import Text.Regex (mkRegex, subRegex)
-import Parser.FilterTextForNLP
+import LitText.Parser.FilterTextForNLP
 
 progName = "tests"
 instance ShowTestHarness [TZ2]

@@ -19,16 +19,16 @@
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module Lines2para.HandleLayout
-    (module Lines2para.HandleLayout
+module LitText.Lines2para.HandleLayout
+    (module LitText.Lines2para.HandleLayout
     , TextZeile (..), TZ (..)
-    , module Lines2para.MarkupText
-    , module LitTypes.TextDescriptor
+    , module LitText.Lines2para.MarkupText
+    , module LitText.Foundation
     ) where
 
-import Lines2para.MarkupText
+import LitText.Lines2para.MarkupText
 import           Data.List.Split
-import LitTypes.TextDescriptor -- (TZ (..), tlline, tlpage , TextType (..))
+import LitText.Foundation -- (TZ (..), tlline, tlpage , TextType (..))
 
 
 paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB

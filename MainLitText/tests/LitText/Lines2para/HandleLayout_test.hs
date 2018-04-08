@@ -21,12 +21,12 @@
 --{-# OPTIONS_GHC -w #-}
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
 
-module Lines2para.HandleLayout_test
+module LitText.Lines2para.HandleLayout_test
       where
 
 import Test.Framework
 import Uniform.Test.TestHarness
-import Lines2para.HandleLayout
+import LitText.Lines2para.HandleLayout
 
 --paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB
 

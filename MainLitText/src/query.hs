@@ -29,8 +29,9 @@ import Pipes ((>->), (~>))
 
 --import Process.OneUpdate
 import Process.OneQuery
-import LitTypes.TextDescriptor (serverLocalhost, serverBrest
-            , rdfBase, dirQueries, dirQueriesRel, URI)
+import LitText.Foundation
+--    (serverLocalhost, serverBrest
+--            , rdfBase, dirQueries, dirQueriesRel, URI)
 import LitTypes.UtilsProcessing
 --import Process.UtilsParseArgs
 

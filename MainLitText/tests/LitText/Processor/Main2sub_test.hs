@@ -21,14 +21,14 @@ module Processor.Main2sub_test  where
 import           Test.Framework
 import Parser.ReadMarkupAB
 import           BuchCode.MarkupText
-import Parser.ProduceLayout
-import           Lines2para.Lines2para hiding ((</>))
-import           Lines2para.Lines2ignore
-import           Parser.ProduceLit
-import           Parser.ProduceNLP
+import LitText.Parser.ProduceLayout
+import           LitText.Lines2para.Lines2para hiding ((</>))
+import           LitText.Lines2para.Lines2ignore
+import           LitText.Parser.ProduceLit
+import           LitText.Parser.ProduceNLP
 import           Uniform.FileIO (when, errorT)
 --import           Uniform.Strings
-import Lines2para.HandleLayout
+import LitText.Lines2para.HandleLayout
 import LitTypes.UtilsParseArgs ( LitTextFlags (..) )
 import Processor.Main2sub
 

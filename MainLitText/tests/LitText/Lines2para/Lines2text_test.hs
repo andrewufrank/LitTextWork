@@ -16,13 +16,13 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Lines2para.Lines2text_test where
+module LitText.Lines2para.Lines2text_test where
 
-import Lines2para.HandleLayout
+import LitText.Lines2para.HandleLayout
 import           Test.Framework
 import Uniform.Test.TestHarness
-import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
-import Lines2para.Lines2text
+import LitText.Foundation -- (ParaNum (..), unparaNum)
+--import LitText.Lines2para.Lines2text
 
 progName = "tests"
 instance ShowTestHarness [TZ1]

@@ -16,11 +16,11 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Parser.ProduceLayout (module Parser.ProduceLayout
+module LitText.Parser.ProduceLayout (module LitText.Parser.ProduceLayout
     , TextDescriptor (..), TZ1 (..)
     ) where
 
-import LitTypes.TextDescriptor
+import LitText.Foundation
 import CoreNLP.Vocabulary
 import           Text.Printf         (printf)
 

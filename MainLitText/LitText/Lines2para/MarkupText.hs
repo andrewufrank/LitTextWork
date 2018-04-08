@@ -20,18 +20,19 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 
-module Lines2para.MarkupText
-    (module Lines2para.MarkupText
+module LitText.Lines2para.MarkupText
+    (module LitText.Lines2para.MarkupText
     , module BuchCode.Classes4text
-    , module LitTypes.TextDescriptor
+    , module LitText.Foundation
     ) where
 
 
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
-import LitTypes.TextDescriptor hiding (try, (<|>)) -- from Foundation
-import BuchCode.Classes4text -- (Zeilen (..), BuchToken (..))
+import LitText.Foundation
+--        hiding (try, (<|>)) -- from Foundation
+--import BuchCode.Classes4text -- (Zeilen (..), BuchToken (..))
 
 type TextParsec a = Parsec Text () a
 type TextParsecBuch = Parsec Text () [MarkupElement]

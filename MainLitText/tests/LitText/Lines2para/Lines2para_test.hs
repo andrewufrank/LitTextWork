@@ -30,8 +30,8 @@ import Uniform.FileIO
 import Data.List (nub)
 import           Test.Framework
 import Uniform.Test.TestHarness
-import LitTypes.TextDescriptor -- (ParaNum (..), unparaNum)
-import Lines2para.Lines2para
+import LitText.Foundation -- (ParaNum (..), unparaNum)
+--import Lines2para.Lines2para
 
 instance ShowTestHarness [TZ1]
 instance ShowTestHarness [TZ2]

@@ -19,19 +19,20 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Parser.ProduceLit_test  where
+module LitText.Parser.ProduceLit_test  where
 
 import           Test.Framework
 import           Data.Char               (toLower)
 import           Data.Maybe               (isNothing)
-import Parser.ReadMarkupAB_test
+import LitText.Parser.ReadMarkupAB_test
 import           Text.Printf         (printf)
 import           Uniform.Error           (errorT)
 import Uniform.Test.TestHarness
-import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
+import LitText.Foundation
+--     hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 --import NLP2RDF.NLPvocabulary
-import Parser.ProduceLit
+import LitText.LitText.Parser.ProduceLit
 
 
 test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")

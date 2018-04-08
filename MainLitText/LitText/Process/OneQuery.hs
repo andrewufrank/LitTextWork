@@ -24,9 +24,10 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
-import LitTypes.TextDescriptor (serverBrest, serverLocalhost
-            , rdfBase, dirQueries, PartURI, unPartURI
-           , getServer, LitTextFlags (..))
+import LitText.Foundation
+--    (serverBrest, serverLocalhost
+--            , rdfBase, dirQueries, PartURI, unPartURI
+--           , getServer, LitTextFlags (..))
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)

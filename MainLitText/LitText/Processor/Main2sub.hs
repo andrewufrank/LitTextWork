@@ -17,7 +17,7 @@
 
 -- import the fundamental types from TextDescriptor, not from processing steps
 
-module Processor.Main2sub (mainLitAndNLPproduction
+module LitText.Processor.Main2sub (mainLitAndNLPproduction
          , ntFileTriples,ntFileTriplesGZip
 --         , LitTextFlags (..), LitTextFlag (..)
             , LitTextFlags, LitTextFlags (..)
@@ -26,18 +26,18 @@ module Processor.Main2sub (mainLitAndNLPproduction
 --         , URI (..)
             ) where
 
-import           Parser.ReadMarkupAB (textstate2Text
+import           LitText.Parser.ReadMarkupAB (textstate2Text
 --                        , LitTextFlag (..), LitTextFlags (..)
                         , LitTextFlagSet , LitTextFlags (..)
                         , TextDescriptor (..))
-import           Lines2para.Lines2text  (text2tz1, TZ1)
+import           LitText.Lines2para.Lines2text  (text2tz1, TZ1)
 
-import           Parser.ProduceLayout (produceLayoutTriples)
+import           LitText.Parser.ProduceLayout (produceLayoutTriples)
 
-import           Lines2para.Lines2para (paragraphsTZ2TZ2, TZ2) -- hiding ((</>))
+import           LitText.Lines2para.Lines2para (paragraphsTZ2TZ2, TZ2) -- hiding ((</>))
 
-import           Parser.ProduceLit (produceLitTriples, Triple)
-import           Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
+import           LitText.LitText.Parser.ProduceLit (produceLitTriples, Triple)
+import           LitText.Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
 
 
 import           Uniform.FileIO -- (when, errorT)
@@ -54,7 +54,7 @@ mainLitAndNLPproduction flags  textstate = do
 --        -- ignore line, allCaps, language
 --        -- missing footnotes?
 
-    -- use Lines2para.Line2text
+    -- use LitText.Lines2para.Line2text
     let tzlayout1 = text2tz1 ttext :: [TZ1]  -- B -> C
 
     -- produce triples
@@ -62,7 +62,7 @@ mainLitAndNLPproduction flags  textstate = do
 
     when debugLit $ putIOwords ["mainLitAndNLPproduction layout triples done \n"
                             , unlines' . map showT $ layoutTriples]
-    -- use Lines2para.Lines2para
+    -- use LitText.Lines2para.Lines2para
     let tzpara = paragraphsTZ2TZ2  tzlayout1  :: [TZ2] -- test BAD -> BAE   in LinesToParagraph
 
     let litTriples = produceLitTriples textstate   tzpara  -- test BAE=C -> H and K (nt)

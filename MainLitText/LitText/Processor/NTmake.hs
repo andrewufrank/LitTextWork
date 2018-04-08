@@ -22,7 +22,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Processor.NTmake
+module LitText.Processor.NTmake
     (parseAndExecuteNTmake
     ) where
 
@@ -36,7 +36,7 @@ import           Options.Applicative
 
 --import LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 --import LitTypes.TextDescriptor hiding ((<>))
-import Processor.Main2sub (mainLitAndNLPproduction)
+import LitText.Processor.Main2sub (mainLitAndNLPproduction)
 
 import CmdLineUtilities.UtilsProcessing (processAll)
 --import LitTypes.TextDescriptor (LitTextFlags)

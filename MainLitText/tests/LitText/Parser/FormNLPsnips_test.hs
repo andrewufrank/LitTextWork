@@ -16,19 +16,19 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.FormNLPsnips_test
---    (module Parser.ProduceDocCallNLP
+module LitText.Parser.FormNLPsnips_test
+--    (module LitText.Parser.ProduceDocCallNLP
     where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 import Data.Maybe -- todo
-import Lines2para.Lines2para
-import Lines2para.HandleLayout
-import Parser.ReadMarkupAB  -- todo  -- for test
-import Parser.FilterTextForNLP
-import Parser.FormNLPsnips
-import Parser.ProduceNLP (tz2toSnip)
+import LitText.LitText.Lines2para.Lines2para
+import LitText.Lines2para.HandleLayout
+import LitText.Parser.ReadMarkupAB  -- todo  -- for test
+import LitText.Parser.FilterTextForNLP
+import LitText.Parser.FormNLPsnips
+import LitText.Parser.ProduceNLP (tz2toSnip)
 
 progName = "tests"
 -- instance ShowTestHarness [TextZeile]

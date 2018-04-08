@@ -26,8 +26,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceNLP
-    (module Parser.ProduceNLP
+module LitText.Parser.ProduceNLP
+    (module LitText.Parser.ProduceNLP
     , Triple, Snip, SnipID (..), TZ2
     , TextDescriptor (..)
     ) where
@@ -35,8 +35,8 @@ module Parser.ProduceNLP
 import CoreNLP.Vocabulary
 import Uniform.Zero
 import NLP2RDF.ProduceDocCallNLP
-import Parser.FilterTextForNLP  (prepareTZ4nlp)
-import Parser.FormNLPsnips (formSnips)
+import LitText.Parser.FilterTextForNLP  (prepareTZ4nlp)
+import LitText.Parser.FormNLPsnips (formSnips)
 
 produceNLPtriples :: LitTextFlagSet -> TextDescriptor -> [Snip] -> ErrIO [Triple]
             -- test C  -> X

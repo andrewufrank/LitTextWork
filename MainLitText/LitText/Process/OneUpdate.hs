@@ -25,7 +25,8 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
-import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
+import LitText.Foundation
+--    (serverBrest, rdfBase, dirQueries)
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 
@@ -94,7 +95,7 @@ oneUpdate debug server db mgraph mdest wordnetgrah fn = do
 --                (\a -> ("named-graph-uri", Just $ showT rdfBase </> a) )
 --                mgraph
         -- not clear what the names of the graphs would be
-        resp <- callHTTP10post debug "application/sparql-update"  
+        resp <- callHTTP10post debug "application/sparql-update"
                     server2 pathName zero query5 (TimeOutSec $ Just 300)
         -- resp <- makeHttpPost7 False server2 pathName
         --              zero -- (HttpVarParams [])

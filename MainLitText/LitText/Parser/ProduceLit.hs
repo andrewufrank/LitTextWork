@@ -18,9 +18,9 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Parser.ProduceLit (module Parser.ProduceLit
+module LitText.Parser.ProduceLit (module LitText.Parser.ProduceLit
         , Text, Triple, Path (..), Abs, Rel, Dir, File
-        , module LitTypes.TextDescriptor
+        , module LitText.Foundation
     ) where
 
 import           Data.Char               (toLower)
@@ -30,8 +30,8 @@ import Uniform.Strings ((</>))  -- for PartURI
 -- import Uniform.HttpURI (uriT)
 import           Text.Printf         (printf)
 import           Uniform.Error      --     (errorT)
-import LitTypes.TextDescriptor hiding ((</>)) -- from Foundation
-import BuchCode.BuchToken hiding ((</>), (<.>))
+import LitText.Foundation -- from Foundation
+-- import LitText.BuchCode.BuchToken hiding ((</>), (<.>))
 
 --litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: PartURI
 litURItext = append2partURI rdfBase "/lit_2014"

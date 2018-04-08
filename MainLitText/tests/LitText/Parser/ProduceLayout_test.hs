@@ -17,12 +17,12 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Parser.ProduceLayout_test where
+module LitText.Parser.ProduceLayout_test where
 
 import           Test.Framework
-import Parser.ReadMarkupAB_test    -- result1A etc.
+import LitText.Parser.ReadMarkupAB_test    -- result1A etc.
 import Uniform.Test.TestHarness
-import Parser.ProduceLayout
+import LitText.Parser.ProduceLayout
 
 
 layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test C -> J

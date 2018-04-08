@@ -24,7 +24,8 @@ import           Test.Framework
 import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
-import LitTypes.TextDescriptor (serverBrest, rdfBase, dirQueries)
+import LitText.Foundation
+--        (serverBrest, rdfBase, dirQueries)
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 
@@ -70,7 +71,7 @@ deleteOneGraph debug server db graph   = do
 --                mgraph
         -- not clear what the names of the graphs would be
 --        resp <- return ""
-        resp <- callHTTP10post debug "application/sparql-update"  
+        resp <- callHTTP10post debug "application/sparql-update"
                     server pathName (b2bl . t2b $ query4) zero (TimeOutSec $ Just 300)
                 -- makeHttpPost7 False server pathName
                 --  zero --    (HttpVarParams [ ])

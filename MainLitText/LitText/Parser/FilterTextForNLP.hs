@@ -18,14 +18,14 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 --{-# OPTIONS_GHC -w #-}
 
-module Parser.FilterTextForNLP (
+module LitText.Parser.FilterTextForNLP (
      prepareTZ4nlp
     , TZ2, Snip
     ) where
 
 import Data.Maybe (catMaybes) -- todo
-import BuchCode.Classes4text
-import LitTypes.TextDescriptor
+--import BuchCode.Classes4text
+import LitText.Foundation
 
 -------------- prepare the text - which is conversion to NLPtext  -- BAE -> D
 

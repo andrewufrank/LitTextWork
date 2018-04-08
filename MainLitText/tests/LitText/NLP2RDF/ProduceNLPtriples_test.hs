@@ -23,20 +23,20 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ProduceNLPtriples_test  where
+module LitText.Parser.ProduceNLPtriples_test  where
 
 import           Test.Framework
 import Uniform.TestHarness (testVar3File)
 import CoreNLP.DocBase
 import CoreNLP.NERcodes
-import Parser.TextDescriptor
+import LitText.Parser.TextDescriptor
 import NLP.Types.Tags
-import Parser.NLPvocabulary  -- from Foundation
-import Parser.LanguageTypedText
+import LitText.Parser.NLPvocabulary  -- from Foundation
+import LitText.Parser.LanguageTypedText
 import Data.List (partition)
-import Parser.ProduceNLPtriples
+import LitText.Parser.ProduceNLPtriples
 
-import Parser.ProduceLit
+import LitText.Parser.ProduceLit
 
 test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
                 (mkRDFtype ( "Werk"::Text ))

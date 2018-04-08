@@ -22,7 +22,8 @@ module Parser.ReadMarkupAB_test where
 import           Test.Framework
 import Uniform.Test.TestHarness
 
-import           LitTypes.TextDescriptor        hiding ((</>), (<.>))
+import           LitText.Foundation
+--        hiding ((</>), (<.>))
 import           Uniform.FileIO
 import Parser.ReadMarkupAB
 
