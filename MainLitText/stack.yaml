@@ -16,7 +16,7 @@ packages:
 # - ../LitText
 - ../rdf4hextension
 #- ../CmdLineUtilities
-- ../NLPservices
+#- ../NLPservices
 - ../StoreInJena
 extra-deps:
 - hgal-2.0.0.2
