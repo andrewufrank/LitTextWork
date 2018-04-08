@@ -17,7 +17,7 @@
 
 -- import the fundamental types from TextDescriptor, not from processing steps
 
-module LitText.Processor.Main2sub (mainLitAndNLPproduction
+module LitText.Process.Main2sub (mainLitAndNLPproduction
          , ntFileTriples,ntFileTriplesGZip
 --         , LitTextFlags (..), LitTextFlag (..)
             , LitTextFlags, LitTextFlags (..)

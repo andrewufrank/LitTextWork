@@ -22,7 +22,7 @@
 {-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module LitText.Processor.NTmake
+module LitText.Process.NTmake
     (parseAndExecuteNTmake
     ) where
 
@@ -36,7 +36,7 @@ import           Options.Applicative
 
 --import LitTypes.ServerNames hiding ((<>) , (</>), (<.>))
 --import LitTypes.TextDescriptor hiding ((<>))
-import LitText.Processor.Main2sub (mainLitAndNLPproduction)
+import LitText.Process.Main2sub (mainLitAndNLPproduction)
 
 import LitText.CmdLineUtilities
 --    .UtilsProcessing (processAll)
@@ -45,7 +45,7 @@ import LitText.CmdLineUtilities
 --        (getArgsParsed, setDefaultOriginDir, selectServer
 --            , LitTextFlag (..), LitTextFlags
 --             )
-import LitText.Processor.ProcessAll hiding ((<>))
+import LitText.Process.ProcessAll hiding ((<>))
 --import qualified System.Directory as S (getHomeDirectory)
 
 parseAndExecuteNTmake  :: Text -> Text ->  ErrIO ()

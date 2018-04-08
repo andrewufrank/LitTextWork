@@ -17,7 +17,6 @@
 
 module LitText.Processor  (
 --    processOneMarkup4
-        parseAndExecuteNTmake
         )  where
 
 import LitText.Processor.Main2sub

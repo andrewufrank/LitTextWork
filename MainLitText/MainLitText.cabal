@@ -51,7 +51,7 @@ library
         LitText.CoreNLP
         LitText.NLP2RDF
         LitText.CmdLineUtilities
-        LitText.Processor
+--        LitText.Process
         LitText.Process
         LitText.Parser
         Data.RDFext
@@ -98,10 +98,10 @@ library
         LitText.Parser.FilterTextForNLP
         LitText.Parser.FormNLPsnips
         LitText.Parser.ReadMarkupAB
-        LitText.Processor.ProcessAll
---        Processor.CheckServers  -- delete file?
-        LitText.Processor.Main2sub
-        LitText.Processor.NTmake
+        LitText.Process.ProcessAll
+--        Process.CheckServers  -- delete file?
+        LitText.Process.Main2sub
+        LitText.Process.NTmake
 
 executable store6
 -- store all nt.gz files in fuseki expand in haskell

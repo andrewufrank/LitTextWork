@@ -18,9 +18,13 @@
 module LitText.Process  (
     oneConstruct2
     , putOneFile4
+      ,  parseAndExecuteNTmake
         )  where
 
 import LitText.Process.StoreOneFile
 import LitText.Process.OneConstruct
+import LitText.Process.Main2sub
+import LitText.Process.NTmake
+import LitText.Process.ProcessAll
 
 

@@ -1,6 +1,6 @@
  -----------------------------------------------------------------------------
 --
--- Module      :  Processor ProcessAll
+-- Module      :  Process ProcessAll
 -- Copyright   :  andrew u frank -
 --
 -- | finds all markup files and process them to store in triple store
@@ -15,13 +15,13 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module LitText.Processor.ProcessAll
-    (module LitText.Processor.ProcessAll
-    , module LitText.Processor.Main2sub
+module LitText.Process.ProcessAll
+    (module LitText.Process.ProcessAll
+    , module LitText.Process.Main2sub
     , serverBrest
     ) where
 
-import LitText.Processor.Main2sub
+import LitText.Process.Main2sub
 
 import qualified Pipes as Pipe
 import qualified Pipes.Prelude as Pipe
