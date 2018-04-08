@@ -19,14 +19,14 @@
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module LitText.Lines2para.HandleLayout
-    (module LitText.Lines2para.HandleLayout
+module LitText.Lines.HandleLayout
+    (module LitText.Lines.HandleLayout
     , TextZeile (..), TZ (..)
-    , module LitText.Lines2para.MarkupText
+    , module LitText.Lines.MarkupText
     , module LitText.Foundation
     ) where
 
-import LitText.Lines2para.MarkupText
+import LitText.Lines.MarkupText
 import           Data.List.Split
 import LitText.Foundation -- (TZ (..), tlline, tlpage , TextType (..))
 

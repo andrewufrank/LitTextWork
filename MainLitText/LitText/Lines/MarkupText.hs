@@ -20,9 +20,9 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 
-module LitText.Lines2para.MarkupText
-    (module LitText.Lines2para.MarkupText
-    , module BuchCode.Classes4text
+module LitText.Lines.MarkupText
+    (module LitText.Lines.MarkupText
+--    , module BuchCode.Classes4text
     , module LitText.Foundation
     ) where
 
@@ -30,7 +30,7 @@ module LitText.Lines2para.MarkupText
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Text.Parsec
-import LitText.Foundation
+import LitText.Foundation hiding ((<|>), try)
 --        hiding (try, (<|>)) -- from Foundation
 --import BuchCode.Classes4text -- (Zeilen (..), BuchToken (..))
 

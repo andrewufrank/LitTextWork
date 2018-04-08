@@ -40,6 +40,7 @@ library
 
     exposed-modules:
         LitText.Foundation
+        LitText.Lines
         LitText.Parser.ProduceLit
         LitText.Parser.ProduceLayout
         LitText.Parser.ProduceNLP
@@ -48,10 +49,6 @@ library
         LitText.Parser.ReadMarkupAB
         LitText.Processor.ProcessAll
 --        Processor.CheckServers  -- delete file?
-        LitText.Lines2para.Lines2para
-        LitText.Lines2para.Lines2text
-        LitText.Lines2para.HandleLayout
-        LitText.Lines2para.MarkupText
         LitText.Processor.Main2sub
         LitText.Processor.NTmake
         Data.RDFext
@@ -62,7 +59,17 @@ library
     other-modules:
         LitText.Foundation.TextDescriptor
         LitText.Foundation.BuchToken
-
+        Data.RDFext.FileTypes
+         Data.RDFext.Predicates
+         Data.RDFext.Prefs
+         Data.RDFext.Triple2text
+         LitText.Foundation.Flags
+         LitText.Foundation.LanguageTypedText
+         LitText.Foundation.ServerNames
+        LitText.Lines.Lines2para
+        LitText.Lines.Lines2text
+        LitText.Lines.HandleLayout
+        LitText.Lines.MarkupText
 
 executable store6
 -- store all nt.gz files in fuseki expand in haskell

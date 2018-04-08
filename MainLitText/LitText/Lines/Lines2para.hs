@@ -23,15 +23,15 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 --{-# OPTIONS_GHC -w #-}
 
-module LitText.Lines2para.Lines2para
-    (module LitText.Lines2para.Lines2para
+module LitText.Lines.Lines2para
+    (module LitText.Lines.Lines2para
     , TZ2
         ) where
 
 
 import           Data.List.Split
 import Data.List (nub)
-import LitText.Lines2para.HandleLayout    -- instance for zeilen TZ1
+import LitText.Lines.HandleLayout    -- instance for zeilen TZ1
 
 paragraphsTZ2TZ2 :: [TZ1] -> [TZ2]  -- test C -> CA
 -- ^ produce the text files (ignores removed, language marked)

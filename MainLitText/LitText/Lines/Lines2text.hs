@@ -16,14 +16,14 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module LitText.Lines2para.Lines2text
-    (module LitText.Lines2para.Lines2text
-    , module LitText.Lines2para.HandleLayout
+module LitText.Lines.Lines2text
+    (module LitText.Lines.Lines2text
+    , module LitText.Lines.HandleLayout
 
     ) where
 
 
-import LitText.Lines2para.HandleLayout -- (paragraphs2TZlayout)
+import LitText.Lines.HandleLayout -- (paragraphs2TZlayout)
 
 import           Data.List.Split
 
