@@ -13,7 +13,7 @@
 {-# LANGUAGE OverloadedStrings
     , StandaloneDeriving
     , DeriveAnyClass    #-}
-module CoreNLP.ParseJsonCoreNLP_test
+module LitText.CoreNLP.ParseJsonCoreNLP_test
      where
 
 
@@ -26,7 +26,7 @@ import qualified Data.ByteString.Lazy.UTF8 as B
 import Data.Aeson (eitherDecode)
 import qualified NLP.TagSets.Conll  as Conll
 
-import CoreNLP.ParseJsonCoreNLP
+import LitText.CoreNLP.ParseJsonCoreNLP
 
 import Data.Aeson.Encode.Pretty
 import Data.Aeson

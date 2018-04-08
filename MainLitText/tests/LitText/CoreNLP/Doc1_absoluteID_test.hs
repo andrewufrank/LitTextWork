@@ -13,13 +13,13 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module CoreNLP.Doc1_absoluteID_test  -- (openMain, htf_thisModuelsTests)
+module LitText.CoreNLP.Doc1_absoluteID_test  -- (openMain, htf_thisModuelsTests)
      where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import CoreNLP.Doc1_absoluteID
+import LitText.CoreNLP.Doc1_absoluteID
 import qualified NLP.TagSets.Conll  as Conll
 
 

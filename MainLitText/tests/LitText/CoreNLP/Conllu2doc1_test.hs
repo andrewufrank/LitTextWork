@@ -12,13 +12,13 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module CoreNLP.Conllu2doc1_test  -- (openMain, htf_thisModuelsTests)
+module LitText.CoreNLP.Conllu2doc1_test  -- (openMain, htf_thisModuelsTests)
      where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import CoreNLP.CoreNLP
+import LitText.CoreNLPCoreNLP
 import qualified NLP.TagSets.Conll  as Conll
 import LitText.Foundation
 

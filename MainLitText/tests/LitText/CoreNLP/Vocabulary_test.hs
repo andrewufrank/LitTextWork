@@ -12,7 +12,7 @@
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module CoreNLP.Vocabulary_test  where
+module LitText.CoreNLP.Vocabulary_test  where
 
 import           Test.Framework
 

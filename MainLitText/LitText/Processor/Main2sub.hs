@@ -36,7 +36,7 @@ import           LitText.Parser.ProduceLayout (produceLayoutTriples)
 
 import           LitText.Lines2para.Lines2para (paragraphsTZ2TZ2, TZ2) -- hiding ((</>))
 
-import           LitText.LitText.Parser.ProduceLit (produceLitTriples, Triple)
+import           LitText.Parser.ProduceLit (produceLitTriples, Triple)
 import           LitText.Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
 
 

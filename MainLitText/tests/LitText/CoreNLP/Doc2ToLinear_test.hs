@@ -11,13 +11,13 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module CoreNLP.Doc2ToLinear_test  -- (openMain, htf_thisModuelsTests)
+module LitText.CoreNLPDoc2ToLinear_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import CoreNLP.Doc2ToLinear
+import LitText.CoreNLPDoc2ToLinear
 import qualified Data.Text  as T
 import qualified NLP.TagSets.Conll  as Conll
 

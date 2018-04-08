@@ -19,12 +19,12 @@
 
 {-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
-module CoreNLP.Vocabulary
-    ( module CoreNLP.Vocabulary
-      , module CoreNLP.DocBase
+module LitText.CoreNLP.Vocabulary
+    ( module LitText.CoreNLP.Vocabulary
+      , module LitText.CoreNLP.DocBase
       , RDFsubj (..), PartURI (..)
     ) where
-import CoreNLP.DocBase hiding (Snip)
+import LitText.CoreNLP.DocBase hiding (Snip)
 import Uniform.Http
 --import Data.RDFext
 

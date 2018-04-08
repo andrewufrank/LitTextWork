@@ -20,8 +20,8 @@
     , DerivingStrategies
     #-}
 
-module CoreNLP.DocBase (
-        module CoreNLP.DocBase
+module LitText.CoreNLP.DocBase (
+        module LitText.CoreNLP.DocBase
         ,  SpeakerTags (..)
             , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)

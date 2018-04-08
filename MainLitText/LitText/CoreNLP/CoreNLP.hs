@@ -16,20 +16,20 @@
     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module CoreNLP.CoreNLP (
-        module CoreNLP.CoreNLP
+module LitText.CoreNLP.CoreNLP (
+        module LitText.CoreNLP.CoreNLP
         ,  SpeakerTags (..)
             , DepCode (..), DEPtags (..) -- parseDEPtag, hasDepCode
             , DepCode1 (..), DepCode2 (..)
             , SpeakerTag (..), NERtag (..)
             , NTtext (..), unNT
         )  where
-import CoreNLP.DocNLP_0or1
-import CoreNLP.Doc1_absoluteID
-import CoreNLP.Doc2ToLinear
+import LitText.CoreNLP.DocNLP_0or1
+import LitText.CoreNLP.Doc1_absoluteID
+import LitText.CoreNLP.Doc2ToLinear
     --  toLin ::  postag ->  (Doc11 postag) ->  [DocAsList postag]
-import CoreNLP.Linear2Triple
-import CoreNLP.Conllu2doc1
+import LitText.CoreNLP.Linear2Triple
+import LitText.CoreNLP.Conllu2doc1
 --import Data.List
 import qualified NLP.TagSets.Conll  as Conll
 import qualified NLP.TagSets.UD as UD

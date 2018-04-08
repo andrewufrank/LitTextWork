@@ -23,7 +23,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module CoreNLP.DocBase_test  where
+module LitText.CoreNLP.DocBase_test  where
 
 import           Test.Framework
 progName = "nlpservices"

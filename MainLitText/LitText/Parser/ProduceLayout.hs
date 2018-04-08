@@ -21,7 +21,7 @@ module LitText.Parser.ProduceLayout (module LitText.Parser.ProduceLayout
     ) where
 
 import LitText.Foundation
-import CoreNLP.Vocabulary
+import LitText.CoreNLPVocabulary
 import           Text.Printf         (printf)
 
 layoutURItext =   append2partURI rdfBase  "/layout_2017" :: PartURI

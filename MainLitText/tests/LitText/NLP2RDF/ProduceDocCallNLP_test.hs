@@ -24,11 +24,11 @@ module NLP2RDF.ProduceDocCallNLP_test  where
 
 import              Test.Framework
 import              Uniform.Test.TestHarness
---import CoreNLP.ProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
-import CoreNLP.Doc2ToLinear
-import CoreNLP.CoreNLP (NTtext (..), unNT)
+--import LitText.CoreNLPProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
+import LitText.CoreNLPDoc2ToLinear
+import LitText.CoreNLPCoreNLP (NTtext (..), unNT)
 --import LitTypes.LanguageTypedText
-import CoreNLP.Vocabulary
+import LitText.CoreNLPVocabulary
 
 import NLP2RDF.ProduceDocCallNLP
 import NLP.TagSets.Conll  as Conll -- Conll for english

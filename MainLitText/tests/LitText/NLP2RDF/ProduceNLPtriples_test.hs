@@ -27,8 +27,8 @@ module LitText.Parser.ProduceNLPtriples_test  where
 
 import           Test.Framework
 import Uniform.TestHarness (testVar3File)
-import CoreNLP.DocBase
-import CoreNLP.NERcodes
+import LitText.CoreNLP.DocBase
+import LitText.CoreNLP.NERcodes
 import LitText.Parser.TextDescriptor
 import NLP.Types.Tags
 import LitText.Parser.NLPvocabulary  -- from Foundation

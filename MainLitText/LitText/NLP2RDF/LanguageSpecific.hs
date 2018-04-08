@@ -21,14 +21,14 @@
 
 module NLP2RDF.LanguageSpecific
     (module NLP2RDF.LanguageSpecific
-    , module CoreNLP.CoreNLP
+    , module LitText.CoreNLP.CoreNLP
     , module LitText.Foundation
     ) where
 
 import Uniform.Http
 import Uniform.Strings
 import Uniform.Error (ErrIO)
-import CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
+import LitText.CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
         , conllu2triples, json2triples)
 import Text.Regex (mkRegex, subRegex)
 import LitText.Foundation

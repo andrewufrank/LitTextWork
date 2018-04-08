@@ -18,16 +18,16 @@
 
 {-# LANGUAGE DeriveGeneric, DeriveAnyClass, DerivingStrategies #-}
 
-module CoreNLP.Linear2Triple
-    ( module CoreNLP.Linear2Triple
+module LitText.CoreNLP.Linear2Triple
+    ( module LitText.CoreNLP.Linear2Triple
     , DocAsList (..)
     , Triple
 
     ) where
 
 import           Uniform.Strings
-import CoreNLP.Doc2ToLinear
-import qualified CoreNLP.Vocabulary as Voc
+import LitText.CoreNLP.Doc2ToLinear
+import qualified LitText.CoreNLP.Vocabulary as Voc
 import Uniform.Zero
 import Uniform.Strings
 import Data.Maybe

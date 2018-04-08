@@ -16,14 +16,14 @@
 
 {-# LANGUAGE DeriveGeneric, DeriveAnyClass #-}
 
-module CoreNLP.Doc2ToLinear
-    ( module CoreNLP.Doc2ToLinear
-    , module CoreNLP.Doc1_absoluteID
+module LitText.CoreNLP.Doc2ToLinear
+    ( module LitText.CoreNLP.Doc2ToLinear
+    , module LitText.CoreNLP.Doc1_absoluteID
     , Doc11 (..)
     ) where
 
 import           Uniform.Strings
-import CoreNLP.Doc1_absoluteID
+import LitText.CoreNLP.Doc1_absoluteID
 import Uniform.Zero
 import Data.Maybe
 import GHC.Generics

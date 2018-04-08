@@ -16,8 +16,8 @@
     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module CoreNLP.Conllu2doc1 (
-        module CoreNLP.Conllu2doc1
+module LitText.CoreNLP.Conllu2doc1 (
+        module LitText.CoreNLP.Conllu2doc1
         )  where
 
 import Conllu.Print as Pr
@@ -26,7 +26,7 @@ import qualified Conllu.Parse as P -- (document, Parser)
             -- this is the parser!
 import qualified Text.Megaparsec as M
 
-import CoreNLP.DocNLP_0or1 -- (ConvertTo1 (..), LanguageCode (..))
+import LitText.CoreNLP.DocNLP_0or1 -- (ConvertTo1 (..), LanguageCode (..))
 import qualified NLP.TagSets.UD as UD
 import qualified NLP.Tags as NLP
 

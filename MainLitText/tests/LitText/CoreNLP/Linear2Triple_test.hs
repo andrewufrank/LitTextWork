@@ -11,15 +11,15 @@
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
-module CoreNLP.Linear2Triple_test  -- (openMain, htf_thisModuelsTests)
+module LitText.CoreNLP.Linear2Triple_test  -- (openMain, htf_thisModuelsTests)
      where
 
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import CoreNLP.Linear2Triple
+import LitText.CoreNLP.Linear2Triple
 import qualified NLP.TagSets.Conll  as Conll
-import CoreNLP.Vocabulary
+import LitText.CoreNLP.Vocabulary
 
 
 instance ShowTestHarness [DocAsList Conll.POStag] where

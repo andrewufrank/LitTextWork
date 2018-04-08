@@ -21,9 +21,9 @@
 
 -- extract all which is in the english coreNLP json output
 
-module CoreNLP.ParseJsonCoreNLP
-    ( module CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
-        , module CoreNLP.Vocabulary
+module LitText.CoreNLP.ParseJsonCoreNLP
+    ( module LitText.CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
+        , module LitText.CoreNLP.Vocabulary
      ) where
 
 import           Uniform.Strings
@@ -34,7 +34,7 @@ import Data.Aeson.Types  -- for modifying the labels
 import GHC.Generics
 import qualified Data.HashMap.Strict as HM
 import NLP.Tags (POStags(..))
-import CoreNLP.Vocabulary
+import LitText.CoreNLP.Vocabulary
 
 decodeDoc2op :: Text ->   Doc2      -- the entry point
 decodeDoc2op f = either (const zero) id r

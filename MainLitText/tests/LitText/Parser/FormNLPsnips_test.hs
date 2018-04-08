@@ -23,7 +23,7 @@ module LitText.Parser.FormNLPsnips_test
 import           Test.Framework
 import Uniform.Test.TestHarness
 import Data.Maybe -- todo
-import LitText.LitText.Lines2para.Lines2para
+import LitText.Lines2para.Lines2para
 import LitText.Lines2para.HandleLayout
 import LitText.Parser.ReadMarkupAB  -- todo  -- for test
 import LitText.Parser.FilterTextForNLP

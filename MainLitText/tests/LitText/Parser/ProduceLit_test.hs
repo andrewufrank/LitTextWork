@@ -32,7 +32,7 @@ import LitText.Foundation
 --     hiding ((</>)) -- from Foundation
 import BuchCode.BuchToken hiding ((</>), (<.>))
 --import NLP2RDF.NLPvocabulary
-import LitText.LitText.Parser.ProduceLit
+import LitText.Parser.ProduceLit
 
 
 test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")

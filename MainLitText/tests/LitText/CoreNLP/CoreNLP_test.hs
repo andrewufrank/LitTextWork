@@ -12,15 +12,15 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings     #-}
 
-module CoreNLP.CoreNLP_test  -- (openMain, htf_thisModuelsTests)
+module LitText.CoreNLP.CoreNLP_test  -- (openMain, htf_thisModuelsTests)
      where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import CoreNLP.CoreNLP
+import LitText.CoreNLP.CoreNLP
 import qualified NLP.TagSets.Conll  as Conll
-import CoreNLP.Vocabulary
+import LitText.CoreNLP.Vocabulary
 
 instance ShowTestHarness NTtext where
 

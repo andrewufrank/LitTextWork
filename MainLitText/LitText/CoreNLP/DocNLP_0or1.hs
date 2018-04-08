@@ -27,9 +27,9 @@
     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module CoreNLP.DocNLP_0or1 (
-        module CoreNLP.DocNLP_0or1
-        , module CoreNLP.ParseJsonCoreNLP
+module LitText.CoreNLP.DocNLP_0or1 (
+        module LitText.CoreNLP.DocNLP_0or1
+        , module LitText.CoreNLP.ParseJsonCoreNLP
         ,  SpeakerTags (..)
             , DepCode (..), DEPtags (..)
             , DepCode1 (..), DepCode2 (..)
@@ -43,10 +43,10 @@ import   NLP.TagSets.Conll hiding (NERtag (..))
 import              NLP.TagSets.DEPcodes
 import              NLP.TagSets.NERcodes
 import              NLP.TagSets.SpeakerTags
-import CoreNLP.ParseJsonCoreNLP
+import LitText.CoreNLP.ParseJsonCoreNLP
 import GHC.Generics
 import qualified NLP.Tags      as NLP
-import CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
+import LitText.CoreNLP.ParseJsonCoreNLP -- the doc2 and ...
 import Data.Maybe
 import qualified NLP.TagSets.Conll  as Conll -- for test
 import LitText.Foundation
