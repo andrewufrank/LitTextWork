@@ -134,22 +134,22 @@ putOneFile5 inp@Inputs{..} fn = do
                 let unzipped = GZip.decompress gz
                 return unzipped
 
-        let pathNameForDatase =  inDB  -- </> "update"
+        let pathNameForDatase =  mkHttpPath . unIRI . toIRI $ inDB  -- </> "update"
         let mgraph2 = fmap
-                (\p -> mkGraphName $ append2IRIwithSlash rdfBase p)
-                inGraph
+                (\p -> mkGraphName . unIRI $ append2IRIwithSlash rdfBase p)
+                inGraph :: Maybe GraphName
         -- let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
 --        let mgraph2 = makeAbsURI rdfBase  (unPartURI inGraph)
         when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - path"
                 ,  showT pathNameForDatase, "mgraph2", showT mgraph2]
 
-        let fusekiServer = getServer inp
+        let fusekiServer = addFusekiPort $ getServer inp
         when (isDebugFlag inp)  $ putIOwords ["putOneFile5 db - path"
                 ,  showT pathNameForDatase, "mgraph2", showT mgraph2]
 --        errorT ["sfda"]
         resp <- post2store False -- (DebugFlag `elem` inFlags)
-                        mkAppData ("text/turtle")
-                        fusekiServer pathNameForDatase mgraph2   trips zero Nothing
+                        (mkAppType "text/turtle")
+                        fusekiServer pathNameForDatase mgraph2  trips zero
 
 
         when True  $ putIOwords ["putOneFile5 response\n",  resp, "for", showT fn]
@@ -166,6 +166,33 @@ putOneFile5 inp@Inputs{..} fn = do
                 , showT inFilename , "\n\n"]
         return . unwords' $ ["putOneFile5 return after error", showT e]
 
+post2store ::  Bool -> AppType -> ServerURI -> HttpPath -> Maybe GraphName
+            ->  LazyByteString
+            ->  TimeOutSec ->   ErrIO Text
+    -- ^ timeout in sec
+
+-- use post with multipart form to store
+--(see https://www.w3.org/TR/sparql11-http-rdf-update/#http-post)
+
+post2store debug appType fusekiServer pathName mgraph payload  timeout  = do
+    -- form the instert query
+--    let pathNamePlusGraph = pathName <> "?" <>
+
+--    let httppath = maybe "default"  (\t -> "graph=" <> t)
+--                    mgraph
+--    when debug $
+--    putIOwords ["\npost2store for",  fn, "path", pathNamePlusGraph ]
+    let queryparam = maybe zero
+                (\gx -> mkHttpQueryParams [("graph", Just $ unGraphName gx)])
+                        mgraph
+    putIOwords ["post2store", "pathNamePlusGraph", showT pathName
+            , "queryparam", showT queryparam]
+
+    res <- callHTTP10post True appType
+                fusekiServer pathName
+                payload queryparam   timeout
+    when True $ putIOwords ["post2store done", showT res]
+    return res
 
 ------------------------------------------
 

@@ -1,5 +1,5 @@
 name:                MainLitText
-version:             0.0.1
+version:             0.0.2
 synopsis:            the mains for LitText processing
 description:         store, query and update rdf in ntriple format in jena
 homepage:            https://github.com/githubuser/LitTextWork#readme
@@ -34,7 +34,7 @@ executable store6
         , StoreInJena
 --        , pipes
         , CmdLineUtilities
-        , LitText
+--        , LitText
   other-modules:
 --
 --
@@ -72,7 +72,7 @@ executable construct6
         , litFoundation
         , StoreInJena
         , CmdLineUtilities
-        , LitText
+--        , LitText
   other-modules:
 
 executable ntmake6
@@ -82,7 +82,7 @@ executable ntmake6
         , uniform-fileio
         , uniform-convenience
 --        , StoreInJena
-        , LitText
+--        , LitText
 --        , pipes
         , rdf4hextension
         , litFoundation

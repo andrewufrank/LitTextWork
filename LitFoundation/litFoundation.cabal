@@ -1,5 +1,5 @@
 name: litFoundation
-version: 0.1.9.2
+version: 0.1.9.3
 
 cabal-version: >=1.24
 build-type: Simple

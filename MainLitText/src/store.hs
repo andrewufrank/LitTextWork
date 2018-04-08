@@ -18,10 +18,11 @@ import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import           Uniform.FileIO hiding ((<>) ,   (<.>))
 
 import Process.StoreOneFile
-import LitTypes.TextDescriptor (ntDirsRel, dirsTest, dirsOrig, LitDirs(..))
+import LitText.Foundation
+--         TextDescriptor (ntDirsRel, dirsTest, dirsOrig, LitDirs(..))
 
-import CmdLineUtilities.UtilsProcessCmd
-import CmdLineUtilities.UtilsProcessing
+import LitText.CmdLineUtilities.UtilsProcessCmd
+import LitText.CmdLineUtilities.UtilsProcessing
 --import Process.UtilsParseArgs
 --import Producer.Servers (ntDirsRel)
 

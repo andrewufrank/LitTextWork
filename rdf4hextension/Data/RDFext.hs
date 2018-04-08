@@ -23,7 +23,8 @@ module Data.RDFext (
     , RDFtypes (..)
     , RDFsubj, mkRDFsubj
     , RDFproperty
-    , GraphName, mkGraphName
+    , GraphName, mkGraphName, unGraphName
+            -- to convert to query param
     , RDFdataset, mkRDFdataset
     , PartURI  -- should be removed
     , mkTripleText, mkTripleLang, mkTripleLang3

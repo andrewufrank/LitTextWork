@@ -69,6 +69,8 @@ newtype GraphName = GraphName Text
 -- ^ the name for a graph
     deriving (Show, Read, Eq, Ord, Generic, Zeros)
 mkGraphName = GraphName
+unGraphName (GraphName g) = g
+    -- perhaps a conversion to HttpQueryParams would be better
 
 instance RDFtypes GraphName where
     toIRI (GraphName s) = IRI s

@@ -18,10 +18,10 @@
 
 
 module LitText.CmdLineUtilities.UtilsProcessCmd
-    (
+    (parseAndStartExecute
 --        module CmdLineUtilities.UtilsProcessCmd
 --    , LitTextFlag (..), LitTextFlags (..)
-      ErrIO, Inputs (..)
+     , ErrIO, Inputs (..)
     , LitTextFlags (..) -- class
 --    , PartURI (..)
 --    , addFusekiPort
