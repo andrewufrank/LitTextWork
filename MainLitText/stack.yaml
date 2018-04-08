@@ -14,7 +14,7 @@ packages:
 - /home/frank/Workspace8/TreeTagSets
 #- ../LitFoundation
 # - ../LitText
-- ../rdf4hextension
+#- ../rdf4hextension
 #- ../CmdLineUtilities
 #- ../NLPservices
 #- ../StoreInJena

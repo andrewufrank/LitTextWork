@@ -86,7 +86,7 @@ executable ntmake6
 --        , StoreInJena
 --        , LitText
 --        , pipes
-        , rdf4hextension
+--        , rdf4hextension
 --        , litFoundation
         , directory
 --        , NLPservices
