@@ -15,7 +15,7 @@ packages:
 - ../LitFoundation
 # - ../LitText
 - ../rdf4hextension
-- ../CmdLineUtilities
+#- ../CmdLineUtilities
 - ../NLPservices
 - ../StoreInJena
 extra-deps:

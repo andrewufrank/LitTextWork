@@ -31,7 +31,7 @@ library
         , MissingH
         , bytestring
         , zlib
-        , CmdLineUtilities
+--        , CmdLineUtilities
 --        , parsec
 --        , csv
     exposed-modules:
