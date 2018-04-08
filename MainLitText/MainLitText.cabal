@@ -30,7 +30,7 @@ executable store6
         , uniform-http
         , text
 --        , optparse-applicative
-        , litFoundation
+--        , litFoundation
         , StoreInJena
 --        , pipes
 --        , CmdLineUtilities
@@ -70,7 +70,7 @@ executable construct6
         , uniform-http
         , text
 --        , pipes
-        , litFoundation
+--        , litFoundation
         , StoreInJena
 --        , CmdLineUtilities
 --        , LitText
@@ -87,7 +87,7 @@ executable ntmake6
 --        , LitText
 --        , pipes
         , rdf4hextension
-        , litFoundation
+--        , litFoundation
         , directory
         , NLPservices
 --        , CmdLineUtilities
