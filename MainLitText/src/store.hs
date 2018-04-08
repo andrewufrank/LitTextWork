@@ -17,13 +17,11 @@
 import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
 import           Uniform.FileIO hiding ((<>) ,   (<.>))
 
-import Process.StoreOneFile
+import LitText.Process
 import LitText.Foundation
 --         TextDescriptor (ntDirsRel, dirsTest, dirsOrig, LitDirs(..))
 
-import LitText.CmdLineUtilities.UtilsProcessCmd
-import LitText.CmdLineUtilities.UtilsProcessing
---import Process.UtilsParseArgs
+import LitText.CmdLineUtilities
 --import Producer.Servers (ntDirsRel)
 
 programName = "store5" :: Text
@@ -94,4 +92,6 @@ isNT  = hasExtension ntExtension
 
 isGZ :: Path Abs File -> Bool
 isGZ = hasExtension (Extension "gz")
+
+ntExtension = Extension "nt"
 

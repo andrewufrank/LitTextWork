@@ -19,8 +19,8 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module NLP2RDF.LanguageSpecific
-    (module NLP2RDF.LanguageSpecific
+module LitText.NLP2RDF.LanguageSpecific
+    (module LitText.NLP2RDF.LanguageSpecific
     , module LitText.CoreNLP.CoreNLP
     , module LitText.Foundation
     ) where

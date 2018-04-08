@@ -18,7 +18,7 @@
 
 {-# LANGUAGE DeriveGeneric
     , DeriveAnyClass  #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+--{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
 
@@ -193,7 +193,7 @@ giveCode English    = "en"
 giveCode French    = "fr"
 giveCode Spanish    = "sp"
 giveCode Italian    = "it"
-giveCode s          = error ("giveCode 2chars to" ++ show s)
+--giveCode s          = error ("giveCode 2chars to" ++ show s)
 
 giveCode3 :: LanguageCode -> Text
 -- ^ produce the three character language code for wordnet

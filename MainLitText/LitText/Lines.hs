@@ -24,6 +24,7 @@ module LitText.Lines (
     , NTdescriptor (..)
     , LitTextFlagSet,  LitTextFlag (..), LitTextFlags (..), setFlags
     -- export the individual flag names (at least used in UtilsProcessCmd)
+    , text2tz1, TZ1, paragraphsTZ2TZ2, TZ2
     , Zeros (..)
     ) where
 

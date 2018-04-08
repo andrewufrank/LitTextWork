@@ -38,18 +38,19 @@ import           Options.Applicative
 --import LitTypes.TextDescriptor hiding ((<>))
 import LitText.Processor.Main2sub (mainLitAndNLPproduction)
 
-import CmdLineUtilities.UtilsProcessing (processAll)
+import LitText.CmdLineUtilities
+--    .UtilsProcessing (processAll)
 --import LitTypes.TextDescriptor (LitTextFlags)
-import CmdLineUtilities.UtilsProcessCmd
+--import CmdLineUtilities.UtilsProcessCmd
 --        (getArgsParsed, setDefaultOriginDir, selectServer
 --            , LitTextFlag (..), LitTextFlags
 --             )
-import Processor.ProcessAll hiding ((<>))
+import LitText.Processor.ProcessAll hiding ((<>))
 --import qualified System.Directory as S (getHomeDirectory)
 
 parseAndExecuteNTmake  :: Text -> Text ->  ErrIO ()
 parseAndExecuteNTmake t1 t2    = do
-    inp <- parseAndStartExecute True "ntmakeReport.txt"  t1 t2
+    inp :: Inputs <- parseAndStartExecute True "ntmakeReport.txt"  t1 t2
     homeDirz <- homeDir2  -- used only to place the result file
     let resultFile = addFileName homeDirz ("resultFileNTmake6.txt" ::FilePath)
                              :: Path Abs File

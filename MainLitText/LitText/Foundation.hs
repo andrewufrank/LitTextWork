@@ -25,7 +25,8 @@ module LitText.Foundation (
     , module Data.RDFext
     , LanguageCode (..) -- from rdf4hextension
     , NTdescriptor (..)
-    , LitTextFlagSet,  LitTextFlag (..), LitTextFlags (..), setFlags
+--    , LitTextFlagSet
+    ,  LitTextFlag (..), LitTextFlags (..), setFlags
 --      export the individual flag names (at least used in UtilsProcessCmd)
     , Zeilen (..), BuchToken (..), MarkupElement (..)
     , Unparser(..), combine2linesWithHyphenation

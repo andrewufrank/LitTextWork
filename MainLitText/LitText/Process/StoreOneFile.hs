@@ -17,7 +17,7 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Process.StoreOneFile (module Process.StoreOneFile
+module LitText.Process.StoreOneFile (module LitText.Process.StoreOneFile
     , URI, serverBrest, serverLocalhost
     ) where
 

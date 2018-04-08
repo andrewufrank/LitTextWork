@@ -17,7 +17,7 @@
 {-# OPTIONS_GHC -w #-}
 
 
-module Process.OneConstruct (module Process.OneConstruct
+module LitText.Process.OneConstruct (module LitText.Process.OneConstruct
     ) where
 
 import           Test.Framework
@@ -31,8 +31,8 @@ import LitText.Foundation
 import Data.List.Split (chunksOf)
 import Data.List.Utils (replace)
 import Data.Either (isRight)
-import LitText.CmdLineUtilities.UtilsProcessCmd
-import LitText.CmdLineUtilities.UtilsProcessing (addFusekiPort)
+import LitText.CmdLineUtilities
+
 ntExtension = Extension "nt"
 --turtleExtension = Extension "ttl"  -- is typed file
 turtleType =   Just "ttl"    -- for http call

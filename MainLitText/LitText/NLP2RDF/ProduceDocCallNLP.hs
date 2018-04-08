@@ -20,9 +20,9 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module NLP2RDF.ProduceDocCallNLP
-    (module NLP2RDF.ProduceDocCallNLP
-    , module NLP2RDF.LanguageSpecific
+module LitText.NLP2RDF.ProduceDocCallNLP
+    (module LitText.NLP2RDF.ProduceDocCallNLP
+    , module LitText.NLP2RDF.LanguageSpecific
     , LitTextFlagSet
 --     LitTextFlags (..), LitTextFlag (..), SnipID (..)
     ) where
@@ -36,7 +36,7 @@ import NLP.TagSets.Spanish as Spanish --
 import NLP.TagSets.French as French --
 import NLP.TagSets.FrenchUD as FrenchUD --
 import NLP.Tags
-import NLP2RDF.LanguageSpecific
+import LitText.NLP2RDF.LanguageSpecific
 --import LitTypes.TextDescriptor (LitTextFlags)
 
 import Data.ByteString.Lazy (fromStrict)  -- move to decode

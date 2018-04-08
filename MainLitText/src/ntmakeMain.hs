@@ -25,7 +25,7 @@
 import           Uniform.FileIO         hiding ((<>))
 
 import           Uniform.Convenience.StartApp hiding ((<>) , (</>), (<.>))
-import LitText.Processor.NTmake
+import LitText.Processor
 
 
 programName = "ntmake6 0.0.4.6" :: Text
