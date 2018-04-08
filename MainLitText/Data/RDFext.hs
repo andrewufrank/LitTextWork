@@ -22,7 +22,7 @@ module Data.RDFext (
 --    , RDFproperties (..)
     , RDFtypes (..)
     , RDFsubj, mkRDFsubj
-    , RDFproperty
+    , RDFproperty, RDFtype
     , GraphName, mkGraphName, unGraphName
             -- to convert to query param
     , RDFdataset, mkRDFdataset

@@ -34,7 +34,7 @@ module LitText.Parser.ProduceNLP
 
 import LitText.CoreNLP.Vocabulary
 import Uniform.Zero
-import NLP2RDF.ProduceDocCallNLP
+import LitText.NLP2RDF.ProduceDocCallNLP
 import LitText.Parser.FilterTextForNLP  (prepareTZ4nlp)
 import LitText.Parser.FormNLPsnips (formSnips)
 

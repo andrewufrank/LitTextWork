@@ -33,13 +33,13 @@ import           Uniform.Error      --     (errorT)
 import LitText.Foundation -- from Foundation
 -- import LitText.BuchCode.BuchToken hiding ((</>), (<.>))
 
---litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: PartURI
-litURItext = append2partURI rdfBase "/lit_2014"
-dcURItext = PartURI "http://purl.org/dc/elements/1.1" :: PartURI
--- no terminating /
+--litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: IRI
+litURItext = append2IRI rdfBase "/lit_2014/"
+dcURItext = mkIRI "http://purl.org/dc/elements/1.1/" :: IRI
+--  terminating slash - append2IRI
 
-buchURIx textstate = RDFsubj $ (unPartURI rdfBase)
-            <#> authorDir textstate <-> buchName textstate
+buchURIx textstate = mkRDFsubj $ append2IRI rdfBase
+            (authorDir textstate <-> buchName textstate <> "/")
 -- id of buch, part and sentence or page is attached
 
 type ParaID = Int   -- should be typed?
@@ -51,10 +51,9 @@ formatParaID :: ParaID -> Text
 formatParaID nr =   "P" <> (s2t . printf  ('%' : '0' : '5' : 'd' :[]) $  nr )
 
 paraSigl :: TextDescriptor -> ParaNum -> ParaSigl
-paraSigl textstate pn = ParaSigl ( extendSlashRDFsubj
-                (formatParaID . unparaNum $ pn)
-                      ( buchURIx $ textstate)
-                      )
+paraSigl textstate pn = ParaSigl $ append2IRI
+               ( buchURIx $ textstate) (formatParaID . unparaNum $ pn)
+
 
 produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test C=BAE -> H
 -- convert a text to the triples under lit: main function for the conversion
@@ -87,28 +86,27 @@ data LitProperty =  HasTitle | InWerk | InBuch | InPart
         --  the text for this textual unit
         deriving (Show, Eq, Enum)
 
-instance RDFproperties LitProperty where
-    mkRDFproperty p = RDFproperty $ unPartURI litURItext  <#> (toLowerStart . showT $ p)
-instance RDFproperties BuchToken where
+instance RDFtypes LitProperty where
+    mkRDFproperty p = mkRDFproperty $ append2IRI litURItext   (toLowerStart . showT $ p)
+instance RDFtypes BuchToken where
+    mkRDFtype tk = mkRDFtype $ append2IRI litURItext (toTitle . markerPure $ tk)
     mkRDFproperty tk =
         case tk of
-            BuchAuthor -> RDFproperty $ unPartURI dcURItext </> "creator"
-            BuchVerlag -> RDFproperty $ unPartURI dcURItext </> "publisher"
-            BuchSprache -> RDFproperty $ unPartURI dcURItext </>  "language"
-            BuchTitel -> RDFproperty $ unPartURI dcURItext </> "title"
-            BuchOriginalFile -> RDFproperty $ unPartURI dcURItext </> "source"
-            otherwise -> RDFproperty $  unPartURI litURItext <#> (toLowerStart . markerPure $ tk)
+            BuchAuthor -> mkRDFproperty $ append2IRI dcURItext   "creator"
+            BuchVerlag -> mkRDFproperty $ append2IRI dcURItext  "publisher"
+            BuchSprache -> mkRDFproperty $ append2IRI dcURItext   "language"
+            BuchTitel -> mkRDFproperty $ append2IRI dcURItext  "title"
+            BuchOriginalFile -> mkRDFproperty $ append2IRI  dcURItext  "source"
+            otherwise -> mkRDFproperty $  append2IRI  litURItext   (toLowerStart . markerPure $ tk)
 
 -- toLowerStart :: Text -> Text
 -- -- convert the first character to lowercase
 -- toLowerStart t = (toLower . T.head $ t ) `cons` (T.tail t)
 
 instance RDFtypes Text where
-    mkRDFtype p =  RDFtype $ unPartURI litURItext <#> (toTitle p)
-instance RDFtypes RDFtype where
-    mkRDFtype p =  RDFtype $ unPartURI litURItext <#> (toTitle . showT $ p)
-instance RDFtypes BuchToken where
-    mkRDFtype tk = RDFtype $ unPartURI litURItext <#> (toTitle . markerPure $ tk)
+    mkRDFtype p =  mkRDFtype $ append2IRI litURItext   (toTitle p)
+--instance RDFtypes RDFtype where
+--    mkRDFtype p =  RDFtype $ unPartURI litURItext <#> (toTitle . showT $ p)
 
 
 

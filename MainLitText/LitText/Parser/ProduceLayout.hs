@@ -21,10 +21,10 @@ module LitText.Parser.ProduceLayout (module LitText.Parser.ProduceLayout
     ) where
 
 import LitText.Foundation
-import LitText.CoreNLPVocabulary
+import LitText.CoreNLP.Vocabulary
 import           Text.Printf         (printf)
 
-layoutURItext =   append2partURI rdfBase  "/layout_2017" :: PartURI
+layoutURItext =   append2IRI rdfBase  "/layout_2017" :: IRI
 
 produceLayoutTriples ::  TextDescriptor -> [TZ1] -> [Triple]
 -- test BAD -> J
@@ -41,7 +41,8 @@ data LayoutType = Line | Page
     deriving (Show, Eq, Enum)
 
 instance RDFtypes LayoutType where
-    mkRDFtype p =  RDFtype $ unPartURI layoutURItext <#> (toTitle . showT $ p)
+    mkRDFtype p =  mkRDFtype     $ append2IRI
+                     layoutURItext   (toTitle . showT $ p)
 
 data LayoutProperty = TomeNumber | LineNumber
     | PageNumber | LineText
@@ -49,9 +50,9 @@ data LayoutProperty = TomeNumber | LineNumber
             -- could be label for text?
     deriving (Show, Eq, Enum)
 
-instance RDFproperties LayoutProperty where
-    mkRDFproperty p = RDFproperty
-            $ unPartURI layoutURItext <#> (toLowerStart . showT $ p)
+instance RDFtypes LayoutProperty where
+    mkRDFproperty p = mkRDFproperty   $
+            append2IRI  layoutURItext  (toLowerStart . showT $ p)
 
 --
 newtype LineSigl = LineSigl RDFsubj
@@ -63,10 +64,10 @@ formatLineID nr =   "L" <> (s2t .
 -- format to 5 digits
 --
 lineSigl :: TextDescriptor -> Int -> LineSigl
-lineSigl textstate pn = LineSigl ( extendSlashRDFsubj
-                (formatLineID  $ pn)
-                      ( buchURIx $ textstate)
-                      )
+lineSigl textstate pn = LineSigl $ append2IRIwithSlash
+                (buchURIx $ textstate) (formatLineID  $ pn)
+
+
 
 
 newtype InLineMarkerSigl = InLineMarkerSigl RDFsubj
@@ -78,10 +79,8 @@ formatInLineMarker nr  =   "ILM" <>
 -- format to 5 digits
 --
 inLineMarkerSigl :: LineSigl -> Int -> InLineMarkerSigl
-inLineMarkerSigl linesigl pn = InLineMarkerSigl ( extendSlashRDFsubj
-                (formatInLineMarker  $ pn)
-                      (unLineSigl linesigl)
-                      )
+inLineMarkerSigl linesigl pn = InLineMarkerSigl $ append2IRIwithSlash
+                 (unLineSigl linesigl)  (formatInLineMarker  $ pn)
 
 
 debugTurtle = True

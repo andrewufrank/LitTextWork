@@ -31,16 +31,22 @@ library
         , hxt
         , parsec
         , parsec-extra
+        , megaparsec
+        , aeson
         , split
         , zlib
         , regex-compat
         , optparse-applicative
         , optparse-generic
         , containers
+        , unordered-containers
+        , TreeTagSets
+        , Hs-conllu
 
     exposed-modules:
         LitText.Foundation
         LitText.Lines
+        LitText.CoreNLP
         LitText.Parser.ProduceLit
         LitText.Parser.ProduceLayout
         LitText.Parser.ProduceNLP
@@ -63,6 +69,7 @@ library
          Data.RDFext.Predicates
          Data.RDFext.Prefs
          Data.RDFext.Triple2text
+         Data.RDFext.Codes
          LitText.Foundation.Flags
          LitText.Foundation.LanguageTypedText
          LitText.Foundation.ServerNames
@@ -70,6 +77,16 @@ library
         LitText.Lines.Lines2text
         LitText.Lines.HandleLayout
         LitText.Lines.MarkupText
+        LitText.CoreNLP.Conllu2doc1
+        LitText.CoreNLP.CoreNLP
+        LitText.CoreNLP.Doc1_absoluteID
+        LitText.CoreNLP.Doc2ToLinear
+        LitText.CoreNLP.DocBase
+        LitText.CoreNLP.DocNLP_0or1
+        LitText.CoreNLP.Linear2Triple
+                                                                                                 LitText.CoreNLP.ParseJsonCoreNLP
+                                                                                                 LitText.CoreNLP.Vocabulary
+                                                                                                 LitText.Foundation.Classes4text
 
 executable store6
 -- store all nt.gz files in fuseki expand in haskell
