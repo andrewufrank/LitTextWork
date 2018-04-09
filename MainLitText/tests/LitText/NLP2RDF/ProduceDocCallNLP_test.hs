@@ -30,7 +30,7 @@ import LitText.CoreNLPCoreNLP (NTtext (..), unNT)
 --import LitTypes.LanguageTypedText
 import LitText.CoreNLPVocabulary
 
-import NLP2RDF.ProduceDocCallNLP
+import LitText.NLP2RDF.ProduceDocCallNLP
 import NLP.TagSets.Conll  as Conll -- Conll for english
 import NLP.TagSets.German  as German --
 import NLP.TagSets.Spanish as Spanish --

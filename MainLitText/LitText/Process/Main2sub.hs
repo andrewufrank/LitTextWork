@@ -26,20 +26,21 @@ module LitText.Process.Main2sub (mainLitAndNLPproduction
 --         , URI (..)
             ) where
 
-import           LitText.Parser.ReadMarkupAB (textstate2Text
---                        , LitTextFlag (..), LitTextFlags (..)
-                        , LitTextFlagSet , LitTextFlags (..)
-                        , TextDescriptor (..))
+import           LitText.Parser
+--import           LitText.Parser.ReadMarkupAB (textstate2Text
+----                        , LitTextFlag (..), LitTextFlags (..)
+--                        , LitTextFlagSet , LitTextFlags (..)
+--                        , TextDescriptor (..))
 import           LitText.Lines
 --        .Lines2text  (text2tz1, TZ1)
 
-import           LitText.Parser.ProduceLayout (produceLayoutTriples)
+--import           LitText.Parser.ProduceLayout (produceLayoutTriples)
 
 --import           LitText.Lines2para.Lines2para (paragraphsTZ2TZ2, TZ2) -- hiding ((</>))
 
-import           LitText.Parser.ProduceLit (produceLitTriples, Triple)
-import           LitText.Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
-
+--import           LitText.Parser.ProduceLit (produceLitTriples, Triple)
+--import           LitText.Parser.ProduceNLP (produceNLPtriples, tz2toSnip, Snip)
+import LitText.Foundation
 
 import           Uniform.FileIO -- (when, errorT)
 

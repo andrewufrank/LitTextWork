@@ -16,7 +16,14 @@
     , DeriveAnyClass #-}
 
 module LitText.Parser  (
-        )  where
+        produceLayoutTriples
+        ,textstate2Text
+                        , LitTextFlag (..), LitTextFlags (..)
+                        , LitTextFlagSet
+                        , TextDescriptor (..)
+                        , produceLitTriples, Triple
+                        , produceNLPtriples, tz2toSnip, Snip
+                        )  where
 
 import LitText.Parser.FilterTextForNLP
 import LitText.Parser.FormNLPsnips

@@ -26,5 +26,8 @@ import LitText.Process.OneConstruct
 import LitText.Process.Main2sub
 import LitText.Process.NTmake
 import LitText.Process.ProcessAll
+import LitText.Process.Main2sub
+import LitText.Process.NTmake
+import LitText.Process.ProcessAll
 
 
