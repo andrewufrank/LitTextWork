@@ -23,6 +23,8 @@ module LitText.Parser  (
                         , TextDescriptor (..)
                         , produceLitTriples, Triple
                         , produceNLPtriples, tz2toSnip, Snip
+                        , prepareTZ4nlp, formSnips
+
                         )  where
 
 import LitText.Parser.FilterTextForNLP

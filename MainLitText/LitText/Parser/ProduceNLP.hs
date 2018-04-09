@@ -32,11 +32,14 @@ module LitText.Parser.ProduceNLP
     , TextDescriptor (..)
     ) where
 
-import LitText.CoreNLP.Vocabulary
+import LitText.CoreNLP
+import LitText.Foundation
 import Uniform.Zero
-import LitText.NLP2RDF.ProduceDocCallNLP
+--import LitText.NLP2RDF.ProduceDocCallNLP
+import LitText.NLP2RDF
 import LitText.Parser.FilterTextForNLP  (prepareTZ4nlp)
 import LitText.Parser.FormNLPsnips (formSnips)
+--import LitText.Parser.ProducerDocCalls
 
 produceNLPtriples :: LitTextFlagSet -> TextDescriptor -> [Snip] -> ErrIO [Triple]
             -- test C  -> X

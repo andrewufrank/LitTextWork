@@ -27,9 +27,10 @@ import           Uniform.FileIO hiding ((<>), (</>), (<.>))
 import           Uniform.Strings
 import           Uniform.Error
 
-import LitText.CmdLineUtilities.UtilsProcessCmd
+import LitText.CmdLineUtilities
+--import LitText.CmdLineUtilities.UtilsProcessCmd
 --import CmdLineUtilities.UtilsProcessCmd (LitTextFlag(..))
-import LitText.CmdLineUtilities.UtilsProcessing
+--import LitText.CmdLineUtilities.UtilsProcessing
 
 import LitText.Foundation -- hiding ((<>), (</>), (<.>))
         -- (serverBrest, serverLocalhost

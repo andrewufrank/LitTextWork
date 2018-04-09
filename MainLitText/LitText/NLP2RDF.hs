@@ -16,7 +16,8 @@
     , DeriveAnyClass #-}
 
 module LitText.NLP2RDF  (
-        )  where
+    convertOneSnip2triples_NLPservices
+    )  where
 
 import LitText.NLP2RDF.LanguageSpecific
 import LitText.NLP2RDF.ProduceDocCallNLP
