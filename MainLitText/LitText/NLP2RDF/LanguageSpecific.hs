@@ -21,15 +21,16 @@
 
 module LitText.NLP2RDF.LanguageSpecific
     (module LitText.NLP2RDF.LanguageSpecific
-    , module LitText.CoreNLP.CoreNLP
+--    , module LitText.CoreNLP.CoreNLP
     , module LitText.Foundation
     ) where
 
 import Uniform.Http
 import Uniform.Strings
 import Uniform.Error (ErrIO)
-import LitText.CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
-        , conllu2triples, json2triples)
+import LitText.CoreNLP
+--import LitText.CoreNLP.CoreNLP (conllu2NT, json2NT, NTtext (..), unNT
+--        , conllu2triples, json2triples)
 import Text.Regex (mkRegex, subRegex)
 import LitText.Foundation
 import NLP.TagSets.Conll  as Conll -- Conll for english

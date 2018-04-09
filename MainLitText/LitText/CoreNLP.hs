@@ -22,6 +22,7 @@ module LitText.CoreNLP  (
             , SpeakerTag (..), NERtag (..)
             , NTtext (..), unNT
             , module LitText.CoreNLP.Vocabulary
+            , json2triples, conllu2triples
 --            , Snip, SnipSigl, buchURIx
         )  where
 
