@@ -106,7 +106,7 @@ newtype PartURI = PartURI Text
 --baseurl = Just gerastreeURI :: Maybe Text
 
 newtype RDFproperty = RDFproperty Text
-    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros) -- , Semigroup, Monoid)
 -- ^ a type to identify the RDFproperties
 --unRDFproperty (RDFproperty a) = a
 
@@ -114,7 +114,7 @@ newtype RDFproperty = RDFproperty Text
 --    mkRDFproperty :: p -> RDFproperty
 
 newtype RDFtype = RDFtype Text
-    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros) -- , Semigroup, Monoid)
 -- ^ the types for the rdf type values
 unRDFtype (RDFtype a) = a
 
@@ -134,6 +134,7 @@ class Show f => RDFtypes f where
 instance RDFtypes RDFproperty where
     toIRI (RDFproperty t) = IRI t
     toUNode (RDFproperty p) = unode p
+
 instance RDFtypes RDFtype where
     toIRI (RDFtype t) = IRI t
     toUNode (RDFtype t) = unode t
@@ -142,7 +143,8 @@ instance RDFtypes RDFsubj where
     toUNode (RDFsubj s) = unode . unIRI $  s
 instance RDFtypes IRI where
     toUNode (IRI t) = unode t
-
+    mkRDFproperty (IRI t) = RDFproperty t
+    mkRDFtype (IRI t) = RDFtype t
     -- TODO change to lowercase initial character
 
 -- class URIs a b where
