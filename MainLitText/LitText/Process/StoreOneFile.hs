@@ -137,7 +137,7 @@ putOneFile5 inp@Inputs{..} fn = do
 
         let pathNameForDatase =  mkHttpPath . unIRI . toIRI $ inDB  -- </> "update"
         let mgraph2 = fmap
-                (\p -> mkGraphName . unIRI $ append2IRIwithSlash rdfBase p)
+                (\p -> mkGraphName . unIRI $ append2IRI rdfBase p)
                 inGraph :: Maybe GraphName
         -- let mgraph2 = fmap (\p -> PartURI $ (unPartURI rdfBase) </> p) inGraph
 --        let mgraph2 = makeAbsURI rdfBase  (unPartURI inGraph)

@@ -30,10 +30,10 @@ serverBrest = mkServerURI "http://nlp.gerastree.at"
 localhost = mkServerURI "http://127.0.0.1"
 
 rdfBase, vocabularyBase :: IRI  -- not a real URI
-rdfBase = mkIRI  "http://gerastree.at"
+rdfBase = mkIRI  "http://gerastree.at/"
 -- ^ for the text
 
-vocabularyBase = mkIRI "http://gerastree.at"
+vocabularyBase = mkIRI "http://gerastree.at/"
 -- for the vocabularies
 
 -- dirQueries = makeAbsDir "/home/frank/additionalSpace/DataBig/Queries"
