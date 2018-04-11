@@ -19,7 +19,7 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import LitText.CoreNLP.Linear2Triple
 import qualified NLP.TagSets.Conll  as Conll
-import LitText.CoreNLP.Vocabulary
+import LitText.CoreNLP.Vocabulary as Voc
 
 
 instance ShowTestHarness [DocAsList Conll.POStag] where
@@ -29,14 +29,19 @@ instance ShowTestHarness [Triple ] where
 instance ShowTestHarness NTtext where
 
 progName = "nlpservices"
+
+test_SentenceParse = assertEqual
+            "RDFproperty \"http://gerastree.at/nlp_2017#sentenceParse\""
+            $ showT (mkRDFproperty Voc.SentenceParse :: RDFproperty)
+
 test_c = test1File progName "short1.lin5" "short1.trips6"
-        (toTriple Conll.undefPOS (mkRDFsubj rdfBase))
+        (toTriple Conll.undefPOS (mkRDFsubj $ append2IRI rdfBase "SnipTest"))
 
 test_d = test1File progName "short1.trips6" "short1.nt"
         (unNT . toNT)
 
 
-test_intercalate1 = assertEqual (Just "doc11/S000001/T006")
+test_intercalate1 = assertEqual (Just "S000001/T010")
              (intercalate' "/" . reverse $ ts1)
 
-ts1 = [ "T006" , "S000001" , "doc11" ] :: [Text]
+ts1 = [  "T010" , "S000001" ] :: [Text]

@@ -61,6 +61,15 @@ library
         Data.RDFext.Prefs
         Data.RDFext.Triple2text
 --        LitText.Foundation.ListForms
+        LitText.CoreNLP.Conllu2doc1
+        LitText.CoreNLP.CoreNLP
+        LitText.CoreNLP.Doc1_absoluteID
+        LitText.CoreNLP.Doc2ToLinear
+        LitText.CoreNLP.DocBase
+        LitText.CoreNLP.DocNLP_0or1
+        LitText.CoreNLP.Linear2Triple
+        LitText.CoreNLP.Vocabulary
+        LitText.CoreNLP.ParseJsonCoreNLP
 
     exposed: True
     buildable: True
@@ -71,16 +80,9 @@ library
         LitText.Lines.Lines2text
         LitText.Lines.HandleLayout
         LitText.Lines.MarkupText
-        LitText.CoreNLP.Conllu2doc1
-        LitText.CoreNLP.CoreNLP
-        LitText.CoreNLP.Doc1_absoluteID
-        LitText.CoreNLP.Doc2ToLinear
-        LitText.CoreNLP.DocBase
-        LitText.CoreNLP.DocNLP_0or1
-        LitText.CoreNLP.Linear2Triple
         LitText.NLP2RDF.LanguageSpecific
         LitText.NLP2RDF.ProduceDocCallNLP
-        LitText.CmdLineUtilities.UtilsParseArgs                                                                                                 LitText.CoreNLP.ParseJsonCoreNLP
+        LitText.CmdLineUtilities.UtilsParseArgs
         LitText.CmdLineUtilities.UtilsParseArgs
         LitText.CmdLineUtilities.UtilsProcessCmd
         LitText.CmdLineUtilities.UtilsProcessing
@@ -91,7 +93,7 @@ library
         LitText.Foundation.ServerNames
         LitText.Foundation.TextDescriptor
         LitText.Process.OneConstruct
-        LitText.Process.StoreOneFile                                                                                                 LitText.CoreNLP.Vocabulary
+        LitText.Process.StoreOneFile
         LitText.Foundation.Classes4text
         LitText.Parser.ProduceLit
         LitText.Parser.ProduceLayout
@@ -199,9 +201,18 @@ Test-Suite MainLitTestAuto
         , network-uri
         , snap-core
         , uniform-algebras
+        , uniform-convenience
         , MainLitText
+             -- for test corenlp
+        , TreeTagSets
+        , aeson
     default-language: Haskell2010
     hs-source-dirs: tests
     other-modules:
-        Data.RDFext_test
-
+        LitText.CoreNLP.Doc1_absoluteID_test
+        LitText.CoreNLP.Doc2ToLinear_test
+        LitText.CoreNLP.DocBase_test
+        LitText.CoreNLP.DocNLP_0or1_test
+        LitText.CoreNLP.Linear2Triple_test
+        LitText.CoreNLP.ParseJsonCoreNLP_test
+        LitText.CoreNLP.Vocabulary_test

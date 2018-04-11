@@ -20,15 +20,15 @@ module LitText.CoreNLP.ParseJsonCoreNLP_test
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import Uniform.FileIO
---import qualified Data.ByteString.Lazy as B
-import qualified Data.ByteString.Lazy.UTF8 as B
-import Data.Aeson (eitherDecode)
+--import Uniform.FileIO
+import qualified Data.ByteString.Lazy as B
+--import qualified Data.ByteString.Lazy.UTF8 as B
+--import Data.Aeson (eitherDecode)
 import qualified NLP.TagSets.Conll  as Conll
 
 import LitText.CoreNLP.ParseJsonCoreNLP
 
-import Data.Aeson.Encode.Pretty
+--import Data.Aeson.Encode.Pretty
 import Data.Aeson
 import GHC.Exts
 
@@ -51,7 +51,7 @@ instance (Zeros a) => Zeros (ErrOrVal a) where zero = Right zero
 restest = zero :: Doc2
 
 
-showStartJson = s2t . take 100 . B.toString
+--showStartJson = s2t . take 100 . B.toString
 
 runErrorFromEither :: (Show s, CharChains s) => Either s a -> ErrIO a
 runErrorFromEither (Left s) = throwErrorT ["runErrorFromEither", (toText s)]
