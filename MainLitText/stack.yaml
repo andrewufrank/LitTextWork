@@ -12,14 +12,9 @@ packages:
 - /home/frank/Workspace8/rdf4h
 - /home/frank/Workspace8/fromOthers/hs-conllu
 - /home/frank/Workspace8/TreeTagSets
-#- ../LitFoundation
-# - ../LitText
-#- ../rdf4hextension
-#- ../CmdLineUtilities
-#- ../NLPservices
-#- ../StoreInJena
 extra-deps:
 - hgal-2.0.0.2
 - parsec-extra-0.2.0.0
+- posix-paths-0.2.1.5
 - test-invariant-0.4.5.0
-resolver: lts-11.2
+resolver: nightly-2018-04-03

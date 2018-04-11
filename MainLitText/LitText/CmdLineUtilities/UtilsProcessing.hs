@@ -23,7 +23,7 @@ module LitText.CmdLineUtilities.UtilsProcessing
     where
 
 import           Uniform.FileIO as FN hiding ((<>), (</>), (<.>))
-import Uniform.Strings  ((<>))
+import Uniform.Strings  -- ((<>))
 import Uniform.Http
 --import Data.RDFext
 

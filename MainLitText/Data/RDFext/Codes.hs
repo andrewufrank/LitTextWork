@@ -16,8 +16,11 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-{-# LANGUAGE DeriveGeneric
-    , DeriveAnyClass  #-}
+{-# LANGUAGE StandaloneDeriving
+    , GeneralizedNewtypeDeriving
+    , DeriveGeneric
+    , DeriveAnyClass
+      #-}
 --{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 
@@ -34,17 +37,20 @@ import           Data.RDF            (Node, Triple (..), lnode, objectOf,
                                       plainL, plainLL, triple, typedL, unode)
 import           Data.RDF            as RDF
 import qualified Data.RDF            as RDF
-
+import Data.Monoid
 
 import qualified Data.RDF.Types      as RDF (RDF (..), RdfSerializer (..))
 import           Uniform.Error
-import           Uniform.Strings ((</>))
+import           Uniform.Strings  --  ((</>))
 import           Uniform.Zero
 import  GHC.Generics
 import Uniform.Http
+import           Uniform.Error (errorT)
+import           Uniform.Zero
+import           Uniform.ListForm
 
 newtype IRI = IRI Text
-    deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 -- ^ a type for an IRI in the RDF setting (not used for server URI)
 -- could be tested for validity
 mkIRI = IRI
@@ -67,7 +73,7 @@ instance IRIs RDFsubj where
 
 newtype GraphName = GraphName Text
 -- ^ the name for a graph
-    deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 mkGraphName = GraphName
 unGraphName (GraphName g) = g
     -- perhaps a conversion to HttpQueryParams would be better
@@ -77,7 +83,7 @@ instance RDFtypes GraphName where
 
 newtype RDFdataset = RDFdataset Text
 -- ^ the name for a dataset in a sparql endpoint
-    deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 mkRDFdataset = RDFdataset
 
 instance RDFtypes RDFdataset where
@@ -85,7 +91,7 @@ instance RDFtypes RDFdataset where
 
 
 newtype PartURI = PartURI Text
-    deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 -- unPartURI (PartURI t) = t
 -- --instance Zeros PartURI where zero = PartURI zero
 
@@ -99,14 +105,16 @@ newtype PartURI = PartURI Text
 -- the base url - with no closing
 --baseurl = Just gerastreeURI :: Maybe Text
 
-newtype RDFproperty = RDFproperty Text deriving (Show, Read, Eq, Ord, Generic)
+newtype RDFproperty = RDFproperty Text
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 -- ^ a type to identify the RDFproperties
 --unRDFproperty (RDFproperty a) = a
 
 --class RDFproperties p where
 --    mkRDFproperty :: p -> RDFproperty
 
-newtype RDFtype = RDFtype Text deriving (Show, Read, Eq, Ord, Generic, Zeros)
+newtype RDFtype = RDFtype Text
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 -- ^ the types for the rdf type values
 unRDFtype (RDFtype a) = a
 
@@ -141,7 +149,7 @@ instance RDFtypes IRI where
 --   extendURI :: a -> b
 
 newtype RDFsubj = RDFsubj IRI
-    deriving (Show, Read, Eq, Ord, Generic, Zeros)
+    deriving (Show, Read, Eq, Ord, Generic, Zeros, Semigroup, Monoid)
 ---- ^ a type to identify the RDF subject value
 ---- is a text, not a URI
 --unRDFsubj (RDFsubj a) = a
@@ -167,7 +175,8 @@ mkRDFsubj = RDFsubj
 
 
 data LanguageCode = NoLanguage | German | USenglish | English
-    | French | Spanish | Italian   deriving (Show, Read, Eq, Ord, Generic)
+    | French | Spanish | Italian
+    deriving (Show, Read, Eq, Ord, Generic)
 instance Zeros LanguageCode where zero = NoLanguage
 
 parseLanguageCode :: Text -> LanguageCode
