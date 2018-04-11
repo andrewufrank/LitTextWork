@@ -133,6 +133,8 @@ data Ner3 = Ner3 {ner3docTokenBegin :: TokenID
 
 data NERtagExt = NERtagValue Text | NERx NERtag
   deriving (Show, Read, Eq, Ord, Generic)
+  -- probably use of Either would be better
+--  (for all of the tags)
 
 data Token0 postag = Token0 { tid :: TokenID
                     , tword :: Wordform0

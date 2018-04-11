@@ -67,7 +67,7 @@ data NLPtype =  Snip
     | Sentence | Token
 --    | DepType
     | Dependence | Mention  -- | Coreference
-    | NERentity
+    | NERentity -- will be changed to Nerentity.. fix?
 --    | MentionChain
   deriving (Show, Read, Eq, Ord, Generic)
 
