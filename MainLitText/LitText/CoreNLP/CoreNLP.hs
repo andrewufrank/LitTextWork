@@ -30,8 +30,10 @@ module LitText.CoreNLP.CoreNLP (
             , to11op, to1op, toNT, toTriple, toLin
             , Doc1 , Doc11, DocAsList, Doc2, DocAsTriple, Triple
             , LanguageCode (..)
-            , RDFproperty, mkRDFproperty, NLPproperty (..), mkRDFsubj
-            , append2IRI, rdfBase, decodeDoc2op
+            , RDFproperty, mkRDFproperty, NLPproperty (..)
+            , RDFtype, mkRDFtype, mkRDFsubj
+            , append2IRI, rdfBase, decodeDoc2op, mkIRI
+            , ParaSigl (..), append2IRIwithSlash
         )  where
 import LitText.CoreNLP.DocNLP_0or1
 import LitText.CoreNLP.Doc1_absoluteID

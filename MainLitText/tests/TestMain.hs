@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 --
--- Module      :   for automatic test
+-- Module      :   for automatic test with MainLitText
 -- insert {-@ HTF_TESTS @-} for each import
 -----------------------------------------------------------------------------
 {-# OPTIONS_GHC -F -pgmF htfpp #-}
@@ -22,7 +22,9 @@ import           Test.Framework
 --import {-@ HTF_TESTS @-} LitText.CoreNLP.DocNLP_0or1_test
 --import {-@ HTF_TESTS @-} LitText.CoreNLP.Doc1_absoluteID_test
 --import {-@ HTF_TESTS @-} LitText.CoreNLP.Doc2ToLinear_test
-import {-@ HTF_TESTS @-} LitText.CoreNLP.Linear2Triple_test
+--import {-@ HTF_TESTS @-} LitText.CoreNLP.Linear2Triple_test
+import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceDocCallNLP_test
+import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceNLPtriples_test
 
 main =  do
     putStrLn "LitFoundation.hs:\n"

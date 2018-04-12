@@ -20,17 +20,19 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module NLP2RDF.ProduceDocCallNLP_test  where
+module LitText.NLP2RDF.ProduceDocCallNLP_test  where
 
 import              Test.Framework
 import              Uniform.Test.TestHarness
 --import LitText.CoreNLPProduceNLPtriples -- (processDoc0toTriples2, Snip2 (..), Doc0 (..))
-import LitText.CoreNLPDoc2ToLinear
-import LitText.CoreNLPCoreNLP (NTtext (..), unNT)
---import LitTypes.LanguageTypedText
-import LitText.CoreNLPVocabulary
+--import LitText.CoreNLPDoc2ToLinear
+--import LitText.CoreNLPCoreNLP (NTtext (..), unNT)
+----import LitTypes.LanguageTypedText
+--import LitText.CoreNLPVocabulary
+import LitText.CoreNLP.CoreNLP
 
-import LitText.NLP2RDF.ProduceDocCallNLP
+import LitText.NLP2RDF.NLP2RDF
+--    ProduceDocCallNLP
 import NLP.TagSets.Conll  as Conll -- Conll for english
 import NLP.TagSets.German  as German --
 import NLP.TagSets.Spanish as Spanish --

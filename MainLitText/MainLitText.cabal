@@ -63,6 +63,8 @@ library
 --        LitText.Foundation.ListForms
 -- for testing
         LitText.CoreNLP.CoreNLP
+        LitText.NLP2RDF.NLP2RDF
+        LitText.Parser.Parser
 
 
     exposed: True
@@ -218,3 +220,7 @@ Test-Suite MainLitTestAuto
         LitText.CoreNLP.Linear2Triple_test
         LitText.CoreNLP.ParseJsonCoreNLP_test
         LitText.CoreNLP.Vocabulary_test
+
+       LitText.NLP2RDF.ProduceDocCallNLP_test
+       LitText.NLP2RDF.ProduceNLPtriples_test
+

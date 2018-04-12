@@ -34,7 +34,7 @@ import LitText.Foundation -- from Foundation
 -- import LitText.BuchCode.BuchToken hiding ((</>), (<.>))
 
 --litURItext =  PartURI ((unPartURI  rdfBase)  </> "lit_2014") :: IRI
-litURItext = append2IRI rdfBase "/lit_2014/"
+litURItext = append2IRI rdfBase "lit_2014#"
 dcURItext = mkIRI "http://purl.org/dc/elements/1.1/" :: IRI
 --  terminating slash - append2IRI
 
