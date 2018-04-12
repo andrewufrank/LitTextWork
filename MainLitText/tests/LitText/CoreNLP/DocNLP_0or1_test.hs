@@ -20,8 +20,9 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
 import qualified NLP.TagSets.Conll  as Conll
+import         LitText.CoreNLP.CoreNLP
 --
-import LitText.CoreNLP.DocNLP_0or1
+--import LitText.CoreNLP.DocNLP_0or1
 
 
 instance ShowTestHarness (Doc1 Conll.POStag) where

@@ -61,15 +61,9 @@ library
         Data.RDFext.Prefs
         Data.RDFext.Triple2text
 --        LitText.Foundation.ListForms
-        LitText.CoreNLP.Conllu2doc1
+-- for testing
         LitText.CoreNLP.CoreNLP
-        LitText.CoreNLP.Doc1_absoluteID
-        LitText.CoreNLP.Doc2ToLinear
-        LitText.CoreNLP.DocBase
-        LitText.CoreNLP.DocNLP_0or1
-        LitText.CoreNLP.Linear2Triple
-        LitText.CoreNLP.Vocabulary
-        LitText.CoreNLP.ParseJsonCoreNLP
+
 
     exposed: True
     buildable: True
@@ -80,6 +74,14 @@ library
         LitText.Lines.Lines2text
         LitText.Lines.HandleLayout
         LitText.Lines.MarkupText
+        LitText.CoreNLP.Conllu2doc1
+        LitText.CoreNLP.Doc1_absoluteID
+        LitText.CoreNLP.Doc2ToLinear
+        LitText.CoreNLP.DocBase
+        LitText.CoreNLP.DocNLP_0or1
+        LitText.CoreNLP.Linear2Triple
+        LitText.CoreNLP.Vocabulary
+        LitText.CoreNLP.ParseJsonCoreNLP
         LitText.NLP2RDF.LanguageSpecific
         LitText.NLP2RDF.ProduceDocCallNLP
         LitText.CmdLineUtilities.UtilsParseArgs

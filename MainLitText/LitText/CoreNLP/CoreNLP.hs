@@ -1,6 +1,9 @@
 -----------------------------------------------------------------------------
 --
 -- Module      :  the top exporting all contents of CoreNLP
+            -- used only for testing
+            -- main uses LitText.CoreNLP directly with the
+            -- same exports as below (above -- for tests:
 
 -----------------------------------------------------------------------------
 {-# LANGUAGE
@@ -23,6 +26,12 @@ module LitText.CoreNLP.CoreNLP (
             , DepCode1 (..), DepCode2 (..)
             , SpeakerTag (..), NERtag (..)
             , NTtext (..), unNT
+            -- for tests:
+            , to11op, to1op, toNT, toTriple, toLin
+            , Doc1 , Doc11, DocAsList, Doc2, DocAsTriple, Triple
+            , LanguageCode (..)
+            , RDFproperty, mkRDFproperty, NLPproperty (..), mkRDFsubj
+            , append2IRI, rdfBase, decodeDoc2op
         )  where
 import LitText.CoreNLP.DocNLP_0or1
 import LitText.CoreNLP.Doc1_absoluteID

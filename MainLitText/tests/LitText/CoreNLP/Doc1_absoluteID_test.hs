@@ -19,8 +19,9 @@ module LitText.CoreNLP.Doc1_absoluteID_test  -- (openMain, htf_thisModuelsTests)
 import           Test.Framework
 import Uniform.Test.TestHarness
 import           Uniform.Strings
-import LitText.CoreNLP.Doc1_absoluteID
+--import LitText.CoreNLP.Doc1_absoluteID
 import qualified NLP.TagSets.Conll  as Conll
+import         LitText.CoreNLP.CoreNLP
 
 
 instance ShowTestHarness (Doc11 Conll.POStag) where

@@ -17,9 +17,11 @@ module LitText.CoreNLP.Linear2Triple_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import LitText.CoreNLP.Linear2Triple
+import         LitText.CoreNLP.CoreNLP
+--LitText.CoreNLP.Linear2Triple
 import qualified NLP.TagSets.Conll  as Conll
-import LitText.CoreNLP.Vocabulary as Voc
+--import LitText.CoreNLP.Vocabulary as Voc
+import         LitText.CoreNLP.CoreNLP
 
 
 instance ShowTestHarness [DocAsList Conll.POStag] where
@@ -32,7 +34,7 @@ progName = "nlpservices"
 
 test_SentenceParse = assertEqual
             "RDFproperty \"http://gerastree.at/nlp_2017#sentenceParse\""
-            $ showT (mkRDFproperty Voc.SentenceParse :: RDFproperty)
+            $ showT (mkRDFproperty SentenceParse :: RDFproperty)
 
 test_c = test1File progName "short1.lin5" "short1.trips6"
         (toTriple Conll.undefPOS (mkRDFsubj $ append2IRI rdfBase "SnipTest"))

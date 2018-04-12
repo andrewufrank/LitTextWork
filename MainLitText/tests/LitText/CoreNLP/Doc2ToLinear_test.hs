@@ -17,9 +17,10 @@ module LitText.CoreNLP.Doc2ToLinear_test  -- (openMain, htf_thisModuelsTests)
 
 import           Test.Framework
 import Uniform.Test.TestHarness
-import LitText.CoreNLP.Doc2ToLinear
+--import LitText.CoreNLP.Doc2ToLinear
 import qualified Data.Text  as T
 import qualified NLP.TagSets.Conll  as Conll
+import         LitText.CoreNLP.CoreNLP
 
 
 instance ShowTestHarness (Doc11 Conll.POStag) where

@@ -26,7 +26,8 @@ import qualified Data.ByteString.Lazy as B
 --import Data.Aeson (eitherDecode)
 import qualified NLP.TagSets.Conll  as Conll
 
-import LitText.CoreNLP.ParseJsonCoreNLP
+import         LitText.CoreNLP.CoreNLP
+--LitText.CoreNLP.ParseJsonCoreNLP
 
 --import Data.Aeson.Encode.Pretty
 import Data.Aeson
