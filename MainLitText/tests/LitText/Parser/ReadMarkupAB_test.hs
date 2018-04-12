@@ -17,7 +17,7 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module Parser.ReadMarkupAB_test where
+module LitText.Parser.ReadMarkupAB_test where
 
 import           Test.Framework
 import Uniform.Test.TestHarness
