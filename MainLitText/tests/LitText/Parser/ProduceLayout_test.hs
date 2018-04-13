@@ -20,9 +20,9 @@
 module LitText.Parser.ProduceLayout_test where
 
 import           Test.Framework
-import LitText.Parser.ReadMarkupAB_test    -- result1A etc.
+import LitText.Parser
 import Uniform.Test.TestHarness
-import LitText.Parser.ProduceLayout
+import LitText.Parser.Parser
 
 
 layoutTriples ::  TextDescriptor -> [TZ1] -> Text  -- test C -> J
@@ -34,6 +34,7 @@ layoutTriples textstate =  unlines' .  map showT . produceLayoutTriples textstat
 instance ShowTestHarness TextDescriptor
 instance ShowTestHarness [TZ1]
 
+progName = "tests"
 
 test_1C_J = test2File progName "resultA1" "resultC1" "resultJ1" layoutTriples
 test_2C_J = test2File progName "resultA2" "resultC2" "resultJ2" layoutTriples

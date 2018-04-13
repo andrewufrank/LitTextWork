@@ -26,17 +26,17 @@ import           Data.Char               (toLower)
 import           Data.Maybe               (isNothing)
 import LitText.Parser.ReadMarkupAB_test
 import           Text.Printf         (printf)
-import           Uniform.Error           (errorT)
+--import           Uniform.Error           (errorT)
 import Uniform.Test.TestHarness
 import LitText.Foundation
 --     hiding ((</>)) -- from Foundation
-import BuchCode.BuchToken hiding ((</>), (<.>))
+--import BuchCode.BuchToken hiding ((</>), (<.>))
 --import NLP2RDF.NLPvocabulary
-import LitText.Parser.ProduceLit
+import LitText.Parser
+import LitText.Parser.Parser
 
-
-test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
-                (mkRDFtype ( "Werk"::Text ))
+--test_werk = assertEqual (RDFtype "http://gerastree.at/lit_2014#Werk")
+--                (mkRDFtype ( "Werk"::Text ))
 
 --produceLitTriples ::  TextDescriptor -> [TZ2] -> [Triple]  -- test CA -> H
 

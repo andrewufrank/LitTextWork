@@ -36,20 +36,20 @@ import           Test.Framework
 --                        -- and [TZ] -> [TZ1]  -- test BB -> BC
 --import   {-@ HTF_TESTS @-} LitText.Lines.Lines2para_test  -- [TZ1] -> [TZ2]
 --                                    -- test C -> CA
-import   {-@ HTF_TESTS @-} LitText.Parser.ProduceLayout_test
+--import   {-@ HTF_TESTS @-} LitText.Parser.ProduceLayout_test
 --                --  TextDescriptor -> [TZ1] -> Text  -- test C -> J
 --import   {-@ HTF_TESTS @-} LitText.Parser.ProduceLit_test
 --            -- [TZ2] -> [Triple] CA -> Hx (triples) and H -> K (nt)
---import {-@ HTF_TESTS @-} Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Snip]
+--import {-@ HTF_TESTS @-} LitText.Parser.FilterTextForNLP_test   -- CA -> DA [TZ2] -> [Snip]
 --            -- DA is the same as D
 --        -- and snip4test :: [TZ1] -> [Snip] C -> D
 ---------------- filters literal text, but not ideal snips yet
 --
---import {-@ HTF_TESTS @-} Parser.FormNLPsnips_test
+--import {-@ HTF_TESTS @-} LitText.Parser.FormNLPsnips_test
 --    -- D -> DB formSnips :: [Snip] -> [Snip]
 -------- form snips which go to NLP (optimal size)
 --
---import   {-@ HTF_TESTS @-} LitText.Parser.ProduceNLP_test
+import   {-@ HTF_TESTS @-} LitText.Parser.ProduceNLP_test
         -- DA -> L, calls to NLP, takes time
 
 main =  do

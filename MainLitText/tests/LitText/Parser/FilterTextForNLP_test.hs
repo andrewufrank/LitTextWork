@@ -25,11 +25,9 @@ import           Test.Framework
 import Uniform.Test.TestHarness
 
 import Data.Maybe -- todo
-import LitText.Lines2para.Lines2para
-import LitText.Lines2para.HandleLayout
-import LitText.Parser.ReadMarkupAB  -- todo  -- for test
+import LitText.Lines
+import LitText.Parser   -- todo  -- for test
 --import Text.Regex (mkRegex, subRegex)
-import LitText.Parser.FilterTextForNLP
 
 progName = "tests"
 instance ShowTestHarness [TZ2]
@@ -37,7 +35,7 @@ instance ShowTestHarness [Snip]
 
 prepareTZ4nlpTest :: [TZ2] -> [Snip]
 -- convert all TZ2 for a text, selecting only literal text
-prepareTZ4nlpTest  = prepareTZ4nlp "" (RDFsubj "testFilterForNLP")
+prepareTZ4nlpTest  = prepareTZ4nlp "" (mkRDFsubj (mkIRI "testFilterForNLP"))
 -- first "" is postag default - second must be different for each
 --    map tz3fillLength . catMaybes . map (prepareTZ4nlp "")
 

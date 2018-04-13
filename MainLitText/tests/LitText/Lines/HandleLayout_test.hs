@@ -26,9 +26,7 @@ module LitText.Lines.HandleLayout_test
 
 import Test.Framework
 import Uniform.Test.TestHarness
-import LitText.Lines
-import LitText.Lines.Lines 
-import LitText.Parser.Parser 
+import LitText.Lines.Lines
 
 --paragraphs2TZlayout :: [TextZeile] -> [TZ]  -- test BA -> BB
 

@@ -26,6 +26,7 @@ import           LitText.Foundation
 --        hiding ((</>), (<.>))
 import           Uniform.FileIO
 import LitText.Parser.Parser
+import LitText.Parser
 --    ReadMarkupAB
 
 progName = "tests"

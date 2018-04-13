@@ -16,16 +16,11 @@
     , DeriveAnyClass #-}
 
 module LitText.Parser.Parser  (
-        produceLayoutTriples
-        ,textstate2Text
-                        , LitTextFlag (..), LitTextFlags (..)
-                        , LitTextFlagSet
-                        , TextDescriptor (..)
-                        , produceLitTriples, Triple
-                        , produceNLPtriples, tz2toSnip, Snip
-                        , prepareTZ4nlp, formSnips
         -- for tests:
-
+            TZ1
+--            , RDFtype (..)
+            , NTdescriptor (..)
+            , convertOneSnip2Triples, convertOneSnip2TriplesX, produceNLPtriples
                         )  where
 
 import LitText.Parser.FilterTextForNLP

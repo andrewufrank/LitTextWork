@@ -231,5 +231,8 @@ Test-Suite MainLitTestAuto
         LitText.Lines.HandleLayout_test
         LitText.Lines.Lines2text_test
         LitText.Lines.Lines2para_test
-
-
+        LitText.Parser.ProduceLayout_test
+        LitText.Parser.ProduceLit_test
+        LitText.Parser.FilterTextForNLP_test
+        LitText.Parser.FormNLPsnips_test
+        LitText.Parser.ProduceNLP_test
