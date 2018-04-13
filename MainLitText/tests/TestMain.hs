@@ -24,11 +24,12 @@ import           Test.Framework
 --import {-@ HTF_TESTS @-} LitText.CoreNLP.Doc2ToLinear_test
 --import {-@ HTF_TESTS @-} LitText.CoreNLP.Linear2Triple_test
 
-import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceDocCallNLP_test
-import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceNLPtriples_test
+--import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceDocCallNLP_test
+--import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceNLPtriples_test
 
---import {-@ HTF_TESTS @-} Parser.ReadMarkupAB_test  -- > Ax and Bx
---import {-@ HTF_TESTS @-} LitText.Lines.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
+import {-@ HTF_TESTS @-} LitText.Parser.ReadMarkupAB_test  -- > Ax and Bx
+
+import {-@ HTF_TESTS @-} LitText.Lines.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
 --import   {-@ HTF_TESTS @-} LitText.Lines.HandleLayout_test
 --                                        -- [TextZeile] -> [TZ]  -- test BA -> BB
 --import   {-@ HTF_TESTS @-} LitText.Lines.Lines2text_test  --   Text -> [TZ1]  -- test B -> C

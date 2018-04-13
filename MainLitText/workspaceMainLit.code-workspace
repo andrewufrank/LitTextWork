@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "/home/frank/Workspace8/uniform/uniform-convenience"
 		}
 	]
 }

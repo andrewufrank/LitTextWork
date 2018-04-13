@@ -4,8 +4,6 @@
 -- Copyright   :  andrew u frank -
 --
 -- | the definitions of the descrption of the text and related types (e.g. Language)
--- used as exports for testing
-
 -----------------------------------------------------------------------------
 --{-# OPTIONS_GHC -F -pgmF htfpp #-}
 
@@ -26,6 +24,7 @@ module LitText.Parser.Parser  (
                         , produceLitTriples, Triple
                         , produceNLPtriples, tz2toSnip, Snip
                         , prepareTZ4nlp, formSnips
+        -- for tests:
 
                         )  where
 

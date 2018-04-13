@@ -4,11 +4,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "stackInstall",
+            "label": "stackTest",
             "type": "shell",
-            "command": "stack install",
+            "command": "stack build --test",
             "group": {
-                "kind": "build",
+                "kind": "test",
                 "isDefault": true
             },
             "problemMatcher": []

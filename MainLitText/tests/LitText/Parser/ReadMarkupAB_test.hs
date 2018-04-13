@@ -25,7 +25,8 @@ import Uniform.Test.TestHarness
 import           LitText.Foundation
 --        hiding ((</>), (<.>))
 import           Uniform.FileIO
-import Parser.ReadMarkupAB
+import LitText.Parser.Parser
+--    ReadMarkupAB
 
 progName = "tests"
 --instance ShowTestHarness [TextZeile]
@@ -64,7 +65,16 @@ test_11_A_B_textstate_text_11 =   testVar0FileIO progName result11A "resultB11" 
 test_12_A_B_textstate_text_12 =   testVar0FileIO progName result12A "resultB12" textstate2Text
 
 
+--litOriginals = makeRelDir "LitOriginals"
+litTests =    makeRelDir "LitTest"
+litDir = makeAbsDir "/home/frank/additionalSpace/DataBig"
+--litOrigDir1 = litDir </>litOriginals
+litTestDir1 = litDir </> litTests
+ntDir = makeAbsDir "/home/frank/Scratch/NT"
+--litNTOrigDir1 = ntDir </> litOriginals
+litNTTestDir1 = ntDir </> litTests
 
+dirsTest = LitDirs litTestDir1  litNTTestDir1
 
 
 --litTestDir1 = makeAbsDir "/home/frank/additionalSpace/DataBig/LitTest"

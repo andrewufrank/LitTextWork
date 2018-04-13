@@ -21,20 +21,21 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
 
-module LitText.Lines2para.MarkupText_test  where
+module LitText.Lines.MarkupText_test  where
 
 
-import           BuchCode.BuchToken hiding (try, (<|>), (</>))
+--import           BuchCode.BuchToken hiding (try, (<|>), (</>))
 import           Data.Char
 import Data.Maybe  -- todo string - algebras?
 import           Uniform.FileIO   hiding (try, (<|>))
 import           Test.Framework
-import LitText.Parser.ReadMarkupAB
+import LitText.Parser.Parser
 import Uniform.Test.TestHarness hiding (try)
 import LitText.Foundation
 --    hiding (try, (<|>)) -- from Foundation
 
-import LitText.Lines2para.MarkupText
+import LitText.Lines
+import LitText.Lines.Lines
 
 progName = "tests"
 instance ShowTestHarness [TextZeile]
