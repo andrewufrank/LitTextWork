@@ -16,9 +16,10 @@
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
 {-# OPTIONS_GHC -w #-}
 
-module LitText.Lines2para.Lines2text_test where
+module LitText.Lines.Lines2text_test where
 
-import LitText.Lines2para.HandleLayout
+import LitText.Lines
+import LitText.Lines.Lines
 import           Test.Framework
 import Uniform.Test.TestHarness
 import LitText.Foundation -- (ParaNum (..), unparaNum)

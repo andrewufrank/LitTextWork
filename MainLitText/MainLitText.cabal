@@ -228,3 +228,8 @@ Test-Suite MainLitTestAuto
 
         LitText.Parser.ReadMarkupAB_test
         LitText.Lines.MarkupText_test
+        LitText.Lines.HandleLayout_test
+        LitText.Lines.Lines2text_test
+        LitText.Lines.Lines2para_test
+
+

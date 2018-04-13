@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "stack build --test",
             "group": {
-                "kind": "test",
+                "kind": "build",
                 "isDefault": true
             },
             "problemMatcher": []

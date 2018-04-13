@@ -27,16 +27,16 @@ import           Test.Framework
 --import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceDocCallNLP_test
 --import {-@ HTF_TESTS @-} LitText.NLP2RDF.ProduceNLPtriples_test
 
-import {-@ HTF_TESTS @-} LitText.Parser.ReadMarkupAB_test  -- > Ax and Bx
+--import {-@ HTF_TESTS @-} LitText.Parser.ReadMarkupAB_test  -- > Ax and Bx
 
-import {-@ HTF_TESTS @-} LitText.Lines.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
+--import {-@ HTF_TESTS @-} LitText.Lines.MarkupText_test  -- B -> BAx (Text -> [TextZeile])
 --import   {-@ HTF_TESTS @-} LitText.Lines.HandleLayout_test
 --                                        -- [TextZeile] -> [TZ]  -- test BA -> BB
 --import   {-@ HTF_TESTS @-} LitText.Lines.Lines2text_test  --   Text -> [TZ1]  -- test B -> C
 --                        -- and [TZ] -> [TZ1]  -- test BB -> BC
 --import   {-@ HTF_TESTS @-} LitText.Lines.Lines2para_test  -- [TZ1] -> [TZ2]
 --                                    -- test C -> CA
---import   {-@ HTF_TESTS @-} Parser.ProduceLayout_test
+import   {-@ HTF_TESTS @-} LitText.Parser.ProduceLayout_test
 --                --  TextDescriptor -> [TZ1] -> Text  -- test C -> J
 --import   {-@ HTF_TESTS @-} LitText.Parser.ProduceLit_test
 --            -- [TZ2] -> [Triple] CA -> Hx (triples) and H -> K (nt)

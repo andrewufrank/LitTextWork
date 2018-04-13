@@ -18,6 +18,10 @@
 module LitText.Lines.Lines (
     TextZeile(..)
     , parseMarkup
+    , TZ
+    , paragraphs2TZlayout
+    , paragraphs2TZsimple
+    , paragraphsTZ2TZ2
     ) where
 
 import Uniform.FileIO hiding ((<>), (</>), (<.>))

@@ -36,6 +36,7 @@ import LitText.Foundation
 
 import LitText.Lines
 import LitText.Lines.Lines
+import LitText.Foundation
 
 progName = "tests"
 instance ShowTestHarness [TextZeile]

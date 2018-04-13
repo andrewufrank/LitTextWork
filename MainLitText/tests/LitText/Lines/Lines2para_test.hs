@@ -23,15 +23,16 @@
 {-# OPTIONS_GHC -fno-warn-overlapping-patterns #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module Lines2para.Lines2para_test  where
+module LitText.Lines.Lines2para_test  where
 
-import           Uniform.Error
+--import           Uniform.Error
 import Uniform.FileIO
 import Data.List (nub)
 import           Test.Framework
 import Uniform.Test.TestHarness
 import LitText.Foundation -- (ParaNum (..), unparaNum)
 --import Lines2para.Lines2para
+import LitText.Lines.Lines
 
 instance ShowTestHarness [TZ1]
 instance ShowTestHarness [TZ2]
